@@ -1,0 +1,88 @@
+<div class="case col-sm-3 " style="border-color: white; margin-bottom: 10px;">
+    <div class="table responsive" >
+
+        <table class=" table table-striped " style="margin-left: 0px;">
+
+            <thead >
+            <tr style="background-color: #993300; color: white;" >
+                <th >OCTOBRE</th>
+                <th >MONTANT</th>
+            </tr>
+            </thead>
+
+            <tr >
+                <td  >Assistance</td>
+                <ng-container *ngFor="let chants of chant">
+                    <td *ngIf="(chants.categorie == 'Assistance') && (chants.mois == 10) ">
+                        {{chants.sum}} €
+                    </td>
+                </ng-container>
+            </tr>
+
+
+            <tr >
+                <td >Consommables</td>
+                <ng-container *ngFor="let chants of chant">
+                    <td  *ngIf="(chants.categorie == 'Consommable') && (chants.mois == 10) ">
+                        {{chants.sum}} €
+                    </td>
+                </ng-container>
+            </tr>
+
+            <tr>
+                <td  >Financement</td>
+                <ng-container *ngFor="let chants of chant">
+                    <td *ngIf="(chants.categorie == 'Financement') && (chants.mois == 10) ">
+                        {{chants.sum}} €
+                    </td>
+                </ng-container>
+            </tr>
+
+            <tr>
+
+                <td  >Loyer</td>
+                <ng-container *ngFor="let chants of chant">
+                    <td *ngIf="(chants.categorie == 'Loyer') && (chants.mois == 10) ">
+                        {{chants.sum}} €
+                    </td>
+                </ng-container>
+
+            </tr>
+
+            <tr>
+                <td  >Salaires</td>
+                <ng-container *ngFor="let chants of chant">
+                    <td *ngIf="(chants.categorie == 'Salaire') && (chants.mois == 10) ">
+                        {{chants.sum}} €
+                    </td>
+                </ng-container>
+            </tr>
+            <tr>
+                <td  >Autres</td>
+                <ng-container *ngFor="let chants of chant">
+                    <td *ngIf="(chants.categorie == 'Autres') && (chants.mois == 10) ">
+                        {{chants.sum}} €
+                    </td>
+                </ng-container>
+            </tr>
+
+
+            <tr>
+                <th  >Résultat</th>
+                <th >{{countTotal(10) }} €</th>
+            </tr>
+
+            <tr style="border-top-left-right: 2px black solid;">
+                <td style="color: red;">Prévisionnel mois</td>
+                <td >{{ countPrev(10) + countTotalfact(10) | number:'1.0-2'}} €</td>
+
+            </tr>
+
+
+
+        </table>
+
+
+    </div>
+
+</div>

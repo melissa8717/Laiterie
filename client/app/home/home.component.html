@@ -1,0 +1,344 @@
+﻿<!--
+<div class="col-md-6 col-md-offset-3">
+    <h1>Hi {{currentUser.firstName}}!</h1>
+    <p>You're logged in WBAT</p>
+    <h3>All registered users:</h3>
+    <ul>
+        <li *ngFor="let user of users">
+            {{user.username}} ({{user.firstName}} {{user.lastName}}) {{user.address.zip}}
+            - <a (click)="deleteUser(user._id)">Delete</a>
+        </li>
+    </ul>
+    <p><a [routerLink]="['/login']">Logout</a></p>
+</div>
+-->
+<style type="text/css">
+
+
+
+    #message{background-color: transparent;background-image: url(image/menu/messagerie_grand_orange.png);background-repeat: no-repeat;display: block; color: white; width: 138px;}
+    #message:hover{background-image: url(image/menu/messagerie_grand_gris.png); display: block;color: yellow;}
+
+    #contact{background-color: transparent;background-image: url(image/menu/contacts_grand_orange.png); background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #contact:hover{background-image: url(image/menu/contacts_grand_gris.png); display: block;color: yellow;}
+
+    #produit{background-color: transparent; background-image: url(image/menu/produits_grand_orange.png);background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #produit:hover{background-image: url(image/menu/produits_grand_gris.png); display: block;color: yellow;}
+
+    #commande{background-color: transparent; background-image: url(image/menu/commandes_grand_orange.png);background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #commande:hover{background-image: url(image/menu/commandes_grand_gris.png); display: block;color: yellow;}
+
+    #chantier{background-color: transparent; background-image: url(image/menu/chantiers_grand_orange.png);background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #chantier:hover{background-image: url(image/menu/chantiers_grand_gris.png); display: block;color: yellow;}
+
+    #devis{background-color: transparent; background-image: url(image/menu/gestion_grand_orange.png);background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #devis:hover{background-image: url(image/menu/gestion_grand_gris.png); display: block;color: yellow;}
+
+    #facture{background-color: transparent; background-image: url(image/menu/facturation_grand_orange.png);background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #facture:hover{background-image: url(image/menu/facturation_grand_gris.png); display: block;color: yellow;}
+
+    #planning{background-color: transparent; background-image: url(image/menu/planning_grand_orange.png);background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #planning:hover{background-image: url(image/menu/planning_grand_gris.png);  display: block;color: yellow;}
+
+    #stat{background-color: transparent; background-image: url(image/menu/statistiques_grand_orange.png);background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #stat:hover{background-image: url(image/menu/statistiques_grand_gris.png); display: block;color: yellow;}
+
+    #param{background-color: transparent; background-image: url(image/menu/parametres_grand_orange.png);background-repeat: no-repeat;display: block;color: white;width: 138px;}
+    #param:hover{background-image: url(image/menu/parametres_grand_gris.png); display: block;color: yellow;}
+</style>
+<body>
+
+<div id="menu1">
+
+
+    <header  style="height: auto;padding-top: 5px;padding-bottom: 5px;">
+        <div class="container-fluid" >
+
+            <div class="container-fluid" style="background-image: url(/image/triangle.png);background-repeat: no-repeat;">
+
+                <img src="image/logo_wBAT_horizontal.png" style="height: 80px; width: 180px; float: left;" alt="logo du logiciel">
+
+                <!--bouton déconnexion-->
+
+
+                <span style="height: 80px; color: white;" class="col-sm-offset-4 col-sm-2"><i style="font-weight: bold;font-style: normal;;">Bonjour, </i>{{currentUser.firstName}} {{currentUser.lastName}}</span>
+
+                <!-- <img src="image/logo_jd.png" style="height: 80px;width: 200px; " alt="logo de l'entreprise" class="col-sm-2 col-sm-offset-1"> -->
+
+                <div *ngIf="uploaderImg" class="col-sm-2 img-responsive">
+                    <div style="height: 5%; width: 100%;">
+                        <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
+                        <img *ngIf="!url && model.image"
+                             src="http://{{loc}}:4000/image/agence/{{model.id_agence}}/{{model.image}}" alt="..."
+                             class="img-responsive col-sm-12"/>
+                        <img *ngIf="!url && !model.image" src="image/test.ico" alt="..."
+                             class="img-responsive"/>
+                        <!--<input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>-->
+                    </div>
+                </div>
+
+                <!--
+                <label>TEST ID : {{model.id_agence}}</label>
+                <label>TEST IMAGE : {{model.image}}</label>
+                -->
+
+                <a [routerLink]="['/login']"  style="float: right;color: #993300;font-weight: bold;">Déconnexion</a>
+
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container-fluid">
+
+            <div class="navbar-header" >
+                <button type="button" class="navbar-toggle collapsed glyphicon glyphicon-align-justify btn-lg " data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" style="color: white; float: right;">
+                    <span class="sr-only ">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li *ngIf="droitsuser.accesmes" class="active"><a [routerLink]="['/message']" id="message" ><br><br><br>Messages <span *ngIf="msg > 0"> ({{msg}}) </span></a></li>
+
+                    <li *ngIf="droitsuser.accescontact" class="dropdown" role="presentation">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="contact" ><br><br><br>Contacts<span class="caret"></span><i class="icon-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a [routerLink]="['/contact']" >Liste des contacts</a></li>
+                            <li *ngIf="droitsuser.ajoutcontact" role="separator" class="divider"></li>
+                            <li *ngIf="droitsuser.ajoutcontact"><a [routerLink]="['/ajout_contact']" id="addcontact"  >Ajouter contact</a></li>
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li><a href="#">Contacts archivés</a></li>-->
+                        </ul>
+                    </li>
+
+
+
+                    <li *ngIf="droitsuser.accesproa || droitsuser.accesprov" class="dropdown" role="presentation">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="produit"><br><br><br>Produits<i class="icon-angle-down"><span class="caret"></span></i></a>
+                        <ul class="dropdown-menu test">
+                            <li><a [routerLink]="['/mainoeuvre']" >Main d'oeuvre</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li *ngIf="droitsuser.accesproa"><a [routerLink]="['/listeachat']" >Liste des produits achats</a></li>
+                            <li *ngIf="droitsuser.accesprov"><a [routerLink]="['/listevente']" >Liste des produits ventes</a></li>
+                            <li><a [routerLink]="['/listevehimat']" >Liste des véhicules et du matériel</a></li>
+                            <li *ngIf="droitsuser.ajoutproa || droitsuser.ajoutprov" role="separator" class="divider"></li>
+                            <li *ngIf="droitsuser.ajoutproa"><a [routerLink]="['/ajout_produit_achat']" >Ajouter un produit achat</a></li>
+                            <li *ngIf="droitsuser.ajoutprov"><a [routerLink]="['/ajout_produit_vente']" >Ajouter un produit vente</a></li>
+                            <li *ngIf="droitsuser.ajoutproa || droitsuser.ajoutprov"><a [routerLink]="['/ajout_vehimat']" >Ajouter un véhicule ou du matériel</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li *ngIf="droitsuser.accescom" class="dropdown" role="presentation">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="commande"><br><br><br>Commandes<span class="caret"></span><i class="icon-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a [routerLink]="['/demandeprix']">Demandes de prix</a></li>
+                            <li><a [routerLink]="['/suivi_commande']" >Suivi de commandes</a></li>
+                            <li *ngIf="droitsuser.ajoutcom" class="divider"></li>
+                            <li *ngIf="droitsuser.ajoutcom"><a [routerLink]="['/new_bdc']" >Créer un bon de commande</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a [routerLink]="['/etatstock']" >État des stocks</a></li>
+                        </ul>
+                    </li>
+
+                    <li *ngIf="droitsuser.accescha" class="dropdown" role="presentation">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="chantier"><br><br><br>Chantiers<span class="caret"></span><i class="icon-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+
+                            <li><a [routerLink]="['/listechantier']" >Liste des chantiers</a></li>
+                            <li class="divider"></li>
+                            <!-- <li><a href="#">Autorisations des responsables</a></li>-->
+                            <!--<li class="divider"></li>-->
+                            <li><a [routerLink]="['/chantiermois']" >Chantiers en cours</a></li>
+                            <!--<li class="divider"></li>
+                            <li><a [routerLink]="['/gestionproj']" >Gestion de projet</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li *ngIf="droitsuser.accesdev" class="dropdown" role="presentation">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="devis"><br><br><br>Devis<span class="caret"></span><i class="icon-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a [routerLink]="['/listedevis']" >Liste des devis</a></li>
+                            <li *ngIf="droitsuser.ajoutdev" class="divider"></li>
+                            <li *ngIf="droitsuser.ajoutdev"><a [routerLink]="['/newdevis']" >Nouveau devis</a></li>
+                            <li *ngIf="droitsuser.ajoutdev" class="divider"></li>
+                            <li *ngIf="droitsuser.ajoutdev"><a [routerLink]="['/devislibre']" >Appel d'offre / Devis libre</a></li>
+                        </ul>
+                    </li>
+
+                    <li *ngIf="droitsuser.accesfact" class="dropdown" role="presentation">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="facture"><br><br><br>Facturation<span class="caret"></span><i class="icon-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a [routerLink]="['/listefacture']" >Liste des factures</a></li>
+                            <li><a [routerLink]="['/listeavoir']" >Liste des avoirs</a></li>
+                            <li class="divider"></li>
+                            <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/listefacturefournisseur']" >Liste factures fournisseurs</a></li>
+                            <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/facture_fournisseur']" >Ajouter factures fournisseurs</a></li>
+                            <!--<li class="divider"></li>-->
+                            <!--<li><a href="#">Analyse des ventes</a></li>-->
+                            <li *ngIf="droitsuser.accesfrais" class="divider"></li>
+                            <li *ngIf="droitsuser.accesfrais"><a [routerLink]="['/fraismois']" >Frais généraux / mois</a></li>
+                            <li *ngIf="droitsuser.accesfrais"><a [routerLink]="['/fraisgenerauxan']" >Frais généraux / année</a></li>
+                            <li *ngIf="droitsuser.accesbg" class="divider"></li>
+                            <li *ngIf="droitsuser.accesbg"><a  [routerLink]="['/balance_generale']" >Balance générale</a></li>
+                        </ul>
+                    </li>
+
+                    <li *ngIf="droitsuser.accespb || droitsuser.accespc" class="dropdown" role="presentation">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="planning"><br><br><br>Planning<span class="caret"></span><i class="icon-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li *ngIf="droitsuser.accespb"><a [routerLink]="['/planning']" >Planning Bureau</a></li>
+                            <li *ngIf="droitsuser.accespc"><a [routerLink]="['/planning_simple']" >Planning Chantiers / Heures</a></li>
+                            <li *ngIf="droitsuser.accespc"><a [routerLink]="['/recapitulatifmois']" >Récapitulatif des heures du mois</a></li>
+                            <li><a [routerLink]="['/gestion_h']">Gestion des heures</a></li>
+                            <!--<li class="divider"></li>
+                            <li><a href="listegrapsuivi.html" >Graphique et suivi</a></li>
+                            <li class="divider"></li>
+                            <li><a [routerLink]="['/abs']">Absences</a></li>
+                            <li class="divider"></li>
+                            <li><a [routerLink]="['/form_emp']">Formation</a></li>
+                            <li class="divider"></li>
+                            <li><a [routerLink]="['/int_chantier']">Intempéries</a></li>-->
+                        </ul>
+                    </li>
+
+                    <!-- <li class="dropdown" role="presentation">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="stat"><br><br><br>Statistiques<span class="caret"></span><i class="icon-angle-down"></i></a>
+                         <ul class="dropdown-menu">
+                             <li><a href="#">Postes de dépenses</a></li>
+                             <li><a href="#">Hit parade de commandes</a></li>
+                             <li><a href="#">Factures / Devis</a></li>
+                             <li><a href="#">Réparations / Dépenses</a></li>
+                             <li><a href="#">Dépenses / Fournisseurs</a></li>
+
+                         </ul>
+                     </li>-->
+
+                    <li *ngIf="droitsuser.accesparam" class="dropdown" role="presentation">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="param"><br><br><br>Paramètres<span class="caret"></span><i class="icon-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a [routerLink]="['/param_gen']">Généraux</a></li>
+                            <li><a [routerLink]="['/tva']">TVA</a></li>
+                            <li><a [routerLink]="['/cat_prod']">Catégorie de produit</a></li>
+                            <li><a [routerLink]="['/formation']">Type de formation</a></li>
+                            <li *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/utilisation']">Droits utilisateurs</a></li>
+                            <li><a href="#"></a></li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="row">
+        <div class="container-fluid " style="margin:10px;">
+            <div class="col-md-3 col-sm-4" style=" padding: 0;">
+
+                <!-- METEO -->
+
+                <div style="font-family: Arial;background-color: #fbfbfb;border: 1px solid #000000;width: 300px;height: 280px;-moz-box-shadow: 0 0 0px 0px #000000;-webkit-box-shadow: 0 0 0px 0px #000000;box-shadow: 0 0 0px 0px #000000;overflow: hidden; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;"><div style="width: 255px;height: 280px;margin-left: 22px;">
+                    <div style="margin:7px 10px;"><iframe id="widget-frame" src="http://www.meteovista.fr/Go/ExternalWidgetsNew/TwoDaysCityWithSearch?gid=4285883&activityType=0&titleColor=%23222222&linkColor=%230160b2&temperatureScale=Celsius&defaultSettings=False" width="235" height="235" frameborder="0" scrolling="no" style="border: none;" allowtransparency="true"></iframe>
+                        <a href="http://www.meteovista.fr/" style="display: block;height: 25px;width: 113px;margin: 0px 10px 8px 0px;outline: none;text-decoration: none;" title="Meteovista.fr la météo autrement" target="_blank">
+                            <!--<img src="http://www.meteovista.fr/Shared/Images/variations/fr-FR/new-widget-logo-FR-color.png" width="113" height="25" alt="Meteovista.fr la météo autrement" style="border: none;background-color: transparent;box-shadow: none;" />-->
+                        </a></div></div></div>
+
+                <!-- Fin Meteo -->
+
+
+
+
+
+            </div>
+
+            <div class="col-md-9 col-sm-8" >
+
+
+                <div class="table-responsive" style="border: 1px solid black;height: 400px;">
+                    <table class="table table-striped ">
+                        <thead>
+                        <tr>
+                            <th>DATE :</th><th>DE :</th><th>OBJET</th><th >NOTE :</th>
+                        </tr>
+                        </thead>
+
+                        <tbody  style="">
+
+                        <!--créer une boucle conditionnelle pour créer les lignes du tableau-->
+                        <tr *ngFor="let message of messages"><td>{{message.date_creation | date:'dd-MM-yy'}}</td><td>{{message.Lastname}} {{message.firstname}}</td><td>{{message.titre}}</td><td>{{message.contenu}}</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+            <div class="col-sm-12">
+
+                <div class="col-sm-3">
+                    <h4  >Alarmes formations !</h4>
+                    <table class="table table-bordered " >
+                        <tr *ngFor="let forms of form">
+                            <td>{{forms.nom}} {{forms.prenom}}</td>
+                            <td>{{forms.designation}}</td>
+                            <td>{{forms.DATE | date: 'dd/MM/yyyy'}}</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="col-sm-3">
+                    <h4  >Alarmes CACES !</h4>
+                    <table class="table table-bordered " >
+                        <tr *ngFor="let forms of caces">
+                            <td>{{forms.nom}} {{forms.prenom}}</td>
+                            <td>{{forms.caces}}</td>
+                            <td>{{forms.date | date: 'dd/MM/yyyy'}}</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="col-sm-3">
+
+                    <h4  >Alarmes!</h4>
+
+                    <table class="table table-bordered " >
+                        <!--<thead style="text-align: center; background-color: white;"><th>Nom :</th><th>Type :</th><th style="text-align: center;">Date :</th></thead>-->
+                        <tbody class="" style="background-color: #B2B2B2;">
+                        <!--créer une boucle conditionnelle pour créer les lignes du tableau-->
+                        <tr *ngFor="let alarm of alarms">
+                            <td>{{alarm.nom +" " +alarm.prenom}}</td><td>{{alarm.title}}</td><td>{{alarm.start| date: 'dd/MM/yyyy'}} <span *ngIf="checkday(alarm.start)" class="glyphicon glyphicon-warning-sign"></span></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <div id="copy">
+        <p style="color:white; text-align: center; background-color: #3F3F3F;height: 40px; width: 100%;position:fixed; bottom:-10px;">© Copyright-2017-WBAT-Tous droits réservés-Mentions légales</p>
+    </div>
+</div>
+
+<!--Javascript pour nav-->
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+</body>

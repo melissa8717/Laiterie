@@ -1,0 +1,124 @@
+<div id="planning1">
+
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print"src="image/menu/planning_grand_gris.png" alt="params">
+
+                    <span *ngIf="!print">Ajouter une equipe</span>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-6" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+
+        <div class="col-sm-12">
+
+
+
+            <div class="col-sm-6" style="margin-top: 10px;">
+                <h3>Ajouter une équipe</h3>
+
+                <form method=""  (ngSubmit)=" addEquipe()" >
+                    <div class=" table-responsive">
+                        <table class="table table-bordered" >
+
+                            <tbody >
+                            <tr>
+                                <td class="col-sm-6"><input type="number" class="col-sm-12" name="n_equipe" [(ngModel)]="model.n_equipe" placeholder="numéro d'equipe"></td>
+                                <td class="col-sm-4"><input type="color" name="couleur" [(ngModel)]="model.couleur" class="col-sm-12"> </td>
+
+                                <td class="col-sm-2"><button *ngIf="droitsuser.ajoutpb || droitsuser.ajoutpc" type="submit" [disabled]="loading" class="btn btn-default">Valider</button></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+                <div class=" table-responsive">
+                    <table class="table table-bordered" >
+                        <tbody>
+                        <tr *ngFor="let equips of equipe">
+                            <td>{{equips.id_equipe}}</td>
+                            <td>{{equips.couleur}}</td>
+                            <td ><input type="color" name="couleur"  value="{{equips.couleur}}" class="col-sm-12"></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+
+                </div>
+            </div>
+
+            <div class="col-sm-6" style="margin-top: 10px;">
+                <h3>Ajouter un ouvrier à une équipe</h3>
+
+                <div class=" table-responsive">
+                    <form (submit)="addWorker()">
+                        <table class="table table-bordered" >
+                            <tbody>
+                            <tr >
+                                <td><input ng2-auto-complete
+                                           #prod
+                                           [source]="worker"
+                                           [list-formatter]="autocompleListOuvrier"
+                                           value-property-name="id_contact"
+                                           display-property-name="nom"
+                                           type="text"
+                                           name="designation"
+                                           value=""
+                                           [(ngModel)]="test.desigantion" class="col-sm-12"></td>
+                                <td><input  type="number" name="id_equipe"
+                                            value="" [(ngModel)]="test.id_equipe" class="col-sm-12"></td>
+                                <td ><button [disabled]="loading">Ajouter</button></td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </form>
+
+                    <table class="table table-bordered" >
+                        <thead>
+                        <tr>
+                            <th>Nom Prénom</th>
+                            <th>N° d'équipe</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let workers of work, let i = index">
+                            <td>{{work[i].nom}} {{work[i].prenom}}</td>
+                            <td><input name="equipe" type="number" [(ngModel)]="work[i].id_equipe"></td>
+                            <td (click)="modifouv(workers)"><button>Modifier</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+        </div><!--fin container fluid-->
+    </div><!--fin id-->
+</div>

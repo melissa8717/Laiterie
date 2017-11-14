@@ -1,0 +1,83 @@
+<div id="message">
+    <header >
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid" >
+
+                    <img src="image/menu/messagerie_grand_gris.png">
+
+                    <span>Messagerie</span>
+
+
+
+                </div>
+            </div><!--container-fluid-->
+        </div>
+
+
+    </header>
+
+    <div class=" container-fluid" *ngIf="message">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+              <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/new_message']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Ecrire un nouveau message</span>
+        </div>
+
+        <h4 class="col-sm-12">Discussion</h4>
+
+
+
+        <div class="col-sm-12 discus1" >
+
+
+            <span class="col-sm-1 gras">Objet:</span><span class="col-sm-4">{{message.titre}}<!--VARIABLE--></span><span class="col-sm-1 gras">Date</span><span class="col-sm-1 ">{{message.date_creation | date: 'dd/MM/yyyy HH:mm'}}</span><span class="col-sm-1 col-sm-offset-2 gras">Auteur :</span><span class="col-sm-2">{{message.firstname}} {{message.lastname}}<!--VARIABLE--></span>
+
+
+            <span class="col-sm-12">{{message.contenu}}</span>
+
+
+
+
+
+        </div><!--fin col sm 12-->
+
+
+
+
+
+        <div class="table-responsive col-sm-12 height">
+
+            <div *ngFor="let commentaire of conversation">
+
+                    <article  [ngClass]="(currentUser._id == commentaire.id_user)?'col-sm-6 right':'col-sm-6 left'">
+                                    <span class="col-sm-12">
+                                        <span class="col-sm-2 gras">Date : </span><span class="col-sm-3">{{commentaire.date_com | date: 'dd/MM/yyyy hh:mm'}}</span><span class="col-sm-2 col-sm-offset-2 gras">Auteur : </span><span class="col-sm-3">{{commentaire.firstname}} {{commentaire.lastname}}</span>
+                                    </span>
+                        <span class="col-sm-12">
+                                        {{commentaire.contenu}}
+                                    </span>
+                    </article>
+
+
+
+            </div><!--ngf-->
+        </div>
+
+        <div class="col-sm-12">
+
+            <form   method="POST" class="noboder" (ngSubmit)="onSubmit()">
+
+                <textarea class="form-control" rows="4" placeholder="Répondre" style="margin-top: 5px; margin-bottom: 5px;" name = "text" [(ngModel)]="text"></textarea>
+                <button *ngIf="droitsuser.ajoutmes" class="col-sm-1 col-sm-offset-11 input-sm">Envoyer</button>
+            </form>
+        </div>
+
+
+    </div><!--container-fluid-->
+
+
+</div><!--id message-->

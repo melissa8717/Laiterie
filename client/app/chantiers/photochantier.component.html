@@ -1,0 +1,165 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/chantiers_grand_gris.png">
+
+                    <span>Chantiers</span>
+
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <!--garder l'id du chantier en passant d'un onglet à l'autre possibilité peut-être d'un session ou d'un cookie qui disppait à la fermeture de la page-->
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li *ngIf="droitsuser.accescha"><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
+                    <li *ngIf="droitsuser.accescha" class="active"><a [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+                    <li *ngIf="droitsuser.accesdev"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation" ><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation" ><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
+                    <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
+                    <!--<li role="presentation"><a href="#">Stats</a></li>-->
+                    <li *ngIf="droitsuser.accesbg" role="presentation"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <div class="col-sm-3 bord" >
+            <form class="form-horizontal" action="listechantier.html" method="POST" >
+                <h5>Recherche:</h5>
+
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Client :</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="client" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Chantier :</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="chantier" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">N° chantier :</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="numerochantier" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Responsable :</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="responsable" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Lieu :</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="lieu" placeholder="" >
+                    </div>
+                </div>
+
+            </form>
+
+
+        </div><!--fin sm 3-->
+
+        <div class="col-sm-9" style="margin-bottom: 10px;">
+
+            <!--le images et les id sont établis par une boucle qui in-->
+            <form method="POST" action="fiche_chantier.html" class="col-sm-4">
+                <input type="file" accept="image/*" onchange="loadFile(event)">
+                <img id="output"/>
+                <script>
+                    var loadFile = function(event) {
+                        var output = document.getElementById('output');
+                        output.src = URL.createObjectURL(event.target.files[0]);
+                    };
+                </script>
+                <figure >
+
+                    <img src="image/test.ico" alt="..." class="img-thumbnail " ><!--variable appelant l'image-->
+                    <figcaption>Probleme1</figcaption>
+                </figure>
+                <input type="hidden" name="idimage"><!--l'id image permet d'ouvrir la fiche chantier correspondant-->
+                <button>Ouvrir le dossier</button>
+            </form>
+
+            <form method="POST" action="fiche_chantier.html" class="col-sm-4">
+                <figure >
+                    <img src="image/test.ico" alt="..." class="img-thumbnail " ><!--variable appelant l'image-->
+                    <figcaption>Probleme1</figcaption>
+                </figure>
+                <input type="hidden" name="idimage"><!--l'id image permet d'ouvrir la fiche chantier correspondant-->
+                <button>Ouvrir le dossier</button>
+            </form>
+            <form method="POST" action="fiche_chantier.html" class="col-sm-4">
+                <figure >
+                    <img src="image/test.ico" alt="..." class="img-thumbnail " ><!--variable appelant l'image-->
+                    <figcaption>Probleme14</figcaption>
+                </figure>
+                <input type="hidden" name="idimage"><!--l'id image permet d'ouvrir la fiche chantier correspondant-->
+                <button>Ouvrir le dossier</button>
+            </form>
+            <form method="POST" action="fiche_chantier.html" class="col-sm-4">
+                <figure >
+                    <img src="image/test.ico" alt="..." class="img-thumbnail " ><!--variable appelant l'image-->
+                    <figcaption>Probleme5</figcaption>
+                </figure>
+                <input type="hidden" name="idimage"><!--l'id image permet d'ouvrir la fiche chantier correspondant-->
+                <button>Ouvrir le dossier</button>
+            </form>
+            <form method="POST" action="fiche_chantier.html" class="col-sm-4">
+                <figure >
+                    <img src="image/test.ico" alt="..." class="img-thumbnail " ><!--variable appelant l'image-->
+                    <figcaption>fin de chantier</figcaption>
+                </figure>
+                <input type="hidden" name="idimage"><!--l'id image permet d'ouvrir la fiche chantier correspondant-->
+                <button>Ouvrir le dossier</button>
+            </form>
+            <form method="POST" action="fiche_chantier.html" class="col-sm-4">
+                <figure >
+                    <img src="image/test.ico" alt="..." class="img-thumbnail " ><!--variable appelant l'image-->
+                    <figcaption>Probleme12</figcaption>
+                </figure>
+                <input type="hidden" name="idimage"><!--l'id image permet d'ouvrir la fiche chantier correspondant-->
+                <button>Ouvrir le dossier</button>
+            </form>
+
+
+        </div><!--fin col sm 9-->
+
+
+
+    </div><!--fin container fluid-->
+</div>

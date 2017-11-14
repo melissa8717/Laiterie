@@ -1,0 +1,101 @@
+<div id="chantier">
+
+    <header>
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <img *ngIf="!print" src="image/menu/chantiers_grand_gris.png">
+                    <span *ngIf="!print">Chantiers</span>
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+            <div *ngIf="!print" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav">
+                        <li><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
+                        <li><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+                        <li><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
+                        <li role="presentation"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
+                        <li role="presentation"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
+                        <li role="presentation" class="active"><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
+                        <li role="presentation" ><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
+                        <li role="presentation"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
+                       <!-- <li role="presentation"><a href="#">Stats</a></li>-->
+                        <li role="presentation"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
+                    </ul>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3 style="margin-top: 50px;">Analyses Main d'oeuvre</h3>
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+
+                <thead>
+                <tr>
+
+                    <td>Produits composés</td>
+                    <td>Qté P. Comp.</td>
+                    <td>Libellé du produit</td>
+                    <td>Sté Produit devis</td>
+                    <td>Qté totale en min</td>
+                    <td>H.T. Produit</td>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                <tr *ngFor="let prod of model" style="background-color: #9d9d9d;">
+                    <td>{{prod.compose}}</td>
+                    <td>{{prod.quantite}}</td>
+                    <td>{{prod.libelle}}</td>
+                    <td>{{prod.qte_devis}}</td>
+                    <td>{{qtotal(prod)}}</td>
+                    <td>{{calctotal(prod) | number:'1.0-2'}}</td>
+                </tr>
+
+                <tr *ngFor="let prods of option" style="background-color: #9d9d9d;">
+                    <td>{{prods.compose}}</td>
+                    <td>{{prods.quantite}}</td>
+                    <td>{{prods.libelle}}</td>
+                    <td>{{prods.qte_devis}}</td>
+                    <td>{{qtotalopt(prods)}}</td>
+                    <td>{{calctotalopt(prods) | number:'1.0-2'}}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">Total</td>
+                    <td>{{countTotal(prod,prods) | number:'1.0-2'}}</td>
+                    <td>{{ countTotale(prod,prods) | number:'1.0-2'}}</td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+    <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print"  (click)=" imprimer()">Imprimer</button>
+
+
+</div><!--id chantier-->

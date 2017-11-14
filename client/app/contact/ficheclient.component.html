@@ -1,0 +1,280 @@
+
+<div id="contact">
+	<style type="text/css" media="print">
+		@page { size: landscape; }
+	</style>
+	<header>
+
+		<div class="toobar">
+			<div class="fill">
+				<div class="container-fluid">
+
+					<img *ngIf="!print"  src="image/menu/contacts_grand_gris.png">
+
+					<span *ngIf="!print">Contact</span>
+
+				</div>
+			</div>
+		</div>
+
+	</header>
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+			</div>
+
+
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li *ngIf="droitsuser.accescontact" class="active"><a [routerLink]="['/ficheclient' , id_contact]">Fiche client</a></li>
+					<li *ngIf="droitsuser.accescontact" role="presentation" ><a [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
+
+
+
+	<div class=" container-fluid " >
+		<div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+			<a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+		</div>
+
+		<form method="POST" action="#" >
+
+			<h3 >Fiche client</h3>
+
+
+			<div class="col-sm-6">
+				<h5>Informations</h5>
+				<!--tous les value qui suive sont des variables de la base de données-->
+
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Statut :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="type" [(ngModel)]="contact.type" disabled>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class=" control-label col-sm-3">Date de création :</label>
+					<div class="col-sm-3">
+						<input type="date" class="form-control" name="date_entree" [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Prénom :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="prenom" [(ngModel)]="contact.prenom" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Nom :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="nom" [(ngModel)]="contact.nom" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Adresse :</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" name="adresse" [(ngModel)]="contact.adresse" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Code postal :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="code_postal" [(ngModel)]="contact.code_postal" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-2">Ville :</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" name="ville" [(ngModel)]="contact.ville" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Tel fixe :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="numeroFixe" [(ngModel)]="telephoneFixe.numero">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class=" control-label col-sm-3">Mobile :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="numeroMobile" [(ngModel)]="telephoneMobile.numero" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label class=" control-label col-sm-3">Fax :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="numeroFax" [(ngModel)]="telephoneFax.numero" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Tel pro :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="numeroPro" [(ngModel)]="telephonePro.numero" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label class=" control-label col-sm-2">Mail :</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" name="mail" [(ngModel)]="mail.mail" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Mail pro :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="mailPro" [(ngModel)]="mailPro.mail" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Fonction :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="fonction" [(ngModel)]="contact.fonction" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">TVA intracommunautaire :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="TVAintra" [(ngModel)]="contact.TVAintra" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 " >Date d'entrée :</label>
+					<div class="col-sm-3">
+						<input type="date" name="date_entree"  [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'" class="form-control"/>
+					</div>
+				</div>
+
+				<h5 class="col-sm-12">Informations complémentaires</h5>
+				<!--retenue de garantie est valable un an prévoir une alerte-->
+
+				<div class="form-group">
+					<input type="text" name="note" placeholder="note" class="form-control " [(ngModel)]="contact.note"/>
+				</div>
+
+				<div class="form-group">
+					<label class=" control-label col-sm-3">Retenue garantie:</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="garantie" value="non" disabled>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class=" control-label col-sm-3">Caution bancaire :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="caution" value="" disabled>
+					</div>
+				</div>
+				<!-- si la caution à pour valeur oui alors faire apparaitre N° et Banque-->
+				<div class="form-group">
+					<label class=" control-label col-sm-3">N° :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="numero" value="" disabled>
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Banque :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="banque" value="" disabled>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Droit :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="droit" value="user" disabled>
+					</div>
+				</div>
+				<button *ngIf="!print" class="btn btn-default input-sm col-sm-offset-9" (click)="updateClient()">Modifier</button>
+
+			</div>
+
+
+			<div class="col-sm-6 ">
+
+				<!--les variable du tableau sont à récupérer dans la BDD-->
+				<h5>Historique :</h5>
+				<div class=" table-responsive" >
+					<table class="table table-striped " >
+						<thead>
+						<tr>
+							<th>Date : </th>
+							<th>Chantier</th>
+							<th>N° chantier</th>
+							<th>Valeur : </th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr *ngFor="let chant of chantier">
+							<td>{{chant.date_demarrage}}<!--variable--></td>
+							<td>{{chant.nom_chantier}}<!--variable--></td>
+							<td>{{chant.id_chantier}}</td><!--variable-->
+							<td><!--variable --></td>
+						</tr>
+
+						</tbody>
+					</table>
+				</div>
+
+
+
+
+
+				<h5>Chantier en cours</h5>
+				<div class="table_responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>N° Chantier</th><th>Nom chantier</th><th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr *ngFor="let pro of cours">
+						<td class="col-sm-3" style="font-weight: bold;">{{pro.id_chantier}}</td><td>{{pro.nom_chantier}}</td>
+						<td>
+							<div class="input-group">
+								<input type="hidden" class="form-control" name="identifiant du devis">
+								<!--variable pour l'identifiant-->
+								<div  class="input-group-btn">
+									<button type="button" class="btn btn-default dropdown-toggle input-sm"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+										<span class="caret"></span></button>
+									<ul  class="dropdown-menu dropdown-menu-right">
+										<li ><a [routerLink]="['/devis/'+pro.id_devis+'/'+ pro.num_version]">Ouvrir</a></li>
+									</ul>
+								</div><!-- /btn-group -->
+							</div><!-- /input-group -->
+						</td>
+
+					</tr>
+					</tbody>
+				</table>
+				</div>
+				<!--variable à mettre à la place de l'identifiant chantier-->
+
+			</div>
+		</form>
+
+		<form method="POST" action="#">
+			<input *ngIf="!print" type="hidden" name="id client"><!--variable correspondant à l'id client-->
+
+			<button class="col-sm-offset-11 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accescontact" (click)=" imprimer()">Imprimer</button>
+
+		</form>
+
+	</div><!--fin container fluid-->
+
+
+</div><!--fin id contact-->

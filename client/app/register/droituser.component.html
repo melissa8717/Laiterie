@@ -1,0 +1,433 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/parametres_grand_orange.png">
+
+                    <span style="padding-left: 5px;">Droits Utilisateurs</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+
+    <nav class="navbar navbar-default">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li  ><a [routerLink]="['/param_gen']">Agence</a></li>
+                <li ><a [routerLink]="['/cgv']">Conditions vente</a></li>
+                <li ><a [routerLink]="['/fraisprevisionel']">Frais prévisionnels</a></li>
+                <!--<li  ><a [routerLink]="['/sauvegarde']">Sauvegarde</a></li>-->
+                <li role="presentation" ><a [routerLink]="['/tva']" >TVA</a></li>
+                <li role="presentation" ><a [routerLink]="['/cat_prod']" >Catégories de produits</a></li>
+                <li role="presentation" ><a [routerLink]="['/utilisation']" >Droits utilisateurs</a></li>
+
+                <!--<li role="presentation"><a [routerLink]="['/deverouillage_prod']" >Dévérouillage produits</a></li>
+                <li role="presentation"><a [routerLink]="['/utilisateur_connect']" >Voir activité utilisateurs</a></li>-->
+            </ul>
+
+
+        </div>
+    </nav>
+
+
+    <div class="container-fluid">
+
+        <div  class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <ng-container *ngIf="currentUser.statutName == 'admin'">
+
+
+            <h4>{{util.lastname}} {{util.firstname}}</h4>
+
+
+            <div  *ngIf="this.droits">
+
+                <table class="table">
+
+                    <thead>
+
+                    <tr>
+                        <th class="col-sm-7">Nom</th>
+                        <th class="col-sm-1">Acces</th>
+                        <th class="col-sm-1">Supprimer</th>
+                        <th class="col-sm-1">Ajouter</th>
+                        <th class="col-sm-1">Modifier</th>
+                        <th class="col-sm-1">Valider</th>
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+                    <tr>
+                        <td class="col-sm-7">Contact :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accescontact" [(ngModel)]="droits.accescontact "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supcontact" [(ngModel)]="droits.supcontact "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutcontact" [(ngModel)]="droits.ajoutcontact "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifcontact" [(ngModel)]="droits.modifcontact "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validcontact" [(ngModel)]="droits.validcontact "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Produit Achat :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesproa" [(ngModel)]="droits.accesproa "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supproa" [(ngModel)]="droits.supproa "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutproa" [(ngModel)]="droits.ajoutproa "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifproa" [(ngModel)]="droits.modifproa "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validproa" [(ngModel)]="droits.validproa "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Produit Vente :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesprov" [(ngModel)]="droits.accesprov "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supprov" [(ngModel)]="droits.supprov "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutprov" [(ngModel)]="droits.ajoutprov "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifprov" [(ngModel)]="droits.modifprov "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validprov" [(ngModel)]="droits.validprov "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Commande :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accescom" [(ngModel)]="droits.accescom "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supcom" [(ngModel)]="droits.supcom "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutcom" [(ngModel)]="droits.ajoutcom "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifcom" [(ngModel)]="droits.modifcom "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validcom" [(ngModel)]="droits.validcom "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Chantier :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accescha" [(ngModel)]="droits.accescha "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supcha" [(ngModel)]="droits.supcha "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutcha" [(ngModel)]="droits.ajoutcha "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifcha" [(ngModel)]="droits.modifcha "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validcha" [(ngModel)]="droits.validcha "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Devis :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesdev" [(ngModel)]="droits.accesdev "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supdev" [(ngModel)]="droits.supdev "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutdev" [(ngModel)]="droits.ajoutdev "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifdev" [(ngModel)]="droits.modifdev "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validdev" [(ngModel)]="droits.validdev "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Facturation :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesfact" [(ngModel)]="droits.accesfact "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supfact" [(ngModel)]="droits.supfact "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutfact" [(ngModel)]="droits.ajoutfact "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modiffact" [(ngModel)]="droits.modiffact "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validfact" [(ngModel)]="droits.validfact "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Facturation fournisseur :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesfour" [(ngModel)]="droits.accesfour "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supfour" [(ngModel)]="droits.supfour "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutfour" [(ngModel)]="droits.ajoutfour "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modiffour" [(ngModel)]="droits.modiffour "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validfour" [(ngModel)]="droits.validfour "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Frais :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesfrais" [(ngModel)]="droits.accesfrais "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supfrais" [(ngModel)]="droits.supfrais "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutfrais" [(ngModel)]="droits.ajoutfrais "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modiffrais" [(ngModel)]="droits.modiffrais "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validfrais" [(ngModel)]="droits.validfrais "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Balance générale :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesbg" [(ngModel)]="droits.accesbg "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supbg" [(ngModel)]="droits.supbg "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutbg" [(ngModel)]="droits.ajoutbg "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifbg" [(ngModel)]="droits.modifbg "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validbg" [(ngModel)]="droits.validbg "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Planning Bureau :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accespb" [(ngModel)]="droits.accespb "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="suppb" [(ngModel)]="droits.suppb "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutpb" [(ngModel)]="droits.ajoutpb "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifpb" [(ngModel)]="droits.modifpb "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validpb" [(ngModel)]="droits.validpb "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Planning Chantier :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accespc" [(ngModel)]="droits.accespc "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="suppc" [(ngModel)]="droits.suppc "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutpc" [(ngModel)]="droits.ajoutpc "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifpc" [(ngModel)]="droits.modifpc "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validpc" [(ngModel)]="droits.validpc "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Paramètre :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesparam" [(ngModel)]="droits.accesparam "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supparam" [(ngModel)]="droits.supparam "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutparam" [(ngModel)]="droits.ajoutparam "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifparam" [(ngModel)]="droits.modifparam "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validparam" [(ngModel)]="droits.validparam "></td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-7">Messagerie :</td>
+                        <td class="col-sm-1"><input type="checkbox" name="accesmes" [(ngModel)]="droits.accesmes "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="supmes" [(ngModel)]="droits.supmes "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="ajoutmes" [(ngModel)]="droits.ajoutmes "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="modifmes" [(ngModel)]="droits.modifmes "></td>
+                        <td class="col-sm-1"><input type="checkbox" name="validmes" [(ngModel)]="droits.validmes "></td>
+                    </tr>
+                    <!-- <tr>
+                         <td class="col-sm-7">Statistique :</td>
+                         <td class="col-sm-1"><input type="checkbox" name="accesstat"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="supstat"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="ajoutstat"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="modifstat"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="validstat"></td>
+                     </tr>
+                     <tr>
+                         <td class="col-sm-7">Amiante :</td>
+                         <td class="col-sm-1"><input type="checkbox" name="accesam"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="supam"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="ajoutam"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="modifam"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="validam"></td>
+                     </tr>
+                      <tr>
+                         <td class="col-sm-7">Autre :</td>
+                         <td class="col-sm-1"><input type="checkbox" name="accesaut"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="supaut"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="ajoutaut"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="modifaut"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="validaut"></td>
+                     </tr>
+                     <tr>
+                         <td class="col-sm-7">Autre 2 :</td>
+                         <td class="col-sm-1"><input type="checkbox" name="accesauti"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="supauti"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="ajoutauti"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="modifauti"></td>
+                         <td class="col-sm-1"><input type="checkbox" name="validauti"></td>
+                     </tr>
+                     -->
+                    </tbody>
+                </table>
+
+
+                    <div class="input-group col-sm-offset-11">
+
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle input-sm"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+                                <span class="caret"></span></button>
+                            <ul  class="dropdown-menu dropdown-menu-right">
+                                <li ><a (click)="modify()" >Modifier</a></li>
+                            </ul>
+                        </div><!-- /btn-group -->
+                    </div><!-- /input-group -->
+            </div>
+
+
+
+            <div *ngIf="!this.droits">
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+                            <th class="col-sm-7">Nom</th>
+                            <th class="col-sm-1">Acces</th>
+                            <th class="col-sm-1">Supprimer</th>
+                            <th class="col-sm-1">Ajouter</th>
+                            <th class="col-sm-1">Modifier</th>
+                            <th class="col-sm-1">Valider</th>
+                        </tr>
+
+                    </thead>
+
+
+                        <tbody>
+                        <tr>
+                            <td class="col-sm-7">Contact :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accescontact" [(ngModel)]="adroits.accescontact "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supcontact" [(ngModel)]="adroits.supcontact "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutcontact" [(ngModel)]="adroits.ajoutcontact "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifcontact" [(ngModel)]="adroits.modifcontact "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validcontact" [(ngModel)]="adroits.validcontact "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Produit Achat :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesproa" [(ngModel)]="adroits.accesproa "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supproa" [(ngModel)]="adroits.supproa "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutproa" [(ngModel)]="adroits.ajoutproa "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifproa" [(ngModel)]="adroits.modifproa "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validproa" [(ngModel)]="adroits.validproa "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Produit Vente :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesprov" [(ngModel)]="adroits.accesprov "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supprov" [(ngModel)]="adroits.supprov "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutprov" [(ngModel)]="adroits.ajoutprov "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifprov" [(ngModel)]="adroits.modifprov "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validprov" [(ngModel)]="adroits.validprov "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Commande :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accescom" [(ngModel)]="adroits.accescom "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supcom" [(ngModel)]="adroits.supcom "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutcom" [(ngModel)]="adroits.ajoutcom "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifcom" [(ngModel)]="adroits.modifcom "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validcom" [(ngModel)]="adroits.validcom "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Chantier :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accescha" [(ngModel)]="adroits.accescha "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supcha" [(ngModel)]="adroits.supcha "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutcha" [(ngModel)]="adroits.ajoutcha "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifcha" [(ngModel)]="adroits.modifcha "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validcha" [(ngModel)]="adroits.validcha "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Devis :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesdev" [(ngModel)]="adroits.accesdev "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supdev" [(ngModel)]="adroits.supdev "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutdev" [(ngModel)]="adroits.ajoutdev "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifdev" [(ngModel)]="adroits.modifdev "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validdev" [(ngModel)]="adroits.validdev "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Facturation :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesfact" [(ngModel)]="adroits.accesfact "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supfact" [(ngModel)]="adroits.supfact "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutfact" [(ngModel)]="adroits.ajoutfact "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modiffact" [(ngModel)]="adroits.modiffact "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validfact" [(ngModel)]="adroits.validfact "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Facturation fournisseur :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesfour" [(ngModel)]="adroits.accesfour "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supfour" [(ngModel)]="adroits.supfour "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutfour" [(ngModel)]="adroits.ajoutfour "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modiffour" [(ngModel)]="adroits.modiffour "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validfour" [(ngModel)]="adroits.validfour "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Frais :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesfrais" [(ngModel)]="adroits.accesfrais "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supfrais" [(ngModel)]="adroits.supfrais "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutfrais" [(ngModel)]="adroits.ajoutfrais "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modiffrais" [(ngModel)]="adroits.modiffrais "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validfrais" [(ngModel)]="adroits.validfrais "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Balance générale :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesbg" [(ngModel)]="adroits.accesbg "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supbg" [(ngModel)]="adroits.supbg "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutbg" [(ngModel)]="adroits.ajoutbg "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifbg" [(ngModel)]="adroits.modifbg "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validbg" [(ngModel)]="adroits.validbg "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Planning Bureau :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accespb" [(ngModel)]="adroits.accespb "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="suppb" [(ngModel)]="adroits.suppb "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutpb" [(ngModel)]="adroits.ajoutpb "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifpb" [(ngModel)]="adroits.modifpb "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validpb" [(ngModel)]="adroits.validpb "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Planning Chantier :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accespc" [(ngModel)]="adroits.accespc "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="suppc" [(ngModel)]="adroits.suppc "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutpc" [(ngModel)]="adroits.ajoutpc "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifpc" [(ngModel)]="adroits.modifpc "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validpc" [(ngModel)]="adroits.validpc "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Paramètre :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesparam" [(ngModel)]="adroits.accesparam "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supparam" [(ngModel)]="adroits.supparam "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutparam" [(ngModel)]="adroits.ajoutparam "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifparam" [(ngModel)]="adroits.modifparam "></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validparam" [(ngModel)]="adroits.validparam "></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Messagerie :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesmes"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supmes"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutmes"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifmes"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validmes"></td>
+                        </tr>
+                       <!-- <tr>
+                            <td class="col-sm-7">Statistique :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesstat"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supstat"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutstat"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifstat"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validstat"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Amiante :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesam"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supam"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutam"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifam"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validam"></td>
+                        </tr>
+                         <tr>
+                            <td class="col-sm-7">Autre :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesaut"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supaut"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutaut"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifaut"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validaut"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-7">Autre 2 :</td>
+                            <td class="col-sm-1"><input type="checkbox" name="accesauti"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="supauti"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="ajoutauti"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="modifauti"></td>
+                            <td class="col-sm-1"><input type="checkbox" name="validauti"></td>
+                        </tr>
+                        -->
+                        </tbody>
+                    </table>
+
+
+
+                <div class="input-group col-sm-offset-11">
+
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle input-sm"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+                            <span class="caret"></span></button>
+                        <ul  class="dropdown-menu dropdown-menu-right">
+                            <li ><a (click)="addDroit()">Ajouter</a></li>
+
+                        </ul>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+            </div>
+
+
+
+        </ng-container>
+
+    </div>
+
+</div>

@@ -1,0 +1,133 @@
+
+
+<div id="planning1">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/Planning_grand_gris.png" alt="planning">
+
+                    <span>Gestion des heures</span>
+
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <ng-container *ngIf="!date" >
+        <a (click)="back()"><span  *ngIf="!print" class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> </a>
+        {{monthArray[my.getMonth()]}} {{my.getFullYear()}}
+        <a (click)="up()"> <span  *ngIf="!print" class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a>
+
+
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </ng-container>
+
+    <div class=" container-fluid ">
+
+
+
+        <div class="col-sm-2 ">
+            <form class="form-horizontal" action="gestionheure.html" method="POST">
+                <h5>Recherche:</h5>
+
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Semaine </label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="semaine" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">De </label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="debut" placeholder="JJ/MM/AAAA">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">à </label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="fin" placeholder="JJ/MM/AAAA">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Employé </label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="employe" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Chantier </label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="chantier" >
+                    </div>
+                </div>
+                <button class="btn btn-default input-sm col-sm-offset-5" >Rechercher</button>
+            </form>
+
+        </div><!--fin sm 3-->
+
+        <div class="col-sm-10">
+
+            <form method="POST" action="#">
+                <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+                    <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+                </div>
+                <h3 class="col-sm-12">Suivi des heures / Chantier</h3>
+
+
+                <div class="  col-sm-12 table-responsive">
+                    <table class="table table-striped taille">
+                        <!--les tr et td sont obtenu par la création d'une boucle ou une partie des td peuvent être modifiée c'est pour ça que certains sont dans les values-->
+                        <thead>
+                        <tr>
+                            <th class="col-sm-1">Employé</th><th class="col-sm-1">intérimaire</th><th>N° chantier</th><th class="col-sm-1">Semaine</th><th class="col-sm-1">Durée</th><th class="col-sm-1">H 100%</th><th class="col-sm-1">35 à 39H</th><th class="col-sm-1">40 à 43H</th><th class="col-sm-1">> 43H</th><th class="col-sm-1">Panier</th><th class="col-sm-1">Coût</th>
+                        </tr>
+                        </thead>
+                        <tbody >
+
+
+                        <tr *ngFor="let semaines of semaine, let i = index">
+                            <td>{{semaines.nom}} {{semaines.prenom}}</td>
+                            <td>{{semaine[i].type_contrat}}</td>
+                            <td>{{semaine[i].nom_chantier}}</td>
+                            <td>{{semaine[i].semaine}}</td>
+                            <td>{{semaine[i].temps}}</td>
+                            <td>{{countTrentre(semaines) }}</td>
+                            <td>{{countNeuf(semaines) }}</td>
+                            <td>{{countQuart(semaines)}}</td>
+                            <td>{{countQTroi(semaines) }}</td>
+                            <td>{{semaine[i].somme * semaine[i].panier}}</td>
+                            <td>{{countTotalligne(semaines)}}</td>
+                        </tr>
+
+
+
+                        <tr style="font-weight: bold; background-color: black; color: white;">
+                            <td colspan="4" style="text-align: left; ">total :</td>
+                            <td>{{ counttotalHeure(semaines)}}</td>
+                            <td>{{counttotalHeuretre(semaines)}}</td>
+                            <td>{{ counttotalHeureneuf(semaines)}}</td>
+                            <td>{{ counttotalHeuretrois(semaines)}}</td>
+                            <td>{{ counttotalHeuresup(semaines)}}</td>
+                            <td>{{counttotalpanier(semaines)}}</td>
+                            <td>{{counttotalCout(semaines)}}</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <button *ngIf="droitsuser.modifpb || droitsuser.modifpc" class="btn btn-default input-sm col-sm-offset-11">Modifier</button>-->
+            </form>
+
+            <button *ngIf="droitsuser.accespb || droitsuser.accespc" class="btn btn-default input-sm col-sm-offset-5">Imprimer</button>
+
+
+        </div><!--fin sm 9-->
+
+    </div><!--fin container fluid-->
+</div><!--fin id-->
+

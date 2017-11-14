@@ -1,0 +1,161 @@
+<div id="commande">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print"  src="image/menu/commandes_grand_gris.png">
+
+                    <span *ngIf="!print" >Commandes</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>
+
+
+        <recherchebdc #recherche [bdc]="this"></recherchebdc>
+
+        <div   class="col-sm-9 ">
+            <span *ngIf="!print && droitsuser.ajoutcom" class="glyphe col-sm-offset-8">Créer bon de commande : <a [routerLink]="['/new_bdc']"
+                                                                            class="glyphicon glyphicon-plus fleche1"></a></span>
+            <h3>Suivi des bons de commandes</h3>
+
+
+
+            <div class="container col-sm-7 col-sm-offset-3">
+                <div class=" table">
+                    <table class="table">
+                        <tbody>
+                        <!--variable à  la place des nombres-->
+                        <tr>
+                            <td>Achat prévu / chantier:</td>
+                            <td> {{AchatPrevuChantier | currency:'EUR':true:'1.2-2'}}</td>
+                            <td>Achat effectif:</td>
+                            <td>N.Y.I</td>
+                        </tr>
+                        <tr>
+                            <td>Achat prévu / dépôt:</td>
+                            <td>{{AchatPrevuDepot | currency:'EUR':true:'1.2-2'}}</td>
+                            <td>Total factures saisies:</td>
+                            <td> N.Y.I</td>
+                        </tr>
+                        <tr>
+                            <td>Achat prévu / Enlevé:</td>
+                            <td>{{AchatPrevuAutres | currency:'EUR':true:'1.2-2'}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Total livraisons:</td>
+                            <td>{{livraisonprevu | currency:'EUR':true:'1.2-2'}}</td>
+                            <td>Total livraisons:</td>
+                            <td></td>
+                        </tr>
+                        <tr class="orange">
+                            <td>Achat total prévu :</td>
+                            <td>{{AchatPrevu | currency:'EUR':true:'1.2-2'}}</td>
+                            <td>Achat total facturé :</td>
+                            <td> N.Y.I</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="  col-sm-12">
+                <ng-container *ngIf="!date">
+                <a *ngIf="!print" (click)="back()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> </a>
+                <a *ngIf="!print" (click)="up()"> <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a>
+
+                {{monthArray[my.getMonth() ]}} {{my.getFullYear()}}
+                <img *ngIf="loading"
+                     src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+
+                </ng-container>
+
+                <table class="table table-striped ">
+                    <thead class="aligner">
+                    <th>N° cmde</th>
+                    <th>N° devis</th>
+                    <th>Chantier</th>
+                    <th>Fournisseur</th>
+                    <th>Date cmde</th>
+                    <th>Date livraison</th>
+                    <th>Par</th>
+                    <th>Etat</th>
+                    <th *ngIf="!print" >Actions</th>
+                    </thead>
+                    <tbody>
+                    <!--créer une boucle conditionnelle pour créer les lignes du tableau
+                    sauf le select qui est toujours identique-->
+
+
+                    <tr *ngFor="let bdc of bdc ">
+                        <td>17-{{bdc.id_bdc}}</td>
+                        <td>{{bdc.id_devis}}</td>
+                        <td>{{bdc.nom_chantier}}</td>
+                        <td>{{bdc.fournisseurNom}}</td>
+                        <td>{{bdc.date_commande
+                            | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td>{{bdc.date_livraison | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{bdc.firstname}}</td>
+                        <td >
+                            <div *ngIf="!bdc.Recu && bdc.state !='annulé'" class="input-group">
+                                <div   class="input-group-btn">
+                                    <button  type="button" class="btn btn-default dropdown-toggle input-sm"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{bdc.state ? bdc.state : "Sans état"}} <span class="caret"></span></button>
+                                    <ul  class="dropdown-menu dropdown-menu-right">
+                                        <li><a (click)="printed(bdc)">Imprimé</a></li>
+                                        <li><a (click)="send(bdc)">Envoyé</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <span *ngIf="bdc.state =='annulé' " class="glyphicon glyphicon-remove"
+                                  aria-hidden="true"></span>
+                            <span *ngIf="bdc.Recu && bdc.state !='annulé' " class="glyphicon glyphicon-ok"
+                                  aria-hidden="true"></span>
+
+                        </td><!--pour chaque td une variable devras être créer-->
+                        <td *ngIf="!print">
+                            <div class="input-group">
+                                <input type="hidden" class="form-control" name="identifiant commande">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle input-sm"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+                                        <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li *ngIf="!bdc.Recu"><a [routerLink]="['/modify_bdc', bdc.id_bdc]">Ouvrir / Modifier</a>
+                                        </li>
+                                        <li *ngIf="!bdc.Recu && bdc.state !='annulé'"><a
+                                                [routerLink]="['/valider', bdc.id_bdc]">Valider</a></li>
+                                        <li *ngIf="bdc.Recu && droitsuser.accescom"><a [routerLink]="['/valider', bdc.id_bdc]">Voir</a></li>
+                                        <li *ngIf="bdc.state !='annulé'" role="separator" class="divider"></li>
+                                        <li><a *ngIf="bdc.state !='annulé' && droitsuser.supcom" (click)="annuler(bdc)">Annuler le bon</a>
+                                        </li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                            </div><!-- /input-group --></td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>

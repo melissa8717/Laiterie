@@ -1,0 +1,627 @@
+<style>
+    .my-drop-zone {
+        border: dotted 3px lightgray;
+    }
+
+    .nv-file-over {
+        border: dotted 3px red;
+    }
+
+    /* Default class applied to drop zones on over */
+    .another-file-over-class {
+        border: dotted 3px green;
+    }
+
+    html, body {
+        height: 100%;
+    }
+</style>
+
+
+<div id="contactfiche">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/contacts_grand_gris.png">
+
+                    <span *ngIf="!print">Contacts</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <div class=" container-fluid">
+
+        <nav class="navbar navbar-default" *ngIf="(contact.type=='Ouvrier' ) || (contact.type=='Employé')">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li  class="active"><a [routerLink]="['/fichecontact' , id_contact]">Fiche contact</a></li>
+                        <li role="presentation" ><a [routerLink]="['/formationcontact' , id_contact]">Ses formations</a></li>
+                        <li  ><a [routerLink]="['/equipement' , id_contact]">Equipement</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <div *ngIf="!print" class=" col-sm-offset-2" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/contact']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Liste contact</span>
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1 col-sm-offset-6"></a><span class="blan1 ">Retour accueil</span>
+        </div>
+
+        <h3>Fiche contact</h3>
+
+        <div>
+            <h4 class="col-sm-12" style="color: white;">Information générales</h4>
+        </div>
+
+        <form method="POST" action="#">
+
+<!--
+            <div class="col-sm-2">
+
+                <div style="height: 10%; width: 100%;">
+                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url && contact.image_url"
+                         src="http://{{loc}}:4000/image/contact/{{id_contact}}/{{contact.image_url}}" alt="..."
+                         class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url && !contact.image_url" src="image/test.ico" alt="..."
+                         class="img-thumbnail images"/>
+                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
+                </div>
+
+            </div> -->
+
+
+            <div class="col-sm-6">
+
+
+                <div class="form-group" style="margin: 0;">
+                    <span class="col-sm-3">Nom:</span><input type="text" name="nom" [(ngModel)]="contact.nom"
+                                                             class="col-sm-3"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Prénom:</span><input type="text" name="prenom" [(ngModel)]="contact.prenom"
+                                                                 class="col-sm-4 "/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 ">Raison social:</span><input type="text" name="raison_social"
+                                                                        [(ngModel)]="contact.raison_sociale"
+                                                                        class="col-sm-3 "/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">SIRET:</span><input type="number" name="siret" [(ngModel)]="contact.siret"
+                                                                class="col-sm-4"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3">Adresse:</span><input type="text" name="adresse"
+                                                                 [(ngModel)]="contact.adresse" class="col-sm-9 "/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3">Code postal:</span><input type="text" name="code_postal"
+                                                                     [(ngModel)]="contact.code_postal"
+                                                                     class="col-sm-3"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Ville:</span><input type="text" name="ville" [(ngModel)]="contact.ville"
+                                                                class="col-sm-4"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 ">N° sécu:</span><input type="text" name="n_secu" [(ngModel)]="contact.n_secu"
+                                                                  class="col-sm-3"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">N° Permis :</span><input type="text" name="n_permis"
+                                                                     [(ngModel)]="contact.n_permis" class="col-sm-4 "/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 ">N° d'identité:</span><input type="text" name="n_identite"
+                                                                        [(ngModel)]="contact.n_identite"
+                                                                        class="col-sm-3"/>
+                </div>
+
+
+                <div class="form-group">
+                    <span class="col-sm-2">Mutuelle: </span><input type="text" name="mutuelle"
+                                                                   [(ngModel)]="contact.mutuelle" class="col-sm-4 "/>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-3 ">Date de naissance:</span><input type="date" name="Date_naissance" [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'" (ngModelChange)="contact.Date_naissance = $event" [value]="contact.Date_naissance | date:'yyyy-MM-dd'" class="col-sm-3"/>
+                </div>
+
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Lieu :</span><input type="text" name="lieu_naissance" [ngModel]="contact.lieu_naissance " class="col-sm-4 "/>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-3 " >Date d'entrée :</span>
+                    <input type="date" name="date_entree"  [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'" class="col-sm-3"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 " >Type :</span>
+                    <select name="energie"   [(ngModel)]="contact.type" class="col-sm-4" >
+                        <option [selected]="contact.type =='Employé'">Employé</option>
+                        <option [selected]="contact.type =='Fournisseur'">Fournisseur</option>
+                        <option [selected]="contact.type =='Client'">Client</option>
+                        <option [selected]="contact.type =='Entreprise de travaux'">Entreprise de travaux</option>
+                        <option [selected]="contact.type =='Laboratoire d analyse'">Laboratoire d analyse</option>
+                        <option [selected]="contact.type =='Transporteur'">Transporteur</option>
+                        <option [selected]="contact.type =='Site de traitement'">Site de traitement</option>
+                        <option [selected]="contact.type =='Ouvrier'">Ouvrier</option>
+                        <option [selected]="contact.type =='Sous-traitant'">Sous_traitant</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div class="col-sm-4">
+
+                <div class="form-group">
+                    <span class="col-sm-4">Téléphone: </span><input type="text" name="numeroFixe"
+                                                                    [(ngModel)]="telephoneFixe.numero"
+                                                                    class="col-sm-6 col-sm-offset-1"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4">Mobile: </span><input type="text" name="numeroMobile"
+                                                                 [(ngModel)]="telephoneMobile.numero"
+                                                                 class="col-sm-6 col-sm-offset-1"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4">Téléphone pro: </span><input type="text" name="numeroPro"
+                                                                        [(ngModel)]="telephonePro.numero"
+                                                                        class="col-sm-6 col-sm-offset-1"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4" >Fax : </span><input type="text" name="numeroFax" [(ngModel)]="telephoneFax.numero" class="col-sm-6 col-sm-offset-1" />
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4">Mail: </span><input type="text" name="mail" [(ngModel)]="mail.mail"
+                                                               class="col-sm-6 col-sm-offset-1"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4">Mail pro: </span><input type="text" name="mailPro" [(ngModel)]="mailPro.mail"
+                                                                   class="col-sm-6 col-sm-offset-1"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4">Site: </span><input type="text" name="site" [(ngModel)]="contact.site"
+                                                               class="col-sm-6 col-sm-offset-1"/>
+                </div>
+
+
+            </div>
+
+
+            <div class="col-sm-12" style="margin-top: 10px;">
+
+                <span class="col-sm-1">Note: </span><input type="text" name="note" [(ngModel)]="contact.note"
+                                                           class="col-sm-11"/>
+            </div>
+
+
+            <ng-container *ngIf="(contact.type=='Ouvrier' ) || (contact.type=='Employé')">
+
+                <div class="col-sm-12">
+
+                    <h4 class="col-sm-12" style="color: white;">Professionnel</h4>
+
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Type salarial:</span>
+                        <select name="type" class="col-sm-2" [(ngModel)]="contact.type" style="height: 20px;">
+                            <option [selected]="contact.type=='Employé'">Employé</option>
+                            <option [selected]="contact.type=='Ouvrier'">Ouvrier</option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <span class="col-sm-2 ">N° Équipe:</span><input type="number" name="equipe" value=""
+                                                                        class="col-sm-2 " [(ngModel)]="contact.equipe"/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Code APE :</span><input type="text" name="ape" [(ngModel)]="contact.APE"
+                                                                        class="col-sm-2 "/>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Poste :</span><input type="text" name="poste"
+                                                                     [(ngModel)]="contact.poste" class="col-sm-2 "/>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2 ">CACES :</span><input type="text" name="caces"
+                                                                     [(ngModel)]="contact.id_caces" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Habilitation éléctrique :</span><input type="date" name="H0B0"
+                                                                                       [ngModel]="contact.H0B0 | date:'yyyy-MM-dd'"
+                                                                                       (ngModelChange)="contact.H0B0 = $event"
+                                                                                       [value]="contact.H0B0 | date:'yyyy-MM-dd'"
+                                                                                       class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Secourisme :</span><input type="date" name="secourisme"
+                                                                          [ngModel]="contact.secourisme | date:'yyyy-MM-dd'"
+                                                                          (ngModelChange)="contact.secourisme = $event"
+                                                                          [value]="contact.secourisme | date:'yyyy-MM-dd'"
+                                                                          class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Validité amiante :</span><input type="date" name="amiante"
+                                                                                [ngModel]="contact.validite_amiante | date:'yyyy-MM-dd'"
+                                                                                (ngModelChange)="contact.validite_amiante = $event"
+                                                                                [value]="contact.validite_amiante | date:'yyyy-MM-dd'"
+                                                                                class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Travail en hauteur :</span><input type="date" name="travail_hauteur"
+                                                                                  [ngModel]="contact.travail_hauteur | date:'yyyy-MM-dd'"
+                                                                                  (ngModelChange)="contact.travail_hauteur = $event"
+                                                                                  [value]="contact.travail_hauteur | date:'yyyy-MM-dd'"
+                                                                                  class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Visite médicale :</span><input type="date" name="visite_medicale"
+                                                                               [ngModel]="contact.visite_medicale | date:'yyyy-MM-dd'"
+                                                                               (ngModelChange)="contact.visite_medicale = $event"
+                                                                               [value]="contact.visite_medicale | date:'yyyy-MM-dd'"
+                                                                               class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Autorisation conduite :</span><input type="text"
+                                                                                     name="autorisation_conduite"
+                                                                                     [(ngModel)]="contact.autorisation_conduite"
+                                                                                     class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2">Qualification :</span>
+                        <select name="qualification" class="col-sm-2 input-sm" [(ngModel)]="qualifChoisi">
+                            <option value=""></option>
+                            <option *ngFor="let qualification of qualifications"
+                                    [value]="qualification.id_qualification" [title]="qualification.designation">
+                                {{qualification.id_qualification}}-{{qualification.libelle}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="col-sm-12" style="margin-top: 10px;">
+
+                <button *ngIf="droitsuser.modifcontact" class="btn btn-default  col-sm-offset-11 col-sm-1"
+                        (click)="updateContact();">Modifier
+                </button>
+
+            </div>
+
+            <ng-container
+                    *ngIf="(((contact.type=='Ouvrier' ) || (contact.type=='Employé')) && ((lastcontrat && lastcontrat.id_contrat) ))">
+                <div class="col-sm-12">
+
+                    <h4 class="col-sm-12">Gestion Paie</h4>
+
+                    <div class="form-group">
+                        <span class="col-sm-2">Taux horaire :</span>
+                        <input type="number" class="col-sm-2" name="tauxhoraire" [(ngModel)]="lastcontrat.tauxhoraire">
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2" for="">Panier en € :</span>
+                        <input type="number" class="col-sm-2" name="panier" [(ngModel)]="lastcontrat.panier">
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2" for="">Heure brute :</span>
+                        <input type="number" class="col-sm-2" name="tauxhorairebrute"
+                               [(ngModel)]="lastcontrat.tauxhorairebrute">
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2" for="">Heure chargée :</span>
+                        <input type="number" class="col-sm-2" name="tauxsurcharge"
+                               [(ngModel)]="lastcontrat.tauxsurcharge">
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Heures par mois :</span><input type="number" name="heure_mois"
+                                                                               [(ngModel)]="lastcontrat.heure_mois"
+                                                                               class="col-sm-2 "/>
+                        <!--variable pour value-->
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Condition de réglement :</span><input type="text" name="condition_reg"
+                                                                                      class="col-sm-2 "
+                                                                                      [(ngModel)]="contact.condition_reg"/>
+                        <!--variable pour value-->
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2">Type contrat :</span>
+                        <select name="type_contrat" class="col-sm-2 input-sm" [(ngModel)]="lastcontrat.type_contrat">
+                            <option [selected]="lastcontrat.type_contrat=='CDI'">CDI</option>
+                            <option [selected]="lastcontrat.type_contrat=='CDD'">CDD</option>
+                            <option [selected]="lastcontrat.type_contrat=='Intérimaire'">Intérimaire</option>
+                            <option [selected]="lastcontrat.type_contrat=='Stagiaire'">Stagiare</option>
+                            <option [selected]="lastcontrat.type_contrat=='Contrat de professionnalisation'">Contrat de
+                                professionnalisation
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Date d'entrée:</span><input type="date" name="date_debut"
+                                                                            [ngModel]="lastcontrat.date_debut | date:'yyyy-MM-dd'"
+                                                                            (ngModelChange)="lastcontrat.date_debut = $event"
+                                                                            [value]="lastcontrat.date_debut | date:'yyyy-MM-dd'"
+                                                                            class="col-sm-2 "/>
+                        <!--variable pour value-->
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Date de sortie:</span><input type="date" name="date_fin"
+                                                                             [ngModel]="lastcontrat.date_fin | date:'yyyy-MM-dd'"
+                                                                             (ngModelChange)="lastcontrat.date_fin = $event"
+                                                                             [value]="lastcontrat.date_fin | date:'yyyy-MM-dd'"
+                                                                             class="col-sm-2 "/>
+                        <!--variable pour value-->
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Agence intérim :</span><input type="text" name="agence_interim"
+                                                                              [(ngModel)]="lastcontrat.agence_interim"
+                                                                              class="col-sm-2 "/>
+                        <!--variable pour value-->
+                    </div>
+
+
+                </div>
+
+                <div class="col-sm-12">
+                    <button *ngIf="droitsuser.modifcontact" class="col-sm-offset-11 col-sm-1 btn" type="button"
+                            (click)="loadAdd()">Modifier
+                    </button>
+
+                </div>
+
+                <h4 class="col-sm-12">Historique</h4>
+                <div class="col-sm-12 table-responsive" style="height:100px;margin-top: 5px;">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>contrat</th>
+                            <th>date de changement</th>
+                            <th>Salaire chargé</th>
+                            <th>date début</th>
+                            <th>date fin</th>
+                        </tr>
+                        </thead>
+
+                        <!-- les tr et td sont créés par une boucle en fonction des données de la bdd-->
+                        <tbody>
+                        <tr *ngFor="let contrats of contrat">
+                            <td>{{contrats.type_contrat}}</td>
+                            <td>{{contrats.datechangement | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{contrats.tauxsurcharge }}</td>
+                            <td>{{contrats.date_debut | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{contrats.date_fin | date: 'dd/MM/yyyy'}}</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+            </ng-container>
+
+            <ng-container *ngIf="(((contact.type=='Ouvrier' ) || (contact.type=='Employé')) && (!lastcontrat ))">
+                <div class="col-sm-12">
+
+                    <h4 class="col-sm-12">Gestion dépense chantier</h4>
+
+                    <div class="form-group">
+                        <span class="col-sm-2">Taux horaire :</span>
+                        <input type="number" class="col-sm-2" name="tauxhoraire" [(ngModel)]="newcontrat.tauxhoraire">
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2">Panier en € :</span>
+                        <input type="number" class="col-sm-2" name="panier" [(ngModel)]="newcontrat.panier">
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2" for="">Heure brute :</span>
+                        <input type="number" class="col-sm-2" name="tauxhorairebrute"
+                               [(ngModel)]="newcontrat.tauxhorairebrute">
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2" for="">Heure chargée :</span>
+                        <input type="number" class="col-sm-2" name="tauxsurcharge"
+                               [(ngModel)]="newcontrat.tauxsurcharge">
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Heures par mois :</span><input type="number" name="heure_mois"
+                                                                               [(ngModel)]="newcontrat.heure_mois"
+                                                                               class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Condition de réglement :</span><input type="text" name="conditionreg"
+                                                                                      class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2">Type contrat :</span>
+                        <select name="type_contrat" class="col-sm-2 input-sm" [(ngModel)]="newcontrat.type_contrat">
+                            <option [selected]="newcontrat.type_contrat=='CDI'">CDI</option>
+                            <option [selected]="newcontrat.type_contrat=='CDD'">CDD</option>
+                            <option [selected]="newcontrat.type_contrat=='Intérimaire'">Intérimaire</option>
+                            <option [selected]="newcontrat.type_contrat=='Stagiaire'">Stagiare</option>
+                            <option [selected]="newcontrat.type_contrat=='Contrat de professionnalisation'">Contrat de
+                                professionnalisation
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">* Date d'entrée:</span><input type="date" name="date_debut"
+                                                                              [(ngModel)]="newcontrat.date_debut"
+                                                                              class="col-sm-2 " required/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Date de sortie:</span><input type="date" name="date_fin"
+                                                                             [(ngModel)]="newcontrat.date_fin"
+                                                                             class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Agence intérim :</span><input type="text" name="agence_interim"
+                                                                              [(ngModel)]="newcontrat.agence_interim"
+                                                                              class="col-sm-2 "/>
+                        <!--variable pour value-->
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12">
+                    <button *ngIf="droitsuser.modifcontact" class="col-sm-offset-11 col-sm-1 btn" type="button"
+                            (click)="loadNewcontrat()">Modifier
+                    </button>
+
+                </div>
+            </ng-container>
+
+            <div class="col-sm-12">
+                <button [routerLink]="['/fichecontactpdf/'+id_contact]" class="col-sm-offset-11 col-sm-1 btn"
+                        type="button" *ngIf="!print && droitsuser.accescontact" (click)=" imprimer()">Imprimer
+                </button>
+
+            </div>
+
+        </form>
+
+
+    </div><!--fin container-->
+
+
+    <div class="row">
+        <h3>GED</h3>
+
+        <div class="col-md-3">
+
+            <h3>Choisir Fichier</h3>
+
+            <div ng2FileDrop
+                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                 (fileOver)="fileOverBase($event)"
+                 [uploader]="uploader"
+                 class="well my-drop-zone">
+                Base drop zone
+            </div>
+
+            <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br/>
+
+        </div>
+
+        <div class="col-md-5" style="margin-bottom: 40px">
+
+            <h3>File d'attente</h3>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Etat</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of uploader.queue">
+                    <td><strong>{{ item?.file?.name }}</strong></td>
+                    <td class="text-center">
+                        <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                        <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                        <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                    </td>
+                    <td nowrap>
+                        <button type="button" class="btn btn-success btn-xs"
+                                (click)="item.upload(); getGed(id_contact)"
+                                [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                            <span class="glyphicon glyphicon-upload"></span> Mettre en ligne
+                        </button>
+                        <button type="button" class="btn btn-warning btn-xs"
+                                (click)="item.cancel()" [disabled]="!item.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Annuler
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                (click)="item.remove()">
+                            <span class="glyphicon glyphicon-trash"></span> Retirer de la liste
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <div>
+                    Avancement:
+                    <div class="progress" style="">
+                        <div class="progress-bar" role="progressbar"
+                             [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success btn-s"
+                        (click)="uploader.uploadAll(); getGed(id_contact);"
+                        [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Tout mettre en ligne
+                </button>
+                <button type="button" class="btn btn-warning btn-s"
+                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Tout annuler
+                </button>
+                <button type="button" class="btn btn-danger btn-s"
+                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Tout retirer de la liste
+                </button>
+            </div>
+
+        </div>
+
+        <div class="col-md-4" style="margin-bottom: 40px">
+
+            <h3>GED</h3>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Date d'ajout</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of ged">
+                    <td *ngIf="!print"><strong><a href="http://{{loc}}:4000/ged/contact/{{id_contact}}/{{item.url}}"
+                                                  target="_blank">{{ item.nom }}</a></strong></td>
+                    <td nowrap>{{item.date_ajout | date : 'dd/MM/yyyy'}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>

@@ -1,0 +1,143 @@
+<div id="devis">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/facturation_grand_gris.png">
+
+                    <span>Facturation</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <div class=" container ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3 >Ajouter une facture fournisseur</h3>
+
+
+        <form >
+            <input type="hidden" name="identifiant de la facture"><!--variable peremettant par la suite d'éditer la facture au format PDF-->
+            <fieldset class="separe">
+                <div class="row marge">
+                    <img  src="image/logo_wBAT_horizontal.png"  style="margin-left:100px;">
+                </div>
+                <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
+                <div class="row marge">
+                    <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:0px; position: absolute;">
+                </div>
+
+
+
+
+            </fieldset>
+
+            <fieldset class="marge1">
+                <!--boucle pour éditer les lignes du tableau de facturation et calcul posiible ou déjà en bdd-->
+
+                <div >
+                    <table class="table table-bordered">
+                        <thead>
+                        <th class="col-sm-1">* N° facture</th>
+                        <th class="col-sm-7">fournisseur</th>
+                        <th class="col-sm-1">date</th>
+                        <th class="col-sm-1" style="border-right:1px solid black;">Montant Total H.T. en €</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="text" name="n_facture" [(ngModel)]="n_facture" required></td>
+                            <td><input ng2-auto-complete
+                                       #prod
+                                       [source]="fact"
+                                       [list-formatter]="autocompleListFormattercontact"
+                                       value-property-name="id_contact"
+                                       display-property-name="nom"
+                                       type="text"
+                                       name="contact"
+                                       value=""
+                                       [(ngModel)]="nom" class="col-sm-12"></td>
+
+                            <td><input type="date" name="datefourn" [(ngModel)]="datefourn"></td>
+                            <td><input type="number" name="montantfact" min="0" [(ngModel)]="montantfact"  ></td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                        <div >
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-sm-4">N° Bon de commande</th>
+                                        <th class="col-sm-7" style="border-right:1px solid black;">Montant du bon de commande</th>
+                                        <th *ngIf="print" class="col-sm-2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                        <tr>
+                            <td><input ng2-auto-complete
+                                       #prod
+                                       [source]="bdcdet"
+                                       [list-formatter]="autocompleListFormatterBdc"
+                                       value-property-name="id_bdc"
+                                       display-property-name="id_bdc"
+                                       class="form-control input-sm"
+                                       placeholder="Ajoutez un bon de commande"
+                                       name="bon"
+                                       [(ngModel)]="bon"
+                                       >
+
+                            </td>
+                           <td>
+                               <span *ngIf="bon">{{bon.sumbdc}}</span>
+                           </td>
+                            <td >
+                                <button *ngIf="droitsuser.ajoutfour && !print" class="btn btn-default input-sm "
+                                         (click)="ajouter()"
+                                         [disabled]="!bon"> Ajouter
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr *ngFor="let bon of list">
+                            <td><span>{{bon.id_bdc}}</span> <!--variable dans value pour la ref--></td>
+                            <td><span>{{bon.sumbdc}}</span> <!--variable dans value pour la ref--></td>
+
+                            <td >
+                                <button *ngIf="droitsuser.supfour && !print" class="btn btn-default input-sm" type="button" (click)="supprimer(bon)">
+                                    Supprimer
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="background-color: black; color: white;text-align: right;">TOTAL :</td>
+                            <td style="background-color: black; color: white;">{{countTotal() }}</td>
+                        </tr>
+
+                        </tbody>
+
+
+                    </table>
+
+
+
+
+                </div>
+
+            </fieldset>
+
+            <button *ngIf="droitsuser.ajoutfour &&!print" class="btn btn-default input-sm col-sm-offset-11" type="button" (click)="add()">Enregistrer</button>
+
+        </form>
+    </div>
+
+</div>

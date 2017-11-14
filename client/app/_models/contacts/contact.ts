@@ -1,0 +1,51 @@
+export class Contact {
+    id_contact: number;
+    nom: string;
+    prenom: string;
+    titre: string; // 'Mr,Mme,Mlle
+    Date_naissance: Date;
+    lieu_naissance: string;
+    n_identite: string;
+    n_secu: string;
+    n_permis: string;
+    raison_sociale: string;
+    siret: string;
+    APE: string;
+    id_caces: number;
+    poste: string;
+    chef_equipe: boolean;
+    type: string;
+    autorisation_conduite: string;
+    H0B0: Date; //habilitation electrique
+    date_entree: Date;
+    date_sortie: Date;
+    secourisme: Date;
+    validite_amiante: Date;
+    travail_hauteur: Date;
+    visite_medicale: Date;
+    note: string;
+    contrat: string;
+    mutuelle: string;
+    site: string;
+    heuremois: number;
+    condition_generale: string;
+    fonction: string;
+    image_url: string;
+    TVAintra: string;
+    mailPro: string;
+    mailPerso: string;
+    telFixe: string;
+    telMobile: string;
+    telPro: string;
+    adresse: string;
+    code_postal: string;
+    ville: string;
+    user: number;
+    autres: string;
+    condition_reg: string;
+    n_reg: string;
+    equipe:number;
+    cville:string;
+    cadresse:string;
+    ccp:string;
+}

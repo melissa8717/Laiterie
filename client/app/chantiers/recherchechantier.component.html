@@ -1,0 +1,48 @@
+
+<div *ngIf="!chantier.print" class="col-sm-3 bord" >
+
+    <h5>Recherche:</h5>
+
+
+    <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && debug()" #f="ngForm" novalidate>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Client</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"  name="nom" [(ngModel)]="seek.nom"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label" >Chantier</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="nom_chantier" [(ngModel)]="seek.nom_chantier"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Code</label>
+            <div class="col-sm-7">
+                <input type="number" class="form-control" name="chantier" [(ngModel)]="seek.id_chantier"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Responsable</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="responsable" [(ngModel)]="seek.responsable"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Ville</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"name="ville" [(ngModel)]="seek.ville" (ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+
+
+    </form>
+
+</div>

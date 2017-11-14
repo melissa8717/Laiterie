@@ -1,0 +1,221 @@
+<div id="achat">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <!--CHANGEMENT DU LOGO-->
+                    <img *ngIf="!print" src="image/menu/commandes_grand_gris.png">
+                    <!-- CHANGEMENT DU TITRE-->
+                    <span *ngIf="!print">Bon de commande</span>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-9" style=" font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+        <h3 *ngIf="!print">Créer un bon de commande</h3>
+
+        <form method="" action="" [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)"
+              (keyup.enter)="addProduct(prod, pri, qte);">
+            <div class="row marge" class="logo"  *ngIf="print" >
+
+                <img src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:10px; position: fixed;">
+            </div>
+            <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+            <div class="col-sm-12">
+                <h3 *ngIf="print">Bon de commande</h3>
+                <div class="form-group" class="col-sm-7">
+                    <label class="col-sm-2">Nom du chantier: </label>
+                    <input class="col-sm-5" style="border:1px solid white;margin-left: 0px;" ng2-auto-complete
+
+                           [source]="chantiers"
+                           [list-formatter]="autocompleListFormatterchantier"
+                           placeholder="Chantier"
+                           value-property-name="id"
+                           display-property-name="nom_chantier"
+                           formControlName="chantier">
+                    <!--variable pour le chantier et permetttre une recherche par indexation du chantier-->
+                </div>
+
+                <div class="form-group" class="col-sm-7">
+                    <label class="col-sm-2">* Fournisseur:  </label>
+                    <input class="col-sm-5" style="border:1px solid white;margin-top:-5px;" ng2-auto-complete
+                           [source]="fournisseurs"
+                           [list-formatter]="autocompleListFormatterContact"
+                           placeholder="Fournisseur"
+                           value-property-name="id"
+                           display-property-name="nom"
+
+                           formControlName="fournisseur" required /><!--variable dans value pour la ref-->
+                </div>
+
+                <div class="form-group" class="col-sm-4">
+                    <label class="col-sm-4">* Date de livraison:</label>
+                    <input style="border:1px solid white;"
+                           type="date"
+                           name="datelivraison"
+                           placeholder="JJ/MM/AAAA"
+                           formControlName="date" required="Date de livraison"/><!--variable dans value pour la ref-->
+                </div>
+
+                <div class="form-group" class="col-sm-12">
+                    <label class="col-sm-2">* Adresse de livraison:</label>
+                    <input style="border:1px solid white;" type="text"
+                           name="adresse"
+                           placeholder=""
+                           class="col-sm-10"
+                           formControlName="adresse"
+                           required><!--variable dans value pour la ref-->
+                </div>
+
+                <div class="form-group" class="col-sm-6">
+                    <label class="col-sm-2">* Livré à: </label>
+                    <select style="border:1px solid white;" id="livre" formControlName="place" >
+                        <option>
+                            Chantier
+                        </option>
+                        <option>
+                            Stock
+                        </option>
+                        <option>
+                            Enlevé
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div class="table table-responsive">
+                <table class="table">
+                    <thead>
+                    <th style="width: 50px; ">Référence:</th>
+                    <th style="width: 50px;">Libellé produit:</th>
+                    <th style="width: 50px;">Unité:</th>
+                    <th style="width: 50px;">Prix H.T.</th>
+                    <th style="width: 50px;">Quantité:</th>
+                    <th style="width: 50px;">Total H.T.</th>
+                    <th *ngIf="!print" class="col-xs-1">Action</th>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <!--variable dans value pour la ref-->
+                        <td><input *ngIf="!this.model && !print" type="text" name="idproduit" placeholder="" value="">
+                            <div *ngIf="this.model"> {{this.model.reference}}</div>
+                        </td>
+                        <td><input style="border:1px solid white;"
+                                   ng2-auto-complete
+                                   #prod
+                                   formControlName="produit"
+                                   [source]="products"
+                                   [list-formatter]="autocompleListFormatterProducts"
+                                   value-property-name="id"
+                                   display-property-name="libelle"
+                                   *ngIf="!print" placeholder="Produit"
+                                   class="col-sm-12">
+                            <!--variable pour le libellé et permetttre une recherche par indexation si produit inconnu : rajouté dans la liste des produits ou créer le produit  avec ses caractéristiques lors de la validation de commande par une demande à l'utilisateur-->
+                        </td>
+                        <td><input *ngIf="!this.model && !print" type="text" name="unite" placeholder="" value="">
+                            <div *ngIf="this.model"> {{this.model.unite}}</div><!--variable dans value pour l'unité-->
+                        </td>
+                        <td *ngIf="!print" ><input *ngIf="!print" type="number" #pri step="0.01" name="prix_ht" formControlName="ht" placeholder=""
+                                                   value=""> Prix enregistré: {{prix | currency:'EUR':true:'1.2-2'}}<!--variable dans value pour l'unité--></td>
+                        <td><input *ngIf="!print" type="number" #qte step="0.01" name="quantité" placeholder="" value=""
+                                   formControlName="quantite"></td>
+                        <td><input *ngIf="!this.model && !print" type="number" name="total" placeholder="">
+                            <div *ngIf="this.model"> {{ total | currency:'EUR':true:'1.2-2'}}</div>
+                        </td>
+                        <td *ngIf="!print">
+                            <button class="btn btn-default input-sm " (click)="addProduct(prod, pri, qte)" type="button"
+                                    [disabled]="!model">Ajouter la ligne
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr *ngFor="let prod of List">
+                        <td><span>{{prod.reference}}</span></td>
+                        <td><span>{{prod.libelle}}</span></td>
+                        <td><span>{{prod.unite}}</span></td>
+                        <td><span>{{prod.prix_prevu | currency:'EUR':true:'1.2-2'}}</span></td>
+                        <td><span>{{prod.quantite}}</span></td>
+                        <td><span>{{prod.total | currency:'EUR':true:'1.2-2'}}</span></td>
+                        <td *ngIf="!print">
+                            <button class="btn btn-default input-sm" (click)="removeProduct(prod)" type="button">
+                                Supprimer
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr style="border:1px solid white;">
+                        <td colspan="1" class="">Tarif livraison :</td>
+                        <td><input *ngIf="!print" type="number" name="tariflivraison" step="0.01" placeholder=""
+                                   formControlName="livraison"></td>
+                        <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" class="total">Total :</td>
+                        <td class="total">{{all | currency:'EUR':true:'1.2-2'}}</td>
+                        <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        <td class="total"></td>
+                    </tr>
+                    <tr>
+                        <td *ngIf="!print"colspan="7">
+                            <button *ngIf="droitsuser.ajoutcom" type="submit" class="btn btn-default input-sm col-sm-1 col-sm-offset-5">
+                                Enregistrer
+                            </button><!-- a integrer dans la bdd-->
+                            <button class="col-sm-offset-9 col-sm-1 btn" style="margin-top: 10px;" type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>                        </td>
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+        </form>
+
+    </div><!--fin container fluid-->
+    <div class="form-group col-sm-12" *ngIf="print">
+        <span> Par : {{currentUser.firstName}} {{currentUser.lastName}}</span>
+        <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+    </div>
+
+    <div class="form-group col-sm-12" *ngIf="print">
+        <span>Le:  {{date() |  date: 'dd/MM/yyyy HH:mm'}}</span>
+        <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+    </div>
+    <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter">
+
+
+        <div class="form-group col-sm-12" *ngIf="print">
+            <span> {{currentUser.firstName}} {{currentUser.lastName}}</span>
+            <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+        </div>
+
+
+
+        <article style="margin-top: 40px;bottom: 10px;left: 0; right: 0;position: fixed;text-align: center;page-break-after:always;page-break-before:always;page-break-inside: avoid;" >
+
+            <p style="font-size:10px;">{{fact.pied_page1}}</p>
+            <p style="font-size:10px;">{{fact.pied_page2}}</p>
+            <p style="font-size:10px;">{{fact.pied_page3}}</p>
+            <p style="font-size:10px;">{{fact.pied_page4}}</p>
+            <p style="font-size:10px;">{{fact.pied_page5}}</p>
+            <p style="font-size:10px;">{{fact.pied_page6}}</p>
+        </article>
+
+
+
+    </div>
+
+</div><!--fin id achat-->

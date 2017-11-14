@@ -1,0 +1,110 @@
+<div id="chantier">
+
+    <header>
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <img *ngIf="!print"  src="image/menu/chantiers_grand_gris.png">
+                    <span *ngIf="!print" >Chantiers</span>
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+            <div *ngIf="!print"  class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav">
+                        <li *ngIf="droitsuser.accescha"><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
+                        <li *ngIf="droitsuser.accescha"><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+                        <li *ngIf="droitsuser.accesdev"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
+                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
+                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
+                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
+                        <li *ngIf="droitsuser.accescha" role="presentation" class="active"><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
+                        <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
+                        <!--<li role="presentation"><a href="#">Stats</a></li>-->
+                        <li *ngIf="droitsuser.accesbg" role="presentation"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
+                    </ul>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/new_bdc']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Passer commande</span>
+        </div>
+        <h3 style="margin-top: 50px;">Prévisions d'achats</h3>
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+
+                <thead>
+                <tr>
+
+                    <td>Fournisseur</td>
+                    <td>Produits composés</td>
+                    <td>Elément de produit</td>
+                    <td>Unité</td>
+                    <td>Qté P. Comp.</td>
+                    <td>Qté Produit devis</td>
+                    <td>Qté totale</td>
+                    <td>H.T. Produit</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let prod of model">
+
+                    <td>{{prod.nom}}</td>
+                    <td>{{prod.produitvente}}</td>
+                    <td>{{prod.libelle}}</td>
+                    <td>{{prod.unite}}</td>
+                    <td>{{prod.quantite}}</td>
+                    <td>{{prod.qte_devis}}</td>
+                    <td>{{prod.qte_devis * prod.quantite | number:'1.0-2'}}</td>
+                    <td>{{prod.qte_devis * prod.quantite * prod.prix_achat | number:'1.0-2'}}</td>
+                </tr>
+
+                <tr *ngFor="let prods of option" style="background-color: #9d9d9d;">
+
+                    <td>{{prods.nom}}</td>
+                    <td>{{prods.produitvente}}</td>
+                    <td>{{prods.libelle}}</td>
+                    <td>{{prods.unite}}</td>
+                    <td>{{prods.quantite}}</td>
+                    <td>{{prods.qte_devis}}</td>
+                    <td>{{prods.quantite*prods.qte_devis | number:'1.0-2'}}</td>
+                    <td>{{prods.quantite * prods.qte_devis * prods.prix_achat | number:'1.0-2'}}</td>
+                </tr>
+                <tr>
+                    <td colspan="6">total</td>
+                    <td>{{ countqte(option,model) | number:'1.0-2'}}</td>
+                    <td>{{countprice(option,model) | number:'1.0-2'}}</td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+    <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accescha" (click)=" imprimer()">Imprimer</button>
+
+</div><!--id chantier-->

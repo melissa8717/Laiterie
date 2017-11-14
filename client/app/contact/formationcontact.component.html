@@ -1,0 +1,168 @@
+<div id="contact">
+    <style type="text/css" media="print">
+        @page { size: landscape; }
+    </style>
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print"  src="image/menu/contacts_grand_gris.png">
+
+                    <span *ngIf="!print">Contact</span>
+                    <span class="col-sm-offset-5">{{nom.nom}} {{nom.prenom}}</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li role="presentation"><a [routerLink]="['/fichecontact' , nom.id_contact]">Fiche contact</a></li>
+                    <li  class="active" ><a [routerLink]="['/formationcontact' , nom.id_contact]">Formations / CACES</a></li>
+                    <li   ><a [routerLink]="['/equipement' , nom.id_contact]">Equipement</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div class=" container-fluid " >
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+        <div class="col-sm-6">
+
+            <h3>formation</h3>
+
+            <table class="table table-bordered">
+
+                <thead>
+                <tr >
+                    <th class="col-sm-7">Libellé</th>
+                    <th class="col-sm-3">Date de validité</th>
+                    <th class="col-sm-2">Modifier</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr *ngFor="let forms of form,let i = index ">
+                    <td>{{form[i].nom_formation}}</td>
+                    <td> <input type="date" name="datefor{{i}}"  [ngModel]="form[i].datefor | date:'yyyy-MM-dd'" (ngModelChange)="form[i].datefor = $event" [value]="form[i].datefor | date:'yyyy-MM-dd'" > </td>
+                    <td><button (click)="modFormation(forms)">Modifier</button></td>
+                </tr>
+                </tbody>
+
+            </table>
+
+            <h4>Ajouter une formation</h4>
+            <form (submit)="addFormation()">
+                <table class="table table-bordered">
+                    <tbody>
+
+                    <tr  >
+                        <td class="col-sm-7">
+                            <input ng2-auto-complete
+                                   #prod
+                                   [source]="testing"
+                                   [list-formatter]="autocompleListFormatterform"
+                                   value-property-name="id_formation"
+                                   display-property-name="designation"
+                                   type="text"
+                                   name="nom_formation"
+                                   value=""
+                                   [(ngModel)]="test.nom_formation" class="col-sm-12">
+                        </td>
+                        <td class="col-sm-3"><input type="date" name="datefor" value="" class="col-sm-12" [(ngModel)]="test.datefor"/></td>
+                        <td class="col-sm-2"><button  [disabled]="loading">Ajouter</button></td>
+
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </form>
+
+
+        </div>
+
+
+
+        <div class="col-sm-6">
+
+            <h3>Caces</h3>
+
+            <table class="table table-bordered">
+
+                <thead>
+                <tr>
+                    <th class="col-sm-7">Libellé</th>
+                    <th class="col-sm-3">Date de validité</th>
+                    <th class="col-sm-2">Modifier</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr *ngFor="let cace of caces, let i = index">
+                    <td>{{cace.caces}} : {{cace.description}}</td>
+                    <td><input type="date" name="date_fin{{i}}"  [ngModel]="caces[i].date_fin | date:'yyyy-MM-dd'" (ngModelChange)="caces[i].date_fin = $event" [value]="caces[i].date_fin | date:'yyyy-MM-dd'" ></td>
+                    <td><button (click)="modCaces(cace)">Modifier</button></td>
+                </tr>
+                </tbody>
+
+            </table>
+
+            <h4>Ajouter une caces</h4>
+            <form  (submit)="addCac()">
+                <table class="table table-bordered col-sm-12">
+                    <tbody>
+
+                    <tr  >
+                        <td class="col-sm-7">
+                            <input ng2-auto-complete
+                                   #prod
+                                   [source]="fact"
+                                   [list-formatter]="autocompleListFormattercaces"
+                                   value-property-name="id_caces"
+                                   display-property-name="caces"
+                                   type="text"
+                                   name="cacess"
+                                   value=""
+                                   [(ngModel)]="facting.cacess" class="col-sm-12">
+                        </td>
+                        <td class="col-sm-3"><input type="date" name="date_fin" value="" class="col-sm-12" [(ngModel)]="facting.date_fin"/></td>
+                        <td class="col-sm-2"><button type="submit" [disabled]="loading">Ajouter</button></td>
+
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </form>
+
+        </div>
+
+
+    </div>
+</div>

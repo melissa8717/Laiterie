@@ -1,0 +1,64 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/facturation_grand_gris.png" alt="facturation">
+
+                    <span *ngIf="!print">Facturation</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accesfact" (click)=" imprimer()">Imprimer le listing</button>
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+        <recherchefacturation #recherche [liste] = "this" ></recherchefacturation>
+
+        <div class="col-sm-9">
+
+            <h3  >Liste des factures</h3>
+
+
+            <div class="  table-responsive">
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th>Client</th><th>N° client</th><th>N° facture</th><th>Situation</th><th>N° devis</th><th>Date</th><th>Date d'échéance</th><th>Statut</th><th>Montant H.T. en €</th><th *ngIf="!print">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody >
+
+                    <tr *ngFor="let prod of fact">
+                        <td>{{prod.nom}}</td><td>{{prod.contact}}</td><td>{{prod.nfactclient}}</td><td>{{prod.n_situation}}</td><td>{{prod.devis}}</td><td>{{prod.dates | date: 'dd/MM/yyyy'}}</td><td>{{prod.eche | date: 'dd/MM/yyyy'}}</td><td>{{prod.statut}}</td><td>{{prod.montant}}</td>
+                        <td><div class="input-group">
+                            <input type="hidden" class="form-control"  name="identifiant de la facture"><!--variable pour l'identifiant-->
+                            <div *ngIf="!print" class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li *ngIf="prod.factured != 1 && !prod.acompte && droitsuser.modiffact"><a [routerLink]="['/modifierfacture',prod.id_facture,prod.n_situation]" >Ouvrir / Modifier</a></li><!--ouvrir en un PDF-->
+                                    <li *ngIf="!prod.acompte  && droitsuser.modiffact"><a [routerLink]="['/facture_fini',prod.id_facture,prod.n_situation]">Imprimer</a></li><!--ouvrir en un PDF-->
+                                    <li *ngIf="prod.factured != 1 && droitsuser.modiffact  && !prod.acompte"><a [routerLink]="['/avoir',prod.id_facture,prod.n_situation]" >Avoir</a></li>
+                                    <li *ngIf="prod.acompte  && droitsuser.modiffact"><a [routerLink]="['/accompteimprim',prod.id_facture,prod.n_situation]" >Ouvrir acompte</a></li>
+                                </ul>
+                            </div><!-- /btn-group -->
+                        </div><!-- /input-group --></td></tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div><!--fin col sm 9-->
+
+    </div>
+    <button [routerLink]="['/histo_fac']" class="col-sm-offset-7 col-sm-2 btn" style="margin-top:30px;" type="button" *ngIf="!print && droitsuser.accesfact">Historique facture GED</button>
+
+</div>

@@ -1,0 +1,189 @@
+<div id="achat">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div *ngIf="!print" class="container-fluid">
+
+                    <img src="image/menu/commandes_grand_gris.png">
+
+
+                    <span>Commandes</span>
+
+                </div>
+
+                <div *ngIf="print" class="container-fluid">
+
+                    <img  src="image/logo_jd.png">
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </header>
+
+
+    <div class=" container-fluid " id="demande">
+        <div *ngIf="!print" class=" col-sm-offset-6" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3>Demande de prix</h3>
+
+        <form method="" (submit)="enregistrer()" #f>
+
+            <div class="col-sm-12">
+
+
+
+
+                <div class="form-group col-sm-4">
+                    <span>Nom du fournisseur :  </span>
+                    <span>
+                        <input  ng2-auto-complete
+                                [source]="fournisseurs"
+                                [list-formatter]="autocompleListFormatterContact"
+                                *ngIf="!print"
+                                placeholder="Entrez un fournisseur..."
+                                value-property-name="nom"
+                                display-property-name="nom"
+                                type="text"
+                                name="nomfourn"
+                                [(ngModel)]="demande.nomFournisseur">
+                        <span *ngIf="print">{{demande.nomFournisseur}}</span>
+                    </span>
+                    <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+                </div>
+                <div class="form-group col-sm-4">
+                    <span>Nom du chantier: </span>
+                    <span>
+                        <input ng2-auto-complete
+                               [source]="chantiers"
+                               [list-formatter]="autocompleListFormatterChantier"
+                               *ngIf="!print"
+                               placeholder="Entrez un chantier..."
+                               value-property-name="nom_chantier"
+                               display-property-name="nom_chantier"
+                               type="text"
+                               name="nomchantier"
+                               [(ngModel)]="demande.nomChantier">
+                        <span *ngIf="print">{{demande.nomChantier}}</span>
+
+
+                    </span>
+                    <!--ngmodel-->
+                </div>
+
+
+                <div class="form-group col-sm-4" *ngIf="print">
+                    <span> Bonjour, </span>
+                    <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+                </div>
+
+                <div class="form-group col-sm-12 right" *ngIf="print" style="min-height: 50px">
+                    <span> Merci de me communiquer les tarif(s) concernant les produit(s) suivant(s) : </span>
+                    <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+                </div>
+
+
+
+            </div>
+
+            <div class="table table-responsive">
+
+
+                <table class="table">
+                    <thead>
+                    <th class="col-sm-1">Référence :</th>
+                    <th class="col-sm-7">* Libellé produit :</th>
+                    <th class="col-sm-2">Unité</th>
+                    <th class="col-sm-1">* Quantité :</th>
+                    <th class="col-sm-1" *ngIf="!print"> Action :</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngIf="!print">
+                        <td><input type="text" name="idproduit" [(ngModel)]="model.reference" >
+                            <!--variable pour la ref--></td>
+                        <td><input ng2-auto-complete
+                                   [source]="products"
+                                   [list-formatter]="autocompleListFormatterProducts"
+                                   type="text"
+                                   name="produit"
+                                   value-property-name="libelle"
+                                   display-property-name="libelle"
+                                   [(ngModel)]="model.libelle"
+                                   (ngModelChange)="saveProd($event)"
+                                   class="col-sm-12" required>
+                            <!--variable pour le libellé --></td>
+                        <td><input type="text" name="unite" [(ngModel)]="model.unite" placeholder="" required></td>
+
+                        <td><input type="number" name="quantite" [(ngModel)]="model.qte" placeholder="" required>
+                            <!--variable pour la quantite--></td>
+                        <td *ngIf="!print && droitsuser.ajoutcom">
+                            <button class="btn btn-default input-sm" type="button" (click)="ajouter()">Ajouter</button>
+                        </td>
+                    </tr>
+
+                    <tr *ngFor="let produit of list">
+                        <td><span>{{produit.reference}}</span> <!--variable dans value pour la ref--></td>
+                        <td><span>{{produit.libelle}}</span> <!--variable dans value pour la ref--></td>
+                        <td><span>{{produit.unite}}</span></td>
+                        <td><span>{{produit.qte}}</span> <!--variable dans value pour la ref--></td>
+                        <td *ngIf="!print && droitsuser.supcom">
+                            <button class="btn btn-default input-sm" type="button" (click)="supprimer(produit)">
+                                Supprimer
+                            </button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="submit">Enregistrer</button>
+
+            <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accescom" [disabled] = "list.length < 1" (click)=" imprimer()">Imprimer
+            </button>
+            <!--lorsque envoyer implémentation dans la base de donnée et création d'un pdf qui sera envoyé au fornisseur-->
+
+        </form>
+
+
+        <div class="form-group col-sm-4" *ngIf="print">
+            <span>Cordialement, </span>
+            <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+        </div>
+
+        <div class="form-group col-sm-12" *ngIf="print">
+            <span> {{currentUser.firstName}} {{currentUser.lastName}}</span>
+            <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+        </div>
+
+        <div class="form-group col-sm-12" *ngIf="print">
+            <span> {{date() |  date: 'dd/MM/yyyy HH:mm'}}</span>
+            <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+        </div>
+
+        <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter">
+
+
+
+
+
+            <article style="margin-top: 40px;bottom: 10px;left: 0; right: 0;position: fixed;text-align: center;page-break-after:always;page-break-before:always;page-break-inside: avoid;line-height: 1px;" >
+
+                <p style="font-size:10px;">{{fact.pied_page1}}</p>
+                <p style="font-size:10px;">{{fact.pied_page2}}</p>
+                <p style="font-size:10px;">{{fact.pied_page3}}</p>
+                <p style="font-size:10px;">{{fact.pied_page4}}</p>
+                <p style="font-size:10px;">{{fact.pied_page5}}</p>
+                <p style="font-size:10px;">{{fact.pied_page6}}</p>
+            </article>
+
+
+
+        </div>
+    </div><!--fin container fluid-->
+
+</div><!--fin id achat-->

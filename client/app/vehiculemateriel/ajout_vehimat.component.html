@@ -1,0 +1,269 @@
+<div id="planning1">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/produits_grand_gris.png" alt="planning">
+                    <span>Créer véhicule/matériel</span>
+
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <div class="col-sm-offset-10"><a *ngIf="!print" [routerLink]="['/ajout_vehimat']"
+                                         class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1 ">Créer un véhicule/matériel</span>
+        </div>
+
+        <button class="col-sm-offset-10 col-sm-1 btn" style="margin-top: 10px;" type="button"
+                *ngIf="!print && droitsuser.accesproa || droitsuser.accesprov" (click)=" imprimer()">Imprimer
+        </button>
+
+
+        <div class="col-sm-12">
+
+            <form method="" (ngSubmit)=" addMat()">
+
+                <h3>Créer une fiche de véhicule ou de matériel</h3>
+
+                <!--<div style="height: 10%; width: 20%;" class="col-sm-3">
+                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url" src="image/test.ico" alt="..." class="img-thumbnail images"/>
+                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
+                </div>-->
+
+                <div class="form-group " >
+
+                    <span class="col-sm-2 ">* Modèle :</span><input type="text" name="identification" class="col-sm-7 "
+                                                                    [(ngModel)]="model.libelle" required/>
+
+
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">* Vehicule/Matériel :</span>
+                    <select name="vehimate" class="col-sm-1 input-sm" [(ngModel)]="model.vehimate" required>
+                        <option [selected]="model.vehimate =='véhicule'">Véhicule</option>
+                        <option [selected]="model.vehimate =='matériel'">Matériel</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Marque :</span><input type="text" name="marque" class="col-sm-1 "
+                                                                  [(ngModel)]="model.marque"/>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Type :</span><input type="text" name="type" class="col-sm-1 "
+                                                                [(ngModel)]="model.type"/>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-2  ">Date ctrl Tech :</span><input type="date"
+                                                                                          name="datectrltech"
+                                                                                          class="col-sm-1 "
+                                                                                          [(ngModel)]="model.datectrltech"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Date 1er ctrl :</span><input type="date" name="date1ctrl" class="col-sm-1 "
+                                                                         [(ngModel)]="model.date1ctrl"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Type véhicule :</span>
+                    <select name="status" [(ngModel)]="model.annee" class="col-sm-1 input-sm" >
+                        <option [selected]="model.annee =='Voiture'">Voiture</option>
+                        <option [selected]="model.annee =='Fourgon'">Fourgon</option>
+                        <option [selected]="model.annee =='Plateau'">Plateau</option>
+                        <option [selected]="model.annee =='Camion'">Camion</option>
+                        <option [selected]="model.annee =='Remorque'">Remorque</option>
+                        <option [selected]="model.annee =='2 Roues'">2 Roues</option>
+                        <option [selected]="model.annee =='Nacelle'">Nacelle</option>
+                        <option [selected]="model.annee =='Manitou'">Manitou</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Puissance :</span><input type="text" name="puissance" class="col-sm-1 "
+                                                                     [(ngModel)]="model.puissance"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-1 col-sm-offset-1">Genre :</span><input type="text" name="genre" value=""
+                                                                                class="col-sm-1 "
+                                                                                [(ngModel)]="model.genre"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-1 ">Immatriculation :</span><input type="text" name="immat"
+                                                                           class="col-sm-1 col-sm-offset-1 "
+                                                                           [(ngModel)]="model.immatriculation"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Energie :</span>
+                    <select name="energie" [(ngModel)]="model.energie" class="col-sm-1 input-sm">
+                        <option [selected]="model.energie =='Desiel'">Diesel</option>
+                        <option [selected]="model.energie =='Essence'">Essence</option>
+                        <option [selected]="model.energie =='Electrique'">Electrique</option>
+                        <option [selected]="model.energie =='Gaz'">Gaz</option>
+                        <option [selected]="model.energie =='Fuel'">Fuel</option>
+                        <option [selected]="model.energie =='Hybride'">Hybride</option>
+                        <option [selected]="model.energie =='Monophase'">Monophase</option>
+                        <option [selected]="model.energie =='Triphasé'">Triphasé</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Pl. ass. :</span>
+                    <select name="pl_ass" [(ngModel)]="model.pl_ass" class="col-sm-1 input-sm">
+                        <option [selected]="model.pl_ass =='0'">0</option>
+                        <option [selected]="model.pl_ass =='1'">1</option>
+                        <option [selected]="model.pl_ass =='2'">2</option>
+                        <option [selected]="model.pl_ass =='3'">3</option>
+                        <option [selected]="model.pl_ass =='4'">4</option>
+                        <option [selected]="model.pl_ass =='5'">5</option>
+                        <option [selected]="model.pl_ass =='6'">6</option>
+                        <option [selected]="model.pl_ass =='7'">7</option>
+                        <option [selected]="model.pl_ass =='8'">8</option>
+                        <option [selected]="model.pl_ass =='9'">9</option>
+                        <option [selected]="model.pl_ass =='10'">10</option>
+                        <option [selected]="model.pl_ass =='11'">11</option>
+                        <option [selected]="model.pl_ass =='12'">12</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-1 col-sm-offset-1">Surface :</span><input type="text" name="surface"
+                                                                                  class="col-sm-1 "
+                                                                                  [(ngModel)]="model.surface"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-1 ">Carrosserie :</span><input type="text" name="carroserie"
+                                                                       class="col-sm-1 col-sm-offset-1 "
+                                                                       [(ngModel)]="model.carrosserie"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Largeur :</span><input type="text" name="largeur" class="col-sm-1 "
+                                                                   [(ngModel)]="model.largeur"/><!--a verifier-->
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Poids TCA :</span><input type="text" name="poidstc" class="col-sm-1 "
+                                                                     [(ngModel)]="model.poidstc"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-1 col-sm-offset-1">PoidsTRA :</span><input type="text" name="poidstr"
+                                                                                   class="col-sm-1 "/><!--a verifier-->
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-1 ">N° série :</span><input type="text" name="codepostenserie"
+                                                                    class="col-sm-1 col-sm-offset-1"
+                                                                    [(ngModel)]="model.nserie"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Poids à vide :</span><input type="text" name="poidsvide" class="col-sm-1 "
+                                                                        [(ngModel)]="model.poidsvide"/>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Bruit (dBA) :</span><input type="text" name="bruit" class="col-sm-1 "
+                                                                       [(ngModel)]="model.bruit"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Rég mot. (tr/min) :</span><input type="text" name="regmot" class="col-sm-1 "
+                                                                             [(ngModel)]="model.regmot"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Date d'achat :</span><input type="date" name="dateachat" class="col-sm-1 "
+                                                                        [(ngModel)]="model.dateachat"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Remarque :</span><input type="text" name="remarque" class="col-sm-7 "
+                                                                    style="height: 50px;" [(ngModel)]="model.remarque"/>
+                </div>
+
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Visite Ampliroll :</span><input type="date" name="visiteampliroll"
+                                                                            class="col-sm-1 "
+                                                                            [(ngModel)]="model.viste_ampliroll"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Visite grue :</span><input type="date" name="visitegrue" class="col-sm-1 "
+                                                                       [(ngModel)]="model.visite_grue"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Pneu A.V. :</span><input type="text" name="pneuav" class="col-sm-1 "
+                                                                     [(ngModel)]="model.pneu_av"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Pneu A.R. :</span><input type="text" name="pneuar" class="col-sm-1 "
+                                                                     [(ngModel)]="model.pneu_ar"/>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">GPS :</span>
+                    <select name="gps" [(ngModel)]="model.gps" class="col-sm-1">
+                        <option [selected]="model.gps =='Non'">Non</option>
+                        <option [selected]="model.gps =='Oui'">Oui</option>
+                        <option [selected]="model.gps =='Portatif'">Portatif</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Code poste :</span><input type="text" name="codeposte" class="col-sm-1 "
+                                                                      [(ngModel)]="model.code_poste"/>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-2 ">Carte GR :</span>
+                    <select name="gr" class="col-sm-1 input-sm" [(ngModel)]="model.gr">
+                        <option [selected]="model.gr =='oui'">oui</option>
+                        <option [selected]="model.gr =='non'">non</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Début de garantie :</span><input type="date" name="dgarant"
+                                                                             class="col-sm-1 "
+                                                                             [(ngModel)]="model.dgarant"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Fin de garantie :</span><input type="date" name="fgarant" class="col-sm-1 "
+                                                                           [(ngModel)]="model.fgarant"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">N° carte GR :</span><input type="text" name="ncartegr" class="col-sm-1 "
+                                                                       [(ngModel)]="model.ncartegr"/>
+                </div>
+                <!--<div class="form-group">
+                    <span class="col-sm-2 " >Date dépréciation :</span><input type="date" name="date_depreciation"  class="col-sm-1 " [(ngModel)]="model.dtae_depreciation" />
+                </div>-->
+                <div class="form-group">
+                    <span class="col-sm-2 ">N° télépéage :</span><input type="text" name="ntelepeage" class="col-sm-1 "
+                                                                        [(ngModel)]="model.ntelepeage"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 ">Géolocalisation :</span><input type="text" name="geolocalisation"
+                                                                           class="col-sm-1 "
+                                                                           [(ngModel)]="model.geolocalisation"/>
+                </div>
+
+
+
+                <button *ngIf="droitsuser.ajoutproa || droitsuser.ajoutprov" (click)="uploaderImg.queue[0].upload();"
+                        type="submit" class="btn btn-default input-sm col-sm-offset-11" [disabled]="loading">Créer
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+
+</div><!--fin container fluid-->

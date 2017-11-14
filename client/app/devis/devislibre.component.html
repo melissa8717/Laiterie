@@ -1,0 +1,476 @@
+<script src="dupliquerdevis.component.ts"></script>
+<div id="devis">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/gestion_grand_gris.png">
+
+                    <span>Devis</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <div class=" container ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3>Nouveau devis libre / Appel d'offre</h3>
+
+
+        <form id="printSectionId" (submit)="submit()">
+            <fieldset class="separe">
+
+                <div class="row marge">
+                    <img src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5 ">
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="col-sm-4">TVA:</label>
+                        <input type="number"
+                               step="0.1"
+                               name="TVA"
+                               value=""
+                               [(ngModel)]="devis.tva">
+                        <!--<select name="taux" class="col-sm-8 input-sm" [(ngModel)]="taux"  #taux="ngModel" required>
+                            <option *ngFor="let valeurs of valeur " [value]="valeurs.taux">{{valeurs.taux}}</option>
+                        </select>-->
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group" *ngIf="devis.chantier && devis.chantier.id_chantier">
+                            <span class=" glyphicon glyphicon-alert red"></span><span class="col-sm-9">Votre devis va être lié à ce chantier</span>
+                        </div>
+                        <label class="col-sm-4">Nom du chantier:</label>
+                        <!--<input ng2-auto-complete
+                               #prod
+                               [source]="chantiers"
+                               [list-formatter]="autocompleListFormatterchantier"
+                               value-property-name="id_chantier"
+                               display-property-name="nom_chantier"
+                               type="text"
+                               name="chantier"
+                               value=""
+                               [(ngModel)]="devis.chantier">-->
+                        <input
+                               value-property-name="id_chantier"
+                               display-property-name="nom_chantier"
+                               type="text"
+                               name="chantier"
+                               value=""
+                               [(ngModel)]="devis.chantier">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">Remise:</label>
+                        <input
+                                type="number"
+                                step="0.01"
+                                name="accompte"
+                                value="oui"
+                                min="0"
+                                max="100"
+                                [(ngModel)]="devis.remise">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4">accompte:</label>
+                        <input
+                                type="checkbox"
+                                name="accompte"
+                                value="oui"
+                                min="0"
+                                [(ngModel)]="devis.accompte">
+                    </div>
+                    <div class="form-group" *ngIf="devis.accompte">
+                        <label class="col-sm-4">en €:</label>
+                        <input
+                                type="number"
+                                step="0.01"
+                                name="euro"
+                                value="oui"
+                                [(ngModel)]="devis.accompteeuros"
+                                (ngModelChange)="accompteeuro()">
+                    </div>
+                    <div class="form-group" *ngIf="devis.accompte">
+                        <label class="col-sm-4">en %:</label>
+                        <input
+                                type="number"
+                                step="0.01"
+                                name="pourcentage"
+                                value="oui"
+                                [(ngModel)]="devis.accomptepercentage"
+                                (ngModelChange)="accomptepercent()">
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-sm-offset-1">
+                    <div class="form-group" *ngIf="address">
+                        <span class=" glyphicon glyphicon-alert red"></span><span class="col-sm-9">Aucune adresse pré-enregistrée pour ce client</span>
+                    </div>
+                    <div class="form-group">
+
+
+
+                        <label class="col-sm-4">
+                            * Nom du client:
+                        </label>
+                        <input ng2-auto-complete
+                               #prod
+                               [source]="clients"
+                               [list-formatter]="autocompleListFormatterContact"
+                               [value-formatter]="autocompleListFormatterContactValue"
+                               value-property-name="id_contact"
+                               type="text"
+                               name="Nom_client"
+                               value=""
+                               class="col-sm-5"
+                               [(ngModel)]="devis.nomclient"
+                               (ngModelChange)="getAddress(devis.nomclient.id_contact)"
+                               required
+                        >
+                        <a [routerLink]="['/ajout_contact']" target="_blank">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true">Nouveau Client</span>
+                        </a>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4">* Adresse chantier </label>
+                        <input type="text" name="Adresse1" value="" class="col-sm-5" [(ngModel)]="devis.address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">* Code postal:</label>
+                        <input type="text" name="code_postal" value="" class="col-sm-5" min="0" [(ngModel)]="devis.cp" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4">* Ville:</label>
+                        <input type="text" name="ville" value="" class="col-sm-5" min="0" [(ngModel)]="devis.ville" required>
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+            <!-- FIELDSET DES PRODUITS ***************************************************************************** -->
+
+            <fieldset class="marge1">
+
+                <div class="table-responsive" style="min-height: 300px;">
+                    <table class="table table-bordered">
+                        <thead>
+                        <th class="col-sm-1">Option</th>
+                        <th class="col-sm-1">Référence</th>
+                        <th class="col-sm-5">Article</th>
+                        <th class="col-sm-1">Unité</th>
+                        <th class="col-sm-1">* Qte</th>
+                        <th class="col-sm-1">* P.U.</th>
+                        <th class="col-sm-1">Total HT:</th>
+                        <th class="col-sm-1">Action</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="checkbox ">
+                                    <label>
+                                        <input type="checkbox" value="option" name="option"
+                                               [(ngModel)]="produit.option">
+                                        Option
+                                    </label>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group ">
+                                    <input type="text" class="form-control input-sm" id="reference" placeholder=""
+                                           name="ref"
+                                           [(ngModel)]="produit.ref">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input
+                                           value-property-name="id"
+                                           display-property-name="libelle"
+                                           class="form-control input-sm"
+                                           placeholder="Ajoutez un produit"
+                                           name="produit"
+                                           [(ngModel)]="produit.obj"
+                                           (ngModelChange)="test()">
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                    <input class="form-control input-sm"  type="text" name="unite"
+                                           placeholder="Unité" value="" [(ngModel)]="produit.unite">
+                                    <!-- <div *ngIf="produit.obj"> {{produit.unite}}</div> -->
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                    <input type="number" class="form-control input-sm" name="quantite" placeholder=""
+                                           min="0" [(ngModel)]="produit.qte"
+                                           (ngModelChange)="accomptepercent()">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="number" class="form-control input-sm" name="Prix_unitaire"
+                                           placeholder="" min="0"
+                                           [(ngModel)]="produit.prix"
+                                           (ngModelChange)="accomptepercent()">
+                                </div>
+                            </td>
+
+                            <td>
+                                <span *ngIf="produit.qte && produit.prix">{{produit.qte*produit.prix | currency:'EUR':true:'1.2-2'}}</span>
+                            </td>
+                            <td>
+                                <button *ngIf="droitsuser.ajoutdev" class="btn btn-default input-sm col-sm-offset-1"
+                                        (click)="ajouter()"
+                                        [disabled]="!produit.obj"> Ajouter
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="4"><textarea rows="2" class="col-sm-12" placeholder="Commentaire" name="commentaire" [(ngModel)]="produit.commentaire"></textarea></td>
+                            <td></td>
+                        </tr>
+
+                        <!-- LISTE DES PRODUITS ******************************************************************** -->
+
+                        <ng-container *ngFor="let produit of produitDevis, let i = index; trackBy:customTrackBy">
+
+                            <tr >
+                                <td>
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="produit.option"></span>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <span>{{produit.ref}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <span><a *ngIf="produit.obj" target="_blank">{{produit.obj}}</a></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <span>{{produit.unite}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="number"
+                                               class="form-control input-sm"
+                                               name="quantite{{i}}"
+                                               placeholder=""
+                                               min="0"
+                                               [(ngModel)]="produitDevis[i].qte"
+                                               (ngModelChange)="accomptepercent()"
+                                               required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="number"
+                                               class="form-control input-sm"
+                                               name="Prix_unitaire{{i}}"
+                                               placeholder=""
+                                               min="0"
+                                               step="0.01"
+                                               [(ngModel)]="produitDevis[i].prix"
+                                               (ngModelChange)="accomptepercent()"
+                                               required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span>{{produitDevis[i].qte * produitDevis[i].prix| currency:'EUR':true:'1.2-2' }}</span>
+                                </td>
+                                <td>
+                                    <a class=" col-sm-offset-1"
+                                       (click)="supprimer(produitDevis[i])">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                          style="color: #0f0f0f"></span>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="produit.commentaire">
+                                <td colspan="2"></td>
+                                <td colspan="4"><textarea rows="2" class="col-sm-12" placeholder="Commentaire" name="commentaire{{i}}" [(ngModel)]="produitDevis[i].commentaire"></textarea></td>
+                                <td></td>
+                            </tr>
+                        </ng-container>
+
+                        <!-- CALCULS ******************************************************************************* -->
+
+                        <tr>
+                            <td colspan="6" class="total" style="text-align: right;">Total HT :</td>
+                            <td class="total">{{countTotal() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        <tr *ngIf="devis.remise">
+                            <td colspan="6" class="total" style="text-align: right;">Total après remise :</td>
+                            <td class="total">{{countTotalRemise() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+                        <tr>
+                            <td colspan="6" class="total" style="text-align: right;">TVA {{valeur.taux}} %:</td>
+                            <td class="total">{{countTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="6" class="total" style="text-align: right;">TTC :</td>
+                            <td class="total">{{countTotalTVA()  | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+
+
+                        <tr *ngIf="produitDevisOptions.length > 0">
+                            <td colspan="7"
+                                class="total"
+                                style="text-align: right;
+                                background-color: #0f0f0f;
+                                color: white">
+                                Options:
+                            </td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+
+                        <ng-container *ngFor="let produit of produitDevisOptions, let i = index; trackBy:customTrackBy">
+
+                            <tr >
+                                <td>
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="produit.option"></span>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <span>{{produit.ref}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <span><a *ngIf="produit.obj" target="_blank">{{produit.obj}}</a></span>
+
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <span>{{produit.unite}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="number" class="form-control input-sm" name="quantiteOption{{i}}"
+                                               placeholder=""
+                                               min="0" [(ngModel)]="produitDevisOptions[i].qte"
+                                               (ngModelChange)="accomptepercent()"
+                                               required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="number"
+                                               class="form-control input-sm"
+                                               name="Prix_unitaireOption{{i}}"
+                                               placeholder=""
+                                               min="0"
+                                               step="0.01"
+                                               [(ngModel)]="produitDevisOptions[i].prix"
+                                               (ngModelChange)="accomptepercent()"
+                                               required>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span>{{produitDevisOptions[i].qte * produitDevisOptions[i].prix  | currency:'EUR':true:'1.2-2'}}</span>
+                                </td>
+                                <td>
+                                    <a class=" col-sm-offset-1"
+                                       (click)="supprimeroption(produitDevisOptions[i])">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                          style="color: #0f0f0f"></span>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2"></td>
+                                <td colspan="4"><textarea rows="2" class="col-sm-12" placeholder="Commentaire" name="commentaire{{i}}" [(ngModel)]="produitDevisOptions[i].commentaire"></textarea></td>
+                                <td></td>
+                            </tr>
+                        </ng-container>
+
+
+
+                        <tr *ngIf="produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right;">Total HT:</td>
+                            <td class="total">{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        <tr *ngIf="produitDevisOptions.length> 0 && devis.remise">
+                            <td colspan="6" class="total" style="text-align: right;">Total après remise :</td>
+                            <td class="total">{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+                        <tr *ngIf="produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right;">TVA :</td>
+                            <td class="total">{{ totalTVAoption() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        <tr *ngIf="produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right;">TTC :</td>
+                            <td class="total">{{countTotalOptionsTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                                color: white">Total HT :</td>
+                            <td class="total">{{total() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise">
+                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                                color: white">Total après remise :</td>
+                            <td class="total">{{totalremise() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                                color: white">Total TVA:</td>
+                            <td class="total">{{totalTVATVA() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                                color: white">TTC :</td>
+                            <td class="total">{{totalTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset> <!--(click)="submit()"-->
+            <button *ngIf="droitsuser.ajoutdev" class="btn btn-default input-sm col-sm-offset-11"
+                    type="submit"
+                    [disabled]="produitDevis.length < 1 ">
+                Valider
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<div id="message">
+    <header >
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/messagerie_grand_gris.png" alt="messagerie">
+
+                    <span>Messagerie</span>
+
+
+
+                </div>
+            </div><!--container-fluid-->
+        </div>
+
+
+    </header>
+
+    <div class=" container-fluid">
+        <div *ngIf="!print"  style="margin-top: 5px; margin-bottom:5px; font-size: 16px;" class="col-sm-12">
+            <span class="blan1 col-sm-2 col-sm-offset-3"><a [routerLink]="['/new_message']"  class="glyphicon glyphicon-plus-sign fleche1  col-sm-1"></a>
+            NOUVEAU MESSAGE</span>
+
+            <span class="blan1 col-sm-offset-5 col-sm-2"><a  [routerLink]="['/home']" class="glyphicon glyphicon-arrow-left fleche1 col-sm-1"></a>Retour accueil</span>
+        </div>
+
+
+        <recherche #recherche [message] = "this"> </recherche>
+
+        <div class="col-sm-9 bordure4">
+            <h4>Liste des messages :</h4>
+
+            <div class=" table-responsive " style="height: 450px;">
+                <table  class="table table-striped " *ngFor="let message of messages">
+
+
+                    <tbody class="">
+                    <!--créer une boucle conditionnelle pour créer les lignes du tableau
+                    sauf le select qui est toujours identique
+                    -->
+                    <tr [ngClass]="(currentUser._id == message.id)?'inuser':'user'">
+                        <td><b>Objet:</b></td><td>{{message.titre}} {{message.id_user}}</td><td><b>Dernière M.à.J</b></td><td>{{message.date_creation
+                        | date: 'dd/MM/yyyy HH:mm'}}</td><td><b>Auteur</b></td><td>{{message.firstname}} {{message.lastname}}</td><td><b>traité:</b></td><td><span *ngIf="message.traite" class="glyphicon glyphicon-check"></span><!--VARIABLE glyphe--></td>
+                        <td>
+
+                            <div class="input-group">
+                                <input type="hidden" class="form-control"  name=""><!--variable pour l'identifiant-->
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li *ngIf="droitsuser.accesmes"><a [routerLink]="['/discussion', message.id_message]" >voir la discussion</a></li>
+                                        <li *ngIf="droitsuser.supmes" role="separator" class="divider"></li>
+                                        <li *ngIf="droitsuser.supmes"><a (click)="supprimer(message.id_message)">Supprimer</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                            </div><!-- /input-group -->
+
+                        </td>
+                    </tr>
+                    <tr class="white">
+                        <td colspan="9">{{message.contenu}}</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+
+
+
+            </div><!--div table-->
+
+
+        </div>
+
+    </div><!--container-fluid-->
+
+
+</div>
+
+<!--Javascript pour bouton-->
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="js/bootstrap.min.js"></script>

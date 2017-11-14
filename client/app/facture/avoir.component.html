@@ -1,0 +1,324 @@
+<div id="devis">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/facturation_grand_gris.png">
+
+                    <span *ngIf="!print">Facturation</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <div class=" container "  id="pageContent" style="background-color: white;">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3 *ngIf="!print" >Avoir</h3>
+
+        <form (submit)="submit()">
+
+            <fieldset class="separe">
+                <div class="row marge">
+                    <img *ngIf="!print" src="image/logo_wBAT_horizontal.png"  style="margin-left:100px;">
+                </div>
+                <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
+                <div class="row marge">
+                    <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:0px; position: absolute;">
+                </div>
+                <p>&nbsp;</p>
+
+                <div  style="margin-left: 50%;margin-top: 70px;">
+                    <div class="form-group" *ngIf="model.raison_sociale!=('' || 'null')">
+                        <span>{{model.raison_sociale}}<!--variable--></span>
+                    </div>
+                    <div class="form-group" >
+                        <span>{{model.nom}} {{model.prenom}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.cadresse}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.ccp}} </span>
+
+                        <span > {{model.cville}}<!--variable--></span>
+                    </div>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+
+                    <div class="form-group"  >
+                        <span  style="margin-top: 40px;">{{fact.villefact}}* , le <input style="border:1px solid white;" type="date" name="date_avoir" [(ngModel)]="model.date_avoir" required><!--variable--></span>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <span class="col-sm-5" style="font-weight: bold;">Facture d'avoir N° : </span><span style="font-weight: bold;">{{navoir.navoir}}</span>
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-sm-12" style="margin-top: 25px;">
+                    <span style="font-weight: bold;">Infomations additionnelles :</span><br>
+                    <span>Facture d'avoir, en remboursemant de la facture N° {{model.nfactclient}} </span>
+                </div>
+
+            </fieldset>
+
+            <div class="table-responsive">
+                <table class="table">
+
+                    <thead>
+                    <th class="col-sm-1 mil">Référence</th>
+                    <th class="col-sm-5 mil">Article</th>
+                    <th class="col-sm-1 mil">P.U. en €</th>
+                    <th class="col-sm-1 mil">Qte.</th>
+                    <th class="col-sm-2 mil">Total HT en €</th>
+                    <th class="col-sm-1 mil">Action</th>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+
+                        <td>
+                            {{situas.id_produit}} / {{situas.num_version}}
+                        </td>
+                        <td>
+                            <input ng2-auto-complete
+                                   #prod
+                                   [source]="situa"
+                                   [list-formatter]="autocompleListFormatterSitua"
+                                   value-property-name="id_produit"
+                                   display-property-name="libelle"
+                                   class="form-control input-sm"
+                                   placeholder="Ajoutez un produit"
+                                   name="produit"
+                                   [(ngModel)]="situas.obj"
+                                   (ngModelChange)="test()"
+                            >
+                        </td>
+                        <td>{{situas.prixfact}}
+
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm"  placeholder=""
+                                   name="qtefact"
+                                   [(ngModel)]="situas.qtefact">
+                        </td>
+                        <td>
+                            <span *ngIf="situas.qtefact && situas.prixfact">{{situas.qtefact * situas.prixfact *(-1)}}</span>
+                        </td>
+                        <td><button  class="btn btn-default input-sm col-sm-offset-1"
+                                     (click)="ajouter()"
+                                     [disabled]="!situas.obj">Ajouter</button></td>
+                    </tr>
+                    </tbody>
+
+
+                    <!------------------------------------------------------------------->
+
+                    <tbody>
+                    <tr>
+
+                        <td>
+                            {{options.id_produit}} / {{options.num_version}}
+                        </td>
+                        <td>
+                            <input ng2-auto-complete
+                                   #prod
+                                   [source]="option"
+                                   [list-formatter]="autocompleListFormatterOption"
+                                   value-property-name="id_produit"
+                                   display-property-name="libelle"
+                                   class="form-control input-sm"
+                                   placeholder="Ajoutez un produit en option"
+                                   name="produit"
+                                   [(ngModel)]="options.obj"
+                                   (ngModelChange)="testopt()"
+                            >
+                        </td>
+                        <td>{{options.prixfact}}
+
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm"  placeholder=""
+                                   name="qtefact"
+                                   [(ngModel)]="options.qtefact">
+                        </td>
+                        <td>
+                            <span *ngIf="options.qtefact && options.prixfact">{{options.qtefact * options.prixfact *(-1)}}</span>
+                        </td>
+                        <td><button  class="btn btn-default input-sm col-sm-offset-1"
+                                     (click)="ajouteropt()"
+                                     [disabled]="!options.obj">Ajouter</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <ng-container *ngFor="let situas of produitDevis, let i = index; trackBy:customTrackBy">
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-5 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-2 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        </thead>
+
+                        <tbody>
+
+                        <tr >
+
+                            <td>
+                                <div class="form-group">
+                                    <span>{{situas.obj.id_produit}} / {{situas.num_version}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <span>{{situas.obj.libelle}}</span>
+                                </div>
+
+                            </td>
+
+                            <td>
+                                {{produitDevis[i].prixfact}}
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                    <input type="number"
+                                           class="form-control input-sm"
+                                           name="qtefact{{i}}"
+                                           placeholder=""
+                                           min="0"
+                                           [(ngModel)]="produitDevis[i].qtefact"
+                                           required>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span>{{produitDevis[i].qtefact * produitDevis[i].prixfact * (-1) | number:'1.0-2'}}</span>
+                            </td>
+                            <td>
+                                <a class=" col-sm-offset-1"
+                                   (click)="supprimer(produitDevis[i])">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                                      style="color: #0f0f0f"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </ng-container>
+
+            <ng-container *ngFor="let options of produitDevisopt, let i = index; trackBy:customTrackBy">
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-5 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-2 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        </thead>
+
+                        <tbody>
+
+                        <tr >
+
+                            <td>
+                                <div class="form-group">
+                                    <span>{{options.obj.id_produit}} / {{options.num_version}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <span>{{options.obj.libelle}}</span>
+                                </div>
+
+                            </td>
+                            <td>
+                                {{produitDevisopt[i].prixfact}}
+
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="number"
+                                           class="form-control input-sm"
+                                           name="qtefact{{i}}"
+                                           placeholder=""
+                                           min="0"
+                                           [(ngModel)]="produitDevisopt[i].qtefact"
+                                           required>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span>{{produitDevisopt[i].qtefact * produitDevisopt[i].prixfact * (-1) | number:'1.0-2'}}</span>
+                            </td>
+                            <td>
+                                <a class=" col-sm-offset-1"
+                                   (click)="supprimeropt(produitDevisopt[i])">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                                      style="color: #0f0f0f"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </ng-container>
+
+
+            <table class="col-sm-offset-8 col-sm-4 gras ">
+                <tr>
+                    <td class="col-sm-6">Total H.T en € :</td>
+                    <td class="col-sm-6 ">{{ countTotal() | number:'1.0-2'}}</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-6">TVA {{valeur.tva}} % :</td>
+                    <td class="col-sm-6 ">{{countTva() | number:'1.0-2'}}</td>
+                </tr>
+                <tr >
+                    <td class="col-sm-6">Total TTC en € :</td>
+                    <td class="col-sm-6 ">{{countTtc() | number:'1.0-2'}}</td>
+                </tr>
+            </table>
+
+
+            <button  class="btn btn-default input-sm col-sm-offset-11"
+                     type="submit"
+                     [disabled]="(produitDevis.length || produitDevisopt.length ) < 1 ">
+                Valider
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

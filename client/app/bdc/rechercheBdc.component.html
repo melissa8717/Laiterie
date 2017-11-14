@@ -1,0 +1,122 @@
+<div *ngIf="!bdc.print"class="col-sm-3">
+    <form class="form-horizontal"  >
+        <h5>Recherche:</h5>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Date Livraison: </label>
+            <div class="col-sm-7">
+                <input type="date"
+                       class="form-control"
+                       id="date"
+                       placeholder="jj/mm/aaaa"
+                       name="date"
+                       [(ngModel)] = "seek.date"
+                       (ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">Du:</label>
+            <div class="col-sm-7">
+                <input type="date"
+                       name="date"
+                       class="form-control"
+                       id="datedemarage"
+                       placeholder=""
+
+                       [(ngModel)]="seek.date_debut"
+                       (ngModelChange)="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">Au:</label>
+            <div class="col-sm-7">
+                <input type="date" name="datef" class="form-control" id="datefin" placeholder=""
+                       [(ngModel)]="seek.date_fin"
+                       (ngModelChange)="fireLoad()"
+                >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">N° de bon</label>
+            <div class="col-sm-7">
+                <input
+                        type="number"
+                        class="form-control"
+                        id="bon"
+                        placeholder=""
+                        name="bon"
+                        [(ngModel)] = "seek.bonnumber"
+                        (ngModelChange) = "fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Chantier</label>
+            <div class="col-sm-7">
+                <input
+                        type="text"
+                        class="form-control"
+                        id="chantier"
+                        placeholder=""
+                        name="chantier"
+                        [(ngModel)] = "seek.Chantier"
+                        (ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">N° devis</label>
+            <div class="col-sm-7">
+                <input
+                        type="number"
+                        class="form-control"
+                        id="ndevis"
+                        placeholder=""
+                        name="devis"
+                        [(ngModel)] = "seek.devisnumber"
+                        (ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Fournisseur</label>
+            <div class="col-sm-7">
+                <input ng2-auto-complete
+                       [source]="fournisseurs"
+                       [list-formatter]="autocompleListFormatterContact"
+                       value-property-name="id_contact"
+                       display-property-name="raison_sociale"
+                        type="text"
+                       class="form-control"
+                       id="fournisseur"
+                       placeholder=""
+                       name="fournisseur"
+                       [(ngModel)] = "seek.fournisseur"
+                       (ngModelChange) ="fireLoad()"
+                       autocomplete="off">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Par</label>
+            <div class="col-sm-7">
+                <input
+                        type="text"
+                        class="form-control"
+                        id="par"
+                        placeholder=""
+                        name="by"
+                        [(ngModel)] = "seek.by"
+                        (ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+
+
+
+    </form>
+
+</div>

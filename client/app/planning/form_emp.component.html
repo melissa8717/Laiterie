@@ -1,0 +1,104 @@
+
+
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/Planning_grand_gris.png" alt="planning">
+
+                    <span>Suivi de formation employés</span>
+                </div>
+            </div>
+        </div>
+    </header>
+<body>
+<div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+    <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+</div>
+<table class="table table-striped">
+    <form method="POST" action="#"  >
+        <thead style="background-color: #993300; color: white;">
+
+        <th class=" col-sm-1">Du </th>
+        <th class="col-sm-1">Au </th>
+
+        <th class=" col-sm-1">Employé </th>
+        <th class="col-sm-1  ">Type de formation</th>
+        <th class="col-sm-1 ">Durée</th>
+        <th class="col-sm-1 ">Remarques</th>
+        <th class="col-sm-1 "></th>
+
+
+
+
+        </thead>
+        <tbody>
+
+
+
+        <tr>
+
+            <td class="col-sm-1"><input type="text" name="date_deb_suivi_sem" value="13/08/2017" class="col-sm-12"/></td>
+
+            <td class="col-sm-1"><input type="text" name="date_fin_suivi_sem" value="13/09/2017" class="col-sm-12"/></td>
+
+            <td class="col-sm-1">
+                <div class="form-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Nom employés  <span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#" target="_blank">david cooper</a></li><!--ouvrir en un PDF-->
+                            <li><a href="#" target="_blank">christian du pré</a></li>
+                            <li><a href="#" target="_blank">amandine cypria</a></li>
+
+
+                            <li><a href="#" target="_blank">caroline sine</a></li>
+                            <li><a href="#" target="_blank">caroline sine</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </td>
+
+
+            <td class="col-sm-1"><textarea name="note_formation"rows="1" class="col-sm-12"></textarea></td>
+            <td class="col-sm-1">08.00</td>
+            <td class="col-sm-3">
+
+                <textarea name="note_formation"rows="1" class="col-sm-12"></textarea></td>
+
+            <td>
+
+                <div class="input-group">
+                    <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li *ngIf="droitsuser.ajoutpb || droitsuser.ajoutpc"><a href="#">Ajouter</a></li>
+                            <li *ngIf="droitsuser.ajoutpb || droitsuser.ajoutpc"><a href="#">Supprimer</a></li>
+                        </ul>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+
+            </td>
+
+        </tr>
+
+
+
+
+
+
+        </tbody>
+
+    </form>
+</table>
+<button *ngIf="droitsuser.accespb || droitsuser.accespc" class="col-sm-offset-10 btn btn-default input-sm">Imprimer</button>
+
+<button *ngIf="droitsuser.modifpb || droitsuser.modifpc" class="btn btn-default input-sm">Modifier</button>
+</body>
+
+</div>

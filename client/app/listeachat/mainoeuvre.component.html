@@ -1,0 +1,102 @@
+<div id="vente">
+
+    <!-- header -->
+    <header>
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/Produits_grand_gris.png">
+
+                    <span>Produits</span>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- recherche -->
+    <div class="col-sm-3 bord">
+
+        <h5>Recherche:</h5>
+
+        <form class="form-horizontal" (ngSubmit)="f.form.valid && filter()" #f="ngForm" novalidate>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Libellé:</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" placeholder="" [(ngModel)]="moToFind.libelle" name="libelle" >
+                </div>
+            </div>
+
+            <button class="col-sm-offset-7 col-sm-4">Rechercher</button>
+        </form>
+        <button (click)="showAll()" class="col-sm-offset-7 col-sm-4">Afficher tous</button>
+    </div><!--fin sm 3-->
+
+    <div class="col-sm-9">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <!-- liste -->
+        <div class="col-sm-12">
+
+            <h3 >Liste main d'oeuvre</h3>
+
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="col-sm-6">Libellé</th>
+                        <th class="col-sm-2">Taux horaire</th>
+                        <th class="col-sm-2">Heure brute</th>
+                        <th class="col-sm-2">Salaire chargé</th>
+                        <th class="col-sm-2">Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr *ngFor="let m of filteredMos; let i = index">
+                        <td><input type="text" name="libelle{{i}}" value="{{m.libelle}}" [(ngModel)]="filteredMos[i].libelle" class="col-sm-12"></td>
+                        <td><input type="number" step="0.01" name="tauxhoraire{{i}}" value="{{m.taux_horaire}}" [(ngModel)]="filteredMos[i].taux_horaire"></td>
+                        <td><input type="number" step="0.01" name="heurebrute{{i}}" value="{{m.heure_brute}}" [(ngModel)]="filteredMos[i].heure_brute"></td>
+                        <td><input type="number" step="0.01" name="salairecharge{{i}}" value="{{m.salaire_charge}}" [(ngModel)]="filteredMos[i].salaire_charge"></td>
+                        <td><button (click)="modify(m)">Modifier</button></td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+                <form name="form" (ngSubmit)="f.form.valid && createMo()" #f="ngForm">
+                    <!-- ajout -->
+                    <h5>Nouvelle qualification</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-6">* Libellé</th>
+                                <th class="col-sm-2">* Taux horaire</th>
+                                <th class="col-sm-2">* Heure brute</th>
+                                <th class="col-sm-2">* Salaire chargé</th>
+                                <th class="col-sm-2">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+
+                                <td><input type="text" name="libelle" class="col-sm-12" [(ngModel)]="moToCreate.libelle" required></td>
+                                <td><input type="number" step="0.01" name="tauxhoraire" [(ngModel)]="moToCreate.taux_horaire" min="0" required></td>
+                                <td><input type="number" step="0.01" name="heurebrute" [(ngModel)]="moToCreate.heure_brute" min="0" required></td>
+                                <td><input type="number" step="0.01" name="salairecharge" [(ngModel)]="moToCreate.salaire_charge" min="0" required></td>
+                                <td><button type="submit">Valider</button></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </form>
+            </div>
+        </div>
+
+    </div><!--fin col sm 9-->
+
+</div>

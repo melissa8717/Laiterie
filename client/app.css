@@ -1,0 +1,138 @@
+﻿a {
+    cursor: pointer;
+}
+
+
+.vente{
+    position: relative;
+}
+
+.loading{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(131, 123, 126, 0.5);
+}
+
+td.weekend{
+    background-color: rgba(0, 0, 0, 0);
+
+}
+td.week{
+    background-color: rgba(238, 115, 18, 0.69);
+}
+
+.invalid {
+    background: rgba(238, 67, 15, 0.71);
+}
+
+
+
+.help-block {
+    font-size: 12px;
+}
+
+.ng2-auto-complete {
+    overflow-y: auto;
+    max-height: 100px;
+}
+
+#loadingImg {
+    display: inline-block;
+    width: 100%;
+    margin: auto;
+    margin-top: 20%;
+    text-align: center;
+}
+
+.chargement{
+    text-color: #FF8000;
+}
+
+
+.form-group.required .control-label:before {
+    content:"*";
+    color:red;
+}
+
+
+body.img{background-image: url(image/LOGIN.png);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%100%;
+}
+
+
+.border{
+    border-right:solid 2px black;
+}
+
+.borderbot{
+    border-bottom:solid 2px black;
+}
+.borderleft{
+    border-left:solid 2px black;
+}
+.borderright{
+    border-right:solid 2px black;
+}
+.bordertop{
+    border-top:solid 2px black;
+}
+.transparent{
+    background-color:#B2B2B2;
+    border-left:solid 2px #B2B2B2;
+    border-bottom:solid 2px #B2B2B2;
+}
+
+.title-th{
+    border-bottom: solid 2px black;
+    border-right:solid 2px black;
+}
+
+.addprod{
+    border-bottom: solid 2px black;
+    border-right:solid 2px black;
+    border-top:solid 2px black;
+}
+
+.loader {
+    border: 12px solid #f3f3f3; /* Light grey */
+    border-top: 12px solid rgba(15, 15, 0, 0.51); /* Blue */
+    border-left: 12px solid rgba(15, 15, 0, 0.51); /* Blue */
+    border-radius: 80%;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+.page-footer{
+    border-top: 2px solid ;
+
+    width:100%;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    color: #b07707;
+    text-align: center;
+    font-size: 70%;
+
+}
+
+p{
+
+    padding-left: 0%;
+    white-space: pre;
+}

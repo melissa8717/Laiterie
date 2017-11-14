@@ -1,0 +1,360 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img  *ngIf="!print"  src="image/menu/chantiers_grand_gris.png" alt="balance">
+
+                    <span  *ngIf="!print" >Chantiers</span>
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <nav  *ngIf="!print" class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+            <!--garder l'id du chantier en passant d'un onglet à l'autre possibilité peut-être d'un session ou d'un cookie qui disppait à la fermeture de la page-->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li *ngIf="droitsuser.accescha"><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
+                    <li *ngIf="droitsuser.accescha"><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+                    <li *ngIf="droitsuser.accesdev"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation" ><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation" ><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
+                    <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
+                    <!--<li role="presentation"><a href="#">Stats</a></li>-->
+                    <li *ngIf="droitsuser.accesbg" role="presentation" class="active"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class=" container-fluid col-sm-12 ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <ng-container *ngIf="!balance">
+            <h3>Pas de chantier en cours</h3>
+        </ng-container>
+
+        <ng-container *ngIf="balance && balance.status == 'en cours'">
+
+            <div class="col-sm-6">
+
+
+
+                <h4 class="reel">DÉPENSES RÉELLES</h4>
+
+                <div class="  col-sm-12 table-responsive">
+                    <table class="table " style="margin-bottom: 0;">
+                        <tbody>
+                        <h5 style="margin-bottom: 0;">Main d'oeuvre :</h5>
+                        <!--tous les montants sont obtenus après calcul des données de la base de données-->
+                        <tr>
+                            <td class="glyphe2">Tx horaire moyen</td>
+                            <td class="glyphe2">{{(countHeure() == 0)?0:(countMain() / countHeure() *60) | number:'1.0-2'}}</td><!--variable dans la base de données--><!--variable à calculer-->
+                            <td class="glyphe1">Salariés :</td>
+                            <td class="glyphe1">{{countHeure() / 60 | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td class="glyphe1">{{countMain() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        <tr>
+                            <td class="glyphe2">Tx horaire moyen</td>
+                            <td class="glyphe2">{{(countHeureI() ==0)?0 :(countMainI() / countHeureI() * 60) | number:'1.0-2'}}</td><!--variable dans la base de données-->
+                            <td class="glyphe1">Intérim :</td>
+                            <td class="glyphe1">{{countHeureI() / 60 | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td class="glyphe1">{{countMainI() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        <tr>
+                            <td class="glyphe1 trait"></td>
+                            <td class="glyphe1 trait"></td>
+                            <td class="glyphe1 trait">Primes :</td>
+                            <td class="glyphe1 trait"></td>
+                            <td class="glyphe1 trait">0.00</td><!--variable à calculer-->
+                        </tr>
+                        <tr>
+                            <td ></td>
+                            <td colspan="1"></td>
+                            <td class="glyphe1">TOTAL MAIN D'OEUVRE :</td>
+                            <td class="glyphe3">{{countTotalhoeuvre()/60 | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td class="glyphe3">{{countTotaloeuvre() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                    <table class="table " style=" margin-top: 0;">
+                        <h5 style="margin-bottom: 0;">Consommation/Fournitures :</h5>
+                        <!--tous les montants sont obtenus après calcul des données de la base de données-->
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="glyphe1">Matériaux :</td>
+                            <td class="glyphe1"></td>
+                            <td class="glyphe1">{{countReeldevis(prod) | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="glyphe1 ">Sous-traitants :</td>
+                            <td class="glyphe1 "></td>
+                            <td class="glyphe1 ">0.00</td><!--variable à calculer-->
+                        </tr>
+
+                        <tr>
+                            <td class="trait1"></td>
+                            <td colspan="1" class="trait1" ></td>
+                            <td class="glyphe1 trait1">TOTAL CONSOMMATION :</td>
+                            <td class="glyphe1 trait1"></td>
+                            <td class="glyphe3 trait1">{{countReeldevis(prod) | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                    </table>
+
+                    <table class="table " >
+                        <!--tous les montants sont obtenus après calcul des données de la base de données-->
+                        <tr class="trait">
+                            <td class="glyphe1" colspan="1">Frais généraux:</td>
+                            <td >{{countFraisreel() | number:'1.0-2'}}</td><!--pourcentage par rapport à facturation-->
+                            <td class="glyphe1">Frais généraux réels :</td>
+                            <td></td>
+                            <td class="glyphe3">{{countReel() | number:'1.0-2'}}</td><!---->
+                        </tr>
+                    </table>
+
+                    <table class="table ">
+                        <!--tous les montants sont obtenus après calcul des données de la base de données-->
+                        <tr >
+                            <td class="glyphe1 trait" colspan="1"></td>
+                            <td class="glyphe1 trait"></td>
+                            <td class="glyphe1 trait">Dépenses réelles :</td>
+                            <td class="glyphe1 trait"></td>
+                            <td class="glyphe3 trait">{{countTotaloeuvre() + countReel() +countReeldevis() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        <tr >
+                            <td class="glyphe1" >Situations :</td>
+                            <td class="glyphe3">{{countFact() | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td></td>
+                            <td class="glyphe1">Marge :</td>
+                            <td class="glyphe3">{{countMargereel() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div><!--fin col sm 6-->
+
+            <div class="col-sm-6" >
+
+                <h4 class="previs1">DÉPENSES PRÉVISIONNELLES</h4>
+
+                <div class="  col-sm-12 table-responsive">
+                    <table class="table " style="margin-bottom: 0;">
+                        <tbody>
+                        <h5 style="margin-bottom: 0;">Main d'oeuvre :</h5>
+                        <!--tous les montants sont obtenus après calcul des données de la base de données-->
+                        <tr>
+                            <td class="glyphe2">Tx horaire moyen</td>
+                            <td class="glyphe2">{{(countTemps(opti,prods)==0)?0:(countTotalmain(prods,opti)/ countTemps(opti,prods)) | number:'1.0-2' }}</td><!--variable dans la base de données-->
+                            <td class="glyphe1">Main d'oeuvre :</td>
+                            <td class="glyphe1">{{ countTemps(opti,prods) | number:'1.0-2'}}</td>
+                            <td class="glyphe1">{{ countTotalmain(prods,opti) | number:'1.0-2'}}</td>
+                        </tr>
+
+                        <tr>
+                            <td ></td>
+                            <td colspan="1"></td>
+                            <td class="glyphe1">TOTAL MAIN D'OEUVRE :</td>
+                            <td class="glyphe1">{{ countTemps(opti,prods) | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td class="glyphe3">{{ countTotalmain(prods,opti) | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                    <table class="table " style=" margin-top: 70px;">
+                        <h5 style="margin-bottom: 0;">Consommation/Fournitures :</h5>
+                        <!--tous les montants sont obtenus après calcul des données de la base de données-->
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="glyphe1">Matériaux :</td>
+                            <td class="glyphe1"></td>
+                            <td class="glyphe1">{{countTotalproduit(prod,opts) | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="glyphe1 ">Sous-traitants :</td>
+                            <td class="glyphe1 "></td>
+                            <td class="glyphe1 "></td><!--variable à calculer-->
+                        </tr>
+
+                        <tr>
+                            <td class="glyphe1 trait1"></td>
+                            <td colspan="1" class="glyphe1 trait1"></td>
+                            <td class="glyphe1 trait1">TOTAL CONSOMMATION :</td>
+                            <td class="glyphe1 trait1"></td>
+                            <td class="glyphe3 trait1">{{countTotalproduit(prod,opts) | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table " >
+                        <!--tous les montants sont obtenus après calcul des données de la base de données-->
+                        <tbody>
+                        <tr class="trait">
+                            <td class="glyphe1" colspan="1">Frais généraux:</td>
+                            <td ></td>
+                            <td class="glyphe1">Frais généraux prévisionnels :</td>
+                            <td></td>
+                            <td class="glyphe3">{{countPrevisionnel() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table " >
+                        <!--tous les montants sont obtenus après calcul des données de la base de données-->
+                        <tbody>
+                        <tr >
+                            <td class="glyphe1 trait" colspan="1"></td>
+                            <td class="glyphe1 trait"></td>
+                            <td class="glyphe1 trait">Dépenses prévisionnelles :</td>
+                            <td class="glyphe1 trait"></td>
+                            <td class="glyphe3 trait">{{countDepense() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        <tr >
+                            <td class="glyphe1" >Devis :</td>
+                            <td class="glyphe3">{{devis.total * (acco.remise > 0 ? (1 - (acco.remise / 100)) : 1) | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td></td>
+                            <td class="glyphe1">Marge :</td>
+                            <td class="glyphe3" [ngClass]="(countMargeperv() >= 0)?'positif':'negatif'">{{ countMargeperv() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!--fin col sm 6-->
+            </div><!--fin col sm 12-->
+
+
+            <div class="col-sm-offset-6 col-sm-6" >
+
+                <h4 >RECETTES</h4>
+
+                <div class=" table-responsive " style="height: 100px;">
+                    <table class="table table-striped " >
+
+                        <thead class="colorth" >
+                        <tr>
+                            <th>Date :</th>
+                            <th>N° facture :</th>
+                            <th>Situation :</th>
+                            <th>Montant :</th>
+                        </tr>
+                        </thead>
+                        <!--le tbody se crée en fonction des données de la BDD -->
+
+                        <tbody >
+                        <tr *ngFor="let prod of facture">
+                            <td>{{prod.date_echeance | date: 'dd/MM/yyyy'}}</td><!--variable de la base de donnée-->
+                            <td>{{prod.id_facture}}</td><!--variable de la base de donnée-->
+                            <td>{{prod.n_situation}}</td><!--variable de la base de donnée-->
+                            <td>{{prod.montant_ht}}</td><!--variable de la base de donnée-->
+                        </tr>
+
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div><!--fin col sm 6 et offset 6-->
+        </ng-container>
+
+
+
+
+
+
+    </div><!--fin container fluid-->
+
+    <ng-container *ngIf="balance && balance.status == 'en cours'">
+
+        <div class=" container-fluid col-sm-12 ">
+
+            <div class="col-sm-6">
+
+                <h4 class="reel">TOTAL DÉPENSES</h4>
+                <div class="  col-sm-12 table-responsive">
+                    <table class="table " >
+                        <tbody>
+                        <tr>
+                            <td class="glyphe1 trait">Dépenses :</td>
+                            <td class="glyphe3 trait">{{countTotaloeuvre() + countReel() +countReeldevis() | number:'1.0-2'}}</td><!--variable à calculer-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div><!--fin col sm 6-->
+            <div class="col-sm-6" >
+
+                <h4 >TOTAL RECETTES</h4>
+                <div class="  col-sm-12 table-responsive">
+                    <table class="table " >
+                        <tbody>
+                        <tr>
+                            <td class="glyphe1 trait">Recettes :</td>
+                            <td class="glyphe3 trait">{{ ((acco.accompte_value > 0) ? ((countFact()+ acco.accompte_value) ): countFact())  | number:'1.0-2' }}</td><!--variable à calculer-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!--fin col sm 6-->
+
+            <div class="col-sm-12">
+
+                <div class="  col-sm-12 table-responsive">
+                    <table class="table " >
+                        <tbody>
+                        <tr>
+                            <td class="glyphe1 ">Recettes :</td>
+                            <td class="glyphe3 " style="text-align: left">{{ ((acco.accompte_value > 0) ? (countFact()+ acco.accompte_value) : countFact()) | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td  style="text-align: left" [ngClass]="(countpourcentage() >= 0)?'positif':'negatif'">{{ (countpourcentage() > 0 ? countpourcentage() : 0 ) | number:'1.0-2'}}%</td><!--variable à calculer et si positif couleur vert si négatif rouge et noir à zéro-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div><!--fin col sm 12-->
+
+
+
+            <form method="POST" action="#" class="col-sm-1 col-sm-offset-4">
+                <input type="hidden" name="idchantier"><!--id chnatier est une variable à récupérer-->
+                <button [routerLink]="['/balancechantierpdf/'+id_chantier]"class="col-sm-offset-8 col-sm-12 btn" type="button" *ngIf="!print && droitsuser.accescha"  (click)=" imprimer()">Imprimer</button>
+            </form>
+
+        </div><!--fin container fluid-->
+    </ng-container>
+</div>

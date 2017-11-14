@@ -1,0 +1,192 @@
+<div id="contact">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/contacts_grand_gris.png">
+
+                    <span>Contacts</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3 >Ajouter un contact</h3>
+        <div>
+
+            <form name="form" (ngSubmit)="f.form.valid && addContact()" #f="ngForm">
+
+                <fieldset class="col-sm-8 ">
+
+                    <label id="contact-add" class="col-sm-3">* Type :</label>
+                    <select name="type" class="col-sm-3" [(ngModel)]="contact.type" #type="ngModel" required>
+                        <option *ngFor="let type of types" [value]="type">{{type}}</option>
+                    </select>
+
+                    <label class="col-sm-3">N° identité</label>
+                    <input type="text" class=" col-sm-3" name="n_identite" [(ngModel)]="contact.n_identite">
+
+                    <label  class="col-sm-3">Raison sociale :</label>
+                    <input type="text" class="col-sm-3" name="raison_sociale" [(ngModel)]="contact.raison_sociale">
+
+                    <label class="col-sm-3" >N° permis</label>
+                    <input type="text" class="col-sm-3" name="n_permis" [(ngModel)]="contact.n_permis">
+
+                    <label class="col-sm-3" >SIRET :</label>
+                    <input type="text" class="col-sm-3" name="siret" [(ngModel)]="contact.siret">
+
+                    <label class="col-sm-3" >N° sécurité sociale :</label>
+                    <input type="text" class="col-sm-3" name="n_secu" [(ngModel)]="contact.n_secu">
+
+                    <label class="col-sm-3" >Mutuelle :</label>
+                    <input type="text" class="col-sm-3" name="mutuelle" [(ngModel)]="contact.mutuelle">
+
+                    <label class="col-sm-3" >Civilité :</label>
+
+                    <select name="titre"   [(ngModel)]="contact.titre"  class="col-sm-3" style="height: 24px;">
+                        <option [selected]="contact.titre =='Mr'">Mr</option>
+                        <option [selected]="contact.titre =='Mme'">Mme</option>
+                        <option [selected]="contact.titre =='Mlle'">Mlle</option>
+                    </select>
+                    <div class="col-sm-12">
+
+                        <label id="contact-add" class="col-sm-3" >Nom :</label>
+                        <input type="text" class="col-sm-3" name="nom" [(ngModel)]="contact.nom">
+
+                        <label id="contact-add" class="col-sm-3" >* Date d'entrée :</label>
+                        <input type="date" class="col-sm-3" name="date_entree" [(ngModel)]="contact.date_entree" required>
+                    </div>
+
+                    <label  class="col-sm-3" >Prénom :</label>
+                    <input type="text" class="col-sm-3" name="prenom" [(ngModel)]="contact.prenom">
+
+                    <label class="col-sm-3" >Type contrat :</label>
+                    <select id="contrat" class="col-sm-3 input-sm" name="contrat" [(ngModel)]="contact.contrat">
+                        <option *ngFor="let contrat of contrats" [value]="contrat">{{contrat}}</option>
+                    </select>
+
+                    <!--<label class="col-sm-3" >Date de sortie :</label>
+                    <input type="date" class="col-sm-3" name="date_sortie" [(ngModel)]="contact.date_sortie">-->
+
+                    <label  class="col-sm-3" >Adresse :</label>
+                    <input type="text" class="col-sm-9" name="adresse" [(ngModel)]="contact.adresse">
+
+                    <label  class="col-sm-3" >Code postal :</label>
+                    <input type="text" class="col-sm-3" name="code_postal" [(ngModel)]="contact.code_postal">
+
+                    <label  class="col-sm-3" >Ville :</label>
+                    <input type="text" class="col-sm-3" name="ville" [(ngModel)]="contact.ville">
+
+                    <label class="col-sm-3" >Date de naissance :</label>
+                    <input type="date" class="col-sm-3" name="Date_naissance" [(ngModel)]="contact.Date_naissance">
+
+                    <label class="col-sm-3" >Lieu de naissance :</label>
+                    <input type="text" class="col-sm-3" name="lieu_naissance" [(ngModel)]="contact.lieu_naissance">
+
+                    <label class="col-sm-3" >Poste :</label>
+                    <input type="text" class="col-sm-3" name="poste" [(ngModel)]="contact.poste">
+
+
+                    <label  class="col-sm-3" >Téléphone fixe :</label>
+                    <input type="tel" class="col-sm-3" name="numeroFixe" [(ngModel)]="telephoneFixe.numero">
+
+                    <label  class="col-sm-3" >Mobile :</label>
+                    <input type="tel" class="col-sm-3" name="numeroMobile" [(ngModel)]="telephoneMobile.numero">
+
+                    <label  class="col-sm-3" >Téléphone pro :</label>
+                    <input type="tel" class="col-sm-3" name="numeroPro" [(ngModel)]="telephonePro.numero">
+
+                    <label  class="col-sm-3" >Fax :</label>
+                    <input type="tel" class="col-sm-3" name="numeroFax" [(ngModel)]="telephoneFax.numero">
+
+                    <label  class="col-sm-3" >Mail :</label>
+                    <input type="email" class="col-sm-3" name="mail" [(ngModel)]="mail.mail">
+
+                    <label  class="col-sm-3" >Mail pro :</label>
+                    <input type="email" class="col-sm-3" name="mailPro" [(ngModel)]="mailPro.mail">
+
+                    <label class="col-sm-3" >N° Équipe :</label>
+                    <input type="number" class="col-sm-3" name="equipe" [(ngModel)]="contact.equipe">
+
+                    <!--pour la qualification c'est le client qui choisira dans la base de données, au niveau des paramètres de la table qualification-->
+
+                    <label class="col-sm-6" >Chef d'équipe :
+                        <input type="checkbox" name="chef_equipe" [(ngModel)]="contact.chef_equipe">
+                    </label>
+
+                    <!--<label class="col-sm-3" >Qualification :</label>
+                    <select name="qualification" class="col-sm-3 input-sm" [(ngModel)]="qualifChoisi">
+                        <option *ngFor="let qualification of qualifications" [value]="qualification.id_qualification" [title]="qualification.designation">{{qualification.id_qualification}}</option>
+                    </select>-->
+
+
+                </fieldset>
+
+                <fieldset class="col-sm-4">
+
+                    <label class="col-sm-6" >Heures/mois :</label>
+                    <input type="number" class="col-sm-6" name="heuremois" [(ngModel)]="contact.heuremois">
+
+                    <label class="col-sm-6" >N° TVA intracommunautaire :</label>
+                    <input type="text" class="col-sm-6" name="TVAintra" [(ngModel)]="contact.TVAintra">
+
+                    <label class="col-sm-6" >Code APE :</label>
+                    <input type="text" class="col-sm-6" name="APE" [(ngModel)]="contact.APE">
+
+                    <label class="col-sm-6" >Visite médicale :</label>
+                    <input type="date" class="col-sm-6" name="visite_medicale" [(ngModel)]="contact.visite_medicale">
+
+                    <label class="col-sm-6" >Validité amiante :</label>
+                    <input type="date" class="col-sm-6" name="validite_amiante" [(ngModel)]="contact.validite_amiante">
+
+                    <label class="col-sm-6" >Travail en hauteur :</label>
+                    <input type="date" class="col-sm-6" name="travail_hauteur" [(ngModel)]="contact.travail_hauteur">
+
+                    <label class="col-sm-6" >Secourisme :</label>
+                    <input type="date" class="col-sm-6" name="secourisme" [(ngModel)]="contact.secourisme">
+
+                    <label class="col-sm-6" >Habilitation électrique :</label>
+                    <input type="date" class="col-sm-6" name="H0B0" [(ngModel)]="contact.H0B0">
+
+
+                    <label class="col-sm-6">Autorisation conduite :</label>
+                    <input type="text" class="col-sm-6" name="autorisation_conduite" [(ngModel)]="contact.autorisation_conduite">
+
+
+                    <label class="col-sm-6" >Condition générale :</label>
+                    <input type="text" class="col-sm-6" name="condition_generale" [(ngModel)]="contact.condition_generale" >
+
+                    <label class="col-sm-6" >Site Web :</label>
+                    <input type="url" class="col-sm-6" name="site" [(ngModel)]="contact.site">
+
+
+                    <label  class="col-sm-6" >Statut :</label>
+                    <select name="statut" class="col-sm-6">
+                        <option *ngFor="let statut of statuts" [value]="statut">{{statut}}</option>
+                    </select>
+
+
+                </fieldset>
+                <fieldset class="col-sm-12" style="margin-bottom: 10px;">
+                    <label class="col-sm-3">Notes :</label>
+                    <textarea class="col-sm-12" rows="4" name="notes" [(ngModel)]="contact.note"></textarea>
+
+                </fieldset>
+
+                <button *ngIf="droitsuser.ajoutcontact" type="submit" [disabled]="loading" class="btn btn-default  col-sm-offset-11" >Valider</button>
+                <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

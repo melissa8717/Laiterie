@@ -1,0 +1,78 @@
+<div  *ngIf="!vehimat.print" class="col-sm-3 bord">
+    <form class="form-horizontal" action="#" method="POST">
+        <h5 >Recherche:</h5>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Modèle :</label>
+            <div class="col-sm-7">
+                <input
+                        type="text"
+                        class="form-control"
+                        id="libelle" placeholder=""
+                        name="libelle"
+                        [(ngModel)] = "seek.libelle"
+                        (ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Marque :</label>
+            <div class="col-sm-7">
+                <input
+                        type="text"
+                        class="form-control"
+                        id="marque" placeholder=""
+                        name="marque"
+                        (ngModelChange) ="fireLoad()"
+                        [(ngModel)] = "seek.marque">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Immat :</label>
+            <div class="col-sm-7">
+                <input type="text"
+                       class="form-control"
+                       id="immatriculation" placeholder=""
+                        name="immatriculation"
+                       (ngModelChange) ="fireLoad()"
+                       [(ngModel)] = "seek.immatriculation"
+                >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Type :</label>
+            <div class="col-sm-7">
+                <input
+                        type="text"
+                        class="form-control"
+                        id="annee" placeholder=""
+                        name="annee"
+                        (ngModelChange) ="fireLoad()"
+                        [(ngModel)] = "seek.annee">
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Choix :</label>
+            <div class="col-sm-7">
+                <input
+                        type="text"
+                        class="form-control"
+                        id="vehimate" placeholder=""
+                        name="vehimate"
+                        (ngModelChange) ="fireLoad()"
+                        [(ngModel)] = "seek.vehimate">
+
+            </div>
+        </div>
+
+
+
+
+
+    </form>
+
+</div><!--fin sm 3-->

@@ -1,0 +1,157 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/chantiers_grand_gris.png">
+
+                    <span *ngIf="!print">Chantiers</span>
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <!--garder l'id du chantier en passant d'un onglet à l'autre possibilité peut-être d'un session ou d'un cookie qui disppait à la fermeture de la page-->
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li *ngIf="droitsuser.accescha"><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
+                    <li *ngIf="droitsuser.accescha"><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+                    <li *ngIf="droitsuser.accesdev"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation" class="active"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
+                    <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
+                    <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
+                   <!-- <li role="presentation"><a href="#">Stats</a></li>-->
+                    <li *ngIf="droitsuser.accesbg" role="presentation"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div class=" container-fluid col-sm-8 col-sm-offset-2">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <div class="table-responsive" style="height: 250px;margin-bottom: 0;">
+
+            <table class="table table-striped col-sm-12 " style="border:1px solid black;margin-bottom: 0;">
+
+                <thead >
+                <tr>
+                    <th class="col-sm-6">Main Oeuvre du devis</th>
+                    <th class="col-sm-3">Heures</th>
+                    <th class="col-sm-3">H.T. en €</th>
+                </tr>
+                </thead>
+
+                    <tbody >
+                    <!--les 2 tr qui suivent, sont créés à partir d'un boucle qui est l'ensemble des heures passé sur le chantier donc en corélation avec le planning chantier-->
+
+                    <tr *ngFor="let opti of opt">
+                        <ng-container *ngIf="opti.salaire_charge>0">
+                            <td>{{opti.libelle}}</td>
+                            <td>{{opti.quantite}}</td>
+                            <td>{{calctotalopt(opti) | number:'1.0-2'}}</td>
+                        </ng-container>
+                    </tr>
+                    <tr *ngFor="let prods of model">
+                        <ng-container *ngIf="prods.salaire_charge>0">
+                            <td>{{prods.libelle}}</td>
+                            <td>{{prods.quantite}}</td>
+                            <td>{{calctotal(prods) | number:'1.0-2'}}</td>
+                        </ng-container>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <div  class="table-responsive" >
+            <table class="table table-striped col-sm-12 " style="border:1px solid black;margin-bottom: 0; margin-top:0;">
+                <tbody>
+                <tr>
+                    <td colspan="2">Total : </td>
+                    <td>{{countTotalmain() | number:'1.0-2'}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div  class="table-responsive" style="height: 250px;">
+            <table class="table table-striped" style="border: 1px solid black; border-bottom:1px solid black; margin-top: 10px;height: 50px;">
+                <thead>
+                <tr>
+                    <th class="col-sm-6">Produits du devis</th>
+                    <th class=" col-sm-offset-3  "></th>
+                    <th class=" col-sm-3 ">H.T. en €</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let prod of model">
+                    <ng-container *ngIf="prod.id_contact>0">
+                        <td>{{prod.libelle}}</td>
+                        <td>{{prod.quantite}}</td>
+                        <td>{{totalproduit(prod) | number:'1.0-2'}}</td>
+                    </ng-container>
+                </tr>
+
+                <tr *ngFor="let opts of opt" style="border-bottom: 1px solid black;">
+                    <ng-container *ngIf="opts.id_contact>0">
+                        <td>{{opts.libelle}}</td>
+                        <td>{{opts.quantite}}</td>
+                        <td>{{totalproduitopt(opts) | number:'1.0-2'}}</td>
+                    </ng-container>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div  class="table-responsive" >
+            <table class="table table-striped col-sm-12 " style="border:1px solid black;margin-bottom: 0;">
+                <tbody>
+                <tr>
+                    <td colspan="2">Total : </td>
+                    <td>{{countTotalpds() | number:'1.0-2'}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-responsive" style="margin-top:15px;">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th colspan="11">Total :</th>
+                    <th  style="padding-left: 0;">{{countTotal() | number:'1.0-2'}}</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accescha" (click)=" imprimer()">Imprimer</button>
+
+    </div><!--fin container fluid-->
+</div>

@@ -1,0 +1,103 @@
+
+
+<div id="achat">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/planning_grand_gris.png" alt="planning">
+
+                    <span>Remplir dossier intempéries employés</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <body>
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3>Remplir le dossier intempéries employés</h3>
+
+        <div class="col-sm-3 " style="margin-top:10px;">
+            <form class="form-horizontal" action="#" method="POST">
+
+
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Dossier: </label>
+                    <div class="col-sm-7">
+                        <input type="text" name="dossier_int" value="" class="col-sm-12"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Chantier : </label>
+                    <div class="col-sm-7">
+                        <input type="text" name="nom_chantier" value="" class="col-sm-12"/>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Code : </label>
+                    <div class="col-sm-7">
+                        <input type="text" name="code_chantier" value="" class="col-sm-12"/>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+            </form>
+
+        </div><!--col-sm-3-->
+
+        <div class="col-sm-9 bordure4">
+
+
+            <div class=" table-responsive " >
+                <table  class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th>Valider</th>
+                        <th>Du</th>
+                        <th>Heure début</th>
+                        <th>Au</th>
+                        <th>Heure fin</th>
+
+
+
+                    </tr>
+                    </thead>
+
+
+
+                    <tr>
+                        <td class="col-sm-1"> <input type="checkbox" value="select" class="col-sm-12"></td>
+                        <!-- la checkbox va générer une boite d'alerte ou sera écrit " Vous allez créer un nouveau dossier"
+                        Puis il y aura en dessous de fonction "oui" "non" le oui créra un numéro dossier qui menera a la page dossier_int.html le non reviendra
+                        a la page new_dossier_int.html Sans cela, sans cocher l case il n'y a pas de dossier de créer-->
+
+
+                        <td class="col-sm-1">17/04/2017</td>
+                        <td class="col-sm-1">08.00</td>
+
+                        <td class="col-sm-1">17/04/2017</td>
+                        <td class="col-sm-1">17.00</td>
+
+
+                    </tr>
+
+                </table>
+
+                <button *ngIf="droitsuser.ajoutpc" class="btn btn-default input-sm col-sm-offset-11" style="margin-bottom: 5px;  ">Valider</button><!--le bouton valider a la meme fonction que la checkbox-->
+            </div>
+        </div>
+    </div>
+    </body>
+</div>

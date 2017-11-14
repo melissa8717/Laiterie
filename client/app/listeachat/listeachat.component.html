@@ -1,0 +1,81 @@
+<div id="achat">
+    <header >
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <img *ngIf="!print"  src="image/menu/produits_grand_gris.png" alt="produit achat">
+                    <span *ngIf="!print">Produits Achats</span>
+                </div>
+            </div><!--container-fluid-->
+        </div>
+
+
+    </header>
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a *ngIf="!print"  [routerLink]="['/ajout_produit_achat']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Créer un produit</span>
+        </div>
+        <button class="col-sm-offset-9 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accesproa" (click)=" imprimer()">Imprimer</button>
+
+
+       <rechercheachat #recherche [achat]="this"></rechercheachat>
+
+        <div class="col-sm-9 ">
+            <h3>Liste des produits d'achat :</h3>
+
+            <div style="height: 400px;">
+                <table  class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th>Référence :</th>
+                        <th>Libellé :</th>
+                        <th>Prix :</th>
+                        <th>Fournisseur :</th>
+                        <th>Catégorie :</th>
+
+
+                        <th>Action :</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody class="">
+
+                        <tr *ngFor="let product of filteredProducts">
+                            <td>{{product.reference}}</td>
+                            <td>{{product.libelle}}</td>
+                            <td>{{product.prix_achat| currency:'EUR':true:'1.2-2'}}</td>
+                            <td>{{product.nom}}</td>
+                            <td>{{product.catlibel}}</td>
+
+                            <td><div class="input-group">
+                                <input type="hidden" class="form-control" [name]="product.id_produit">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right" >
+                                        <li *ngIf="droitsuser.modifproa"><a [routerLink]="['/produitachat/' + product.id_produit+'/'+ product.num_version]">Modifier</a></li>
+                                        <li *ngIf="droitsuser.supproa" role="separator" class="divider"></li>
+                                        <li *ngIf="droitsuser.supproa"><a (click)="delete(product.id_produit)">Supprimer</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                            </div><!-- /input-group --></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div><!--div table-->
+
+
+        </div>
+
+
+    </div><!--container-fluid-->
+
+
+</div><!--id achat-->

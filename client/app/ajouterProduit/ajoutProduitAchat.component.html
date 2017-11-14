@@ -1,0 +1,139 @@
+<div id="vente">
+    <header>
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <img src="image/menu/produits_grand_gris.png" alt="produit vente">
+                    <span>Ajouter un produit achat</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class=" container-fluid">
+        <div class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+        <h3>Ajouter un produit achat</h3>
+
+        <form name="form" (ngSubmit)="f.form.valid && addProduct()" #f="ngForm">
+
+            <!-- toutes les infor required -->
+            <article class="col-sm-4">
+
+                <div style="height: 10%; width: 100%;">
+                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url" src="image/test.ico" alt="..." class="img-thumbnail images"/>
+                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
+                </div>
+
+                <!-- libelle -->
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">* Libellé : </label>
+                    <div>
+                        <input type="text" class="col-sm-7" name="libelle" [(ngModel)]="produit.libelle" required/>
+                    </div>
+                </div>
+
+                <!-- fournisseur (cherche dans la base) -->
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">* Fournisseur :</label>
+                    <select name="fournisseur" class="col-sm-7" [(ngModel)]="fournisseur_choisi" #fournisseur="ngModel"
+                            required>
+                        <option *ngFor="let f of fournisseurs" [value]="f.nom">{{f.nom}}</option>
+                    </select>
+                </div>
+
+                <!-- reference -->
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">* Référence : </label>
+                    <div>
+                        <input type="text" class="col-sm-7" name="reference" [(ngModel)]="produit.reference"
+                               (ngModelChange)="Allref()" required/>
+                    </div>
+                </div>
+
+                <!-- categorie (cherche dans la base)-->
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">* Catégorie : </label>
+                    <select name="categorie" class="col-sm-7" [(ngModel)]="cat_choisi" #categorie="ngModel" required>
+                        <option *ngFor="let cat of categories" [value]="cat.libelle">{{cat.libelle}}</option>
+                    </select>
+                </div>
+
+                <!-- unite -->
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5" style="padding-left: 0;">* Unité :</label>
+                    <select name="unite" class="col-sm-3" [(ngModel)]="produit.unite" #type="ngModel" required>
+                        <option *ngFor="let unite of unites" [value]="unite">{{unite}}</option>
+                    </select>
+                </div>
+
+                <!-- prix achat ht-->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">* Prix achat H.T. : </label>
+                    <div>
+                        <input type="text" class="col-sm-7" name="prixachat" [(ngModel)]="produit.prix_achat" required/>
+                    </div>
+                </div>
+
+                <!-- tva -->
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5" style="padding-left: 0;">* TVA :</label>
+                    <select name="tva" class="col-sm-3" [(ngModel)]="tva_choisi" #tva="ngModel" required>
+                        <option *ngFor="let tva of tvas" [value]="tva.taux">{{tva.taux}}</option>
+                    </select>
+                </div>
+
+
+            </article>
+
+            <!-- description -->
+            <article class="col-sm-7 gauche">
+                <label>Description : </label>
+                <textarea class="form-control" rows="4" [(ngModel)]="produit.description" name="description">
+                    Ajouter une description :
+                </textarea>
+            </article>
+
+            <!-- notes -->
+            <article class="col-sm-7 gauche">
+                <label>Notes : </label>
+                <textarea class="form-control" rows="4" [(ngModel)]="produit.note"
+                          name="note">Ajouter une note :</textarea>
+            </article>
+
+            <!-- stocks -->
+            <article class="col-sm-7 gauche">
+
+                <h5>Stock :</h5>
+                <div class="table table-responsive">
+                    <table class="table  ">
+                        <thead>
+                        <tr>
+                            <th>Stock minimum :</th>
+                            <th>Stock maximum</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="number" name="stockmini" [(ngModel)]="produit.stockmini"/></td>
+                            <td><input type="number" name="stockmaxi" [(ngModel)]="produit.stockmaxi"/></td>
+                            <!--si proposition de commande est >0 créer un bon de commande ou ajouter à un bon existant en demandant à l'opérateur
+                            si il veut bien ajouter cette commande lors du clique sur modifier et envoyer la commande par mail-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+
+            <button *ngIf="droitsuser.ajoutproa" type="submit" [disabled]="loading"
+                    class="col-sm-offset-10 col-sm-1 input-sm" (click)="uploaderImg.queue[0].upload();">Enregistrer
+            </button>
+        </form>
+        <!--une fois modifier créer un pdf à mettre dans la GED-->
+
+    </div>
+</div>

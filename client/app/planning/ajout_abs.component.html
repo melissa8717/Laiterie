@@ -1,0 +1,103 @@
+
+
+<div id="case_plan">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/Planning_grand_gris.png" alt="planning">
+
+                    <span>Ajouter une absence</span></div>
+
+            </div>
+        </div>
+    </header>
+
+
+
+
+            <table class="table table-striped " style="border: 2px solid; border-color: white; padding-left: 10px; padding-right: 0px; text-align: left">
+                <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+                    <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+                </div>
+                <tr>
+                    <td class="previs1 col-sm-12">Ajouter une absence</td>
+                </tr>
+
+
+
+                <tr class="col-sm-12"><td class="col-sm-1" style="padding-left: 10px;">Employé :</td>
+                    <td class="col-sm-1"><input type="text" name="contact" value=" " class=" col-sm-11"/> </td>
+
+
+                  <!-- variable a recuperer dans bdd-->
+                </tr>
+
+                <tr class="col-sm-12"><td class="col-sm-1">Equipe :</td>
+                    <td class="col-sm-1">	<input type="text" name="nom_equip" value=""  class=" col-sm-11"/> </td>
+
+
+                   <!--variable a recuperer dans bdd-->
+                </tr>
+
+
+                <tr class="col-sm-12"><td class="col-sm-1">Date du :</td>
+                  <td class="col-sm-1"><input type="text" name="date_deb_abs" value=" " class=" col-sm-11"/> </td>
+
+
+                    <!--creer boucle variable a recuperer dans bdd-->
+                </tr>
+
+
+                <tr class="col-sm-12"><td class="col-sm-1">Jusqu'au :</td>
+                    <td class="col-sm-1"><input type="text" name="date_deb_abs" value=" " class=" col-sm-11"/> </td>
+
+
+
+
+
+     <!--creer boucle variable a recuperer dans bdd-->
+        </tr>
+
+
+        <tr class="col-sm-12"><td class="col-sm-1">Motifs :</td>
+            <td class="col-sm-1">
+
+                <select id="type" class="col-sm-6">
+                    <option>Absence injustifiée</option>
+                    <option>Congés sans solde</option>
+                    <option>Congés payés</option>
+                    <option>RTT</option>
+                    <option>Arrêt maladie</option>
+                    <option>Prolongation</option>
+                    <option>Formation</option>
+                    <option>Congés maternité</option>
+                    <option>Congés paternité</option>
+                    <option>Autres</option>
+
+                </select>
+
+<!--creer boucle variable a recuperer dans bdd-->
+
+
+    </td>
+
+
+    <tr class="col-sm-12"><td class="col-sm-1">Remarque :</td>
+   <td class="col-sm-1"><input type="text" name="note_abs" value=" " class=" col-sm-11"/> </td>
+
+    </tr>
+
+</table>
+
+</div><!--creer boucle variable a recuperer dans bdd-->
+
+
+
+
+
+
+<button *ngIf="droitsuser.ajoutpb || droitsuser.ajoutpc" class="orange col-sm-offset-8 btn btn-default input-sm"> Valider</button>
+

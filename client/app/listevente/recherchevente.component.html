@@ -1,0 +1,44 @@
+<!-- la recherche -->
+<div *ngIf="!vente.print" class="col-sm-3 ">
+    <h4 style="color: white;">Recherche :</h4>
+
+    <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && debug()" #f="ngForm" novalidate>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Libellé : </label>
+            <div class="col-sm-7">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Libellé"
+                       [(ngModel)]="seek.libelle"
+                       (ngModelChange)="fireLoad()"
+                       name="libelle">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Référence: </label>
+            <div class="col-sm-7">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Référence"
+                       [(ngModel)]="seek.reference"
+                       (ngModelChange)="fireLoad()"
+                       name="reference">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Catégorie: </label>
+            <div class="col-sm-7">
+                <input type="text"
+                       class="form-control"
+                       [(ngModel)]="seek.categorie"
+                       (ngModelChange)="fireLoad()"
+                       placeholder="Catégorie"
+                       name="categorie">
+            </div>
+        </div>
+
+    </form>
+
+</div><!--col-sm-3-->

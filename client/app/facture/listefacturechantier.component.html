@@ -1,0 +1,84 @@
+<div id="chantier">
+    <header>
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <img *ngIf="!print" src="image/menu/chantiers_grand_gris.png">
+                    <span *ngIf="!print">Chantiers</span>
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+            <div *ngIf="!print"  class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                    <li *ngIf="droitsuser.accesfact"><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
+                    <li *ngIf="droitsuser.accesfact"><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+                    <li *ngIf="droitsuser.accesdev"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
+                    <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
+                    <li *ngIf="droitsuser.accesfact" role="presentation" ><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
+                    <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
+                    <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
+                    <li *ngIf="droitsuser.accesfact" role="presentation" class="active"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
+                    <!--<li role="presentation"><a href="#">Stats</a></li>-->
+                    <li *ngIf="droitsuser.accesbg" role="presentation"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <recherchechantierfacture #recherche [liste] = "this" ></recherchechantierfacture>
+
+        <div class="col-sm-9">
+            <h3 >Liste des factures</h3>
+
+
+            <div class="  table-responsive">
+                <table class="table table-striped ">
+                    <thead><th>N° facture</th><th>Situation</th><th>N° devis</th><th>Date</th><th>Date d'échéance</th><th>Date démarrage</th><th>Statut</th><th>Montant H.T.</th><th>TVA</th><th *ngIf="!print">Actions</th></thead>
+                    <tbody >
+
+                    <tr *ngFor="let prod of fact">
+                        <td>{{prod.nfactclient}}</td><td>{{prod.n_situation}}</td><td>{{prod.id_devis}}-{{prod.id_version}}</td><td>{{prod.date_fact | date: 'dd/MM/yyyy'}}</td><td>{{prod.date_echeance | date: 'dd/MM/yyyy'}}</td><td>{{prod.date_demarrage | date: 'dd/MM/yyyy'}}</td><td>{{prod.status}}</td><td>{{prod.montant_ht}}</td><td>3</td>
+                        <td *ngIf="!print">
+                            <div class="input-group">
+                                <input type="hidden" class="form-control"  name="identifiant de la facture"><!--variable pour l'identifiant-->
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li *ngIf="(prod.factured != 1)"><a [routerLink]="['/modifierfacture',prod.id_facture,prod.n_situation]">Ouvrir</a></li><!--ouvrir en un PDF-->
+                                        <li *ngIf="droitsuser.accesfact"><a [routerLink]="['/facture_fini',prod.id_facture,prod.n_situation]">Imprimer</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                            </div>
+                        </td>
+                        <!-- /input-group --></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--fin col sm 9-->
+
+    </div>
+    <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accesfact" (click)=" imprimer()">Imprimer</button>
+
+</div>

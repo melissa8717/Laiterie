@@ -1,0 +1,26 @@
+{
+  "name": "WBAT-Server-Edition",
+  "version": "1.0.0",
+  "description": "Server for WBAT APPLICATION",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cornflourblue/mean-angular2-registration-login-example.git"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.1.0",
+    "body-parser": "^1.13.2",
+    "cors": "^2.8.1",
+    "express": "^4.13.0",
+    "express-jwt": "^3.0.1",
+    "html-pdf": "^2.1.0",
+    "jsonwebtoken": "^5.0.2",
+    "lodash": "^3.10.0",
+    "multer": "^1.3.0",
+    "mysql": "^2.13.0",
+    "date-fns": "^1.28.5",
+    "q": "^1.4.1",
+    "request": "^2.58.0",
+    "rootpath": "^0.1.2"
+  },
+  "license": "MIT"
+}

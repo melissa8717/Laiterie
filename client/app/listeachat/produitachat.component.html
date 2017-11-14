@@ -1,0 +1,299 @@
+<div id="vente">
+
+    <style type="text/css" media="print">
+        @page { size: landscape; }
+    </style>
+    <header>
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <img *ngIf="!print" src="image/menu/produits_grand_gris.png" alt="produit vente">
+
+                    <span *ngIf="!print">Produits Achats</span>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class=" container-fluid" style="size:landscape;size: 21.0cm;">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3>Fiche produit achat</h3>
+
+        <form name="form" (ngSubmit)="f.form.valid && modifyProduct()" #f="ngForm">
+            <article class="col-sm-4">
+
+                <div style="height: 10%; width: 50%;">
+                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url && product.image" src="http://{{loc}}:4000/image/produit/{{product.id_produit}}/{{product.image}}" alt="..." class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url && !product.image" src="image/test.ico" alt="..." class="img-thumbnail images" />
+                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
+                </div>
+
+                <div class="form-group col-sm-12" >
+                    <span class="gras col-sm-5">Libellé : </span>
+
+                    <textarea name="libelle" [(ngModel)]="updateProduct.libelle" class="col-sm-7" rows="3"></textarea>
+                </div>
+                <div class="form-group col-sm-12" >
+                    <span class="gras col-sm-5">Référence : </span>
+
+                    <input type="text"  name="reference"
+                           [(ngModel)]="updateProduct.reference" class="col-sm-7"/>
+
+                </div>
+                <div class="form-group col-sm-12" >
+                    <span class="gras col-sm-5">Catégorie : </span>
+
+                    <input type="text"  name="libcat"
+                           [(ngModel)]="updateProduct.libcat" class="col-sm-7"/>
+                </div>
+
+                <div class="form-group col-sm-12" >
+                    <span class="gras col-sm-5">Unité : </span>
+                    <input type="text"  name="unite"
+                           [(ngModel)]="updateProduct.unite" class="col-sm-7"/>
+                </div>
+                <div class="form-group col-sm-12" >
+                    <span class="gras col-sm-5">Fournisseur : </span>
+                    <span class="col-sm-7">{{product.raison_sociale? product.raison_sociale : product.nom}}</span>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" >Prix achat H.T. : </label>
+                    <div >
+                        <input type="number" step="0.01" name="prixachat"
+                               [(ngModel)]="updateProduct.prix_achat" class="col-sm-7"/><!--variable pour value-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" >Stock : </label>
+                    <div >
+                        <input type="number" name="stock"
+                               value="{{updateProduct.stock}}" class="col-sm-7" min="0" disabled/><!--variable pour value-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label"  >Stock minimum : </label>
+                    <div >
+                        <input type="number" name="stockmini"
+                               value="{{updateProduct.stockmini}}" class="col-sm-7" disabled/><!--variable pour value-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" >Stock maximum :  </label>
+                    <div >
+                        <input type="number"
+                               name="stockmaxi"
+                               value="{{updateProduct.stockmaxi}}"
+                               class="col-sm-7"
+                               disabled/><!--variable pour value-->
+                    </div>
+                </div>
+
+            </article>
+
+            <!-- description -->
+            <article class="col-sm-7 gauche">
+
+                <div class="form-group col-sm-12 justif" style="margin-top: 10px;">
+                    <span style="font-weight: bold;">Description:</span>
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <textarea *ngIf="!print"  name="description" class="form-control" rows="3"
+                              [(ngModel)]="updateProduct.description">
+
+                    </textarea>
+                </div>
+
+            </article>
+
+            <!-- notes -->
+            <article class="col-sm-7 gauche">
+
+                <div class="form-group col-sm-12 justif">
+                    <span style="font-weight: bold;">Note: </span>
+                    <!--variable à l'intérieur du second span-->
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <textarea *ngIf="!print" type="text" name="note" class="form-control" rows="3" [(ngModel)]="updateProduct.note"></textarea>
+                </div>
+
+            </article>
+
+            <div class="col-sm-7 gauche">
+
+                <!-- historique de modifs -->
+                <h5>Historique :</h5>
+                <div class="table table-responsive" style="height: 190px;">
+                    <table class="table  " >
+                        <thead>
+                        <tr>
+                            <th>Numéro de version :</th>
+                            <th>Date : </th>
+                            <th>Auteur</th>
+                            <th>Valeur : </th>
+                            <th>Voir : </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let h of historique">
+                            <td>{{h.num_version}}</td>
+                            <td>{{h.date_ajout | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{h.firstname+ " "+h.lastname}}</td>
+                            <td>{{h.prix_achat | currency:'EUR':true:'1.0-2'}}</td>
+                            <td *ngIf="h.num_version != num_version">
+                                <a [routerLink]="['/produitachat/' + h.id_produit + '/' + h.num_version]">
+                                    <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                            <td *ngIf="h.num_version == num_version">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button *ngIf="!print && droitsuser.modifproa" type="submit" [disabled]="loading" class="input-sm col-sm-offset-10 col-sm-1" (click)="uploaderImg.queue[0].upload();">Modifier</button>
+        </form>
+
+        <!--une fois modifier créer un pdf à mettre dans la GED-->
+
+        <div class="col-sm-12 bas">
+            <form method="POST" action="#">
+                <input type="hidden" name="identifiant du produit"><!--variable correspondant a l'id produit-->
+                <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print && accesproa" (click)=" imprimer()">Imprimer</button>
+            </form>
+        </div>
+
+
+
+
+        <!--------------------------------------------------GED---------------------------------------------------------------------->
+
+
+        <div class="col-sm-12">
+            <h3 >GED</h3>
+
+            <div class="col-md-3">
+
+                <h3>Choisir Fichier</h3>
+
+                <div ng2FileDrop
+                     [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                     (fileOver)="fileOverBase($event)"
+                     [uploader]="uploader"
+                     class="well my-drop-zone">
+                    Base drop zone
+                </div>
+
+                <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+
+            </div>
+
+            <div class="col-md-5" style="margin-bottom: 40px">
+
+                <h3>File d'attente</h3>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Etat</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of uploader.queue">
+                        <td><strong>{{ item?.file?.name }}</strong></td>
+                        <td class="text-center">
+                            <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                            <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                            <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                        </td>
+                        <td nowrap>
+                            <button *ngIf="droitsuser.ajoutproa" type="button" class="btn btn-success btn-xs"
+                                    (click)="item.upload(); getGed(id_produit)" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                <span class="glyphicon glyphicon-upload"></span> Mettre en ligne
+                            </button>
+                            <button *ngIf="droitsuser.supproa" type="button" class="btn btn-warning btn-xs"
+                                    (click)="item.cancel()" [disabled]="!item.isUploading">
+                                <span class="glyphicon glyphicon-ban-circle"></span> Annuler
+                            </button>
+                            <button *ngIf="droitsuser.supproa" type="button" class="btn btn-danger btn-xs"
+                                    (click)="item.remove()">
+                                <span class="glyphicon glyphicon-trash"></span> Retirer de la liste
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div>
+                    <div>
+                        Avancement:
+                        <div class="progress" style="">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                        </div>
+                    </div>
+                    <button *ngIf="droitsuser.ajoutproa" type="button" class="btn btn-success btn-s"
+                            (click)="uploader.uploadAll(); getGed(id_produit);" [disabled]="!uploader.getNotUploadedItems().length">
+                        <span class="glyphicon glyphicon-upload"></span> Tout mettre en ligne
+                    </button>
+                    <button *ngIf="droitsuser.supproa" type="button" class="btn btn-warning btn-s"
+                            (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Tout annuler
+                    </button>
+                    <button *ngIf="droitsuser.supproa" type="button" class="btn btn-danger btn-s"
+                            (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                        <span class="glyphicon glyphicon-trash"></span> Tout retirer de la liste
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="col-md-4" style="margin-bottom: 40px">
+
+                <h3>GED</h3>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Date d'ajout</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of ged">
+                        <td><strong><a href="http://{{loc}}:4000/ged/produits/{{item.id_produit}}/{{item.url}}" target="_blank">{{ item.nom }}</a></strong></td>
+                        <td nowrap>{{item.date_ajout | date : 'dd/MM/yyyy'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+            <div class="col-sm-12 bas">
+                <form method="POST" action="#">
+                    <button class="col-sm-offset-10 col-sm-1 btn btn btn-default " style="padding-left:-40px;" *ngIf="!print && droitsuser.modifproa" type="submit" [disabled]="loading" >Modifier</button>
+
+                    <input type="hidden" name="identifiant du produit"><!--variable correspondant a l'id produit-->
+                    <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accesproa" (click)=" imprimer()">Imprimer</button>
+                </form>
+            </div>
+    </div><!--fin container fluid-->
+
+</div><!--fin id achat-->

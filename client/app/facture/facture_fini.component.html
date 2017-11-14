@@ -1,0 +1,216 @@
+<div id="devis">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/facturation_grand_gris.png">
+
+                    <span *ngIf="!print">Facturation</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+</div>
+<div id="dev">
+    <div class=" container "  id="pageContent" style="background-color: white;">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+
+
+        <form (ngSubmit)="submit()">
+
+            <fieldset class="separe">
+                <div class="row marge">
+                    <img  *ngIf="!print" src="image/logo_wBAT_horizontal.png"  style="margin-left:100px;">
+                </div>
+                <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
+                <div class="row marge">
+                    <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:0px; position: absolute;">
+                </div>
+                <p>&nbsp;</p>
+
+                <div  style="margin-left: 50%;margin-top: 70px;">
+                    <div class="form-group" *ngIf="model.raison_sociale!=('' || 'null')">
+                        <span>{{model.raison_sociale}}<!--variable--></span>
+                    </div>
+                    <div class="form-group" >
+                        <span>{{model.nom}} {{model.prenom}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.cadresse}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.ccp}} </span>
+
+                        <span > {{model.cville}}<!--variable--></span>
+                    </div>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+
+                    <div class="form-group"  >
+                        <span  style="margin-top: 40px;">{{fact.villefact}}</span> , le <span>{{model.date_fact | date:'dd-MM-yyyy'}}</span>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de facturation: </span><span >{{model.nfactclient}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de situation: </span><span >{{n_situation}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-5"style="text-decoration: underline;" >N° du devis: </span><span >{{model.id_devis}} </span><span class="col-sm-offset-1"> version: {{model.id_version}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-5" >Nom du chantier: </span><span style="font-weight: bold;" >{{model.nom_chantier}}<!--variable--></span>
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+            <fieldset class="marge1">
+                <!--boucle pour éditer les lignes du tableau de facturation et calcul posiible ou déjà en bdd-->
+
+
+                <table class="table table-striped">
+                    <thead style="background-color: #9d9d9d;">
+                    <tr >
+                        <th style="border-left: 1px solid black;  border-top:1px solid black;" class="col-sm-1">Référence</th>
+                        <th  style=" border-top:1px solid black;" class="col-sm-4">Article</th>
+                        <th style=" border-top:1px solid black;" class="col-sm-1">Unité</th>
+                        <th style="border-top:1px solid black;" class="col-sm-1">Qte</th>
+                        <th style=" border-top:1px solid black;" class="col-sm-1">P.U. en €</th>
+                        <th style=" border-top:1px solid black;" class="col-sm-1">PU H.T. en €</th>
+                        <th style=" border-top:1px solid black;" class="col-sm-1">Total H.T. en €</th>
+                        <th style=" border-top:1px solid black;width: 70px;" class="col-sm-1">%</th>
+                    </tr>
+                    </thead>
+
+                    <tbody style="border:1px solid black;">
+                    <tr  *ngFor="let situas of situa, let i =index; trackBy:customTrackBy">
+
+                        <td style="border-left: 1px solid black; border-right: 1px solid black;">{{situa[i].id_produit}}-{{situa[i].num_version}}</td>
+                        <td style=" border-right: 1px solid black;">{{situa[i].libelle}}</td>
+                        <td style=" border-right: 1px solid black;">{{situa[i].unite}}</td>
+                        <td style=" border-right: 1px solid black;">{{situa[i].qtefact}}</td>
+                        <td style=" border-right: 1px solid black;">{{situa[i].prixfact}}</td>
+                        <td style=" border-right: 1px solid black;">{{situa[i].qtefact * situa[i].prixfact | number:'1.0-2'}}</td>
+                        <td style=" border-right: 1px solid black;">{{totaligne(situa[i]) | number:'1.0-2'}}</td>
+                        <td style=" border-right: 1px solid black;">{{situa[i].pourcentage | number:'1.0-2'}}  </td>
+
+                    </tr>
+                    <tr ><td colspan="8" *ngIf="option.length >0">Options acceptées</td></tr>
+                    <tr  style="border:1px solid black;" *ngFor="let options of option, let i =index; trackBy:customTrackBy">
+
+                        <td style="border-left: 1px solid black; border-right: 1px solid black;">{{option[i].id_produit}}-{{option[i].num_version}}</td>
+                        <td style=" border-right: 1px solid black;">{{option[i].libelle}}</td>
+                        <td style=" border-right: 1px solid black;">{{option[i].unite}}</td>
+                        <td style=" border-right: 1px solid black;">{{option[i].qtefact}}</td>
+                        <td style=" border-right: 1px solid black;">{{option[i].prixfact}}</td>
+                        <td style=" border-right: 1px solid black;">{{option[i].qtefact * option[i].prixfact | number:'1.0-2'}}</td>
+                        <td style=" border-right: 1px solid black;">{{totaligneopt(option[i]) | number:'1.0-2'}}</td>
+                        <td style=" border-right: 1px solid black;">{{option[i].pourcentage | number:'1.0-2'}}</td>
+
+                    </tr>
+
+                    </tbody>
+
+
+                </table>
+
+
+
+
+
+
+            </fieldset>
+
+            <fieldset style="margin-top: 30px;">
+                <table  style="border:1px solid black;" class=" separe1 col-sm-3 table-striped ">
+                    <tbody >
+
+                    <tr style="height: 50px;" ><td class="gauche" style="text-align: left;">Rappel Montant H.T. Devis :</td><td style="text-align:right;border-top:1px solid black; border-right:1px solid black;">{{countTTC() | number:'1.0-2'}}</td></tr>
+                    <tr   style="border-top:1px solid black;height: 50px;" class="basr"><td class="gauche" style="text-align: left;">Total des travaux H.T. :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countTTC() | number:'1.0-2'}}</td></tr>
+
+                    <tr style="border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;">Travaux réalisés/devis :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countTotal()  | number:'1.0-2'}}</td></tr>
+                    <tr *ngIf="valeur.remise>0" style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;"> Remise:  {{valeur.remise}} %</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countRemise() | number:'1.0-2'}}</td></tr>
+                    <tr class="basr gras" style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;">Total H.T. net :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countTotalRemise() | number:'1.0-2'}}</td></tr>
+
+                    <tr style="border-top:1px solid black;height: 50px;"><td class="gauche"> </td><td > </td></tr>
+                    <tr style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;">Plus-Value :</td ><td style="text-align:right;border-top:1px solid black;">0.00</td></tr>
+                    <tr style="border-top:1px solid black;height: 50px;" ><td class="gauche" style="text-align: left;">Moins-Value :</td><td style="text-align:right;border-top:1px solid black;"> 0.00</td></tr>
+                    <tr style="border-top:1px solid black;height: 50px;" class="basr"><td class="gauche"> </td><td style="text-align:center;border-top:1px solid black;"> </td></tr>
+
+
+                    <tr  style="height: 50px;" class="gras"><td class="gauche" style="text-align: left;">Total Net :</td><td style="text-align: right;">{{countTotalNet() | number:'1.0-2'}}</td></tr>
+                    </tbody>
+                </table>
+
+                <table class=" separe1 col-sm-offset-9 table-striped" style=" float: right; text-align:center; margin-top :-450px">
+                    <tbody style="text-align: center;">
+                    <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-top:1px solid black;border-left:1px solid black;" class="gauche" style="text-align: left;">Total Net :</td><td >{{countTotalNet() | number:'1.0-2'}}</td></tr>
+                    <tr  style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right; border-left: 1px solid;;border-top:1px solid black;" class="gauche" style="text-align: left;">Acompte /situations antérieures :</td><td style="text-align:right;">{{totalsituation() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="basr gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total situation H.T. :</td><td style="text-align:right;" >{{countTotalsituation() | number:'1.0-2'}}</td></tr>
+
+
+
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à {{valeur.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td style="text-align: right;">{{countTVA() | number:'1.0-2'}}</td></tr>
+
+                    <!--  <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total TVA :</td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;"></td></tr>-->
+                    <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" class="basr grass"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" class="gauche" style="text-align: left;">Total TTC :</td><td style="text-align: right;">{{countSTotal() | number:'1.0-2'}}</td></tr>
+
+                    <tr *ngIf="model.retenue>0" style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" style="text-align: left;" >Retenue de garantie<i style="padding-left: 20px;">{{model.retenue}}%</i></td><td style="text-align:right;">{{countRetenu() | number:'1.0-2'}}</td></tr><p>&nbsp;</p>
+                    <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" class="basr"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" lass="gauche" style="text-align: left;">Reste TTC :</td><td style="text-align:right;">{{countTotalTTC() | number:'1.0-2'}}</td></tr>
+
+
+
+                    </tbody>
+                </table>
+
+                <p>&nbsp;</p> <p>&nbsp;</p>
+
+
+            </fieldset>
+
+            <div style="padding-top: 10px;margin-right:20px;">
+                <div  style=" float: right;margin-right: 100px;">{{countTotalTTC() | number:'1.0-2'}} €</div>
+                <div class="gauche"  style="border:1px solid white; float: right;margin-right:125px;">Net à payer :</div>
+
+                <p>&nbsp;</p>
+                <div><span style="border:1px solid white; float: right;margin-right:40px;">{{model.date_echeance | date:'dd-MM-yyyy'}}</span>
+                </div>
+                <div  style="float: right;margin-right:50px;">* Echéance au :</div>
+
+            </div>
+
+
+
+
+            <div id="pageFooter" *ngIf="print" >
+                <article style="margin-top: 40px;bottom: 0;left: 0; right: 0;position: fixed;width: 100%;text-align: center;font-size:9px;" >
+                    <p>{{fact.pied_page1}}</p>
+                    <p>{{fact.pied_page2}}</p>
+                    <p>{{fact.pied_page3}}</p>
+                    <p>{{fact.pied_page4}}</p>
+                    <p>{{fact.pied_page5}}</p>
+                    <p>{{fact.pied_page6}}</p>
+                </article>
+            </div>
+
+
+        </form>
+    </div>
+
+</div>
+<form style="margin-bottom: 10px;">
+    <button class="col-sm-offset-8 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accesfact" (click)=" imprimer()">Imprimer</button>
+</form>

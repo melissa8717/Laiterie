@@ -1,0 +1,58 @@
+<div id="planning1">
+
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print"src="image/menu/parametres_grand_gris.png" alt="params">
+
+                    <span *ngIf="!print">Licences</span>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <div class=" container-fluid ">
+
+
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+
+        <div class="col-sm-12">
+            <form method=""  (ngSubmit)=" addLicence()" >
+
+                <h3>Licences</h3>
+                <div class="col-sm-12" style="margin-top: 10px;">
+
+                    <div class=" table-responsive">
+                        <table class="table table-bordered" >
+
+                            <tr>
+                                <td><input  class="col-sm-12" name="num_licence" [(ngModel)]="model.num_licence"></td>
+
+                            </tr>
+
+                        </table>
+
+                        <button type="submit" [disabled]="loading" class="col-sm-offset-10 col-sm-1 input-sm">Valider</button>
+:
+                    </div>
+                </div>
+
+            </form>
+
+
+
+
+        </div><!--fin container fluid-->
+    </div><!--fin id-->
+</div>

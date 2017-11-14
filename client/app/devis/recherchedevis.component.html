@@ -1,0 +1,94 @@
+<div *ngIf="!devis.print"  class="col-sm-3 bord">
+    <form class="form-horizontal">
+        <h5>Recherche:</h5>
+
+
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">Du :</label>
+            <div class="col-sm-7">
+                <input type="date" name="date" class="form-control" id="datedemarage" placeholder=""
+
+                       [(ngModel)]="seek.date_debut"
+                       (ngModelChange)="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">Au :</label>
+            <div class="col-sm-7">
+                <input type="date" name="datef" class="form-control" id="datefin" placeholder=""
+
+                       [(ngModel)]="seek.date_fin"
+                       (ngModelChange)="fireLoad()">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">N° devis :</label>
+            <div class="col-sm-7">
+                <input type="number" name="devis" class="form-control" id="ndevis" placeholder=""
+                       [(ngModel)]="seek.devisnumber"
+                       (ngModelChange)="fireLoad()">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">Statut :</label>
+            <div class="col-sm-7">
+                <input type="text" name="statut" class="form-control" id="statut" placeholder=""
+                       [(ngModel)]="seek.statut"
+                       (ngModelChange)="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">Chantier :</label>
+            <div class="col-sm-7">
+                <input ng2-auto-complete
+                       [source]="chantiers"
+                       type="text"
+                       name="chantier"
+                       [list-formatter]="autocompleListFormatterchantier"
+                       value-property-name="nom_chantier"
+                       display-property-name="nom_chantier"
+                       class="form-control"
+                       placeholder="Chantier"
+                       [(ngModel)]="seek.chantier"
+                       (ngModelChange)="fireLoad()">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">Client :</label>
+            <div class="col-sm-7">
+                <input  ng2-auto-complete
+                        [source]="clients"
+                        [list-formatter]="autocompleListFormatterContact"
+                        [value-formatter]="autocompleListFormatterContactValue"
+                        value-property-name="id_contact"
+                        type="text"
+                        name="client"
+                        class="form-control"
+                        placeholder="Client"
+                        [(ngModel)]="seek.client"
+                        (ngModelChange)="fireLoad()">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">Version :</label>
+            <div class="col-sm-7">
+                <input type="number" name="version" class="form-control" id="version" placeholder=""
+                       [(ngModel)]="seek.version"
+                       (ngModelChange)="fireLoad()" min="0"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-4 control-label">TS :</label>
+            <div class="col-sm-2">
+                <input type="checkbox" name="ts" class="form-control" id="ts" placeholder=""
+                       [(ngModel)]="seek.TS"
+                       (ngModelChange)="fireLoad()"
+                >
+            </div>
+        </div>
+    </form>
+
+</div><!--fin sm 3-->

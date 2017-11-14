@@ -1,0 +1,134 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print"  src="image/menu/chantiers_grand_gris.png">
+
+                    <span *ngIf="!print">Chantiers</span>
+
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li   ><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
+                    <li ><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+                    <li  class="active"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
+                    <li role="presentation" ><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
+                    <li role="presentation"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
+                    <li role="presentation"><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
+                    <li role="presentation"><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
+                    <li role="presentation"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
+                    <!--<li role="presentation"><a href="#">Stats</a></li>-->
+                    <li role="presentation"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class=" container-fluid ">
+
+
+
+        <div class="col-sm-12 ">
+            <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+                <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+            </div>
+            <h3  >Liste des devis du chantier</h3>
+
+        <form >
+
+            <div class=" table-responsive " style="height: 400px;">
+                <table class="table table-striped bord">
+                    <thead>
+                    <tr>
+
+                        <th class="col-sm-2">N° Devis</th><th class="col-sm-2">Version</th><th class="col-sm-2">Date démarrage</th><th class="col-sm-2">Date réception</th><th class="col-sm-2">Statut</th><th *ngIf="!print" class="col-sm-2">Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody >
+
+                    <tr *ngFor="let chantiers of chant; let i =index">
+                        <td>{{chantiers.id_devis}}</td>
+                        <td>{{chantiers.num_version}}</td>
+                        <td>
+                            <input type="date" name="date_demarrage{{i}}"   [ngModel]="chantiers.date_demarrage | date:'yyyy-MM-dd'" (ngModelChange)="chantiers.date_demarrage = $event" [value]="chantiers.date_demarrage | date:'yyyy-MM-dd'" />
+                        </td>
+                        <td>
+                            <input type="date" name="reception_chantier{{i}}" [ngModel]="chantiers.reception_chantier | date:'yyyy-MM-dd'" (ngModelChange)="chantiers.reception_chantier = $event" [value]="chantiers.reception_chantier | date:'yyyy-MM-dd'" />
+                        </td>
+
+                        <td>
+                            <div class="form-group" >
+                                <select name="status{{i}}"   [(ngModel)]="chantiers.status"  >
+                                    <option [selected]="chantiers.status =='en attente'">en attente</option>
+                                    <option [selected]="chantiers.status =='en cours'">en cours</option>
+                                    <option [selected]="chantiers.status =='terminé'">terminé</option>
+                                </select>
+                            </div>
+
+                            </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="hidden" class="form-control" name="identifiant du devis">
+                                <!--variable pour l'identifiant-->
+                                <div *ngIf="!print" class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle input-sm"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+                                        <span class="caret"></span></button>
+                                    <ul  class="dropdown-menu dropdown-menu-right">
+                                        <li ><a [routerLink]="['/devis',chantiers.id_devis, chantiers.num_version]">Ouvrir</a></li><!--ouvrir en un PDF-->
+                                        <li ><a (click)="modify(chantiers)" >Modifier</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                            </div><!-- /input-group -->
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </form>
+        </div><!--fin col sm 12-->
+
+        <div class="bouton">
+            <form>
+                <input type="hidden" name="nnnn"><!--imprimer la liste faire une liste ou serializer les données de recherches pour éditer en PDF le listing-->
+                <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accescha && droitsuser.accesdev" (click)=" imprimer()">Imprimer</button>
+
+            </form>
+        </div>
+
+        <!--Javascript pour nav et bouton-->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
+
+    </div>
+
+</div>

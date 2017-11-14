@@ -1,0 +1,140 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/gestion_grand_gris.png">
+
+                    <span *ngIf="!print">Analyse Devis</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+        <ng-container *ngIf="devis.accepted != 1">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>libellé</th>
+                        <th>Unité</th>
+                        <th>Prix achat</th>
+                        <th>Marge en €</th>
+                        <th>Taux de marge</th>
+                        <th>Prix de vente modifier</th>
+                        <th>Qte devis</th>
+                        <th>Total devis en €</th>
+                        <th>Action</th>
+                    </tr>
+
+                    </thead>
+                    <tbody >
+
+                    <tr *ngFor="let details of detail,let i =index; trackBy:customTrackBy">
+                        <td>{{detail[i].libelle}}</td>
+                        <td>{{detail[i].unite}}</td>
+                        <td>{{detail[i].prix_achat}}</td>
+                        <td>{{ margedet(details) | number:'1.0-2'}} </td>
+                        <td *ngIf="detail[i].margedev"><input name="margedev{{i}}" type="number" [(ngModel)]="detail[i].margedev" ></td>
+                        <td *ngIf="!detail[i].margedev"><input name="margepc{{i}}" type="number" [(ngModel)]="detail[i].margepc" ></td>
+                        <td>{{pricedet(detail[i]) | number:'1.0-2'}} </td>
+                        <td>{{detail[i].qte_devis}} </td>
+                        <td>{{countDetail(details)  | number:'1.0-2'}} </td>
+                        <td><button (click)="modify(details)">Modifier</button></td>
+                    </tr>
+                    <ng-container *ngIf="option">
+
+                        <tr *ngFor="let options of option ,let i =index; trackBy:customTrackBy" >
+                            <td>{{option[i].libelle}}</td>
+                            <td>{{option[i].unite}}</td>
+                            <td>{{option[i].prix_achat}}</td>
+                            <td>{{ margeopt(options) | number:'1.0-2'}}</td>
+                            <td *ngIf="option[i].margedev"><input name="margedev{{i}}" type="number" [(ngModel)]="option[i].margedev" ></td>
+                            <td *ngIf="!option[i].margedev"><input name="margepc{{i}}" type="number" [(ngModel)]="option[i].margepc" ></td>
+                            <td>{{priceopt(option[i]) | number:'1.0-2'}}</td>
+                            <td>{{option[i].qte_devis}}</td>
+                            <td>{{ countOption(options) | number:'1.0-2'}}</td>
+                            <td><button (click)="modifyopt(options)">Modifier</button></td>
+                        </tr>
+
+                    </ng-container>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <span class="col-sm-offset-9 col-sm-2">Total devis :</span><span class="col-sm-1">{{countTotaldet() | number:'1.0-2'}}</span>
+            <span class="col-sm-offset-9 col-sm-2">Total option :</span><span class="col-sm-1">{{countTotaloption() | number:'1.0-2'}}</span>
+            <span class="col-sm-offset-9 col-sm-2">Total en € :</span><span class="col-sm-1">{{sommeTotal() | number:'1.0-2'}}</span>
+        </ng-container>
+
+        <ng-container *ngIf="devis.accepted == 1">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>libellé</th>
+                        <th>Unité</th>
+                        <th>Prix achat</th>
+                        <th>Marge en €</th>
+                        <th>Taux de marge</th>
+                        <th>Prix de vente modifier</th>
+                        <th>Qte devis</th>
+                        <th>Total devis en €</th>
+
+                    </tr>
+
+                    </thead>
+                    <tbody >
+
+                    <tr *ngFor="let details of detail,let i =index; trackBy:customTrackBy">
+                        <td>{{detail[i].libelle}}</td>
+                        <td>{{detail[i].unite}}</td>
+                        <td>{{detail[i].prix_achat}}</td>
+                        <td>{{ margedet(details) | number:'1.0-2'}} </td>
+                        <td *ngIf="detail[i].margedev">{{detail[i].margedev}}</td>
+                        <td *ngIf="!detail[i].margedev">{{detail[i].margepc}}</td>
+                        <td>{{pricedet(detail[i]) | number:'1.0-2'}} </td>
+                        <td>{{detail[i].qte_devis}} </td>
+                        <td>{{countDetail(details)  | number:'1.0-2'}} </td>
+
+                    </tr>
+                    <ng-container *ngIf="option">
+
+                        <tr *ngFor="let options of option ,let i =index; trackBy:customTrackBy" >
+                            <td>{{option[i].libelle}}</td>
+                            <td>{{option[i].unite}}</td>
+                            <td>{{option[i].prix_achat}}</td>
+                            <td>{{ margeopt(options) | number:'1.0-2'}}</td>
+                            <td *ngIf="option[i].margedev"><input name="margedev{{i}}" type="number" [(ngModel)]="option[i].margedev" ></td>
+                            <td *ngIf="!option[i].margedev"><input name="margepc{{i}}" type="number" [(ngModel)]="option[i].margepc" ></td>
+                            <td>{{priceopt(option[i]) | number:'1.0-2'}}</td>
+                            <td>{{option[i].qte_devis}}</td>
+                            <td>{{ countOption(options) | number:'1.0-2'}}</td>
+
+                        </tr>
+
+                    </ng-container>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <span class="col-sm-offset-9 col-sm-2">Total devis :</span><span class="col-sm-1">{{countTotaldet() | number:'1.0-2'}}</span>
+            <span class="col-sm-offset-9 col-sm-2">Total option :</span><span class="col-sm-1">{{countTotaloption() | number:'1.0-2'}}</span>
+            <span class="col-sm-offset-9 col-sm-2">Total en € :</span><span class="col-sm-1">{{sommeTotal() | number:'1.0-2'}}</span>
+        </ng-container>
+
+
+    </div>
+</div>

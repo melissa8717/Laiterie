@@ -1,0 +1,167 @@
+
+<div id="contact">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/contacts_grand_gris.png">
+
+                    <span *ngIf="!print">Contacts</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accescontact"  (click)=" imprimer()">Imprimer</button>
+
+
+        <div *ngIf="!print" class="col-sm-3 " >
+
+
+
+            <rechercheContact #recherche [liste] = "this" ></rechercheContact>
+
+           <!-- <button (click)="showAll()" class="btn btn-default col-sm-offset-7 col-sm-4 bord2">Afficher tous</button>
+
+            <form class="form-horizontal bord1" (ngSubmit)="f.form.valid && filterContacts()" #f="ngForm" novalidate>
+
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Nom</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" list="nom" [(ngModel)]="contactToFind.nom" name="nom">
+                        <datalist id="nom">
+                            <option *ngFor="let c of contacts" value="{{c.nom}}">{{c.nom}}</option>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label" >Prénom</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" list="prenom" [(ngModel)]="contactToFind.prenom" name="prenom">
+                        <datalist id="prenom">
+                            <option *ngFor="let c of contacts" value="{{c.prenom}}">{{c.prenom}}</option>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label" >Raison sociale</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" list="raison_sociale" [(ngModel)]="contactToFind.raison_sociale" name="raison_sociale">
+                        <datalist id="raison_sociale">
+                            <option *ngFor="let c of contacts" value="{{c.raison_sociale}}">{{c.raison_sociale}}</option>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Type :</label>
+                    <div class="col-sm-7">
+                        <select  class="form-control" [(ngModel)]="contactToFind.type" name="type">
+                            <option value=""></option>
+                            <option *ngFor="let type of types" [value]="type">{{type}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Téléphone</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="telephone" [(ngModel)]="contactToFind.tel" name="tel">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Adresse</label>
+                    <div class="col-sm-7">
+                        <select type="text" name="cadresse" class="form-control" list="cadresse" [(ngModel)]="contactToFind.cadresse" name="cadresse">
+                            <option value=""></option>
+                            <option *ngFor="let c of contacts" [value]="c.cadresse">{{c.cadresse}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Code postal</label>
+                    <div class="col-sm-7">
+
+                        <select type="text" name="ccp" class="form-control" list="ccp" [(ngModel)]="contactToFind.ccp" name="ccp">
+                            <option value=""></option>
+                            <option *ngFor="let c of contacts" [value]="c.ccp">{{c.ccp}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">Ville</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" list="cville" [(ngModel)]="contactToFind.cville" name="ville">
+                        <datalist id="cville">
+                            <option *ngFor="let c of contacts" value="{{c.cville}}">{{c.cville}}</option>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <div class="col-sm-offset-6 col-sm-4">
+                        <button type="submit" class="btn btn-default ">Rechercher</button>
+                    </div>
+                </div>
+
+            </form>-->
+
+
+        </div>
+
+
+
+        <h3 class="col-sm-9">Liste des contacts</h3>
+
+        <article class="">
+
+            <div class=" col-sm-9 ">
+
+
+
+                <table class="table table-striped">
+                    <!--<span style="color:red;">Votre devis a été supprimé</span> condition à mettre en ^place lorsuqe le bonton valider à été utiliser pour fair apparaitre le message-->
+                    <thead><th>Nom / Prénom</th><th>Raison sociale</th><th>Type</th><th>Mail</th><th>Téléphone</th><th>Adresse</th><th>Code postal</th><th>Ville</th><th *ngIf="!print">Action</th></thead>
+
+                    <tbody >
+                    <!--créer une boucle conditionnelle pour créer les lignes du tableau en fonction du type selectionné à savoir tous, employé, sous-traitant, client.....
+                     sauf le select qui est toujours identique
+                     puis peut-être affinée avec la recherche pour obtenir une liste encore plus selective
+                     -->
+                     <tr *ngFor="let contact of filteredContacts">
+                           <td>{{contact.nom}} {{contact.prenom}}</td>
+                           <td>{{contact.raison_sociale}}</td>
+                           <td>{{contact.type}}</td>
+                           <td>{{contact.mail}}</td>
+                           <td>{{contact.tel}}</td>
+                           <td>{{contact.cadresse}}</td>
+                           <td>{{contact.ccp}}</td>
+                           <td>{{contact.cville}}</td>
+                           <td><div class="input-group">
+                               <input type="hidden" class="form-control"  [name]="contact._id">
+                               <div class="input-group-btn">
+                                   <button *ngIf="!print" type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                   <ul class="dropdown-menu dropdown-menu-right">
+                                       <li *ngIf="droitsuser.modifcontact"><a [routerLink]="contact.type == 'Client' ? ['/ficheclient/'+contact.id_contact] : ['/fichecontact/'+contact.id_contact]" >Ouvrir / Modifier</a></li>
+                                       <li *ngIf="droitsuser.supcontact" role="separator" class="divider"></li>
+                                       <li *ngIf="droitsuser.supcontact"><a (click)="deleteContact(contact)">Supprimer</a></li>
+                                   </ul>
+                               </div><!-- /btn-group -->
+                           </div><!-- /input-group --></td>
+                     </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </article>
+
+    </div>
+
+</div>

@@ -1,0 +1,67 @@
+<div   class="col-sm-3 bord">
+    <form class="form-horizontal" action="#" method="POST">
+        <h5>Recherche:</h5>
+
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">N° avoir :</label>
+            <div class="col-sm-7">
+                <input type="number" class="form-control" id="id_avoir"
+                       name="id_avoir"
+                       [(ngModel)] = "seek.id_avoir"
+                       (ngModelChange) ="fireLoad()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Raison sociale :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="raison_sociale"
+                       name="raison_sociale"
+                       [(ngModel)] = "seek.raison_sociale"
+                       (ngModelChange) ="fireLoad()">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Nom :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="nom"
+                       name="raison_sociale"
+                       [(ngModel)] = "seek.nom"
+                       (ngModelChange) ="fireLoad()">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Date :</label>
+            <div class="col-sm-7">
+                <input type="date" class="form-control" id="date_avoir"
+                       name="date_avoir"
+                       [(ngModel)] = "seek.date_avoir"
+                       (ngModelChange) ="fireLoad()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">N° facture :</label>
+            <div class="col-sm-7">
+                <input type="number" class="form-control" id="nfactclient"
+                       name="nfactclient"
+                       [(ngModel)] = "seek.nfactclient"
+                       (ngModelChange) ="fireLoad()">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Situation :</label>
+            <div class="col-sm-7">
+                <input type="number" class="form-control" id="n_situation" name="n_situation"
+                       [(ngModel)] = "seek.n_situation"
+                       (ngModelChange) ="fireLoad()">
+            </div>
+        </div>
+
+
+    </form>
+</div>

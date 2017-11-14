@@ -1,0 +1,282 @@
+<style>
+    .my-drop-zone { border: dotted 3px lightgray; }
+    .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+    .another-file-over-class { border: dotted 3px green; }
+
+    html, body { height: 100%; }
+</style>
+
+
+
+
+<div id="contactfiche">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <div class=" container-fluid">
+
+        <h3 >Fiche contact</h3>
+
+        <div>
+            <h4 class="col-sm-12" style="color: white;">Information générales</h4>
+        </div>
+
+        <form method="POST" action="#">
+
+
+            <div class="col-sm-2">
+
+                <img *ngIf="!print" src="image/test.ico" alt="..." class="img-thumbnail col-sm-12" >
+
+                <span *ngIf="!print" for="" class="col-sm-12 centre"></span>
+
+
+            </div>
+
+
+            <div class="col-sm-6">
+
+
+                <div class="form-group" style="margin: 0;">
+                    <span class="col-sm-3" >Nom:</span><input type="text" name="nom" [(ngModel)]="contact.nom" class="col-sm-3"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 " >Prénom:</span><input type="text" name="prenom" [(ngModel)]="contact.prenom" class="col-sm-4 "/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 " >Raison social:</span><input type="text" name="raison_social" [(ngModel)]="contact.raison_sociale" class="col-sm-3 "/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 " >SIRET:</span><input type="number" name="siret" [(ngModel)]="contact.siret" class="col-sm-4"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3" >Adresse:</span><input type="text" name="adresse" [(ngModel)]="adresse.adresse" class="col-sm-9 "/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3" >Code postal:</span><input type="text" name="code_postal" [(ngModel)]="adresse.code_postal" class="col-sm-3"  />
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 " >Ville:</span><input type="text" name="ville" [(ngModel)]="adresse.ville" class="col-sm-4"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 " >N° sécu:</span><input type="number" name="n_secu" [(ngModel)]="contact.n_secu" class="col-sm-3"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-2 " >N° Permis :</span><input type="text" name="n_permis" [(ngModel)]="contact.n_permis" class="col-sm-4 "/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-3 " >N° d'identité:</span><input type="text" name="n_identite" [(ngModel)]="contact.n_identite" class="col-sm-3"/>
+                </div>
+
+
+
+                <div class="form-group">
+                    <span class="col-sm-2" >Mutuelle: </span><input type="text" name="mutuelle" [(ngModel)]="contact.mutuelle" class="col-sm-4 "/>
+                </div>
+
+                <div class="form-group">
+                    <span class="col-sm-3 " >Date de naissance:</span><input type="date" name="naissance"  [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'" (ngModelChange)="contact.Date_naissance = $event" [value]="contact.Date_naissance | date:'yyyy-MM-dd'" class="col-sm-3"/>
+                </div>
+
+
+                <div class="form-group">
+                    <span class="col-sm-2 " >Lieu :</span><input type="text" name="lieu_naissance"  [ngModel]="contact.lieu_naissance " class="col-sm-4 "/>
+                </div>
+
+            </div>
+
+
+
+            <div class="col-sm-4">
+
+                <div class="form-group">
+                    <span class="col-sm-4" >Téléphone: </span><input type="text" name="numeroFixe" [(ngModel)]="telephoneFixe.numero" class="col-sm-6 col-sm-offset-1" />
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4" >Mobile: </span><input type="text" name="numeroMobile" [(ngModel)]="telephoneMobile.numero" class="col-sm-6 col-sm-offset-1"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4" >Téléphone pro: </span><input type="text" name="numeroPro" [(ngModel)]="telephonePro.numero" class="col-sm-6 col-sm-offset-1" />
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4" >Mail: </span><input type="text" name="mail" [(ngModel)]="mail.mail" class="col-sm-6 col-sm-offset-1"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4" >Mail pro: </span><input type="text" name="mailPro" [(ngModel)]="mailPro.mail" class="col-sm-6 col-sm-offset-1"/>
+                </div>
+                <div class="form-group">
+                    <span class="col-sm-4" >Site: </span><input type="text" name="site" [(ngModel)]="contact.site" class="col-sm-6 col-sm-offset-1"/>
+                </div>
+
+
+            </div>
+
+
+            <div class="col-sm-12" style="margin-top: 10px;">
+
+                <span class="col-sm-1" >Note: </span><input type="text" name="note" [(ngModel)]="contact.note" class="col-sm-11"/>
+            </div>
+
+
+
+
+            <div *ngIf="(contact.type=='Ouvrier' ) || (contact.type=='Employé')">
+
+                <div class="col-sm-12">
+
+                    <h4 class="col-sm-12" style="color: white;">Professionnel</h4>
+
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Type de contrat:</span><input type="text" name="type" [(ngModel)]="contact.type" class="col-sm-2"/><!--variable pour value-->
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Équipe:</span><input type="text" name="equipe" value="" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Code APE :</span><input type="text" name="ape" [(ngModel)]="contact.APE" class="col-sm-2 "/>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Statut :</span><input type="text" name="statut" value="User" class="col-sm-2 "/>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2 " >CACES :</span><input type="text" name="caces" [(ngModel)]="contact.id_caces" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Habilitation éléctrique :</span><input type="date" name="habilitationelec" [ngModel]="contact.H0B0 | date:'yyyy-MM-dd'" (ngModelChange)="model.contact.H0B0 = $event" [value]="contact.H0B0 | date:'yyyy-MM-dd'" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Secourisme :</span><input type="date" name="secourisme"  [ngModel]="contact.secourisme | date:'yyyy-MM-dd'" (ngModelChange)="contact.secourisme = $event" [value]="contact.secourisme | date:'yyyy-MM-dd'" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Validité amiante :</span><input type="date" name="amiante"  [ngModel]="contact.validite_amiante | date:'yyyy-MM-dd'" (ngModelChange)="contact.validite_amiante = $event" [value]="contact.validite_amiante | date:'yyyy-MM-dd'" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Travail en hauteur :</span><input type="date" name="travail_hauteur"  [ngModel]="contact.travail_hauteur | date:'yyyy-MM-dd'" (ngModelChange)="contact.travail_hauteur = $event" [value]="contact.travail_hauteur | date:'yyyy-MM-dd'" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Visite médicale :</span><input type="date" name="visite_medicale"  [ngModel]="contact.visite_medicale | date:'yyyy-MM-dd'" (ngModelChange)="contact.visite_medicale = $event" [value]="contact.visite_medicale | date:'yyyy-MM-dd'" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Autorisation conduite :</span><input type="text" name="autorisation_conduite" [(ngModel)]="contact.autorisation_conduite" class="col-sm-2 "/>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2" >Qualification :</span>
+                        <select name="qualification" class="col-sm-2 input-sm" [(ngModel)]="qualifChoisi">
+                            <option value=""></option>
+                            <option *ngFor="let qualification of qualifications" [value]="qualification.id_qualification" [title]="qualification.designation">{{qualification.id_qualification}}-{{qualification.libelle}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngIf="(((contact.type=='Ouvrier' ) || (contact.type=='Employé')) && ((lastcontrat && lastcontrat.id_contrat) ))">
+                <div class="col-sm-12">
+
+                    <h4 class="col-sm-12">Gestion Paie</h4>
+
+                    <div class="form-group">
+                        <span class="col-sm-2" >Taux horaire :</span>
+                        <input type="number" class="col-sm-2" name="tauxhoraire" [(ngModel)]="lastcontrat.tauxhoraire">
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2" for="">Panier en € :</span>
+                        <input type="number" class="col-sm-2" name="panier" [(ngModel)]="lastcontrat.panier">
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-sm-2" for="">Heure brute :</span>
+                        <input type="number" class="col-sm-2" name="tauxhorairebrute" [(ngModel)]="lastcontrat.tauxhorairebrute">
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2" for="">Heure chargée :</span>
+                        <input type="number" class="col-sm-2" name="tauxsurcharge" [(ngModel)]="lastcontrat.tauxsurcharge">
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Heures par mois :</span><input type="number" name="heure_mois" [(ngModel)]="lastcontrat.heure_mois" class="col-sm-2 "/><!--variable pour value-->
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Condition de réglement :</span><input type="text" name="conditionreg" class="col-sm-2 "/><!--variable pour value-->
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2" >Type contrat :</span>
+                        <select name="type_contrat" class="col-sm-2 input-sm"  [(ngModel)]="lastcontrat.type_contrat">
+                            <option  [selected]="lastcontrat.type_contrat=='CDI'">CDI</option>
+                            <option [selected]="lastcontrat.type_contrat=='CDD'">CDD</option>
+                            <option [selected]="lastcontrat.type_contrat=='Intérimaire'">Intérimaire</option>
+                            <option [selected]="lastcontrat.type_contrat=='Stagiaire'">Stagiare</option>
+                            <option [selected]="lastcontrat.type_contrat=='Contrat de professionnalisation'">Contrat de professionnalisation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Date d'entrée:</span><input type="date" name="date_debut"  [ngModel]="lastcontrat.date_debut | date:'yyyy-MM-dd'" (ngModelChange)="lastcontrat.date_debut = $event" [value]="lastcontrat.date_debut | date:'yyyy-MM-dd'"  class="col-sm-2 "/><!--variable pour value-->
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-2 " >Date de sortie:</span><input type="date" name="date_fin"  [ngModel]="lastcontrat.date_fin | date:'yyyy-MM-dd'" (ngModelChange)="lastcontrat.date_fin = $event" [value]="lastcontrat.date_fin | date:'yyyy-MM-dd'" class="col-sm-2 "/><!--variable pour value-->
+                    </div>
+
+                </div>
+
+
+
+
+                <h4  class="col-sm-12">Historique</h4>
+                <div   class="col-sm-12 " style="height:100px;margin-top: 5px;">
+                    <table  class="table table-bordered">
+                        <thead >
+                        <tr>
+                            <th>contrat</th>
+                            <th>date de changement</th>
+                            <th>Salaire chargé</th>
+                            <th>date début</th>
+                            <th>date fin</th>
+                        </tr>
+                        </thead>
+
+                        <!-- les tr et td sont créés par une boucle en fonction des données de la bdd-->
+                        <tbody  >
+                        <tr *ngFor="let contrats of contrat">
+                            <td>{{contrats.type_contrat}}</td>
+                            <td>{{contrats.datechangement | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{contrats.tauxsurcharge }}</td>
+                            <td>{{contrats.date_debut | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{contrats.date_fin | date: 'dd/MM/yyyy'}}</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+
+            </div>
+        </form>
+
+    </div><!--fin container-->
+
+
+
+</div>
+
+
+
+
+
+

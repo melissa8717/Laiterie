@@ -1,0 +1,74 @@
+
+
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/parametres_grand_orange.png">
+
+                    <span style="padding-left: 5px;">Droits utilisateurs</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+
+    <nav class="navbar navbar-default">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li  ><a [routerLink]="['/param_gen']">Agence</a></li>
+                    <li ><a [routerLink]="['/cgv']">Conditions vente</a></li>
+                    <li ><a [routerLink]="['/fraisprevisionel']">Frais prévisionnels</a></li>
+                    <li  ><a [routerLink]="['/sauvegarde']">Sauvegarde</a></li>
+                    <li role="presentation" ><a [routerLink]="['/tva']" >TVA</a></li>
+                    <li role="presentation" ><a [routerLink]="['/cat_prod']" >Catégories de produits</a></li>
+                    <li role="presentation" class="active"><a [routerLink]="['/droit_utilisateur']" >Droits utilisateurs</a></li>
+                    <li role="presentation"><a [routerLink]="['/deverouillage_prod']" >Dévérouillage produits</a></li>
+                    <li role="presentation"><a [routerLink]="['/utilisateur_connect']" >Voir activité utilisateurs</a></li>
+                </ul>
+
+
+        </div>
+    </nav>
+<div class="container-fluid">
+    <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+        <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+    </div>
+    <h3>Droits utilisateurs</h3>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<button class="btn btn-default input-sm col-sm-offset-11" style="margin-bottom: 5px;  ">Valider</button>
+
+</div>

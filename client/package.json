@@ -1,0 +1,43 @@
+{
+  "name": "wbat",
+  "version": "1.0.0",
+  "description": "une application pour aider les entreprises du batiment",
+  "scripts": {
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "lite": "lite-server",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@angular/animations": "^4.0.0",
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/forms": "^4.0.0",
+    "@angular/http": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
+    "@angular/platform-browser-dynamic": "^4.0.0",
+    "@angular/router": "^4.0.0",
+    "@angular/upgrade": "^4.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.29 ",
+    "@types/dhtmlxgantt": "^4.0.34",
+    "angular-calendar": "^0.19.0",
+    "core-js": "^2.4.1",
+    "dhtmlx-gantt": "^4.2.1",
+    "ng2-auto-complete": "0.12.0",
+    "ng2-file-upload": "^1.2.1",
+    "rxjs": "5.0.1",
+    "systemjs": "0.19.42",
+    "traceur": "0.0.111",
+    "zone.js": "^0.8.4"
+  },
+  "devDependencies": {
+    "concurrently": "^3.1.0",
+    "lite-server": "^2.2.2",
+    "typescript": "2.4.0",
+    "@types/core-js": "0.9.36",
+    "@types/node": "^6.0.79",
+    "@types/jasmine": "^2.5.36"
+  }
+}

@@ -1,0 +1,147 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/chantiers_grand_gris.png">
+
+
+                    <span>Chantiers</span>
+
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+            <!--garder l'id du chantier en passant d'un onglet à l'autre possibilité peut-être d'un session ou d'un cookie qui disppait à la fermeture de la page-->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                        <li *ngIf="droitsuser.accescha"><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
+                        <li *ngIf="droitsuser.accescha"><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+                        <li *ngIf="droitsuser.accesdev"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
+                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
+                        <li *ngIf="droitsuser.accescha" role="presentation" class="active"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
+                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
+                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
+                        <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
+                        <!--<li role="presentation"><a href="#">Stats</a></li>-->
+                        <li *ngIf="droitsuser.accesbg" role="presentation"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3>Dépenses réelles</h3>
+
+        <div class="table-responsive">
+
+            <table class="table ">
+
+                <thead>
+                <th class="col-sm-2">Date</th>
+                <th class="col-sm-3">Fournisseur/Employé</th>
+                <th class="col-sm-5">Motif</th>
+                <th class="col-sm-2">Montant en €</th>
+                </thead>
+            </table>
+        </div>
+        <div class="table-responsive" style="height: 250px;">
+            <table class="table table-striped " >
+
+                <tbody >
+
+                <tr *ngFor="let prod of model">
+                    <td class="col-sm-2">{{prod.date_livraison_reel | date:'dd-MM-yyyy'}}</td>
+                    <td class="col-sm-3">{{prod.nom}}</td>
+                    <td class="col-sm-5">BDC n° {{prod.id_bdc}} - {{prod.libelle}}</td>
+                    <td class="col-sm-2">{{(prod.tarifpourlivraisonreel ?(prod.tarifpourlivraisonreel  + prod.total) : prod.total) | number:'1.0-2'}}</td>
+                </tr>
+
+                <tr *ngFor="let mains of main">
+                    <td class="col-sm-2">{{mains.date | date:'dd-MM-yyyy'}}</td>
+                    <td class="col-sm-3">{{mains.nom}}</td>
+                    <td class="col-sm-5">{{mains.type_contrat}} : {{mains.nb_heure}}</td>
+                    <td class="col-sm-2">{{countMaintest(mains.nb_heure,mains.tauxsurcharge) | number:'1.0-2'}}</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="table-responsive col-sm-4">
+            <h4 class="col-sm-12">Consolidation :</h4>
+            <table class="table-bordered col-sm-12">
+
+                <tbody>
+                <tr>
+                    <td>fournisseur</td>
+                    <td> {{countReeldevis() | number:'1.0-2'}}</td>
+                    <td>{{countReeldevis() / countSomme() * 100 | number:'1.0-2'}}%</td>
+                </tr>
+                <tr>
+                    <td>MO Employés</td>
+                    <td>{{countMain() | number:'1.0-2'}}</td>
+                    <td>{{countMain() / countSomme() * 100 | number:'1.0-2'}}%</td><!--pourcentage obtenu entre le montant de la ligne fois 100 / par la somme de tous les sommes du tableau soit la somme du tableau précéden-->
+                </tr>
+                <tr>
+                    <td>MO Intérim</td>
+                    <td>{{ countMainI() | number:'1.0-2'}}</td>
+                    <td>{{countMainI() / countSomme() *100 | number:'1.0-2'}} %</td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+            <!--<div class="table-responsive col-sm-4">
+
+                <table class="table-bordered col-sm-12">
+                    <h4>Dernier mois chantier :</h4>
+
+                </table>
+            </div>
+
+            <div class="table-responsive col-sm-4">
+
+                <table class="table-bordered col-sm-12">
+                    <h4>Heures :</h4>
+
+                </table>
+            </div>-->
+    </div>
+</div>

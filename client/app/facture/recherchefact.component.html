@@ -1,0 +1,102 @@
+<div *ngIf="!liste.print" class="col-sm-3 bord">
+    <form class="form-horizontal" action="#" method="POST">
+        <h5>Recherche:</h5>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Client :</label>
+            <div class="col-sm-7">
+                <input type="text"
+                       class="form-control"
+                       id="client" placeholder=""
+                       name="nom"
+                       [(ngModel)] = "seek.nom"
+                       (ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">N° client :</label>
+            <div class="col-sm-7">
+                <input type="number"
+                       class="form-control"
+                       id="nclient" placeholder=""
+                       name="contact"
+                       (ngModelChange) ="fireLoad()"
+                       [(ngModel)] = "seek.contact"
+
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Date :</label>
+            <div class="col-sm-7">
+                <input type="date"
+                       class="form-control"
+                       id="date" placeholder=""
+                       name="dates"
+                       (ngModelChange) ="fireLoad()"
+                       [(ngModel)] = "seek.dates"
+
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Date d'échéance :</label>
+            <div class="col-sm-7">
+                <input type="date"
+                       class="form-control"
+                       id="dateecheance" placeholder=""
+                       name="eche"
+                       (ngModelChange) ="fireLoad()"
+                       [(ngModel)] = "seek.eche"
+
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Date de démarage :</label>
+            <div class="col-sm-7">
+                <input type="date" class="form-control" id="datedemarage" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">N° facture :</label>
+            <div class="col-sm-7">
+                <input type="number"
+                       class="form-control"
+                       id="nfacture" placeholder=""
+                       name="facture"
+                       (ngModelChange) ="fireLoad()"
+                       [(ngModel)] = "seek.facture"
+
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">N° devis :</label>
+            <div class="col-sm-7">
+                <input type="number"
+                       class="form-control"
+                       id="ndevis" placeholder=""
+                       name="devis"
+                       (ngModelChange) ="fireLoad()"
+                       [(ngModel)] = "seek.devis"
+
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Statut :</label>
+            <div class="col-sm-7">
+                <input type="text"
+                       class="form-control"
+                       id="statut" placeholder=""
+                       name="statut"
+                       (ngModelChange) ="fireLoad()"
+                       [(ngModel)] = "seek.statut"
+
+                >
+            </div>
+        </div>
+    </form>
+</div><!--fin sm 3-->

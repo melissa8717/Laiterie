@@ -1,0 +1,70 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img  src="image/menu/facturation_grand_gris.png" alt="facturation">
+
+                    <span >Facturation</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <div class=" container-fluid ">
+        <button class="col-sm-2 btn" type="button" (click)=" imprimer()">Imprimer le listing</button>
+        <div  class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+    </div>
+    <div class=" container-fluid ">
+
+        <rechercheavoir #recherche [liste] = "this" ></rechercheavoir>
+
+        <div class="col-sm-9">
+
+            <h3  >Liste des avoirs</h3>
+
+            <div class="  table-responsive">
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th>N° d'avoir</th><th>Raison sociale</th><th>Client</th><th>N° facture</th><th>Situation</th><th>Date</th><th>Montant H.T. en €</th><th >Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody >
+
+                    <tr *ngFor="let avoirs of avoir">
+                        <td>{{avoirs.id_avoir}}</td>
+                        <td> {{avoirs.raison_sociale }}</td>
+                        <td>{{avoirs.nom}} {{avoirs.prenom}}</td>
+                        <td>{{avoirs.nfactclient}}</td>
+                        <td>{{avoirs.n_situation}}</td>
+                        <td>{{avoirs.date_avoir | date: 'dd/MM/yyyy'}}</td>
+                        <td>- {{avoirs.somme | number:'1.0-2'}}</td>
+                        <td><div class="input-group">
+                            <div  class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+
+                                    <li [routerLink]="['/avoirimprim',avoirs.id_avoir]"><a >Ouvrir / Imprimer</a></li>
+
+                                </ul>
+                            </div><!-- /btn-group -->
+                        </div><!-- /input-group --></td></tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

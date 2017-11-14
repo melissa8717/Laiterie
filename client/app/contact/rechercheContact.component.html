@@ -1,0 +1,74 @@
+<div class="col-sm-12" >
+
+    <h5>Recherche :</h5>
+
+
+    <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && debug()" #f="ngForm" novalidate>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Nom</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control"  name="nom" [(ngModel)]="seek.nom"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label" >Prénom</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="prenom" [(ngModel)]="seek.prenom"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Raison Sociale</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="raison_sociale" [(ngModel)]="seek.raison_sociale"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Type</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="type" [(ngModel)]="seek.type"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <!--<div class="form-group">
+            <label  class="col-sm-4 control-label">Mail</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="mail" [(ngModel)]="seek.mail" (ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Téléphone</label>
+            <div class="col-sm-7">
+                <input type="number" class="form-control"  name="tel" [(ngModel)]="seek.tel"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>-->
+        <div class="form-group">
+            <label  class="col-sm-4 control-label" >Adresse</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="cadresse" [(ngModel)]="seek.cadresse"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Code Postal</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="ccp" [(ngModel)]="seek.ccp"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-4 control-label">Ville</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="cville" [(ngModel)]="seek.cville"(ngModelChange) ="fireLoad()"
+                >
+            </div>
+        </div>
+
+    </form>
+
+</div>

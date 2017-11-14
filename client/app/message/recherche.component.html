@@ -1,0 +1,103 @@
+
+
+
+
+    <div class="col-sm-3 ">
+        <form class="form-horizontal" action="commandes.html" method="POST" [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)">
+            <h4>Recherche:</h4>
+
+            <div class="form-group">
+                <label for="" class="col-sm-4 control-label">Auteur: </label>
+                <div class="col-sm-7">
+                    <input ng2-auto-complete
+                           formControlName="auteur"
+                           [source]="auteurs"
+                           [list-formatter]="autocompleListFormatteruser"
+                           value-property-name="id"
+                           display-property-name="lastname"
+                           placeholder="Auteur"
+                           class="form-control"
+                    >
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-4 control-label">Destinataire: </label>
+                <div class="col-sm-7">
+                    <input ng2-auto-complete
+                           formControlName="dest"
+                           [source]="auteurs"
+                           [list-formatter]="autocompleListFormatteruser"
+                           value-property-name="id"
+                           display-property-name="lastname"
+                           placeholder="Destinataire"
+                           class="form-control"
+                    >
+                    <!-- <input type="text" class="form-control" id="destinataire" placeholder=""> -->
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-4 control-label">Responsable: </label>
+                <div class="col-sm-7">
+                    <input ng2-auto-complete
+                           formControlName="respo"
+                           [source]="respo"
+                           [list-formatter]="autocompleListFormatter"
+                           value-property-name="id"
+                           display-property-name="name"
+                           placeholder="Responsable"
+                           class="form-control"
+                    >
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-4 control-label">Chantier: </label>
+                <div class="col-sm-7">
+                    <input ng2-auto-complete
+                           formControlName="chantier"
+                           [source]="chantier"
+                           [list-formatter]="autocompleListFormatterchantier"
+                           value-property-name="id"
+                           display-property-name="nom_chantier"
+                           placeholder="Chantier"
+                           class="form-control"
+                    >
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-4 control-label">Objet: </label>
+                <div class="col-sm-7">
+                    <input formControlName="objet"
+                           placeholder="Objet"
+                           type="text" class="form-control" id="objet">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-4 control-label">Date de début: </label>
+                <div class="col-sm-7">
+                    <input
+                            formControlName="date_debut"
+                            type="date" class="form-control" id="date_debut" placeholder="JJ/MM/AAAA"
+                    >
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-4 control-label">Date de fin: </label>
+                <div class="col-sm-7">
+                    <input  formControlName="date_fin" type="text" type="date" class="form-control" id="date_fin" placeholder="JJ/MM/AAAA">
+                </div>
+            </div>
+            <div class="form-group" >
+                <label class="col-sm-4 control-label" >Traité :</label>
+                <label class="radio-inline">
+                    <input  type="radio" name="traite" id="inlineRadio1" value="oui" formControlName="traite"> oui
+                </label>
+                <label class="radio-inline">
+                    <input  type="radio" name="traite" id="inlineRadio2" value="non" formControlName="traite"> non
+                </label>
+            </div>
+            <div class="form-group" >
+            <button *ngIf="droitsuser.accesmes" class="btn btn-default  col-sm-offset-6 col-sm-4" style="margin-bottom: 5px;  ">Rechercher</button>
+            </div>
+        </form>
+
+    </div><!--col-sm-3-->

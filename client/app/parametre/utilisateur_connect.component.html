@@ -1,0 +1,97 @@
+
+
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/parametres_grand_orange.png">
+
+                    <span style="padding-left: 5px;">Connexion utilisateurs</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li  ><a [routerLink]="['/param_gen']">Agence</a></li>
+                    <li ><a [routerLink]="['/cgv']">Conditions vente</a></li>
+                    <li ><a [routerLink]="['/fraisprevisionel']">Frais prévisionnels</a></li>
+                    <li  ><a [routerLink]="['/sauvegarde']">Sauvegarde</a></li>
+                    <li role="presentation" ><a [routerLink]="['/tva']" >TVA</a></li>
+                    <li role="presentation" ><a [routerLink]="['/cat_prod']" >Catégories de produits</a></li>
+                    <li role="presentation"><a [routerLink]="['/droit_utilisateur']" >Droits utilisateurs</a></li>
+                    <li role="presentation"><a [routerLink]="['/deverouillage_prod']" >Dévérouillage produits</a></li>
+                    <li role="presentation" class="active"><a [routerLink]="['/utilisateur_connect']" >Voir activité utilisateurs</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class=" container-fluid ">
+
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+            <h3 class="col-sm-12" style="margin-top: -30px;">Connexion utilisateurs</h3>
+
+
+            <div class="  col-sm-12 table-responsive" style="font-size: 16px;">
+                <table class="table table-striped bord">
+                    <!--<span style="color:red;">Votre devis a été supprimé</span> condition à mettre en ^place lorsuqe le bonton valider à été utiliser pour fair apparaitre le message-->
+                    <thead><th>Actif</th><th>N° devis</th><th>Statut</th><th>Date démarrage</th><th>Montant H.T.</th><th>Version</th><th>TS</th><th>Actions</th></thead>
+                    <tbody >
+                    <!--créer une boucle conditionnelle pour créer les lignes du tableau
+                    sauf le select qui est toujours identique
+                    -->
+                    <tr><td>1</td><td>2</td><td>3</td><td>12/04/2017</td><td>4500.00</td><td>5</td><td>6</td><!--pour chaque td une variable devras être créer-->
+                        <td><div class="input-group">
+                            <input type="hidden" class="form-control"  name="identifiant du devis"><!--variable pour l'identifiant-->
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="#">Ouvrir</a></li><!--ouvrir en un PDF-->
+                                    <li><a href="modifier_devis.html" target="_blank">Modifier</a></li>
+                                    <li><a href="dupliquer_devis.html" target="_blank">Dupliquer</a></li>
+                                    <li><a href="edit_facture.html" target="_blank">Facturer</a></li>
+                                    <li><a href="#">Imprimer</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Supprimer</a></li>
+                                </ul>
+                            </div><!-- /btn-group -->
+                        </div><!-- /input-group --></td></tr>
+
+
+
+
+                    </tbody>
+                </table>
+                <button class="btn btn-default input-sm col-sm-offset-11" style="margin-bottom: 5px;  ">Imprimer la page</button>
+            </div>
+        </div>
+    </div>
+
+

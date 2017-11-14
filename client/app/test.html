@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<title>Absences employés</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	    <link rel="stylesheet" type="text/css" href="style/bootstrap/css/bootstrap.min.css">
+	    <link href="style/style.css" rel="stylesheet">
+	</head>
+
+	<body >
+		<div id="achat">
+			<header >
+				
+				<div class="toobar">
+						<div class="fill">
+							<div class="container-fluid">
+					
+								<img src="image/menu/planning_grand_gris.png" alt="planning" style="margin-top: 10px;">
+					
+								<span>Absences employés</span>
+								
+										
+										
+							</div>
+						</div><!--container-fluid-->
+				</div>
+
+				
+			</header>
+
+			<div class=" container-fluid">
+
+				<div class="col-sm-3 " style="margin-top:10px;">
+					<form class="form-horizontal" action="abs_emp.html" method="POST">
+
+						<h4 style="color: white;">Recherche :</h4>
+
+						<div class="form-group">
+						    <label  class="col-sm-4 control-label">Du: </label>
+						    <div class="col-sm-7">
+						      <input type="text" class="form-control" id="date_deb_abs" placeholder="">
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label  class="col-sm-4 control-label">Au : </label>
+						    <div class="col-sm-7">
+						      <input type="text" class="form-control" id="date_fin_abs" placeholder="">
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label  class="col-sm-4 control-label">Employé : </label>
+						    <div class="col-sm-7">
+						      <input type="text" class="form-control" id="categorie" placeholder="">
+						    </div>
+						</div>
+						<div class="form-group">
+						    <label  class="col-sm-4 control-label">Motif : </label>
+						    <div class="col-sm-7">
+						      <input type="text" class="form-control" id="chantier" placeholder="">
+						    </div>
+						</div>
+
+						<button class="btn btn-default input-sm col-sm-offset-7" style="margin-bottom: 5px;  ">Rechercher</button>
+
+					</form>
+
+				</div><!--col-sm-3-->
+
+				<div class="col-sm-9 bordure4">
+					<h3>Absence des employés</h3>
+					
+						<div class=" table-responsive " >
+							<table  class="table table-striped ">
+							<form method="POST" action="#"  >
+									<thead>
+										<tr>
+										<div class="form-group">
+											<th>Début</th></div>
+											<div class="form-group">
+											<th>Fin</th></div>
+											<div class="form-group">
+											<th>Employé </th></div>
+											<div class="form-group">
+											<th>Equipe </th></div>
+											<div class="form-group">
+											<th>Motif </th></div>
+											<div class="form-group">
+											<th>Remarques</th></div>
+											<th></th>
+										</tr>
+									</thead>
+								
+				                        
+				                    <tbody>
+				                    
+				                        <!--créer une boucle conditionnelle pour créer les lignes du tableau
+										sauf le select qui sera toujours identique
+				                        -->
+				                        <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+
+										 <tr>
+				                       		<div class="form-group"><td>02/01/2017</td></div>
+				                       		<div class="form-group"><td>02/02/2017</td></div>
+				                       		<div class="form-group"><td>David Cooper</td></div>
+				                       		<div class="form-group"><td></td></div>
+				                       		<div class="form-group"><td>Arret de travail</td></div><!--pour chaque td une variable devras être créer-->
+					                        <td><div class="form-group " ><textarea name="note_abs_emp"rows="1" class="col-sm-12"></textarea></td></div>
+					                        <div class="form-group">
+					                        <td>
+					                        	
+						                        	<div class="input-group">
+												      <input type="hidden" class="form-control"  name=""><!--variable pour la référence-->
+												      <div class="input-group-btn">
+												        <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+												        <ul class="dropdown-menu dropdown-menu-right">
+												          <li><a href="#">Imprimer</a></li>
+												        
+									          			  <li><a href="#">Supprimer</a></li>
+												        </ul>
+												      </div><!-- /btn-group -->
+												    </div><!-- /input-group -->
+												 
+											</td>
+											</div>
+										</tr>
+										
+								
+									</tbody>
+
+							</table>
+								    		<form method="POST" action="#" class="col-sm-2 col-sm-offset-9">
+	    			<input type="hidden" name="identifiant du produit"><!--variable correspondant a l'id produit-->
+<button class="btn btn-default input-sm col-sm-offset-11" style="margin-bottom: 5px;  ">Imprimer</button>	    		</form>
+<a href="contact.template.js">PDF</a>
+							</form>
+
+						</div><!--div table-->
+
+
+				</div>
+												
+
+			</div><!--container-fluid-->
+
+
+		</div><!--id achat-->
+
+		<!--Javascript pour bouton-->
+ 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    	<script src="js/bootstrap.min.js"></script>
+
+	</body>
+</html>

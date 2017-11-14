@@ -1,0 +1,262 @@
+<div id="achat">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/commandes_grand_gris.png">
+
+                    <span *ngIf="!print">Commandes</span>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class=" container-fluid" style="background-color: white;">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3  *ngIf="!print">Modifier le bon de commande</h3>
+
+
+
+        <div class="form-group col-sm-12" >
+            <span> Expéditeur :{{currentUser.firstName}} {{currentUser.lastName}}</span>
+            <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+        </div>
+        <div class="form-group col-sm-12" >
+            <span> Téléphone : {{agence.tel_a}}</span>
+            <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+        </div>
+        <div>
+            <span style="margin-left: 15px;padding-top: -30px;">Mobile :</span><input style="border:none;" type="text">
+        </div>
+        <div class="form-group col-sm-12" >
+            <span> Email : {{agence.mail_a}}</span>
+            <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+        </div>
+        <div class="form-group col-sm-4">
+            <span>Destinataire : {{bdc.fournisseurNom}}</span><!--variable-->
+        </div>
+        <div style="float :right;margin-right: 30px;margin-top: -140px"  class="form-group col-sm-4">
+            <span>Date : {{bdc.date_commande | date: 'dd/MM/yyyy'}}</span><!--variable -->
+        </div>
+        <div style="float :right; margin-right: 30px;margin-top: -120px;"  class="form-group col-sm-4" *ngIf="bdc.nom_chantier">
+            <span>Nom du chantier : {{bdc.nom_chantier}}</span>
+        </div>
+
+
+        <div  *ngIf="print" class="form-group col-sm-12" style="text-align: center;margin-top: 50px;">
+            <h1> <label class="col-sm-4" >COMMANDE n° :{{bdc.id_bdc}}</label></h1>
+        </div>
+        <h6 *ngIf="print">Madame, Monsieur<br>
+            Merci de bien vouloir prendre en compte la commande suivante.<br>
+            Vous en remerciant par avance.</h6>
+
+        <form method="" action="" [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)"
+              (keyup.enter)="addProduct();">
+            <!--
+                        <div class="col-sm-12">
+
+
+                            <div class="form-group col-sm-4">
+                                <span>Pour : {{bdc.livre}}</span><!--variable à mettre suivant le choix
+                            </div>
+                            <div style="float :right;" class="form-group col-sm-4" *ngIf="bdc.id_chantier">
+                                <span>N° chantier: {{bdc.id_chantier}}</span>-->
+            <!--variable pour le chantier et permetttre une recherche par indexation du chantier
+        </div>
+        <br>
+
+       <!--variable-->
+
+
+
+
+
+
+            <div >
+                <table class="col-sm-12" style="margin-left: -30px;">
+                    <thead>
+                    <th style="width: 50px; ">Référence:</th>
+                    <th style="width: 50px;">Libellé produit:</th>
+                    <th style="width: 50px;">Unité:</th>
+                    <th *ngIf="!print" style="width: 50px;">Prix H.T.</th>
+                    <th style="width: 50px;">Quantité:</th>
+                    <th *ngIf="!print" style="width: 50px;">Total H.T.</th>
+                    <th *ngIf="!print" class="col-xs-1">Action</th>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <!--variable dans value pour la ref-->
+                        <td><input style="border:none;"  *ngIf="!this.model" type="text" name="idproduit" placeholder="" value="">
+                            <div *ngIf="this.model"> {{this.model.reference}}</div>
+                        </td>
+
+                        <td><input style="border:none;"
+                                   ng2-auto-complete
+                                   formControlName="produit"
+                                   [source]="products"
+                                   [list-formatter]="autocompleListFormatterProducts"
+                                   value-property-name="id"
+                                   display-property-name="libelle"
+                                   placeholder="Produit"
+                                   class="col-sm-12">
+                            <!--variable pour le libellé et permetttre une recherche par indexation si produit inconnu : rajouté dans la liste des produits ou créer le produit  avec ses caractéristiques lors de la validation de commande par une demande à l'utilisateur-->
+                        </td>
+                        <td><input style="border:none;"  *ngIf="!this.model" type="text" name="unite" placeholder="" value="">
+                            <div *ngIf="this.model"> {{this.model.unite}}</div><!--variable dans value pour l'unité-->
+                        </td>
+                        <td><input style="border:none;"  type="number" name="quantité" placeholder="" value="" formControlName="quantite">
+                        </td>
+                        <td><label *ngIf="!print">Prix enregistré: {{prix | currency:'EUR':true:'1.2-2'}}</label></td>
+
+                        <td *ngIf="!print" ><input *ngIf="!print" style="border:none;"  type="number" step="0.01" name="prix_ht" formControlName="ht" placeholder=""
+                                                   value="">
+
+                        <td *ngIf="!print"><input style="border:none;"  *ngIf="!this.model && !print" type="number" name="total" placeholder="">
+                            <div *ngIf="this.model && !print"> {{total | currency:'EUR':true:'1.2-2'}}</div>
+                        </td>
+                        <td>
+                            <button *ngIf="droitsuser.ajoutcom && !print" class="btn btn-default input-sm " (click)="addProduct()" type="button"
+                                    [disabled]="!model">Ajouter la ligne
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr *ngFor="let prod of List">
+                        <td><span>{{prod.reference}}</span></td>
+                        <td><span>{{prod.libelle}}</span></td>
+                        <!-- modif a faire en dessous et basta pronto) -->
+                        <td><span>{{prod.unite}}</span></td>
+                        <td  *ngIf="!print" ><span>{{prod.prix_prevu | currency:'EUR':true:'1.2-2'}}</span></td>
+                        <td><span>{{prod.qte}}</span></td>
+                        <td  *ngIf="!print"><span>{{prod.prix_prevu * prod.qte | currency:'EUR':true:'1.2-2' }}</span></td>
+                        <td>
+                            <button *ngIf="droitsuser.supcom && !print" class="btn btn-default input-sm" (click)="removeProduct(prod)" type="button">
+                                Supprimer
+                            </button>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <p>&nbsp;</p>
+                <div >
+                        <span class="col-sm-4">Date de livraison :
+                            <input style="border:none;margin-left:1px;" type="date" formControlName="date"
+                                   value="{{bdc.date_livraison | date: 'yyyy-MM-dd'}}"></span>
+                    <!--variable -->
+                </div>
+
+                <div class="form-group ">
+                       <span class="col-sm-4">Adresse de livraison :<input style="border:none;margin-left:1px;"  type="text"
+                                                                           formControlName="adresse"
+                                                                           name="adresselivraison"
+                                                                           value="{{bdc.adresselivraison}}"
+                                                                           class="col-sm-10"></span>
+                    <!--variable -->
+
+                </div>
+
+                <div >
+                    <span class="col-sm-2">Observation particulières :<textarea rows="1 " style="margin-left: 1px;border:none;" class="col-sm-10" ></textarea></span>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label>Livraison :</label>
+                    <select style="border:none;"  id="livre" value="Pour le chantier" formControlName="livre">
+
+                        <option [selected]="bdc.livre == 'Chantier'">
+                            Chantier
+                        </option>
+                        <option [selected]="bdc.livre == 'Stock'">
+                            Stock
+                        </option>
+                        <option [selected]="bdc.livre == 'Enlevé'">
+                            Enlevé
+                        </option>
+                    </select>
+
+                </div>
+                <table>
+                    <tbody>
+                    <tr *ngIf="!print">
+                        <td colspan="5" class="">Tarif livraison :</td>
+                        <td><input style="border:none;"  type="number" name="tariflivraison" step="0.01" placeholder=""
+                                   formControlName="livraison" value=""></td>
+                        <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+
+                    </tr>
+                    <tr *ngIf="!print">
+                        <td colspan="5" class="total">Total :</td>
+                        <td class="total">{{all | currency:'EUR':true:'1.2-2' }} </td>
+                        <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        <td class="total"></td>
+
+                    </tr>
+                    <tr>
+
+                    <tr>
+                        <td colspan="7">
+                            <button *ngIf="droitsuser.ajoutcom && !print" type="submit" class="btn btn-default input-sm col-sm-4 col-sm-offset-5">
+                                Enregistrer
+                            </button><!-- a integrer dans la bdd-->
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <button class="col-sm-offset-10 col-sm-1 btn" style="margin-top: 10px;" type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>
+
+
+
+
+
+
+
+        </form>
+        <h6 *ngIf="print">En vous remerciant par avance,<br>
+            Cordialement.</h6>
+
+
+        <p *ngIf="print">{{fact.autre}}</p>
+
+
+
+    </div><!--fin container fluid-->
+    <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter">
+
+
+
+
+
+        <article style="margin-top: 40px;bottom: 10px;left: 0; right: 0;position: fixed;text-align: center;page-break-after:always;page-break-before:always;page-break-inside: avoid;line-height: 1px;" >
+
+            <p style="font-size:10px;">{{fact.pied_page1}}</p>
+            <p style="font-size:10px;">{{fact.pied_page2}}</p>
+            <p style="font-size:10px;">{{fact.pied_page3}}</p>
+            <p style="font-size:10px;">{{fact.pied_page4}}</p>
+            <p style="font-size:10px;">{{fact.pied_page5}}</p>
+            <p style="font-size:10px;">{{fact.pied_page6}}</p>
+        </article>
+
+
+
+    </div>
+    <div *ngIf="print" style="position:absolute;z-index: -100;margin-top:-40%;">
+        <img src="image/fili.png">
+    </div>
+    <br>
+    <div style="position:absolute;bottom:-17px;left:0px;" class="form-group col-sm-12" *ngIf="print">
+        <span>Par : {{currentUser.firstName}} {{currentUser.lastName}}</span>
+        <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+        <span>Edité le : {{date() |  date: 'dd/MM/yyyy HH:mm'}}</span>
+
+    </div>
+</div><!--fin id achat-->

@@ -1,0 +1,383 @@
+<div id="vente">
+    <header>
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <img src="image/menu/produits_grand_gris.png" alt="produit vente">
+                    <span>Ajouter un produit vente</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class=" container-fluid" class="col-md-12">
+        <div class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3>Ajouter un produit vente</h3>
+
+        <form name="form" (submit)="ajouterProduitVente()">
+            <article class="col-sm-4">
+
+                <div style="height: 10%; width: 100%;">
+                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url" src="image/test.ico" alt="..." class="img-thumbnail images"/>
+                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
+                </div>
+
+                <!-- libelle -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">* Libellé : </label>
+                    <div>
+                        <textarea name="libelle" [(ngModel)]="produit.libelle" class="col-sm-7" rows="3"></textarea>
+                        <!--variable pour value-->
+                    </div>
+                </div>
+
+
+                <!-- categorie -->
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">* Catégorie : </label>
+                    <select name="categorie" class="col-sm-7" [(ngModel)]="cat_choisi" #categorie="ngModel" required>
+                        <option *ngFor="let cat of categories" [value]="cat.libelle">{{cat.libelle}}</option>
+                    </select>
+                </div>
+
+                <!-- prix achat ht -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">* Prix achat H.T. : </label>
+                    <div>
+                        <input type="number" step="0.01" class="col-sm-7"
+
+
+                               [(ngModel)]="produit.prix_achat"
+                               value="{{getTotalPrixAchat()}}"
+                               (ngModelChange)="calcpercent(produit)"
+                               name="prix_achatht"
+                               disabled
+                        /><!--variable égale à la somme des PA FT des produits composés-->
+                    </div>
+                </div>
+
+                <!-- marge -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">* Marge (€): </label>
+                    <div>
+                        <input type="number" step="0.01" min="0" class="col-sm-7"
+                               [(ngModel)]="produit.marge"
+                               (ngModelChange)="calcpercent(produit)"
+                               name="marge"
+                               required
+                        /><!--somme des marges de sproduits composés-->
+                    </div>
+                </div>
+
+                <!-- marge % -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">* Marge en % : </label>
+                    <div>
+                        <input type="number"
+                               step="0.01"
+                               class="col-sm-7"
+                               name="margepc"
+                               [(ngModel)]="produit.margepc"
+                               (ngModelChange)="calcvalue(produit)"
+                               (change)="verifymarge(produit)"
+                               required
+                        /><!-- le pourcentage est égal marge fois 100 /PAHT-->
+                    </div>
+                </div>
+
+
+                <!-- marge % -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">* Marge en % minimale: </label>
+                    <div>
+                        <input type="number" step="0.01" class="col-sm-7"
+                               name="margepcmin"
+                               [(ngModel)]="produit.margepcmin"
+                               (change)="verifymarge(produit)"
+                               required
+                        /><!-- le pourcentage est égal marge fois 100 /PAHT-->
+                    </div>
+                </div>
+
+                <!-- tva -->
+                <!--<div class="form-group control-label">
+                    <label class="col-sm-5" >TVA :</label>
+                    <select name="tva" class="col-sm-3" disabled>
+                        <option *ngFor="let tva of tvas" [value]="tva.taux">{{tva.taux}}</option>
+                    </select>
+                </div>-->
+
+                <!-- prix vente ht -->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Prix vente H.T. : </label>
+                    <div>
+                        <input type="number" step="0.01" class="col-sm-7"
+                               [(ngModel)]="produit.prix_vente"
+                               value="{{getTotalPrixVente()}}"
+                               name="prix_venteht"
+                               disabled
+                        />
+                    </div>
+                </div>
+                <!-- unite -->
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">* Unité :</label>
+                    <select name="unitee" class="col-sm-7" [(ngModel)]="uni_choisi" #unite="ngModel" required>
+                        <option *ngFor="let unis of unites" [value]="unis.libelle">{{unis.libelle}}</option>
+                    </select>
+                </div>
+
+            </article>
+
+            <!-- description -->
+            <article class="col-sm-7 gauche">
+                <label>Ajouter une description :</label>
+                <textarea class="form-control" rows="4" name="description" [(ngModel)]="produit.description">Ajouter une description :</textarea>
+            </article>
+
+            <!-- note -->
+            <article class="col-sm-7 gauche">
+                <label>Ajouter une note :</label>
+                <textarea class="form-control" rows="4" name="note"
+                          [(ngModel)]="produit.note">Ajouter une note :</textarea>
+            </article>
+
+            <!-- stocks -->
+            <article class="col-sm-7 gauche">
+
+                <h5>Stock :</h5>
+
+                <div class="table table-responsive">
+                    <table class="table  ">
+                        <thead>
+                        <tr>
+                            <th>Stock minimum :</th>
+                            <th>Stock maximum</th>
+                            <th>faire une première commande :</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="number" name="stockmini"/></td>
+                            <td><input type="number" name="stockmaxi"/></td>
+                            <td><input type="number" name="commande"/></td>
+                            <!--si proposition de commande est >0 créer un bon de commande ou ajouter à un bon existant en demandant à l'opérateur si il veut bien ajouter cette commande lors du clique sur modifier et envoyer la commande par mail-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+
+
+            <!-- prods composes -->
+            <div class="col-sm-12">
+                <h5>Produit composé :</h5>
+
+                <div class="table table-responsive" style="min-height: 150px">
+                    <table class="table  ">
+                        <thead>
+                        <tr>
+                            <th class="col-sm-5">Libellé:</th>
+                            <th class="col-sm-1">Fournisseur:</th>
+
+                            <th class="col-sm-1">Unité:</th>
+                            <th class="col-sm-1">Prix d'achat:</th>
+                            <th class="col-sm-1">Qté</th>
+                            <th class="col-sm-1">Prix H.T.:</th>
+                            <th class="col-sm-1">Action</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input ng2-auto-complete
+                                       #prod
+                                       name="produit"
+                                       [source]="allProducts"
+                                       [(ngModel)]="produitadd.libelle"
+                                       [list-formatter]="autocompleListFormatterProducts"
+                                       value-property-name="libelle"
+                                       display-property-name="libelle"
+                                       placeholder="Produit"
+                                       class="col-sm-12"
+                                       (ngModelChange)="chooseProductByLibelle(0)"
+                                       autocomplete="off"
+                            >
+                                <a *ngIf="produitadd.libelle"
+                                   [routerLink]="['/produitachat/' + produitadd.id_produit + '/' + produitadd.num_version]"
+                                   target="_blank">Voir</a>
+
+                            </td>
+                            <td>
+                                <span>{{produitadd.raison_sociale}}</span>
+                            </td>
+
+                            <td>
+                                <span>{{produitadd.unite}}</span>
+                            </td>
+                            <td><span>{{produitadd.prix_achat}}</span></td>
+                            <td><input type="number" step="0.01" name="quantite"
+                                       [(ngModel)]="produitadd.quantite"/></td>
+
+                            <td><span> {{calctotalprod(produitadd) | currency:'EUR':true:'1.2-2'}}</span>
+                            </td>
+                            <td>
+                                <button *ngIf="droitsuser.ajoutprov" type="button" class="btn right"
+                                        (click)="addProduct()"
+                                        [disabled]="!produitadd.quantite || !produitadd.libelle">Ajouter
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr *ngFor="let produits of produitsComposes, let i = index; trackBy:customTrackBy">
+                            <td><span class="col-sm-12">
+                                <a *ngIf="produitsComposes[i].libelle"
+                                   [routerLink]="['/produitachat/' + produitsComposes[i].id_produit + '/' + produitsComposes[i].num_version]"
+                                   target="_blank">{{produitsComposes[i].libelle}}</a>
+                            </span></td>
+                            <td>
+                                <span>{{produitsComposes[i].raison_sociale}}</span>
+                            </td>
+                            <td>
+                                <span>{{produitsComposes[i].unite}}</span>
+                            </td>
+                            <td><span>{{produitsComposes[i].prix_achat}}</span></td>
+                            <td><input type="number" step="0.01" name="quantite{{i}}"
+                                       [(ngModel)]="produitsComposes[i].quantite"
+                                       (ngModelChange)="calcvalue(produit)"
+                            /></td>
+
+
+                            <td><span>{{calctotalprod(produitsComposes[i]) | currency:'EUR':true:'1.2-2'}}
+                            </span></td>
+                            <td>
+                                <a class=" col-sm-offset-1"
+                                   (click)="supprimer(produitsComposes[i])">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                          style="color: #0f0f0f"></span>
+                                </a>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-sm-12">
+                <h5>Main d'oeuvre</h5>
+
+                <div class="table table-responsive" style="min-height: 190px">
+                    <table class="table  ">
+                        <thead>
+                        <tr>
+                            <th class="col-sm-3">Désignation</th>
+                            <th class="col-sm-1">Heure chargé :</th>
+                            <th class="col-sm-1">Durée:</th>
+                            <th class="col-sm-1">Prix H.T. :</th>
+                            <th class="col-sm-1">Action</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input ng2-auto-complete
+                                       #mo
+                                       name="mo"
+                                       [source]="mainOeuvre"
+                                       [(ngModel)]="mainOeuvreAdd.libelle"
+                                       (ngModelChange)="mainOeuvreAdd.libelle"
+                                       [list-formatter]="autocompleListFormatterMo"
+                                       value-property-name="libelle"
+                                       display-property-name="libelle"
+                                       placeholder="Main d'oeuvre"
+                                       class="col-sm-12"
+                                       (ngModelChange)="chooseMainOeuvreLibelle( 0)"
+                                       autocomplete="off"
+                            ></td>
+
+                            <!-- TODO : make it nice to type and search -->
+                            <!--<td><input type="text" list="produits" name="designation"
+                                       (change)="chooseProductByLibelle($event.target.value, 0)"
+                                       [(ngModel)]="produitsComposes[0].libelle" required>
+                                <datalist id="produits" >
+                                    <option *ngFor="let pr of allProducts" [value]="pr.libelle">{{pr.libelle}}</option>
+                                </datalist>
+                            </td>-->
+
+                            <td>
+                                <span>{{mainOeuvreAdd.salaire_charge}}</span>
+                            </td>
+                            <td><input type="time" name="qte"
+                                       [(ngModel)]="mainOeuvreAdd.quantite"
+                                       (ngModelChange)="calcvalue(produit)"
+                            /></td>
+
+                            <td><span>
+                                {{calctotal(mainOeuvreAdd)| currency:'EUR':true:'1.2-2'}}
+                            </span></td>
+                            <td>
+                                <button *ngIf="droitsuser.ajoutprov" type="button" class="btn right" (click)="addMO()"
+                                        [disabled]="!mainOeuvreAdd.quantite || !mainOeuvreAdd.libelle">Ajouter
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr *ngFor="let produits of mainOeuvreList, let i = index; trackBy:customTrackBy">
+                            <td><span class="col-sm-12">
+                                {{mainOeuvreList[i].libelle}}
+                            </span></td>
+
+                            <td>
+                                <span>{{mainOeuvreList[i].salaire_charge}}</span>
+                            </td>
+                            <td><input type="time"
+                                       name="qte{{i}}"
+                                       [(ngModel)]="mainOeuvreList[i].quantite"
+                                       (ngModelChange)="calcvalue(produit)"/></td>
+
+                            <td><span>
+                                {{calctotal(mainOeuvreList[i])| currency:'EUR':true:'1.2-2'}}
+                                </span></td>
+                            <td>
+                                <a class=" col-sm-offset-1"
+                                   (click)="supprimermainoeuvre(mainOeuvreList[i])">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                          style="color: #0f0f0f"></span>
+                                </a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <button *ngIf="droitsuser.ajoutprov" (click)="uploaderImg.queue[0].upload();" type="submit"
+                    [disabled]="produitsComposes.length < 1 || !produit.margepcmin || !produit.margepc || !produit.marge  ||!produit.libelle"
+                    class="col-sm-offset-11 btn">
+                Enregistrer
+            </button>
+        </form>
+
+        <!--une fois modifier créer un pdf à mettre dans la GED
+        <div class="col-sm-12 bas">
+            <form  method="POST" action="#" class="col-sm-1 col-sm-offset-11 btn">
+                <button >Fermer</button>
+            </form>
+        </div>
+        -->
+
+    </div><!--fin container fluid-->
+
+</div>

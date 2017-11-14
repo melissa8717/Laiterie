@@ -1,0 +1,120 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img  src="image/menu/chantiers_grand_gris.png">
+
+
+                    <span >Chantiers</span>
+
+                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class=" container-fluid ">
+        <div  class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3>Dépenses réelles</h3>
+
+        <div class="table-responsive">
+
+            <table class="table ">
+
+                <thead>
+                <th class="col-sm-2">Date</th>
+                <th class="col-sm-3">Fournisseur/Employé</th>
+                <th class="col-sm-5">Motif</th>
+                <th class="col-sm-2">Montant en €</th>
+                </thead>
+            </table>
+        </div>
+        <div class="table-responsive" style="height: 250px;">
+            <table class="table table-striped " >
+
+                <tbody >
+
+                <tr *ngFor="let prod of model">
+                    <td class="col-sm-2">08/12/2017</td>
+                    <td class="col-sm-3">{{prod.nom}}</td>
+                    <td class="col-sm-5">BDC n° {{prod.id_bdc}} - {{prod.libelle}}</td>
+                    <td class="col-sm-2">{{prod.prix_prevu * prod.Qtelivre | number:'1.0-2'}}</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="table-responsive col-sm-4">
+            <h4 style="text-align: left;">Consolidation :</h4>
+            <table class="table-bordered col-sm-12">
+
+                <tbody>
+                <tr>
+                    <td>fournisseur</td>
+                    <td> {{countReeldevis(prod) | number:'1.0-2'}}</td>
+                    <td>78.27%</td>
+                </tr>
+                <tr>
+                    <td>MO Employés</td>
+                    <td>2124.00</td>
+                    <td>15.43%</td><!--pourcentage obtenu entre le montant de la ligne fois 100 / par la somme de tous les sommes du tableau soit la somme du tableau précéden-->
+                </tr>
+                <tr>
+                    <td>MO Intérim</td>
+                    <td>690.70</td>
+                    <td>5.34%</td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="table-responsive col-sm-4">
+
+            <table class="table-bordered col-sm-12">
+                <h4>Dernier mois chantier :</h4>
+
+            </table>
+        </div>
+
+        <div class="table-responsive col-sm-4">
+
+            <table class="table-bordered col-sm-12">
+                <h4>Heures :</h4>
+
+            </table>
+        </div>
+    </div>
+    <button *ngIf="droitsuser.accescha" class ="col-sm-offset-10 col-sm-2 btn" type="button" (click)=" imprimer()">Imprimer</button>
+
+</div>

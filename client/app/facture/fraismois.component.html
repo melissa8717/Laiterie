@@ -1,0 +1,196 @@
+<div id="achat">
+    <header >
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img  *ngIf="!print" src="image/menu/facturation_grand_gris.png" alt="facturation">
+
+                    <span  *ngIf="!print">Frais généraux mensuels</span>
+
+
+
+                </div>
+            </div><!--container-fluid-->
+        </div>
+
+
+    </header>
+
+    <div class="container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <div style="font-size: 18px;text-align: center;margin-top: 10px;">
+
+        <ng-container *ngIf="!date" >
+            <a (click)="back()"><span  *ngIf="!print" class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> </a>
+            {{monthArray[my.getMonth()]}} {{my.getFullYear()}}
+            <a (click)="up()"> <span  *ngIf="!print" class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a>
+
+
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </ng-container>
+        </div>
+
+
+
+        <h3 class="col-sm-12">Frais généraux mensuels</h3>
+
+        <div class=" table-responsive col-sm-12">
+            <table  class="table table-striped ">
+
+                        <thead style="font-size: 18px;">
+
+                            <th>Désignation</th>
+                            <th>Date</th>
+                            <th>Catégorie</th>
+                            <th>Pourcentage</th>
+                            <th>Montant en €</th>
+                            <th  *ngIf="!print">Action</th>
+
+                        </thead>
+
+                        <tbody style="font-size: 16px;">
+
+                            <tr *ngFor="let chants of chant">
+                                <td>{{chants.nom ? chants.nom : chants.designation}}</td>
+                                <td>{{chants.date_debut | date : "dd-MM-yyyy"}}</td>
+                                <td>{{chants.categorie}}</td>
+                                <td>{{countPourcent(chants) | number:'1.0-2'}} %</td>
+                                <td ><input type="number" name="valeur" [(ngModel)]="chants.valeur"  ></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="hidden" class="form-control" name="identifiant du devis">
+                                        <!--variable pour l'identifiant-->
+                                        <div *ngIf="!print" class="input-group-btn">
+                                            <button type="button" class="btn btn-default dropdown-toggle input-sm"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+                                                <span class="caret"></span></button>
+                                            <ul  class="dropdown-menu dropdown-menu-right">
+                                                <li *ngIf="droitsuser.supfrais"><a (click)="deletion(chants.id_frais)">Supprimer</a></li>
+                                                <li *ngIf="droitsuser.modiffrais"><a (click)="modify(chants)">Modifier</a></li>
+                                            </ul>
+                                        </div><!-- /btn-group -->
+                                    </div><!-- /input-group -->
+                                </td>
+                            </tr>
+                            <tr style="background-color: black;color:white;font-weight: bold;">
+                                <td colspan="3">Total</td>
+                                <td>{{countTotalpourcent() | number:'1.0-2'}} %</td>
+                                <td>{{countTotal() | number:'1.0-2'}} €</td>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+
+            </table>
+
+
+        </div>
+
+
+
+
+        <h4  *ngIf="!print" class="col-sm-12">Ajout de frais généraux</h4>
+
+        <div  *ngIf="!print" class=" table-responsive col-sm-12">
+            <table  class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th>* Designation</th>
+                        <th>* Date</th>
+                        <th>* Catégorie</th>
+                        <th>* Montant en €</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><input name="designation" type="text" [(ngModel)]="entre.designation" required></td>
+                        <td><input type="date" name="date_debut" [(ngModel)]="entre.date_debut" required></td>
+                        <td>
+                            <select name="categorie" class="input-sm" [(ngModel)]="entre.categorie" required>
+                                <option [selected]="entre.categorie =='Assistance'">Assistance</option>
+                                <option [selected]="entre.categorie =='Consommable'">Consommable</option>
+                                <option [selected]="entre.categorie =='Financement'">Financement</option>
+                                <option [selected]="entre.categorie =='Loyer'">Loyer</option>
+                                <option [selected]="entre.categorie =='Salaire'">Salaire</option>
+                                <option [selected]="entre.categorie =='Autres'">Autres</option>
+                            </select>
+                        </td>
+                        <td><input type="number" name="valeur" [(ngModel)]="entre.valeur" required></td>
+                        <td><button *ngIf="droitsuser.ajoutfrais" type="button" (click)="loadAdd()">Ajouter</button></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <ng-container *ngIf="mois">
+            <h3 class="col-sm-12" style="margin-top:10px;">Frais prévisionnels mensuels</h3>
+
+           <div class=" table-responsive col-sm-12">
+               <table  class="table table-striped ">
+
+                   <thead style="font-size: 18px;">
+                   <th>Date</th>
+                   <th>Montant en €</th>
+
+
+                   </thead>
+
+                   <tbody style="font-size: 16px;">
+
+                   <tr >
+                       <td>{{mois.dateprev | date : "dd-MM-yyyy"}}</td>
+                       <td >{{mois.montantprev | number:'1.0-2'}}  </td>
+
+                   </tr>
+
+                   </tbody>
+
+               </table>
+
+
+           </div>
+
+        </ng-container>
+
+        <!-- <ng-container >
+
+             <h4 class="col-sm-12">Ajout frais prévisionnel mensuels</h4>
+
+             <div class=" table-responsive col-sm-12">
+                 <table  class="table table-striped ">
+                     <thead>
+                     <tr>
+                         <th>* Date</th>
+                         <th>* Montant en €</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+
+                     <tr>
+
+                         <td><input type="date" name="dateprev" [(ngModel)]="prev.dateprev" required></td>
+                         <td><input type="number" name="valeur" [(ngModel)]="prev.montantprev" required></td>
+                         <td><button *ngIf="droitsuser.ajoutfrais" type="button" (click)="loadAddprev()">Ajouter</button></td>
+                     </tr>
+                     </tbody>
+
+                 </table>
+             </div>
+
+         </ng-container>-->
+
+        <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accesfrais" (click)=" imprimer()">Imprimer </button>
+
+
+
+
+    </div><!--container-fluid-->
+
+</div><!--id achat-->

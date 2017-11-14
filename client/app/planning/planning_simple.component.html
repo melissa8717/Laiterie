@@ -1,0 +1,345 @@
+<link href="https://unpkg.com/bootstrap@4.0.0-alpha.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="../../style/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div id="planning" style="background-color: #B2B2B2; min-height: 1000px; ">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/Planning_grand_gris.png" alt="planning">
+
+                    <span *ngIf="!print">Planning</span>
+
+                </div>
+            </div>
+        </div>
+
+
+    </header>
+
+    <div *ngIf="!print" class="col-sm-12 " style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+        <span class="col-sm-2 "><button *ngIf="!print && (droitsuser.accespb || droitsuser.accespc)" class ="btn" style="margin-top:7px;" type="button" (click)=" imprimer()">Imprimer</button></span>
+        <span class="blan1 col-sm-offset-8 col-sm-2"><a  [routerLink]="['/home']" class="glyphicon glyphicon-arrow-left fleche1 col-sm-1"></a>Retour accueil</span>
+    </div>
+
+    <div *ngIf="!print && (droitsuser.ajoutpb || droitsuser.ajoutpc)" class="modal-header" id="modaladd">
+        <button  [routerLink]="['/equipe']" *ngIf="!print" class=" col-sm-2" style="font-size: 15px;">Ajouter une équipe</button>
+    </div>
+
+    <ng-template #add let-close="close" >
+
+        <div *ngIf="!print" class="modal-header" id="modaladd">
+            <h6 *ngIf="!print" class="title" >Ajouter des heures</h6>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="col-md-12 " style='padding-bottom:15px ; padding-top:5px ; border-bottom:1px solid #ccc;'>
+                <h6 class="title" >Par employé(e):</h6>
+                <div class="col-md-3 ">
+                    <h6 class="title" >Employé(e):</h6>
+                    <input
+                            ng2-auto-complete
+                            #chantier
+                            [source]="ouvriers"
+                            [list-formatter]="autocompleListFormatterContact"
+                            [value-formatter]="autocompleListFormatterContactValue"
+                            value-property-name="id_contact"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="modalDataAdd.emp.employe"
+                            autocomplete="off"
+                    >
+                </div>
+                <div class="col-md-2">
+                    <h6 *ngIf="!print" class="title" >Heures : </h6>
+                    <input  type="time" class="form-control" name="heure" value="08:00" [(ngModel)]="modalDataAdd.emp.nb_heure">
+                </div>
+                <div class="col-md-4 ">
+                    <h6 *ngIf="!print" class="title" >Chantier : </h6>
+                    <input
+                            ng2-auto-complete
+                            #chantier
+                            [source]="chantiers"
+                            [list-formatter]="autocompleListFormatterchantier"
+                            value-property-name="id_chantier"
+                            display-property-name="nom_chantier"
+                            name="chantier"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="modalDataAdd.emp.chantier"
+                            autocomplete="off"
+                    >
+                </div>
+                <div class="col-md-1 col-md-offset-1">
+                    <button *ngIf="droitsuser.ajoutpb || droitsuser.ajoutpc" type="button" class="btn btn-primary" (click)="addEmploye(); close();"
+                            [disabled]="!modalDataAdd.emp.deb || !modalDataAdd.emp.fin || (modalDataAdd.emp.chantier?  !modalDataAdd.emp.chantier.id_chantier: true) || !modalDataAdd.emp.nb_heure || (modalDataAdd.emp.employe?  !modalDataAdd.emp.employe.id_contact : true)">Ajouter</button>
+                </div>
+
+
+
+
+
+
+                <div class="col-md-4">
+                    <h6 class="title" >Du : </h6>
+                    <input  type="date" class="form-control" name="deb" [(ngModel)]="modalDataAdd.emp.deb">
+                </div>
+
+                <div class="col-md-4">
+                    <h6 class="title" >Au : </h6>
+                    <input  type="date" class="form-control" name="fin" [(ngModel)]="modalDataAdd.emp.fin">
+                </div>
+                <div class=" col-md-2">
+                    <h6 class="title" >Type : </h6>
+                    <select *ngIf="!print" style="height: auto"
+                            type="text"
+                            name="equipe"
+                            class="form-control"
+                            placeholder="Equipe"
+                            [(ngModel)]="modalDataAdd.emp.type">
+                        <option value="Absence">Absence</option>
+                        <option value="Travail">Travail</option>
+                        <option value="RTT">RTT</option>
+                        <option value="CP">CP</option>
+                        <option value="Retard">Retard</option>
+                        <option value="Intempéries">Intempéries</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-12 " >
+                <h6 class="title" >Par Equipe:</h6>
+                <div class="col-md-3 ">
+                    <h6 class="title" >Equipe:</h6>
+                    <input
+                            ng2-auto-complete
+                            #chantier
+                            [source]="equipes"
+                            [list-formatter]="autocompleListFormatterEquipe"
+                            [value-formatter]="autocompleListFormatterEquipeValue"
+                            value-property-name="id_contact"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="modalDataAdd.eq.equipe"
+                            autocomplete="off"
+                    >
+                </div>
+                <div class="col-md-2">
+                    <h6 *ngIf="!print" class="title" >Heures : </h6>
+                    <input  type="time" class="form-control" name="heure" value="08:00" [(ngModel)]="modalDataAdd.eq.nb_heure">
+                </div>
+                <div class="col-md-4 ">
+                    <h6 *ngIf="!print" class="title" >Chantier : </h6>
+                    <input
+                            ng2-auto-complete
+                            #chantier
+                            [source]="chantiers"
+                            [list-formatter]="autocompleListFormatterchantier"
+                            value-property-name="id_chantier"
+                            display-property-name="nom_chantier"
+                            name="chantiereq"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="modalDataAdd.eq.chantier"
+                            autocomplete="off"
+                    >
+                </div>
+
+                <div class="col-md-1 col-md-offset-1" >
+                    <button *ngIf="droitsuser.ajoutpb || droitsuser.ajoutpc" type="button" class="btn btn-primary" (click)="addEquipe(); close();"
+                            [disabled]=" (modalDataAdd.eq.equipe?  !modalDataAdd.eq.equipe.id_equipe : true) || (modalDataAdd.eq.chantier?  !modalDataAdd.eq.chantier.id_chantier: true)||!modalDataAdd.eq.deb || !modalDataAdd.eq.fin|| !modalDataAdd.eq.nb_heure">Ajouter</button>
+                </div>
+
+                <div class="col-md-4">
+                    <h6 class="title" >Du : </h6>
+                    <input  type="date" class="form-control" name="debeq" [(ngModel)]="modalDataAdd.eq.deb">
+                </div>test
+
+                <div class="col-md-4">
+                    <h6 class="title" >Au: </h6>
+                    <input  type="date" class="form-control" name="fineq" [(ngModel)]="modalDataAdd.eq.deb">
+                </div>
+
+                <div class=" col-md-2">
+                    <h6 class="title" >Type : </h6>
+                    <select *ngIf="!print" style="height: auto"
+                            type="text"
+                            name="equipe"
+                            class="form-control"
+                            placeholder="Equipe"
+                            [(ngModel)]="modalDataAdd.eq.type">
+                        <option value="Absence">Absence</option>
+                        <option value="Travail">Travail</option>
+                        <option value="Retard">Retard</option>
+                        <option value="Intempéries">Intempéries</option>
+                    </select>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button type="button" class="btn btn-primary" (click)="close()">OK</button>
+
+        </div>
+
+    </ng-template>
+
+
+
+    <ng-template #modalContent let-close="close" >
+        <div class="modal-header" id="modal">
+            <h6 class="title" >{{modalData.nom}} le {{modalData.date| calendarDate:('day' + 'ViewTitle'):'fr'}}</h6>
+        </div>
+
+        <div class="modal-body">
+
+            <h2 *ngIf="modalData.solo.length > 0"> Individu</h2>
+            <div class="col-md-12 " style='padding-bottom:15px ; padding-top:5px ; border-bottom:1px solid #ccc;' *ngFor="let travail of modalData.solo; let i = index">
+                <h5  *ngIf="travail.valid" class="col-md-12 text-warning">Heures déjà validées !</h5>
+                <h6 class="col-md-3 title" >Chantier <span class="badge badge-pill badge-default">{{travail.id_chantier}}</span> : </h6>
+                <div class="col-md-3">
+                    <label>Heures : </label>
+                    <input  type="time" class="form-control" name="heure{{i}}" [(ngModel)]="travail.nb_heure" >
+                </div>
+                <div class="col-md-3">
+                    <label>Type : </label>
+                    <select style="height: auto"
+                            name="type{{i}}"
+                            class="form-control"
+                            [(ngModel)]="travail.type">
+                        <option [selected]="travail.type=='Absence'">Absence</option>
+                        <option [selected]="travail.type=='Travail'">Travail</option>
+                        <option [selected]="travail.type=='Retard'">Retard</option>
+                        <option [selected]="travail.type=='Intempéries'">Intempéries</option>
+                    </select>
+                </div>
+                <div class="col-md-offset-2 col-md-1">
+                    <button *ngIf="droitsuser.suppb || droitsuser.suppc" class="btn btn-danger" (click)="supprimer(travail); close()">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                    <button *ngIf="droitsuser.validpb || droitsuser.validpc" class="btn btn-success" (click)="valider(travail)">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    </button>
+
+                </div>
+            </div>
+
+            <h2 *ngIf="modalData.team.length > 0">Equipe</h2>
+            <div class="col-md-12 " style='padding-bottom:15px ; padding-top:5px ; border-bottom:1px solid #ccc;' *ngFor="let travailequipe of modalData.team; let i = index">
+                <h6 class="col-md-3 title" >Chantier <span class="badge badge-pill badge-default">{{travailequipe.id_chantier}}</span> : </h6>
+                <div class="col-md-3">
+                    <label>Heures : </label>
+                    <input  type="time" class="form-control" name="heureeq{{i}}" [(ngModel)]="travailequipe.nb_heure" [disabled]="travailequipe.valid">
+                </div>
+                <div class="col-md-3">
+                    <label>Type : </label>
+                    <input  type="text" disabled class="form-control" name="type{{i}}" [(ngModel)]="travailequipe.type">
+                </div>
+                <div class="col-md-offset-2 col-md-1" *ngIf="!travailequipe.valid">
+                    <button *ngIf="droitsuser.suppb || droitsuser.suppc" class="btn btn-danger" (click)="supprimerTeam(travailequipe); close()">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                    <button *ngIf="droitsuser.validpb || droitsuser.validpc" class="btn btn-success" (click)="validerTeam(travailequipe)">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="close()">OK</button>
+        </div>
+
+    </ng-template>
+
+
+
+
+    <div class="container-fluid">
+
+        <div class="table-responsive">
+            <form method="POST" action="#">
+                <table class="table table-bordered">
+                    <thead class="colorth">
+                    <tr>
+                        <th colspan="33" style="text-align: center;">
+
+                            <a *ngIf="!print" class="btn btn-primary " style="float: left;  color: white; width:120px;" (click)="openAdd()">Ajouter heures</a>
+
+                            <a *ngIf="!print" (click)="back()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> </a>
+                                Mois de {{monthArray[month.getMonth()]}} {{month.getFullYear()}}
+                            <a *ngIf="!print" (click)="up()"> <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a>
+
+                            <a class="btn btn-primary " style="float: right;  color: white; width:120px;" (click)="swapView()">{{view}}</a>
+                        </th><!--variable pour le mois-->
+                    </tr>
+
+                    </thead>
+                    <!--le tbody se crée en fonction des données de la BDD -->
+
+                    <tbody >
+                    <tr style="background-color: #993300;"><!--trame ci-dessous ne change pas-->
+                        <td style="font-weight: bold; background-color: #B2B2B2;">
+                            <select *ngIf="!print" style="height: auto"
+                                    type="text"
+                                    name="equipe"
+                                    class="form-control"
+                                    placeholder="Equipe"
+                                    [(ngModel)]="equipe"
+                                    (change)="loadTeam()">
+                                <option value="all">Tous</option>
+                                <option [ngStyle]="{'background-color': equipe.couleur}" *ngFor="let equipe of equipes" value="{{equipe.id_equipe}}">Equipe {{equipe.n_equipe}}</option>
+                            </select>
+                        </td>
+                        <td *ngFor="let n of inittable(getMonthDays(month))"
+                            [ngClass]="((start(month) + n) % 7==6 || (start(month) + n) % 7==0)?'weekend':'week'"
+                        >
+                            {{n+1}} {{this.weekdays[(start(month) + n) % 7].substring(0, 3)}}
+                        </td>
+                    </tr>
+
+                    <!--tableau pour les heures-->
+                    <ng-container *ngIf="travaux && view=='Heures'">
+                        <tr *ngFor="let ouvrier of ouvriersfiltered" >
+                            <td  [ngStyle]="{'background-color': ouvrier.couleur? ouvrier.couleur : 'white'}" style="background-color: #337ab7;">{{ouvrier.nom}}<br>{{ouvrier.prenom}}</td><!--variable du nom et prénom de la personne-->
+                            <td *ngFor="let n of inittable(getMonthDays(month))" (click)="isTravail(month, n, ouvrier.id_contact, ouvrier.id_equipe)?test(month, n, ouvrier):'' " [ngClass]="(checkValid(month, n, ouvrier))?'valid':'invalid'">
+                                {{isTravail(month, n, ouvrier.id_contact, ouvrier.id_equipe)}}
+                            </td><!-- si plusieurs code chantier pour la meme personne mettre "divers" sinon le code chantier-->
+                        </tr>
+                    </ng-container>
+
+                    <ng-container *ngIf="travaux && view=='Chantier'">
+                        <tr *ngFor="let ouvrier of ouvriersfiltered" >
+                            <td  [ngStyle]="{'background-color': ouvrier.couleur? ouvrier.couleur : 'white'}" style="background-color: #337ab7;">{{ouvrier.nom}}<br>{{ouvrier.prenom}}</td><!--variable du nom et prénom de la personne-->
+                            <td  *ngFor="let n of inittable(getMonthDays(month))" (click)="isTravail(month, n, ouvrier.id_contact, ouvrier.id_equipe)?test(month, n, ouvrier):'' " [ngClass]="(checkValid(month, n, ouvrier))?'valid':'invalid'">
+                                {{getChantier(month, n, ouvrier.id_contact, ouvrier.id_equipe)}}
+                            </td><!-- si plusieurs code chantier pour la meme personne mettre "divers" sinon le code chantier-->
+                        </tr>
+                    </ng-container>
+
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+
+    </div><!--fin container fluid-->
+</div>

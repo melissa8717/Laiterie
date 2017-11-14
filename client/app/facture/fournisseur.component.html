@@ -1,0 +1,100 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/facturation_grand_gris.png">
+
+                    <span *ngIf="!print">Facturation</span>
+
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <h3>Rapprochement factures fournisseur</h3>
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h4>Facture fournisseur :</h4>
+        <span class="col-sm-3 glyphes glyphe3">fournisseur : </span><span class="col-sm-3 glyphes">{{model.nom}}</span>
+        <span class="col-sm-3 glyphes  glyphe3">N° facture : </span><span class="col-sm-3 glyphes">{{model.n_facture}}</span>
+        <span class="col-sm-3 glyphes  glyphe3">Date de facturation : </span><span class="col-sm-3 glyphes">{{model.datefourn | date: 'dd/MM/yyyy'}}</span>
+        <span class="col-sm-3 glyphes  glyphe3">Montant de la facture en € : </span><span class="col-sm-3 glyphes">{{model.montantfact | number:'1.0-2'}}</span>
+    </div>
+
+    <div class=" container-fluid col-sm-8 col-sm-offset-2"
+    style="margin-top: 15px;">
+
+        <div class="table-responsive" >
+            <h4>Bons de commandes</h4>
+
+            <table class="table table-striped col-sm-12 " style="border:1px solid black; margin-bottom: 10px;">
+
+                <thead >
+                <tr>
+                    <th class="col-sm-6">N° bon de commande</th>
+                    <th class="col-sm-3" style="border-right: 1px solid black; ">Montant HT en €</th>
+                    <th *ngIf="!print">Action</th>
+                </tr>
+                </thead>
+
+                <tbody >
+
+                <tr *ngFor="let bdcs of bdc, let i =index; trackBy:customTrackBy">
+
+                        <td>
+                            {{bdcs.id_bdc}}
+                        </td>
+                        <td style="border-right: 1px solid black;">
+                            <input type="number" name="montantbdc{{i}}" [(ngModel)]="bdcs.montantbdc " >
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <div *ngIf="!print" class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle input-sm"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+                                        <span class="caret"></span></button>
+                                    <ul  class="dropdown-menu dropdown-menu-right">
+                                        <li *ngIf="droitsuser.modiffour"><a (click)="modify(bdcs)">Modifier</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                            </div><!-- /input-group -->
+                        </td>
+
+                </tr>
+                <tr class="bdc">
+                    <td class="glyphe">Total bon de commande</td>
+                    <td  class="glyphe">{{countTotalbdc() | number:'1.0-2'}}</td>
+                    <td></td>
+
+                </tr>
+                <tr class="bdc">
+                    <td class="glyphe">Total facture</td>
+                    <td  class="glyphe">{{model.montantfact | number:'1.0-2'}}</td>
+                    <td></td>
+
+                </tr>
+                <tr class="bdc">
+                    <td class="glyphe">Différence</td>
+                    <td  class="glyphe" >{{difference() | number:'1.0-2'}}</td>
+                    <td></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <button class="col-sm-offset-8 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accesfour" (click)=" imprimer()">Imprimer </button>
+
+
+
+    </div><!--fin container fluid-->
+</div>

@@ -1,0 +1,65 @@
+<div id="message">
+    <header >
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img src="image/menu/messagerie_grand_gris.png">
+
+                    <span>Messagerie</span>
+
+
+
+                </div>
+            </div><!--container-fluid-->
+        </div>
+
+
+    </header>
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <div class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px;">
+            <a href="#" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">NOUVEAU MESSAGE</span>
+        </div>
+
+
+    </div><!--col-sm-3-->
+
+    <div class="col-sm-12">
+        <form class="form-horizontal" action="resultat_search.html" method="POST">
+            <h4>Répondre:</h4>
+
+            <div class="form-group">
+                <label for="" class="col-sm-1 control-label">A : </label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="destinataire" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-1 control-label">Chantier:</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="chantier" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-1 control-label">Objet :</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="objet" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea class="form-control" rows="11" cols="120" placeholder="Ajouter un message"></textarea>
+                </div>
+            </div>
+
+            <button *ngIf="(droitsuser.validmes)" class="btn btn-default input-sm " style="margin-bottom: 5px;  " class="button submit">Envoyer</button>
+
+        </form>
+    </div>
+
+</div><!--container-fluid-->

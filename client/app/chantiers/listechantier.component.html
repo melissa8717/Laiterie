@@ -1,0 +1,91 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/chantiers_grand_gris.png">
+
+                    <span *ngIf="!print">Chantiers</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print"  (click)=" imprimer()">Imprimer le listing</button>
+
+    <div class=" container-fluid ">
+
+        <recherchechantier #recherche [chantier] = "this" ></recherchechantier>
+
+        <div class="col-sm-9 ">
+            <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+                <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+            </div>
+            <h3  >Liste des chantiers</h3>
+
+
+            <div  style="height: 400px;">
+                <table class="table table-striped bord">
+                    <thead>
+                    <tr>
+
+                        <th class="col-sm-3">Client</th><th class="col-sm-3">Chantier</th><th class="col-sm-1">Code</th><th class="col-sm-2">Responsable</th><th class="col-sm-2">Lieu</th><th *ngIf="!print" class="col-sm-1">Action</th>
+                    </tr>
+                   <br>
+                    </thead>
+                    <tbody >
+                    <!--créer une boucle conditionnelle pour créer les lignes du tableau
+
+                    le tableau étant la copie du tr qui suit
+                    les tr qu'il y a, sont des exemples pour montrer la redondance du tableau
+                    chaque td est une variable qui se trouve dans la bdd
+                    lorsqu'on clique sur client alors une fenetre s'ouvre sur la fiche du client
+                    -->
+                    <tr *ngFor="let chantiers of chant">
+                        <td>{{chantiers.nom}}</td>
+                        <td>{{chantiers.nom_chantier}}</td>
+                        <td>{{chantiers.id_chantier}}</td>
+                        <td>{{chantiers.responsable}}</td>
+                        <td>{{chantiers.ville}}</td>
+
+                        <td><div class="input-group">
+                            <input type="hidden" class="form-control">
+                            <div class="input-group-btn">
+                                <button *ngIf="!print" type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right" >
+
+                                    <li *ngIf="droitsuser.accescha"><a [routerLink]="['/fichechantier' , chantiers.id_chantier]">Ouvrir</a></li>
+                                    <!--<li role="separator" class="divider"></li>-->
+                                </ul>
+                            </div><!-- /btn-group -->
+                        </div><!-- /input-group --></td>
+
+                    </tr>
+
+
+
+                </table>
+            </div>
+        </div><!--fin col sm 9-->
+
+        <div class="bouton">
+            <form>
+                <input type="hidden" name="nnnn"><!--imprimer la liste faire une liste ou serializer les données de recherches pour éditer en PDF le listing-->
+
+            </form>
+        </div>
+
+
+
+
+    <!--Javascript pour nav et bouton-->
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+
+</div>
+
+</div>

@@ -1,0 +1,113 @@
+<div id="contact">
+    <style type="text/css" media="print">
+        @page { size: landscape; }
+    </style>
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print"  src="image/menu/contacts_grand_gris.png">
+
+                    <span *ngIf="!print">Contact</span>
+                    <span class="col-sm-offset-5">{{nom.nom}} {{nom.prenom}}</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li role="presentation"><a [routerLink]="['/fichecontact' , nom.id_contact]">Fiche contact</a></li>
+                    <li   ><a [routerLink]="['/formationcontact' , nom.id_contact]">Formations / CACES</a></li>
+                    <li  class="active" ><a [routerLink]="['/equipement' , nom.id_contact]">Equipement</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div class=" container-fluid " >
+        <div *ngIf="!print" class=" col-sm-offset-6" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+
+        <h3>Ajouter un équipement</h3>
+        <form  method=""  (ngSubmit)=" ajouter()" >
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Désignation</th>
+                        <th>taille</th>
+                        <th>Nombre</th>
+                        <th>Commentaire</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td><input type="text" name="designation" [(ngModel)]="equipement.designation"></td>
+                        <td><input type="text" name="taille" [(ngModel)]="equipement.taille"></td>
+                        <td><input type="number" name="nbre" [(ngModel)]="equipement.nbre"> </td>
+                        <td><input type="text" name="commentaire" [(ngModel)]="equipement.commentaire" ></td>
+                        <td> <button type="submit" [disabled]="loading">ajouter</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </form>
+
+        <h3>Liste des équipements</h3>
+
+        <div class="table-responsive">
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Désignation</th>
+                    <th>taille</th>
+                    <th>Nombre</th>
+                    <th>Commentaire</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr *ngFor="let allequips of allequip,let i =index">
+                    <td>{{allequip[i].designation}}</td>
+                    <td>{{allequip[i].taille}}</td>
+                    <td>{{allequip[i].nbre}} </td>
+                    <td>{{allequip[i].commentaire}}</td>
+                    <td> <button (click)="suprimer(allequip[i].id_equipement)">Supprimer</button></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,280 @@
+<div id="achat">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+                    <div class="row marge">
+                        <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:0px; position: absolute;">
+                    </div>
+                    <p>&nbsp;</p>
+
+                    <img *ngIf="!print" src="image/menu/commandes_grand_gris.png">
+
+                    <span *ngIf="!print">Bon de commandes</span>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3 *ngIf="!bdc.Recu">Validation de la commande n° {{bdc.date_livraison| date: 'yy'}}-{{bdc.id_bdc}}</h3>
+        <h3 *ngIf="bdc.Recu">Bon de commande n° {{bdc.date_livraison| date: 'yy'}}-{{bdc.id_bdc}}</h3>
+
+
+        <form method="" (ngSubmit)="addProduct()">
+
+            <div class="col-sm-12">
+                <div class="form-group col-sm-4" >
+                    <span>Pour : {{bdc.livre}}</span><!--variable à mettre suivant le choix-->
+                </div>
+                <div class="form-group col-sm-4" *ngIf="bdc.id_chantier">
+                    <span>N° chantier: {{bdc.id_chantier}}</span><!--variable pour le chantier et permetttre une recherche par indexation du chantier-->
+                </div>
+                <div class="form-group col-sm-4" *ngIf="bdc.nom_chantier">
+                    <span>Nom du chantier: {{bdc.nom_chantier}}</span><!--variable-->
+                </div>
+                <div class="form-group col-sm-4" >
+                    <span>Fournisseur : {{bdc.fournisseurNom}}</span><!--variable-->
+                </div>
+                <div class="form-group col-sm-4" >
+                    <span>N° de bon de commande : {{bdc.id_bdc}}</span><!--variable -->
+                </div>
+                <div class="form-group col-sm-4" >
+                    <span>Date de commande : {{bdc.date_commande | date: 'dd/MM/yyyy'}}</span><!--variable -->
+                </div>
+                <div class="form-group col-sm-4" >
+                    <span >Date de livraison prévue : </span><span>{{bdc.date_livraison | date: 'dd/MM/yyyy'}}</span><!--variable -->
+                </div>
+                <div class="form-group col-sm-4" >
+                    <span>Livrée le  : </span><span>
+                    <input type="date"  name="date_livraison_reel" *ngIf="!bdc.Recu" [(ngModel)]="bdc.date_livraison_reel">
+                    <span *ngIf="bdc.Recu">{{bdc.date_livraison_reel | date: 'dd/MM/yyyy'}}</span>
+                </span><!--variable -->
+                </div>
+                <div class="form-group " class="col-sm-4">
+                    <span >adresse de livraison : </span><span>{{bdc.adresselivraison}}</span><!--variable -->
+                </div>
+            </div>
+
+
+
+            <div class="table ">
+                <table class="table">
+                    <thead>
+                    <th colspan="6" class="title-th borderleft bordertop" >Prévu </th>
+                    <th colspan="6" class="title-th bordertop">Effectif </th>
+                    </thead>
+                    <thead>
+                        <th class="borderleft">Référence  </th>
+                        <th>Libellé produit  </th>
+                        <th>Unité  </th>
+                        <th>Prix H.T.</th>
+                        <th>Qté:</th>
+                        <th class="border">Total H.T.</th>
+
+                        <th> Référence  </th>
+                        <th>* Libellé produit  </th>
+                        <th>* Unité  </th>
+                        <th >* Prix HT facturé</th>
+                        <th>* Qté livrée</th>
+                        <th class="borderright">Total H.T.</th>
+                    </thead>
+                    <tbody>
+
+                    <tr *ngFor="let prod of List; let i = index">
+
+                        <td class="borderleft"><span>{{prod.reference}}</span></td>
+                        <td><span>{{prod.libelle}}</span></td>
+
+                        <td><span>{{prod.unite}}</span></td>
+                        <td><span>{{prod.prix_prevu | currency:'EUR':true:'1.2-2'}}</span></td>
+                        <td><span>{{prod.qte}}</span></td>
+                        <td class="border"><span>{{prod.prix_prevu * prod.qte | currency:'EUR':true:'1.2-2' }}</span></td>
+
+                        <td>
+                            {{List[i].reference}}
+                        </td>
+                        <td>
+                            <span >{{List[i].libelle}}</span>
+                        </td>
+                        <td>
+                            {{prod.unite}}
+                        </td>
+                        <td>
+                            <input *ngIf="!bdc.Recu" type="number" step="0.01" name="prixfacture{{i}}" [(ngModel)]="List[i].Prixreel">
+                            <span *ngIf="bdc.Recu" >{{List[i].Prixreel | currency:'EUR':true:'1.2-2' }}</span>
+                        </td>
+                        <td>
+                            <input *ngIf="!bdc.Recu" type="number" name="quantitelivre{{i}}" [(ngModel)]="List[i].Qtelivre">
+                            <span *ngIf="bdc.Recu" >{{List[i].Qtelivre  }}</span>
+                        </td>
+
+
+                        <td class="borderright">
+                            {{List[i].Qtelivre* List[i].Prixreel | currency:'EUR':true:'1.2-2'}}
+                        </td>
+                    </tr>
+
+
+
+                    <tr *ngFor="let produit of imprevuList; let i = index">
+
+                        <td class="borderleft" colspan="5"></td>
+                        <td class="border">
+                            <a *ngIf="!bdc.Recu" class=" col-sm-offset-1"
+                               (click)="supprimer(imprevuList[i])">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                          style="color: #0f0f0f"></span>
+                            </a>
+                        </td>
+
+                        <td>
+                            {{produit.reference}}
+                        </td>
+
+                        <td>
+                            {{produit.libelle}}
+
+                        </td>
+                        <td>
+                            {{produit.unite}}
+                        </td>
+                        <td>
+                            <input *ngIf="!bdc.Recu" type="number" step="0.01" name="prixfacturelist{{i}}" [(ngModel)]="imprevuList[i].Prixreel">
+                            <span *ngIf="bdc.Recu">{{imprevuList[i].Prixreel}}</span>
+                        </td>
+                        <td>
+                            <input *ngIf="!bdc.Recu" type="number" name="quantitelivrelist{{i}}" [(ngModel)]="imprevuList[i].Qtelivre">
+                            <span *ngIf="bdc.Recu"> {{imprevuList[i].Qtelivre}}</span>
+                        </td>
+
+
+                        <td *ngIf="imprevuList[i].Qtelivre * imprevuList[i].Prixreel" class="borderright">
+                            {{imprevuList[i].Prixreel * imprevuList[i].Qtelivre | currency:'EUR':true:'1.2-2'}}
+                        </td>
+                    </tr>
+
+
+
+
+
+                    <tr>
+                        <td colspan="5" class="borderleft">Tarif livraison prévu :</td>
+                        <td colspan="1" class="border">{{bdc.tarifpourlivraison | currency:'EUR':true:'1.2-2'}}</td>
+                        <td colspan="5"> Tarif livraison effectif:</td>
+                        <td class="borderright">
+                            <input *ngIf="!bdc.Recu" type="number" name="tariflivraison"  step="0.01"  [(ngModel)]="livraison">
+                            <span *ngIf="bdc.Recu" >{{bdc.tarifpourlivraisonreel | currency:'EUR':true:'1.2-2' }}</span>
+                        </td><!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                    </tr>
+
+
+                    <tr>
+                        <td colspan="5" class="borderbot borderleft">Total prévu:</td>
+                        <td colspan="1" class="borderbot border">{{all | currency:'EUR':true:'1.2-2'}}</td>
+                        <td colspan="5" class="borderbot">Total effectif: </td>
+                        <td class="borderbot borderright">
+                            <span >{{totalfacture() | currency:'EUR':true:'1.2-2' }}</span>
+                        </td>
+                    </tr>
+
+
+
+                    <tr *ngIf="!bdc.Recu">
+                        <td colspan="6" class="border transparent"></td>
+                        <th colspan="8" class="addprod" >
+                            Ajouter un produit imprévu
+
+                        </th>
+                    </tr>
+
+                    <!--Ajout d'un produit imprévu-->
+
+                    <tr *ngIf="!bdc.Recu">
+
+                        <td colspan="6" class="transparent border"></td>
+                        <td>
+                            <input  type="text" name="ref" [(ngModel)]="model.reference">
+                        </td>
+                        <td>
+                            <input ng2-auto-complete
+                                   #prod
+                                   name="prod"
+                                   [(ngModel)]="model.produit"
+                                   (ngModelChange)="setupProd()"
+                                   [source]="products"
+                                   [list-formatter]="autocompleListFormatterProducts"
+                                   value-property-name="id"
+                                   display-property-name="libelle"
+                                   placeholder="Produit"
+                                   required
+                                   >
+                        </td>
+                        <td>
+                            <input  type="text" name="unite" [(ngModel)]="model.unite" required>
+                        </td>
+                        <td>
+                            <input  type="number" step="0.01" name="prixreel" [(ngModel)]="model.Prixreel" required>
+                        </td>
+                        <td>
+                            <input  type="number" name="qtelivre" [(ngModel)]="model.Qtelivre" required>
+                        </td>
+
+
+                        <td  class="border">
+                            <span *ngIf="model.Qtelivre * model.Prixreel">
+                                   {{model.Prixreel * model.Qtelivre | currency:'EUR':true:'1.2-2' }}
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="!bdc.Recu">
+                        <td colspan="6" class="border transparent"></td>
+                        <td colspan="8" class="border borderbot">
+                            <button *ngIf="!bdc.Recu && droitsuser.ajoutcom" type="submit" class="btn btn-default input-sm col-sm-offset-10 col-sm-2">Ajouter</button><!--quand modifier demander à l'utilisteur si il veut envoyer la commande-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button *ngIf="!bdc.Recu && droitsuser.validcom" type="button" (click)= "submit()" class="btn btn-default input-sm col-sm-offset-10 col-sm-2">Valider le bon</button><!--quand modifier demander à l'utilisteur si il veut envoyer la commande-->
+
+            </div>
+        </form>
+
+    </div><!--fin container fluid-->
+
+    <div class="form-group col-sm-12" *ngIf="print">
+        <span> Par : {{currentUser.firstName}} {{currentUser.lastName}}</span>
+        <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+    </div>
+
+    <div class="form-group col-sm-12" *ngIf="print">
+        <span>Le:  {{date() |  date: 'dd/MM/yyyy HH:mm'}}</span>
+        <!--ngmodel pour le chantier et permetttre une recherche par indexation du chantier-->
+    </div>
+
+
+    <div  id="pageFooter"  >
+
+        <article style="margin-top: 40px;bottom: 0;left: 0; right: 0;position: fixed;text-align: center;page-break-before:always;page-break-inside: avoid;font-size:9px;" >
+
+            <p *ngIf="print">{{fact.pied_page1}}</p>
+            <p *ngIf="print">{{fact.pied_page2}}</p>
+            <p *ngIf="print">{{fact.pied_page3}}</p>
+            <p *ngIf="print">{{fact.pied_page4}}</p>
+            <p *ngIf="print">{{fact.pied_page5}}</p>
+            <p *ngIf="print">{{fact.pied_page6}}</p>
+        </article>
+    </div>
+    <button *ngIf="!print && droitsuser.ajoutcom" class="btn btn-default input-sm col-sm-offset-11" type="submit" [disabled]="loading">Enregistrer</button>
+
+</div>
+    <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accescom" [disabled]  (click)=" imprimer()">Imprimer
+    </button>

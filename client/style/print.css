@@ -1,0 +1,972 @@
+/*-------------CSS GENERAL--------------------*/
+
+body
+{
+    background-color:#B2B2B2 ;
+
+
+
+}
+header
+{
+    background-color: #3F3F3F ;
+    height: auto;
+}
+
+nav
+{
+    background-color: #3F3F3F;
+    height: auto;
+    margin-top: 0px;
+    padding: 10px;
+    width: auto;
+    margin-bottom: 70px;
+}
+article
+{
+    width: auto;
+    margin: 2px;
+    height: auto;
+}
+footer
+{
+    text-align: center;
+
+    top: 2000px;
+    bottom: 0px;
+    margin-top: 10px;
+    height: 10px;
+    width: 100%;
+}
+.glyphicon-warning-sign
+{
+    color: red;
+}
+/*            PAGE PRINCIPAL ou menu html
+              PAGE PRINCIPAL ou menu html
+              PAGE PRINCIPAL ou menu html
+              PAGE PRINCIPAL ou menu html              */
+
+/*--------------LE MENU OU PAGE PRINCIPAL--------------*/
+
+#menu1 th
+{
+    text-align: center;
+}
+#menu1 thead
+{
+    background-color: rgb(223,223,223);
+}
+#menu1 tbody
+{
+    background-color: #B2B2B2;
+}
+
+iframe
+{
+    background-color: white;
+}
+
+section article h4
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+    margin-top: 0;
+}
+#menu1 h4
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+section article  span
+{
+    background-color: #B2B2B2;
+    font-weight: bold;
+
+}
+
+.bordure
+{
+    border: 1px solid #B2B2B2;
+    height: 370px;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    padding: 0;
+}
+
+.bordure1
+{
+    border: 1px solid #B2B2B2;
+    height: 170px;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    background-color: #D8D8D8;
+}
+
+/*--FIN DE PAGE PRINCIPALE*/
+
+/*---------- PAGE DU LOGIN ou login.html ---------------
+------------ PAGE DU LOGIN ou login.html ---------------
+------------ PAGE DU LOGIN ou login.html ---------------*/
+
+.blanc
+{
+    background-color: white;
+    box-shadow: 2px 2px 0px black;
+}
+form h4
+{
+    color:orange;
+    text-align: center;
+
+}
+form label
+{
+    font-size: 12px;
+}
+
+.hsection
+{
+    margin-top: 400px;
+}
+
+/*---FIN PAGE LOGIN---*/
+
+/*---------------------PAGE MESSAGE-----------------------
+-----------------------PAGE MESSAGE-----------------------
+-----------------------PAGE MESSAGE-----------------------
+-----------------------PAGE MESSAGE---------------------*/
+
+#message header
+{
+    padding-top:10px;
+    padding-bottom: 10px;
+    padding-left: 40px;
+}
+#message header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+.gris1
+{
+    color: #B2B2B2;
+}
+.fleche
+{
+    color: rgb(251,140,60);
+}
+.fleche1
+{
+    color: rgb(251,140,60);
+    padding-right: 5px;
+}
+.blan
+{
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.blan1
+{
+    background-color: white;
+    color: #B2B2B2;
+    text-align: center;
+    padding: 1px;
+}
+#message article
+{
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-left: 5px;
+    padding: 0;
+}
+#message section
+{
+    margin-left: 15px;
+}
+#message h4
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+    margin-top: 0;
+
+}
+#message form
+{
+    border: 1px ;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    border-top:none;
+}
+#message .bordure4
+{
+    border: 1px ;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    border-top:none;
+    height: 485px;
+}
+#message .discus1
+{
+    background-color: white;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+#message .gras
+{
+    font-weight: bold;
+}
+#message .left
+{
+    float: left;
+    background-color: rgb(168,198,194);
+    border-radius: 15px 15px 15px;
+}
+#message .right
+{
+    float: right;
+    background-color: white;
+    border-radius: 15px 15px 15px;
+}
+#message .noboder
+{
+    box-shadow: none;
+
+}
+#message .height
+{
+    height: 380px;
+}
+#message .user
+{
+    background-color: rgb(168,198,194);
+}
+#message .inuser
+{
+    background-color: transparent;
+}
+#message .white
+{
+    background-color: white;
+}
+/*----------fin message--------*/
+
+/*--------------------CHANTIER----------------------------*/
+/*--------------------CHANTIER----------------------------*/
+/*--------------------CHANTIER DEVIS----------------------------*/
+
+#chantier header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#chantier header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.titlespan
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#chantier nav
+{
+    background-color: #B2B2B2;
+}
+#chantier nav li
+{
+    color: black;
+}
+#chantier table th,td
+{
+    text-align: center;
+
+}
+
+
+
+#chantier  .bord
+{
+    border: 1px;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    padding-bottom: 5px;
+}
+
+#chantier h3
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+}
+#chantier .glyphe
+{
+    font-weight: bold;
+}
+#chantier .glyphes
+{
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+#chantier .fiche
+{
+    color: #993300;
+}
+#chantier input
+{
+    text-align: center;
+}
+#chantier .reel/*balance*/
+{
+    background-color: rgb(249,244,79);
+    color: black;
+}
+#chantier .previs1/*balance*/
+{
+    background-color: rgb(215,87,125);
+    color: black;
+}
+#chantier .glyphe1/*balance*/
+{
+
+    text-align: right;
+}
+#chantier .glyphe2/*balance*/
+{
+    color:white;
+}
+#chantier .glyphe3/*balance*/
+{
+    font-weight: bold;
+    text-align: right;
+}
+#chantier .trait/*balance*/
+{
+    border-bottom: 1px solid black;
+}
+#chantier .trait1/*balance*/
+{
+    border-top: 1px solid black;
+}
+#chantier h4
+{
+    background-color: rgb(234,102,38);
+    color: black;
+    text-align: center;
+}
+#chantier .colorth/*balance*/
+{
+    color: white;
+}
+#chantier i/*balance facturation*/
+{
+    float: right;
+    font-style: initial;
+}
+
+#chantier nav a
+
+{
+    color: #3F3F3F;
+}
+
+#chantier nav a:hover
+
+{
+    color: white;
+}
+#chantier .bdc
+{
+    background-color: black;
+    color: white;
+}
+#chantier .negatif
+{
+    color: red;
+}
+#chantier .positif
+{
+    color: mediumblue;
+}
+
+
+/*--------------------FIN CHANTIER----------------------------*/
+
+/*--------------------DEVIS et  FACTURATION----------------------------*/
+/*--------------------DEVIS et  FACTURATION----------------------------*/
+/*--------------------DEVIS et  FACTURATION----------------------------*/
+#devis {
+    border: none;
+}
+
+#devis header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#devis header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#devis h3
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+}
+#devis form, .modif
+{
+
+    background-color: white;
+    padding: 5px;
+    margin-bottom: 10px;
+    height: 100%;
+    border: 1px solid white;
+
+}
+#devis .marge
+{
+    margin-bottom: 50px;
+}
+#devis .marge1
+{
+    margin-top: 10px;
+}
+#devis article article
+{
+    border-bottom: 1px solid black;
+}
+#devis th
+{
+    text-align: center;
+}
+#devis h5
+{
+    font-weight: bold;
+    background-color: #993300;
+    color: white;
+    text-align: center;
+    height: 20px;
+}
+
+
+#devis .marge2
+{
+
+    margin-bottom: 20px;
+
+}
+#devis .separe1
+{
+
+}
+
+#devis article p
+{
+    font-weight: bold;
+    text-align: center;
+    font-size: 10px;
+}
+#devis .basr
+{
+}
+#devis .gras
+{
+    font-weight: bold;
+
+}
+#devis .gauche
+{
+    text-align: left;
+    padding-left: 10px;
+}
+#devis input
+{
+    text-align: center;
+}
+
+/*--------FIN CHANTIER-------*/
+
+
+/*-------COMMANDE----------*/
+/*-------COMMANDE----------*/
+/*-------COMMANDE----------*/
+
+#commande header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+#commande header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#commande h3
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+}
+#commande h5
+{
+    font-weight: bold;
+    text-align: center;
+}
+#commande form
+{
+    border: 1px ;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+}
+#commande .bord
+{
+    border: 1px;
+    height: 400px;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    padding: 0;
+}
+#commande th
+{
+    text-align: center;
+}
+#commande .haut
+{
+    height: 335px;
+    border: 1px solid black;
+}
+#commande .orange
+{
+    color: #993300;
+}
+#commande .aligner
+{
+    text-align: center;
+}
+
+#demande .table-responsive  {
+    min-height: 190px;
+}
+/*-----------fin commande---------------*/
+
+/*------------------Contact--------------------*/
+/*------------------Contact--------------------*/
+/*------------------Contact--------------------*/
+#contact header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#contact header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#contact h3, #contactfiche h3
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+}
+#contact th, #contactfiche .centre,tr th
+{
+    text-align: center;
+}
+#contact h5
+{
+    font-weight: bold;
+    text-align: center;
+}
+
+#contact .bord
+{
+    border: 1px solid #B2B2B2;
+    height: 400px;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    padding: 0;
+}
+#contact .bord1/*fiche contact*/
+{
+    border: 1px solid #B2B2B2;
+
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    padding: 0;
+}
+#contact .bord2
+{
+    margin-bottom: 10px;
+}
+#contactfiche header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#contactfiche span,input
+{
+    margin-bottom: 5px;
+}
+#contactfiche header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#contactfiche h4, #contact h4
+{
+    color:white;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+#contact input
+{
+    text-align: center;
+}
+/*---------fin contact---------*/
+
+/*----------------Produit--------------------*/
+/*----------------Produit--------------------*/
+/*----------------Produit--------------------*/
+/*----------------Produit--------------------*/
+#vente header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#vente header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#vente .images
+{
+    height: 150px;
+    width: 150px;
+}
+#vente table
+{
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+}
+#vente .gras
+{
+    font-weight: bold;
+
+}
+#vente .justif
+{
+    text-align: justify;
+}
+#vente h5,h3
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+}
+#vente th,td input
+{
+    text-align: center;
+}
+#vente .bas
+{
+    margin-bottom: 20px;
+}
+#vente article
+{
+    background-color: white;
+    padding-top: 5px;
+}
+
+
+#modal h3,h5,h4
+{
+    background-color: white;
+    color: dodgerblue;
+    text-align: center;
+}
+#vente .gauche
+{
+    margin-left: 40px;
+}
+/*---------fin vente------------*/
+
+/*------------------Achat-------------------*/
+/*------------------Achat-------------------*/
+/*------------------Achat-------------------*/
+#achat header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#achat header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#achat th,td input
+{
+    text-align: center;
+}
+#achat .total
+{
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+#achat .gras
+{
+    font-weight: bold;
+}
+#achat .images
+{
+    height: 150px;
+    width: 150px;
+}
+#achat h3,h5,h4
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+}
+#achat .marge
+{
+    margin-top: 60px;
+}
+#achat form
+{
+    border: 1px ;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    border-top:none;
+}
+#achat .bordure4
+{
+    border: 1px ;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+}
+#achat .bordure5
+{
+    box-shadow:none;
+}
+
+
+/*------------------fin achat--------------------------*/
+
+/*------------------planning--------------------------*/
+/*------------------planning--------------------------*/
+/*------------------planning--------------------------*/
+
+
+#planning header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#planning header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#planning input
+{
+    width: 30px;
+    text-align: center;
+    margin: 0;
+    font-size: 9px;
+}
+#planning td
+{
+    margin: 0;
+    padding: 0;
+}
+#planning th
+{
+    text-align: center;
+}
+#planning1 header
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#planning1 header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+#planning1 .hide
+{
+    display: none;
+}
+#planning1 th
+{
+    text-align: center;
+}
+#planning1 .taille
+{
+    font-size: 12px;
+}
+#case_plan
+{
+    color: black;
+    font-style: normal;
+    font-size: 16px;
+    background-color: transparent;
+}
+
+#case_plan .bordure
+{border: 1px;
+    box-shadow: 4px 4px 0px rgb(116,116,116);
+    padding-bottom: 5px;
+}
+
+#case_plan th
+
+{
+    font-style: normal;
+}
+#case_plan header span
+{
+    color: #B2B2B2;
+
+    font-size: 18px;
+}
+#case_plan .previs1
+
+{
+    font-style: normal;
+    background-color: #993300;
+    color: white
+
+
+}
+
+
+
+#contact-add
+
+{
+    font-weight: bold;
+    color:  #993300;
+    font-size: medium;
+}
+
+
+
+#pageFooter
+
+{
+    top: 100%;
+    bottom				: 0;
+    left				: 0;
+    right				: 0;
+    position: fixed;
+    width: 100%;
+}
+
+#pageContent
+{
+    height: 80%;
+    border: none;
+}
+
+#copy
+
+{
+    bottom:0px;
+    text-align: center;
+    background-color: #3F3F3F;
+    height: 40px;
+    position: fixed;
+    margin-top: 5px;
+    width: 100%;
+    color: white;
+}
+
+#menu1 .img_menu
+{
+    left:0px;
+    background-image: url("image/triangle.png");
+    border: 1px solid red;
+}
+
+
+
+
+
+
+
+#dev
+{
+    border:none;
+
+}
+
+#dev header
+{
+    color: #B2B2B2;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    font-weight: bold;
+    font-size: 16px;
+}
+#dev header span
+{
+    color: #B2B2B2;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+#dev h5
+{
+    font-weight: bold;
+    background-color: #993300;
+    color: white;
+    text-align: center;
+    height: 20px;
+}
+
+
+#dev form, .modif
+{
+
+    background-color: white;
+    padding: 5px;
+    margin-bottom: 10px;
+    height: 100%;
+
+
+}
+
+#dev h3
+{
+    background-color: #993300;
+    color: white;
+    text-align: center;
+}
+
+#dev td
+{
+    background-color: grey;
+    margin-top:2px;
+    margin-bottom: 2px;
+    height: 5px;
+}
+
