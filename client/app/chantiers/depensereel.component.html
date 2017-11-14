@@ -1,59 +1,6 @@
 <div id="chantier">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-
-                    <img src="image/menu/chantiers_grand_gris.png">
-
-
-                    <span>Chantiers</span>
-
-                    <span class="col-sm-offset-4 fiche" style="color: white;">{{nom.nom_chantier}}</span>
-
-                </div>
-            </div>
-        </div>
-
-    </header>
-
-
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-            </div>
-
-            <!--garder l'id du chantier en passant d'un onglet à l'autre possibilité peut-être d'un session ou d'un cookie qui disppait à la fermeture de la page-->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-
-                        <li *ngIf="droitsuser.accescha"><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
-                        <li *ngIf="droitsuser.accescha"><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
-                        <li *ngIf="droitsuser.accesdev"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
-                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
-                        <li *ngIf="droitsuser.accescha" role="presentation" class="active"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
-                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/analysetemps' , id_chantier]">Analyse des temps de Mo</a></li>
-                        <li *ngIf="droitsuser.accescha" role="presentation"><a [routerLink]="['/produitdevis' , id_chantier]">Analyse produits devis</a></li>
-                        <li *ngIf="droitsuser.accesfact" role="presentation"><a [routerLink]="['/listefacturechantier' , id_chantier]">Factures</a></li>
-                        <!--<li role="presentation"><a href="#">Stats</a></li>-->
-                        <li *ngIf="droitsuser.accesbg" role="presentation"><a [routerLink]="['/balancechantier' , id_chantier]">Balances</a></li>
-
-                </ul>
-
-            </div>
-        </div>
-    </nav>
-
-
+    <menu-chantier></menu-chantier>
 
     <div class=" container-fluid ">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
