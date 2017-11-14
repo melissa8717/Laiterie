@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var async = require('async');
 
-var PRODUCTION_HOST = '127.0.0.1';
+var PRODUCTION_HOST = 'mysql';
 var PRODUCTION_USER = 'root';
-var PRODUCTION_PWD = '';
+var PRODUCTION_PWD = 'root';
 var PRODUCTION_DB = 'wbat_alwaysdata';
 
 var TEST_HOST = 'mysql-wbat.alwaysdata.net';
