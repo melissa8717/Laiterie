@@ -1,13 +1,13 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import {Component, OnInit} from '@angular/core';
 
-import { User } from '../_models/index';
-import { UserService } from '../_services/index';
+import {User} from '../_models/index';
+import {UserService} from '../_services/index';
 import {MessageService} from "../_services/message.service";
 import {PlanningService} from "../_services/planning.service";
 import {ParamsService} from "../_services/params.service";
 import {FileUploader} from 'ng2-file-upload'; //////////////////////////////////////////////////////////////////////////
 
-const URLimg = 'http://'+location.hostname+':4000/image/'; /////////////////////////////////////////////////////////////
+const URLimg = 'http://' + location.hostname + ':4000/image/'; /////////////////////////////////////////////////////////////
 
 @Component({
     moduleId: module.id,
@@ -22,13 +22,13 @@ export class HomeComponent implements OnInit {
     users: User[] = [];
     alarms: any[] = [];
     msg: number;
-    param:any={};
-    droitsuser:any={};
-    _id:any;
-    data:any={};
-    messages : any [] = [];
-    form:any []= [];
-    caces:any []= [];
+    param: any = {};
+    droitsuser: any = {};
+    _id: any;
+    data: any = {};
+    messages: any [] = [];
+    form: any [] = [];
+    caces: any [] = [];
 
     model: any = {}; //////////////////////////////////////////////////////////////////////////////////////////////////
     loc = location.hostname;
@@ -37,8 +37,8 @@ export class HomeComponent implements OnInit {
 
     constructor(private userService: UserService,
                 private planningService: PlanningService,
-                private paramsService:ParamsService,
-                private messageService:MessageService) {
+                private paramsService: ParamsService,
+                private messageService: MessageService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         console.log(this.currentUser);
     }
@@ -60,67 +60,59 @@ export class HomeComponent implements OnInit {
     }
 
     loadAllagence() {
-
         this.paramsService.getAllAgence().subscribe(model => {
+            if (model && model[0]) {
+                this.model = model[0];
 
-            this.model = model[0];
-            console.log(this.model);
-            //console.log(this.currentUser);
-
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.model.id_agence}); ////////////////////////
-            this.uploaderImg.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-
-            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };*/
-
+                this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.model.id_agence}); ////////////////////////
+                this.uploaderImg.onAfterAddingFile = (file) => {
+                    file.withCredentials = false;
+                };
+            }
         });
     }
 
 
-    loaddroituser() {                                 //
+    loaddroituser() {
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-
             this.droitsuser = data[0];
-
-            console.log(this.data);
-            //console.log(this.currentUser._id);
-
         });
     }
 
     deleteUser(_id: string) {
-        this.userService.delete(_id).subscribe(() => { this.loadAllUsers() });
+        this.userService.delete(_id).subscribe(() => {
+            this.loadAllUsers()
+        });
     }
 
-    checkday(date: any){
+    checkday(date: any) {
         return (new Date(date).getUTCDate() == new Date().getUTCDate() && new Date(date).getMonth() == new Date().getMonth() && new Date(date).getFullYear() == new Date().getFullYear());
     }
 
-    private loadAlarmes(){
+    private loadAlarmes() {
         this.planningService.loadAlarms(+this.currentUser._id).subscribe(
-            alarms =>{
+            alarms => {
                 this.alarms = alarms;
                 //console.log(this.alarms);
 
             });
     }
 
-    private loadUnreadMsg(){
-        this.messageService.unreadMsg(this.currentUser._id).subscribe(msg =>{
-            this.msg = msg[0].nbUnread;
-            //console.log(this.msg);
+    private loadUnreadMsg() {
+        this.messageService.unreadMsg(this.currentUser._id).subscribe(msg => {
+            if (msg[0]) {
+                this.msg = msg[0].nbUnread;
+            }
         });
     }
 
     private loadAllUsers() {
-        this.userService.getAll().subscribe(users => { this.users = users; });
+        this.userService.getAll().subscribe(users => {
+            this.users = users;
+        });
     }
 
-    loadparam(){
+    loadparam() {
 
         this.paramsService.getAllHome().subscribe(param => {
 
@@ -129,9 +121,10 @@ export class HomeComponent implements OnInit {
 
         });
     }
-    meteo(param:any) {
+
+    meteo(param: any) {
         for (let params of this.param) {
-            return '<iframe height="190" frameborder="0" width="283" scrolling="no" src="http://www.prevision-meteo.ch/services/html/'+params.meteo+'/square" allowtransparency="true" style="margin-left: 20px;"> </iframe>';
+            return '<iframe height="190" frameborder="0" width="283" scrolling="no" src="http://www.prevision-meteo.ch/services/html/' + params.meteo + '/square" allowtransparency="true" style="margin-left: 20px;"> </iframe>';
         }
     }
 
@@ -146,18 +139,18 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    loadAlarmeform(){
+    loadAlarmeform() {
         this.paramsService.getAlarmeformation().subscribe(
-            form =>{
+            form => {
                 this.form = form;
                 console.log(this.form);
 
             });
     }
 
-    loadAlarmecaces(){
+    loadAlarmecaces() {
         this.paramsService.getAlarmecaces().subscribe(
-            caces =>{
+            caces => {
                 this.caces = caces;
                 console.log(this.caces);
 
