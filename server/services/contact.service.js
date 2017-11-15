@@ -1,7 +1,6 @@
 var Q = require('q');
-
+var mysql = require('mysql');
 var db = require('../db.js').get();
-
 
 var service = {};
 
@@ -12,7 +11,7 @@ service.getById = getById;
 service.update = update;
 service.delete = _delete;
 
-service.createAdresse =createAdresse;
+service.createAdresse = createAdresse;
 service.getAdresseById = getAdresseById;
 service.updateAdresse = updateAdresse;
 service.deleteAdresseById = deleteAdresseById;
@@ -56,27 +55,27 @@ service.addcontrat = addcontrat;
 service.newcontrat = newcontrat;
 
 service.getByIdDevisclient = getByIdDevisclient;
-service.addForm =  addForm;
+service.addForm = addForm;
 service.getByIdNom = getByIdNom;
 
 service.getAllform = getAllform;
-service.getAllCaces=getAllCaces;
+service.getAllCaces = getAllCaces;
 service.getByIdFormation = getByIdFormation;
-service.addCaces=addCaces;
-service.getByIdCaces=getByIdCaces;
+service.addCaces = addCaces;
+service.getByIdCaces = getByIdCaces;
 service.upCaces = upCaces;
 service.upFormation = upFormation;
 
 
 service.equipement = equipement;
 service.getByIdequipement = getByIdequipement;
-service.deleteEquipement =deleteEquipement;
+service.deleteEquipement = deleteEquipement;
 
 module.exports = service;
 
 /*******************************************************************************
-    CONTACTS
-*/
+ CONTACTS
+ */
 
 function getAllEmploye() {
     var deferred = Q.defer();
@@ -120,7 +119,7 @@ function getAllEquipes() {
 
 function getAddress(id) {
     var deferred = Q.defer();
-    db.query('SELECT * FROM adresse where id_contact = ? ',[id], function (error, address, fields) {
+    db.query('SELECT * FROM adresse where id_contact = ? ', [id], function (error, address, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
@@ -207,9 +206,8 @@ function create(contactParam) {
         contactParam.equipe
 
 
-
     ];
-    for(var i in params){
+    for (var i in params) {
         query += ", ?";
     }
     query += ")";
@@ -302,8 +300,8 @@ function update(contactParam) {
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log('MySql ERROR trying to update user informations (3) | '+ error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            console.log('MySql ERROR trying to update user informations (3) | ' + error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         deferred.resolve();
     });
@@ -352,10 +350,10 @@ function _delete(_id) {
 function createAdresse(adresse) {
     var deferred = Q.defer();
 
-    if(!adresse.adresse)
+    if (!adresse.adresse)
         deferred.resolve();
     else {
-        db.query("INSERT INTO adresse VALUES (NULL, ? , ? , ?,?,?,?,?)", [adresse.id_contact,adresse.adresse, adresse.code_postal,adresse.ville,adresse.type_adr,adresse.user,adresse.autre], function (error, results, fields) {
+        db.query("INSERT INTO adresse VALUES (NULL, ? , ? , ?,?,?,?,?)", [adresse.id_contact, adresse.adresse, adresse.code_postal, adresse.ville, adresse.type_adr, adresse.user, adresse.autre], function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
             }
@@ -380,7 +378,7 @@ function getAdresseById(id_contact) {
 function updateAdresse(adresse) {
     var deferred = Q.defer();
 
-    if(!adresse.adresse || adresse.adresse == ""){
+    if (!adresse.adresse || adresse.adresse == "") {
         db.query('DELETE FROM adresse WHERE id_contact = ? AND adresse = ?', [adresse.id_contact, adresse.adresse], function (error, results, fields) {
             if (error) deferred.reject(error.name + ': [updateadressel 1] ' + error.message);
 
@@ -388,11 +386,11 @@ function updateAdresse(adresse) {
         });
     } else {
         db.query("SELECT * FROM adresse WHERE id_contact = ? AND adresse = ?", [adresse.id_contact, adresse.adresse], function (error, results, fields) {
-            if (error) deferred.reject(error.name + ': [updateMail 2] '+ error.message);
+            if (error) deferred.reject(error.name + ': [updateMail 2] ' + error.message);
 
             if (results.length > 0) {
-                db.query( "UPDATE adresse SET adresse = ? WHERE id_contact = ? AND adresse = ?", [adresse.adresse, adresse.id_contact], function (error, results, fields) {
-                    if (error) deferred.reject(error.name + ': [updateadresse 3] '+ error.message);
+                db.query("UPDATE adresse SET adresse = ? WHERE id_contact = ? AND adresse = ?", [adresse.adresse, adresse.id_contact], function (error, results, fields) {
+                    if (error) deferred.reject(error.name + ': [updateadresse 3] ' + error.message);
 
                     deferred.resolve();
                 });
@@ -421,12 +419,12 @@ function deleteAdresseById(id_contact) {
 }
 
 /*******************************************************************************
-    MAILS
-*/
+ MAILS
+ */
 function createMail(mail) {
     var deferred = Q.defer();
 
-    if(!mail.mail)
+    if (!mail.mail)
         deferred.resolve();
     else {
         db.query("INSERT INTO mail VALUES (NULL, ? , ? , ?)", [mail.id_contact, mail.mail, mail.type_mail], function (error, results, fields) {
@@ -453,7 +451,7 @@ function getMailsById(id_contact) {
 function updateMail(mail) {
     var deferred = Q.defer();
 
-    if(!mail.mail || mail.mail == ""){
+    if (!mail.mail || mail.mail == "") {
         db.query('DELETE FROM mail WHERE id_contact = ? AND type_mail = ?', [mail.id_contact, mail.type_mail], function (error, results, fields) {
             if (error) deferred.reject(error.name + ': [updateMail 1] ' + error.message);
 
@@ -461,11 +459,11 @@ function updateMail(mail) {
         });
     } else {
         db.query("SELECT * FROM mail WHERE id_contact = ? AND type_mail = ?", [mail.id_contact, mail.type_mail], function (error, results, fields) {
-            if (error) deferred.reject(error.name + ': [updateMail 2] '+ error.message);
+            if (error) deferred.reject(error.name + ': [updateMail 2] ' + error.message);
 
             if (results.length > 0) {
-                db.query( "UPDATE mail SET mail = ? WHERE id_contact = ? AND type_mail = ?", [mail.mail, mail.id_contact, mail.type_mail], function (error, results, fields) {
-                    if (error) deferred.reject(error.name + ': [updateMail 3] '+ error.message);
+                db.query("UPDATE mail SET mail = ? WHERE id_contact = ? AND type_mail = ?", [mail.mail, mail.id_contact, mail.type_mail], function (error, results, fields) {
+                    if (error) deferred.reject(error.name + ': [updateMail 3] ' + error.message);
 
                     deferred.resolve();
                 });
@@ -494,15 +492,15 @@ function deleteMailsById(id_contact) {
 }
 
 /*******************************************************************************
-    TELEPHONES
-*/
+ TELEPHONES
+ */
 function createTelephone(tel) {
     var deferred = Q.defer();
 
-    if(!tel.numero)
+    if (!tel.numero)
         deferred.resolve();
     else {
-        db.query("INSERT INTO telephone VALUES (NULL, ? , ? , ?,?,?)", [tel.id_contact, tel.numero, tel.type_tel,tel.user,tel.autre], function (error, results, fields) {
+        db.query("INSERT INTO telephone VALUES (NULL, ? , ? , ?,?,?)", [tel.id_contact, tel.numero, tel.type_tel, tel.user, tel.autre], function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
             }
@@ -523,10 +521,10 @@ function getTelephonesById(id_contact) {
     return deferred.promise;
 }
 
-function updateTelephone(tel){
+function updateTelephone(tel) {
     var deferred = Q.defer();
 
-    if(!tel.numero || tel.numero == ""){
+    if (!tel.numero || tel.numero == "") {
         db.query('DELETE FROM telephone WHERE id_contact = ? AND type_tel = ?', [tel.id_contact, tel.type_tel], function (error, results, fields) {
             if (error) deferred.reject(error.name + ': [updateTelephone 1] ' + error.message);
 
@@ -534,16 +532,16 @@ function updateTelephone(tel){
         });
     } else {
         db.query("SELECT * FROM telephone WHERE id_contact = ? AND type_tel = ?", [tel.id_contact, tel.type_tel], function (error, results, fields) {
-            if (error) deferred.reject(error.name + ': [updateTelephone 2] '+ error.message);
+            if (error) deferred.reject(error.name + ': [updateTelephone 2] ' + error.message);
 
             if (results.length > 0) {
-                db.query( "UPDATE telephone SET numero = ? WHERE id_contact = ? AND type_tel = ?", [tel.numero, tel.id_contact, tel.type_tel], function (error, results, fields) {
-                    if (error) deferred.reject(error.name + ': [updateTelephone 3] '+ error.message);
+                db.query("UPDATE telephone SET numero = ? WHERE id_contact = ? AND type_tel = ?", [tel.numero, tel.id_contact, tel.type_tel], function (error, results, fields) {
+                    if (error) deferred.reject(error.name + ': [updateTelephone 3] ' + error.message);
 
                     deferred.resolve();
                 });
             } else {
-                db.query("INSERT INTO telephone VALUES (NULL, ? , ? , ?,?,?)", [tel.id_contact, tel.numero, tel.type_tel,tel.user,tel.autre], function (error, results, fields) {
+                db.query("INSERT INTO telephone VALUES (NULL, ? , ? , ?,?,?)", [tel.id_contact, tel.numero, tel.type_tel, tel.user, tel.autre], function (error, results, fields) {
                     if (error) {
                         deferred.reject(error.name + ': ' + error.message);
                     }
@@ -568,12 +566,12 @@ function deleteTelephonesById(id_contact) {
 
 
 /*******************************************************************************
-    CONTRATS
-*/
+ CONTRATS
+ */
 function createContrat(contrat) {
     var deferred = Q.defer();
 
-    if(!contrat.contrat || !contrat.date_sortie || !contrat.date_entree)
+    if (!contrat.contrat || !contrat.date_sortie || !contrat.date_entree)
         deferred.resolve();
     else {
         db.query("INSERT INTO contrat_histo VALUES (NULL, ? , ? , ?, ?)", [contrat.id_contact, contrat.date_entree, contrat.date_sortie, contrat.contrat], function (error, results, fields) {
@@ -592,6 +590,7 @@ function createContrat(contrat) {
 
     return deferred.promise;
 }
+
 function getContratsById(id_contact) {
     var deferred = Q.defer();
     db.query('SELECT * FROM contrat_histo WHERE id_contact = ?', [id_contact], function (error, results, fields) {
@@ -602,16 +601,16 @@ function getContratsById(id_contact) {
     return deferred.promise;
 }
 
-function updateContrat(id_contact, contrat){
+function updateContrat(id_contact, contrat) {
     var deferred = Q.defer();
 
-    if(!contrat.contrat || contrat.contrat == "" ||
-       !contrat.date_sortie || contrat.date_sortie == "" ||
-       !contrat.date_entree ||contrat.date_entree == "" ||
-        !contrat.type_contrat ||contrat.type_contrat == "")
+    if (!contrat.contrat || contrat.contrat == "" ||
+        !contrat.date_sortie || contrat.date_sortie == "" ||
+        !contrat.date_entree || contrat.date_entree == "" ||
+        !contrat.type_contrat || contrat.type_contrat == "")
         deferred.resolve();
     else {
-        db.query("INSERT INTO contrat_histo VALUES (NULL, ? , ? , ?, ?,?)", [contrat.id_contact, contrat.date_entree, contrat.date_sortie, contrat.contrat,contrat.type_contrat], function (error, results, fields) {
+        db.query("INSERT INTO contrat_histo VALUES (NULL, ? , ? , ?, ?,?)", [contrat.id_contact, contrat.date_entree, contrat.date_sortie, contrat.contrat, contrat.type_contrat], function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': [updateContrat] ' + error.message);
             }
@@ -637,8 +636,8 @@ function deleteContratsById(id_contact) {
 
 
 /*******************************************************************************
-    QUALIFICATIONS
-*/
+ QUALIFICATIONS
+ */
 function getQualifications() {
     var deferred = Q.defer();
     db.query('SELECT * FROM qualification', function (error, results, fields) {
@@ -652,7 +651,7 @@ function getQualifications() {
 function linkContactQualification(id_contact, id_qualification) {
     var deferred = Q.defer();
 
-    if(!id_qualification)
+    if (!id_qualification)
         deferred.resolve();
     else {
         db.query("INSERT INTO statut_employe VALUES (? , ?)", [id_contact, id_qualification], function (error, results, fields) {
@@ -668,7 +667,7 @@ function linkContactQualification(id_contact, id_qualification) {
 
 function getQualificationsById(id_contact) {
     var deferred = Q.defer();
-    db.query('SELECT * FROM statut_employe WHERE id_contact = ?', [id_contact],function (error, results, fields) {
+    db.query('SELECT * FROM statut_employe WHERE id_contact = ?', [id_contact], function (error, results, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
         deferred.resolve(results);
@@ -676,10 +675,10 @@ function getQualificationsById(id_contact) {
     return deferred.promise;
 }
 
-function updateContactQualification(id_contact, qualif){
+function updateContactQualification(id_contact, qualif) {
     var deferred = Q.defer();
 
-    if( !qualif || qualif == ""){
+    if (!qualif || qualif == "") {
         db.query('DELETE FROM statut_employe WHERE id_contact = ?', [id_contact], function (error, results, fields) {
             if (error) deferred.reject(error.name + ': [updateContactQualification 1] ' + error.message);
 
@@ -687,11 +686,11 @@ function updateContactQualification(id_contact, qualif){
         });
     } else {
         db.query("SELECT * FROM statut_employe WHERE id_contact = ?", [id_contact], function (error, results, fields) {
-            if (error) deferred.reject(error.name+' : [updateContactQualification 2] '+ error.message);
+            if (error) deferred.reject(error.name + ' : [updateContactQualification 2] ' + error.message);
 
             if (results.length > 0) {
-                db.query( "UPDATE statut_employe SET id_qualification = ? WHERE id_contact = ? ", [qualif, id_contact], function (error, results, fields) {
-                    if (error) deferred.reject(error.name+' : [updateContactQualification 3] '+ error.message);
+                db.query("UPDATE statut_employe SET id_qualification = ? WHERE id_contact = ? ", [qualif, id_contact], function (error, results, fields) {
+                    if (error) deferred.reject(error.name + ' : [updateContactQualification 3] ' + error.message);
 
                     deferred.resolve();
                 });
@@ -730,7 +729,7 @@ function getByIdchantier(_id_contact) {
         "AND (chantierdevis.id_chantier = chantier.id_chantier AND chantierdevis.status = 'terminé') " +
         "AND devis_version.id_devis = chantierdevis.id_devis " +
         "AND devis_version.num_version = chantierdevis.num_version " +
-        "AND chantierdevis.id_chantier = listchantierfacturemois.id_chantier "+
+        "AND chantierdevis.id_chantier = listchantierfacturemois.id_chantier " +
         "GROUP BY chantierdevis.id_chantier";
     var inserts = [_id_contact];
     sql = mysql.format(sql, inserts);
@@ -749,12 +748,12 @@ function getByIdchantier(_id_contact) {
 function getByIdencours(_id_contact) {
     //console.log('test');
     var deferred = Q.defer();
-    var sql = "SELECT chantier.id_chantier, chantier.nom_chantier,chantierdevis.id_devis,chantierdevis.num_version "+
-    "FROM chantier, chantierdevis, contact "+
-    "WHERE contact.id_contact = ? "+
-    "AND chantier.id_contact = contact.id_contact "+
-    "AND chantier.id_chantier = chantierdevis.id_chantier "+
-    "AND chantierdevis.status = 'en cours' ";
+    var sql = "SELECT chantier.id_chantier, chantier.nom_chantier,chantierdevis.id_devis,chantierdevis.num_version " +
+        "FROM chantier, chantierdevis, contact " +
+        "WHERE contact.id_contact = ? " +
+        "AND chantier.id_contact = contact.id_contact " +
+        "AND chantier.id_chantier = chantierdevis.id_chantier " +
+        "AND chantierdevis.status = 'en cours' ";
     var inserts = [_id_contact];
     sql = mysql.format(sql, inserts);
     //console.log(sql);
@@ -768,13 +767,14 @@ function getByIdencours(_id_contact) {
     });
     return deferred.promise;
 }
+
 /*********************fiche contact****************************/
 
 function getByIdContrat(_id_contact) {
     //console.log('test');
     var deferred = Q.defer();
-    var sql = "SELECT * "+
-        "FROM contrat_histo "+
+    var sql = "SELECT * " +
+        "FROM contrat_histo " +
         "WHERE id_contact = ? ";
     var inserts = [_id_contact];
     sql = mysql.format(sql, inserts);
@@ -793,8 +793,8 @@ function getByIdContrat(_id_contact) {
 function getByIdLastContrat(_id_contact) {
     //console.log('test');
     var deferred = Q.defer();
-    var sql = "SELECT * "+
-        "FROM contrat_histo "+
+    var sql = "SELECT * " +
+        "FROM contrat_histo " +
         "WHERE id_contact = ? " +
         "ORDER BY id_contrat DESC ";
     var inserts = [_id_contact];
@@ -817,7 +817,7 @@ function addcontrat(contrat_param) {
     //console.log(contrat_param);
 
     db.query("INSERT INTO contrat_histo (id_contact,date_debut, date_fin,type_contrat,tauxhoraire,tauxhorairesbrute,tauxsurcharge,panier,heure_mois,datechangement,agence_interim,id_interim) VALUES ( ? , ? , ? , ?,?,?,?,?,?,NOW(),?,? )",
-        [ contrat_param.id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.datechangement,contrat_param.agence_interim,contrat_param.id_interim],
+        [contrat_param.id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.datechangement, contrat_param.agence_interim, contrat_param.id_interim],
         function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
@@ -829,13 +829,13 @@ function addcontrat(contrat_param) {
     return deferred.promise;
 }
 
-function newcontrat(contrat_param,id_contact) {
+function newcontrat(contrat_param, id_contact) {
     var deferred = Q.defer();
 
     //console.log(contrat_param);
 
     db.query("INSERT INTO contrat_histo (id_contact,date_debut, date_fin,type_contrat,tauxhoraire,tauxhorairesbrute,tauxsurcharge,panier,heure_mois,datechangement,agence_interim,id_interim) VALUES ( ? , ? , ? , ?,?,?,?,?,?,NOW(),?,?)",
-        [ id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.datechangement,contrat_param.agence_interim,contrat_param.id_interim],
+        [id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.datechangement, contrat_param.agence_interim, contrat_param.id_interim],
         function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
@@ -852,11 +852,11 @@ function newcontrat(contrat_param,id_contact) {
 function getByIdDevisclient(_id_contact) {
     //console.log('test');
     var deferred = Q.defer();
-    var sql = "SELECT devis_version. * , contact.nom, devis.ville, devis.nom_chantier "+
-    "FROM contact, devis, devis_version "+
-    "WHERE contact.id_contact = devis.id_contact "+
-    "AND contact.id_contact =? "+
-    "AND devis_version.id_devis = devis.id_devis ";
+    var sql = "SELECT devis_version. * , contact.nom, devis.ville, devis.nom_chantier " +
+        "FROM contact, devis, devis_version " +
+        "WHERE contact.id_contact = devis.id_contact " +
+        "AND contact.id_contact =? " +
+        "AND devis_version.id_devis = devis.id_devis ";
     var inserts = [_id_contact];
     sql = mysql.format(sql, inserts);
     //console.log(sql);
@@ -870,7 +870,6 @@ function getByIdDevisclient(_id_contact) {
     });
     return deferred.promise;
 }
-
 
 
 /*******************************************************************Formation contact***************************************************************************************/
@@ -887,6 +886,7 @@ function getByIdNom(id_contact) {
     return deferred.promise;
 
 }
+
 //formation::::
 
 function addForm(Eparams) {
@@ -952,7 +952,7 @@ function addCaces(Eparams) {
     //console.log("test1");
     //console.log(Eparams);
 
-    db.query("INSERT INTO cacescontact(id_contact, date_fin,id_caces) VALUES (? , ? , ? )", [Eparams.nom.id_contact,  Eparams.facting.date_fin , Eparams.facting.cacess.id_caces], function (error, results, fields) {
+    db.query("INSERT INTO cacescontact(id_contact, date_fin,id_caces) VALUES (? , ? , ? )", [Eparams.nom.id_contact, Eparams.facting.date_fin, Eparams.facting.cacess.id_caces], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
             console.log("(2)" + error.name + ': ' + error.message);
@@ -989,7 +989,7 @@ function upCaces(eParam) {
     db.query(query, params, function (error, results, fields) {
         if (error) {
             //console.log(+ error.message)
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 
@@ -1013,7 +1013,7 @@ function upFormation(eParam) {
     db.query(query, params, function (error, results, fields) {
         if (error) {
             //console.log(+ error.message)
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 
@@ -1023,13 +1023,13 @@ function upFormation(eParam) {
 }
 
 
-function equipement(equipement,id_contact) {
+function equipement(equipement, id_contact) {
     var deferred = Q.defer();
     console.log(equipement);
     console.log(id_contact);
 
 
-    db.query("INSERT INTO equipement(id_contact,designation,nbre,taille,commentaire) VALUES (? , ?,?,?,?)", [id_contact, equipement.designation,equipement.nbre,equipement.taille,equipement.commentaire], function (error, results, fields) {
+    db.query("INSERT INTO equipement(id_contact,designation,nbre,taille,commentaire) VALUES (? , ?,?,?,?)", [id_contact, equipement.designation, equipement.nbre, equipement.taille, equipement.commentaire], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
@@ -1056,7 +1056,7 @@ function deleteEquipement(id_equipement) {
     console.log("DELETE FROM equipement WHERE id_equipement = ? ", [id_equipement]);
     var deferred = Q.defer();
     db.query("DELETE FROM equipement WHERE id_equipement = ? ", [id_equipement], function (error, results, fields) {
-        if (error){
+        if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
 

@@ -6,7 +6,6 @@ var Q = require('q');
 var mysql = require('mysql');
 var db = require('../db.js').get();
 
-
 var service = {};
 
 service.authenticate = authenticate;

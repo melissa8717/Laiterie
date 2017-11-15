@@ -2,9 +2,8 @@
  * Created by Wbat on 07/08/2017.
  */
 var Q = require('q');
-
+var mysql = require('mysql');
 var db = require('../db.js').get();
-
 
 var isToday = require('date-fns/is_today');
 var isBefore = require('date-fns/is_before');
@@ -134,7 +133,7 @@ function getAllTravail() {
         db.query('SELECT * from travail_equipe', function (error, equipe, fields) {
             if (error) deferred.reject(error.name + ': ' + error.message);
             var rdv = [];
-            var test= {};
+            var test = {};
             test.solo = solo;
             test.equipe = equipe;
             rdv.push(test);
@@ -254,7 +253,7 @@ function validate(id, eventparams) {
 //console.log("UPDATE event SET start = ?, end = ?, title = ?, type = ?, id_contact = ?, id_chantier = ? WHERE id_event = ? ",
     //[eventparams.start,eventparams.end,eventparams.title,eventparams.type, eventparams.employe.id_contact, eventparams.chantier.id_chantier, id]);
     db.query("UPDATE travail SET nb_heure = ?,type=?, valid = true WHERE id_travail = ? ",
-        [eventparams.nb_heure,eventparams.type, id], function (error, result, fields) {
+        [eventparams.nb_heure, eventparams.type, id], function (error, result, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
                 console.log(error.name + ': ' + error.message);
@@ -273,7 +272,7 @@ function validateTeam(id, eventparams) {
     var deferred = Q.defer();
 
     db.query("UPDATE travail_equipe SET nb_heure = ?,type=?, valid = true WHERE id_travail = ? ",
-        [eventparams.nb_heure,eventparams.type, id], function (error, result, fields) {
+        [eventparams.nb_heure, eventparams.type, id], function (error, result, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
                 console.log(error.name + ': ' + error.message);
@@ -346,7 +345,7 @@ function updateplanning_simple(id, eventparams) {
     return deferred.promise;
 }
 
-function addEquipe(EParams,id_equipe) {
+function addEquipe(EParams, id_equipe) {
     var deferred = Q.defer();
     console.log("service js");
 
@@ -376,7 +375,7 @@ function deleteEquipe(_id_equipe) {
     console.log("DELETE FROM equipe WHERE id_equipe = ? ", [_id_equipe]);
     var deferred = Q.defer();
     db.query("DELETE FROM equipe WHERE id_equipe = ? ", [_id_equipe], function (error, results, fields) {
-        if (error){
+        if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
 
@@ -388,10 +387,9 @@ function deleteEquipe(_id_equipe) {
 }
 
 
-
-function getAllEquipe(){
+function getAllEquipe() {
     var deferred = Q.defer();
-    db.query('SELECT * FROM equipe',function (error, equipe, fields) {
+    db.query('SELECT * FROM equipe', function (error, equipe, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
             console.log(error.name + ': ' + error.message);
@@ -407,8 +405,8 @@ function getAllEquipe(){
 
 function getAllRecap(month, year) {
     var deferred = Q.defer();
-    console.log(month,year);
-    db.query('SELECT * FROM heuremois WHERE mois =? AND annee =?  ',[month, year] ,function (error, chantier, fields)  {
+    console.log(month, year);
+    db.query('SELECT * FROM heuremois WHERE mois =? AND annee =?  ', [month, year], function (error, chantier, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
@@ -420,8 +418,8 @@ function getAllRecap(month, year) {
 
 function getAllHeuresem(month, year) {
     var deferred = Q.defer();
-    console.log(month,year);
-    db.query('SELECT * FROM heuresemaine WHERE mois =? AND annee =?  ',[month, year] ,function (error, chantier, fields)  {
+    console.log(month, year);
+    db.query('SELECT * FROM heuresemaine WHERE mois =? AND annee =?  ', [month, year], function (error, chantier, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
@@ -461,7 +459,7 @@ function upouvrier(eParam) {
     db.query(query, params, function (error, results, fields) {
         if (error) {
             console.log(error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 
@@ -473,7 +471,7 @@ function upouvrier(eParam) {
     db.query(query, params, function (error, results, fields) {
         if (error) {
             console.log(error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 

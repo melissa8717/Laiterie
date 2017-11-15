@@ -1,14 +1,9 @@
 // produits achats
 // sont stockes sand la table 'produit'
 
-var config = require('config.json');
-var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
-
+var mysql = require('mysql');
 var db = require('../db.js').get();
-
 
 var service = {};
 

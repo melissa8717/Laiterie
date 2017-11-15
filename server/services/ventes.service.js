@@ -1,14 +1,9 @@
 // prioduits ventes
 // sont stockes dans produit_vente + produit_compose
 
-var config = require('config.json');
-var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
-
+var mysql = require('mysql');
 var db = require('../db.js').get();
-
 
 var service = {};
 
@@ -39,13 +34,13 @@ function getAll() {
     ASC', function (error, produits, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
-       // console.log(produits);
+        // console.log(produits);
         deferred.resolve(produits);
     });
     return deferred.promise;
 }
 
-function getAllProdComp(_id, num_version){
+function getAllProdComp(_id, num_version) {
     //console.log("get prod comp in service");
     var deferred = Q.defer();
     db.query('SELECT * FROM produit_compose ' +
@@ -54,9 +49,9 @@ function getAllProdComp(_id, num_version){
         'WHERE id_prc = ? && produit.type = 0 && produit_compose.num_version = ?',
         [_id, num_version],
         function (error, produit, fields) {
-        if (error) {
-            deferred.reject(error.name + ': ' + error.message);
-        }
+            if (error) {
+                deferred.reject(error.name + ': ' + error.message);
+            }
 
             db.query('SELECT * FROM produit_compose ' +
                 'LEFT JOIN produit on produit.id_produit = produit_compose.id_produit ' +
@@ -72,7 +67,7 @@ function getAllProdComp(_id, num_version){
                     //console.log(tmp);
                     deferred.resolve(tmp);
                 });
-    });
+        });
     return deferred.promise;
 }
 
@@ -131,7 +126,6 @@ function createVersion(productParam) {
         //console.log(num_version);
 
 
-
         var params = [
             productParam.produit.id_prc,
             num_version,
@@ -159,7 +153,7 @@ function createVersion(productParam) {
                 deferred.reject(error.name + ': ' + error.message);
             }
 
-            for(var p in productParam.produits){
+            for (var p in productParam.produits) {
                 (function (product) {
                     var params = [
                         productParam.produit.id_prc,
@@ -180,7 +174,7 @@ function createVersion(productParam) {
                             deferred.reject(error.name + ': ' + error.message);
                         }
 
-                        if(product == (productParam.produits.length - 1)){
+                        if (product == (productParam.produits.length - 1)) {
                             deferred.resolve();
                         }
 
@@ -190,7 +184,7 @@ function createVersion(productParam) {
             }
 
 
-            for(var p in productParam.mainOeuvre){
+            for (var p in productParam.mainOeuvre) {
                 (function (product) {
                     var params = [
                         productParam.produit.id_prc,
@@ -239,9 +233,9 @@ function create(productParam) {
     ];
 
     var query = "INSERT INTO produit_vente (libelle, description, note, unite, categorie, prix_achat, marge, margemin, margepc, prix_vente) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
-    console.log(query , params);
+    console.log(query, params);
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -250,10 +244,9 @@ function create(productParam) {
         }
 
 
-
         var id_prc = results.insertId;
 
-        for(var p in productParam.produits){
+        for (var p in productParam.produits) {
             (function (product) {
                 var params = [
                     id_prc,
@@ -273,7 +266,7 @@ function create(productParam) {
                         deferred.reject(error.name + ': ' + error.message);
                     }
 
-                    if(product == productParam.produits.length -1){
+                    if (product == productParam.produits.length - 1) {
                         deferred.resolve();
                     }
 
@@ -283,7 +276,7 @@ function create(productParam) {
         }
 
 
-        for(var p in productParam.mainOeuvre){
+        for (var p in productParam.mainOeuvre) {
             (function (product) {
                 var params = [
                     id_prc,
@@ -344,8 +337,8 @@ function _delete(_id) {
             deferred.reject(error.name + ': ' + error.message);
         }
 
-        db.query("DELETE FROM produit_compose WHERE id_prc = ?", [_id], function(error, results, fields) {
-            if(error) {
+        db.query("DELETE FROM produit_compose WHERE id_prc = ?", [_id], function (error, results, fields) {
+            if (error) {
                 deferred.reject(error.name + ': ' + error.message);
             }
             deferred.resolve();
@@ -370,7 +363,7 @@ function update(id_product, productParam) {
     db.query(query, params, function (error, results, fields) {
         if (error) {
             console.log("error updating prod vente: " + error);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         deferred.resolve();
     });

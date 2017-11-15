@@ -1,20 +1,14 @@
 /**
  * Created by Wbat on 17/07/2017.
  */
-
-var config = require('config.json');
-var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
-
+var mysql = require('mysql');
 var db = require('../db.js').get();
-
 
 var service = {};
 
-service.addagence=addagence;
-service.getAllAgence=getAllAgence;
+service.addagence = addagence;
+service.getAllAgence = getAllAgence;
 service.updateAgence = updateAgence;
 
 service.getAllTVA = getAllTVA;
@@ -136,8 +130,8 @@ function updateAgence(ag_param) {
     console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(+ error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            console.log(+error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 
@@ -145,6 +139,7 @@ function updateAgence(ag_param) {
     });
     return deferred.promise;
 }
+
 /*----------------------------------------------------- TVA ----------------------------------------------------*/
 function getAllTVA() {
     var deferred = Q.defer();
@@ -173,8 +168,8 @@ function updateTva(ag_param) {
     console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(+ error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            console.log(+error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 
@@ -211,8 +206,8 @@ function updateCat(ag_param) {
     //console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(+ error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            console.log(+error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 
@@ -274,8 +269,8 @@ function updateUnite(ag_param) {
     //console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(+ error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            console.log(+error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 
@@ -337,8 +332,8 @@ function updateVente(ag_param) {
     //console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(+ error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            console.log(+error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 
@@ -391,8 +386,7 @@ function getAllFrais() {
 }
 
 
-
-function  addLicence (licenceParam) {
+function addLicence(licenceParam) {
     var params;
     var deferred = Q.defer();
     //console.log(agenceParam);
@@ -440,7 +434,7 @@ function getByIduser(_id) {
 
     sql = mysql.format(sql, inserts);//console.log(sql);
     db.query(sql, function (error, results, fields) {
-        if (error){
+        if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
@@ -454,7 +448,7 @@ function getByIdDroit(idUser) {
     //console.log('test fact')
     // console.log(error.name + ': ' + error.message);
     var deferred = Q.defer();
-    db.query('SELECT * from usersdroits where id = ? ',[idUser], function (error, msg, fields) {
+    db.query('SELECT * from usersdroits where id = ? ', [idUser], function (error, msg, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message)
             deferred.reject(error.name + ': ' + error.message);
@@ -470,7 +464,7 @@ function deleteuser(_id) {
     console.log("DELETE FROM usersdroits WHERE id = ? ", [_id]);
     var deferred = Q.defer();
     db.query("DELETE FROM users WHERE id = ? ", [_id], function (error, results, fields) {
-        if (error){
+        if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
 
@@ -480,7 +474,7 @@ function deleteuser(_id) {
 
 
     db.query("DELETE FROM usersdroits WHERE id = ? ", [_id], function (error, results, fields) {
-        if (error){
+        if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
 
@@ -510,8 +504,8 @@ function updateuser(user_param) {
     console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(+ error.message);
-            deferred.reject('MySql ERROR trying to update user informations (3) | '+ error.message);
+            console.log(+error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         //console.log(results)
 

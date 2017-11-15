@@ -1,14 +1,9 @@
 /**
  * Created by Wbat on 04/06/2017.
  */
-var config = require('config.json');
-var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
-
+var mysql = require('mysql');
 var db = require('../db.js').get();
-
 
 var service = {};
 
@@ -24,10 +19,9 @@ service.getAllHome = getAllHome;
 module.exports = service;
 
 
-
 function getUnreadMsg(idUser) {
     var deferred = Q.defer();
-    db.query('SELECT * from unread_msg where destinataire = ? ',[idUser], function (error, msg, fields) {
+    db.query('SELECT * from unread_msg where destinataire = ? ', [idUser], function (error, msg, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message)
             deferred.reject(error.name + ': ' + error.message);
@@ -40,7 +34,7 @@ function getUnreadMsg(idUser) {
 
 function getConversation(idMessage) {
     var deferred = Q.defer();
-    db.query('SELECT * from commentaire left join users on users.id = commentaire.id_user where id_message = ? ',[idMessage], function (error, conversation, fields) {
+    db.query('SELECT * from commentaire left join users on users.id = commentaire.id_user where id_message = ? ', [idMessage], function (error, conversation, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
@@ -53,26 +47,26 @@ function getConversation(idMessage) {
 
 function answer(answer) {
     var deferred = Q.defer();
-   db.query('INSERT INTO commentaire ( id_message, date_com, contenu, id_user) VALUES (? , ? , ? , ?)',
-       [ answer.id_message, answer.date_com, answer.contenu, answer.id_user],
-       function (error, conversation, fields) {
-        if (error) {
-            console.log(error.name + ': ' + error.message)
-            deferred.reject(error.name + ': ' + error.message);
-        }
+    db.query('INSERT INTO commentaire ( id_message, date_com, contenu, id_user) VALUES (? , ? , ? , ?)',
+        [answer.id_message, answer.date_com, answer.contenu, answer.id_user],
+        function (error, conversation, fields) {
+            if (error) {
+                console.log(error.name + ': ' + error.message)
+                deferred.reject(error.name + ': ' + error.message);
+            }
 
-           db.query('update message SET traite =  1 ,  date_creation = ? where id_message = ?',
-               [new Date(), answer.id_message],
-               function (error, data, fields) {
-                   if (error) {
-                       console.log(error.name + ': ' + error.message)
-                       deferred.reject(error.name + ': ' + error.message);
-                   }
-               });
+            db.query('update message SET traite =  1 ,  date_creation = ? where id_message = ?',
+                [new Date(), answer.id_message],
+                function (error, data, fields) {
+                    if (error) {
+                        console.log(error.name + ': ' + error.message)
+                        deferred.reject(error.name + ': ' + error.message);
+                    }
+                });
 
 
-        deferred.resolve();
-    });
+            deferred.resolve();
+        });
     return deferred.promise;
 }
 
@@ -83,7 +77,7 @@ function getAll(idUser) {
     FROM message\
     JOIN users on users.id = message.id_user\
     WHERE message.destinataire = ? OR message.id_user =?\
-    ORDER BY message.date_creation DESC ',[idUser, idUser], function (error, messages, fields) {
+    ORDER BY message.date_creation DESC ', [idUser, idUser], function (error, messages, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message)
             deferred.reject(error.name + ': ' + error.message);
@@ -100,7 +94,7 @@ function getAllHome(idUser) {
     FROM message\
     JOIN users on users.id = message.id_user\
     WHERE message.destinataire = ? OR message.id_user =?\
-    ORDER BY message.date_creation DESC LIMIT 10',[idUser, idUser], function (error, messages, fields) {
+    ORDER BY message.date_creation DESC LIMIT 10', [idUser, idUser], function (error, messages, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message)
             deferred.reject(error.name + ': ' + error.message);
@@ -121,11 +115,11 @@ function getById(_id) {
     var inserts = [+_id];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, message, fields) {
-        if (error){
+        if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
-            deferred.resolve(message);
+        deferred.resolve(message);
     });
     return deferred.promise;
 }
@@ -133,11 +127,11 @@ function getById(_id) {
 function create(messageParam) {
     //console.log(messageParam);
     var deferred = Q.defer();
-        db.query("INSERT INTO message (titre, date_creation, contenu, id_user, destinataire, id_chantier) VALUES (? , ? , ? , ?, ?, ?)",
-            [messageParam.titre, new Date(messageParam.date_creation), messageParam.message, messageParam.from ,messageParam.to, messageParam.chantier],
-            function (error, results, fields) {
+    db.query("INSERT INTO message (titre, date_creation, contenu, id_user, destinataire, id_chantier) VALUES (? , ? , ? , ?, ?, ?)",
+        [messageParam.titre, new Date(messageParam.date_creation), messageParam.message, messageParam.from, messageParam.to, messageParam.chantier],
+        function (error, results, fields) {
 
-            if (error){
+            if (error) {
                 deferred.reject(error.name + ': ' + error.message);
                 //console.log(error.name + ': ' + error.message);
             }
@@ -150,7 +144,7 @@ function create(messageParam) {
 function _delete(_id) {
     var deferred = Q.defer();
     db.query("DELETE FROM message WHERE id_message = ? ", [_id], function (error, results, fields) {
-        if (error){
+        if (error) {
             deferred.reject(error.name + ': ' + error.message);
             console.log(error.name + ': ' + error.message);
         }
