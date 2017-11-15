@@ -192,7 +192,7 @@ function getByIdNom(_id_chantier) {
     var sql = "SELECT chantier.nom_chantier, chantierdevis.date_demarrage, chantierdevis.reception_chantier, chantier.id_chantier " +
         "FROM chantier, chantierdevis " +
         "WHERE chantierdevis.id_chantier =? AND chantier.id_chantier = chantierdevis.id_chantier " +
-        "GROUP by chantier.id_chantier, chantierdevis.date_demarrage, chantierdevis.reception_chantier";
+        "GROUP by chantier.id_chantier";
     var inserts = [_id_chantier];
 
     sql = mysql.format(sql, inserts);//console.log(sql);
@@ -724,7 +724,7 @@ function getByIdReel(_id_chantier) {
         "LEFT JOIN contact ON bon_de_commande.id_fournisseur = contact.id_contact " +
         "WHERE id_chantier = ? " +
         "AND bon_de_commande.recu IS TRUE " +
-        "GROUP BY bdc_detaille.id_bdc, bon_de_commande.id_bdc";
+        "GROUP BY bdc_detaille.id_bdc";
     var inserts = [_id_chantier];
     sql = mysql.format(sql, inserts);//console.log(sql);
     db.query(sql, function (error, results, fields) {
