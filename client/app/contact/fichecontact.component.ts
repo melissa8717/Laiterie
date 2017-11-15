@@ -155,7 +155,7 @@ export class FichecontactComponent implements OnInit {
             .subscribe(
                 data => {
                     this.ged = data;
-                    console.log(this.ged);
+                   // console.log(this.ged);
                 },
                 error => {
                     console.log("Couldn't load the ged infos");
@@ -167,9 +167,9 @@ export class FichecontactComponent implements OnInit {
     private getContact(id_contact: string) {
         this.contactService.getByIdAllInfos(id_contact).subscribe(
             data => {
-                console.log("TEST GET : ")
-                console.log(id_contact);
-                console.log(data.contact);
+               // console.log("TEST GET : ")
+                //console.log(id_contact);
+                //console.log(data.contact);
                 this.contact = data.contact;
                 for (var i in data.mails) {
                     switch (data.mails[i].type_mail) {
