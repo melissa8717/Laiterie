@@ -76,26 +76,29 @@
 
         <form method="POST" action="#">
 
-<!--
-            <div class="col-sm-2">
+            <div >
 
-                <div style="height: 10%; width: 100%;">
-                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+                <div style="height: 200px; width: 150px;">
+                    <img *ngIf="url" [src]="url" alt="..." style="height: 200px; width: 150px;">
                     <img *ngIf="!url && contact.image_url"
-                         src="http://{{loc}}:4000/image/contact/{{id_contact}}/{{contact.image_url}}" alt="..."
-                         class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && !contact.image_url" src="image/test.ico" alt="..."
-                         class="img-thumbnail images"/>
+                         src="http://{{loc}}:4000/image/contact/{{contact.id_contact}}/{{contact.image_url}}" alt="..."
+                         style="height: 200px; width: 150px;"/>
+                   <!-- <img *ngIf="!url && !contact.image_url" src="image/test.ico" alt="..."
+                         class="img-thumbnail images"/>-->
                     <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
                 </div>
 
-            </div> -->
+            </div>
+            <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default  col-sm-offset-11 col-sm-1"
+                    (click)="updateContact(); uploaderImg.queue[0].upload();"> Modifier
+            </button>
 
 
-            <div class="col-sm-6">
+
+            <div class="col-sm-6" style="margin-top: 100px;">
 
 
-                <div class="form-group" style="margin: 0;">
+                <div class="form-group" >
                     <span class="col-sm-3">Nom:</span><input type="text" name="nom" [(ngModel)]="contact.nom"
                                                              class="col-sm-3"/>
                 </div>
@@ -176,7 +179,7 @@
             </div>
 
 
-            <div class="col-sm-4">
+            <div class="col-sm-4" style="margin-top: 100px;">
 
                 <div class="form-group">
                     <span class="col-sm-4">Téléphone: </span><input type="text" name="numeroFixe"
