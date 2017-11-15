@@ -22,8 +22,11 @@ export class GanttComponent implements OnInit {
 
 
     ngOnInit() {
+        this.tasks = [];
+        this.links = [];
         gantt.config.xml_date = "%Y-%m-%d %H:%i";
         gantt.init(this.ganttContainer.nativeElement);
+        gantt.clearAll();
 
         // TASKS EVENTS
 
@@ -105,7 +108,6 @@ export class GanttComponent implements OnInit {
                 })
             }
         });
-
     }
 
     private serializeTask(data: any, insert: boolean = false): Tache {
