@@ -8,10 +8,10 @@ var pdfService = require('services/pdf.service');
 
 // routes pour les contacts
 router.post('/new', create);
-router.post('/:_id/image/upload',function(req,res){
+router.post('/:_id/image/upload', function (req, res) {
     console.log(req.body);
-    uploadImage(req,res,function(err) {
-        if(err) {
+    uploadImage(req, res, function (err) {
+        if (err) {
             console.log("Error uploading file.");
             console.log(err);
             return res.end(JSON.stringify(err));
@@ -20,10 +20,10 @@ router.post('/:_id/image/upload',function(req,res){
         res.end("Image uploaded");
     });
 });
-router.post('/:_id/ged/upload',function(req,res){
+router.post('/:_id/ged/upload', function (req, res) {
     console.log("In Router ged");
-    uploadGED(req,res,function(err) {
-        if(err) {
+    uploadGED(req, res, function (err) {
+        if (err) {
             console.log("Error uploading file.");
             return res.end(JSON.stringify(err));
         }
@@ -32,7 +32,7 @@ router.post('/:_id/ged/upload',function(req,res){
     });
 });
 router.get('/', getAll);
-router.get('/listcaces',getAllCaces);
+router.get('/listcaces', getAllCaces);
 router.get('/test', getAllform);
 router.get('/fournisseurs', getAllFournisseurs);
 router.get('/equipes', getAllEquipes);
@@ -47,8 +47,8 @@ router.get('/qualifications', getQualifications);
 router.get('/:_id/image/download', downloadImage);
 router.get('/:_id/ged/download', downloadGED);
 router.get('/:_id', getById);
-router.put('/upcaces',upCaces);
-router.put('/modiform',upFormation);
+router.put('/upcaces', upCaces);
+router.put('/modiform', upFormation);
 router.put('/:_id', update);
 router.delete('/fiche/:_id/delete', deleteFiche);
 router.delete('/:_id', _delete);
@@ -56,36 +56,42 @@ router.delete('/:_id', _delete);
 router.get('/chantier/:id_contact', getByIdchantier);
 router.get('/encours/:id_contact', getByIdencours);
 
-router.get('/contrat/:id_contact',getByIdContrat);
-router.get('/lastcontrat/:id_contact',getByIdLastContrat);
-router.post('/addcontrat/',addcontrat);
-router.post('/newcontrat/:id_contact',newcontrat);
+router.get('/contrat/:id_contact', getByIdContrat);
+router.get('/lastcontrat/:id_contact', getByIdLastContrat);
+router.post('/addcontrat/', addcontrat);
+router.post('/newcontrat/:id_contact', newcontrat);
 
-router.get('/devis/:id_contact',getByIdDevisclient);
+router.get('/devis/:id_contact', getByIdDevisclient);
 
 
 router.post('/formation', addForm);
-router.get('/nom/:id_contact',getByIdNom);
-router.get('/idform/:id_contact',getByIdFormation);
-router.post('/ajoutcaces',addCaces);
-router.get('/selcaces/:id_contact',getByIdCaces);
+router.get('/nom/:id_contact', getByIdNom);
+router.get('/idform/:id_contact', getByIdFormation);
+router.post('/ajoutcaces', addCaces);
+router.get('/selcaces/:id_contact', getByIdCaces);
 
-router.post('/eequipements/:id_contact',equipement);
-router.get('/allequipe/:id_contact',getByIdequipement);
-router.delete('/entre/:id_equipement',deleteEquipement);
-
-
+router.post('/eequipements/:id_contact', equipement);
+router.get('/allequipe/:id_contact', getByIdequipement);
+router.delete('/entre/:id_equipement', deleteEquipement);
 
 
 module.exports = router;
 
 var storageImage = multer.diskStorage({
     destination: function (req, file, callback) {
-        try{ fs.mkdirSync('./files/contact/'+req.params._id); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        try{ fs.mkdirSync('./files/contact/'+req.params._id+'/image'); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        callback(null, './files/contact/'+req.params._id+'/image');
+        try {
+            fs.mkdirSync('./files/contact/' + req.params._id);
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        try {
+            fs.mkdirSync('./files/contact/' + req.params._id + '/image');
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        callback(null, './files/contact/' + req.params._id + '/image');
 
     },
     filename: function (req, file, callback) {
@@ -93,29 +99,37 @@ var storageImage = multer.diskStorage({
         callback(null, file.originalname);
     }
 });
-var uploadImage = multer({ storage : storageImage}).fields([{name:'file'}]);
+var uploadImage = multer({storage: storageImage}).fields([{name: 'file'}]);
 
 var storageGED = multer.diskStorage({
     destination: function (req, file, callback) {
-        try{ fs.mkdirSync('./files/contact/'+req.params._id); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        try{ fs.mkdirSync('./files/contact/'+req.params._id+'/ged'); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        callback(null, './files/contact/'+req.params._id+'/ged');
+        try {
+            fs.mkdirSync('./files/contact/' + req.params._id);
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        try {
+            fs.mkdirSync('./files/contact/' + req.params._id + '/ged');
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        callback(null, './files/contact/' + req.params._id + '/ged');
     },
     filename: function (req, file, callback) {
         console.log(file.originalname);
         callback(null, file.originalname);
     }
 });
-var uploadGED = multer({ storage : storageGED}).fields([{name:'file'}]);
+var uploadGED = multer({storage: storageGED}).fields([{name: 'file'}]);
 
-function downloadImage(req,res){
-    res.download("./files/contact/"+req.params._id+"/image/"+req.params.url);
+function downloadImage(req, res) {
+    res.download("./files/contact/" + req.params._id + "/image/" + req.params.url);
 }
 
-function downloadGED(req,res){
-    res.download("./files/contact/"+req.params._id+"/ged"+req.params.url);
+function downloadGED(req, res) {
+    res.download("./files/contact/" + req.params._id + "/ged" + req.params.url);
 }
 
 function getAllClients(req, res) {
@@ -197,19 +211,19 @@ function create(req, res) {
             commonService.createAdresse(req.body.adresse),
             contactService.linkContactQualification(insertId, req.body.qualification),
             contactService.createContrat(req.body.contact),
-            pdfService.buildContact(req.body) ])
-            .then(function(results) {
-                res.send(""+insertId);
+            pdfService.buildContact(req.body)])
+            .then(function (results) {
+                res.send("" + insertId);
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 console.log("Fail creation infos complementaires");
                 res.status(400).send(err);
             });
     }
 }
 
-function downloadFiche(req, res){
-    res.download("./files/fichecontact/fichecontact_"+req.params._id+".pdf");
+function downloadFiche(req, res) {
+    res.download("./files/fichecontact/fichecontact_" + req.params._id + ".pdf");
 }
 
 function getAll(req, res) {
@@ -261,7 +275,7 @@ function getByIdAllInfos(req, res) {
             res.status(400).send(err);
         });
 
-    function getInfosComplementaires(contact){
+    function getInfosComplementaires(contact) {
         var contactInfos = {};
         contactInfos.contact = contact;
         Promise.all([contactService.getMailsById(req.params._id),
@@ -269,15 +283,15 @@ function getByIdAllInfos(req, res) {
             commonService.getAdresseByContact(req.params._id),
             contactService.getContratsById(req.params._id),
             contactService.getQualificationsById(req.params._id)])
-            .then(function(results) {
+            .then(function (results) {
                 contactInfos.mails = results[0];
                 contactInfos.telephones = results[1];
-                contactInfos.adresse = (results[2].length > 0)? results[2][0] : null;
+                contactInfos.adresse = (results[2].length > 0) ? results[2][0] : null;
                 contactInfos.contrats = results[3];
-                contactInfos.qualification = (results[4].length > 0)? results[4][0].id_qualification : undefined;
+                contactInfos.qualification = (results[4].length > 0) ? results[4][0].id_qualification : undefined;
                 res.send(contactInfos);
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 console.log("Fail getting infos complementaires");
                 console.log(err);
             });
@@ -318,11 +332,11 @@ function update(req, res) {
         contactService.updateTelephone(req.body.telephonePro),
         commonService.updateContactAdresse(req.body.adresse),
         contactService.updateContactQualification(id, req.body.qualification),
-        contactService.updateContrat(id, req.body.contact) ])
-        .then(function(results) {
+        contactService.updateContrat(id, req.body.contact)])
+        .then(function (results) {
             res.sendStatus(200);
         })
-        .catch(function(err) {
+        .catch(function (err) {
             console.log("Fail update contact");
             console.log(err);
             res.status(400).send(err);
@@ -331,10 +345,10 @@ function update(req, res) {
 
 function deleteFiche(req, res) {
     pdfService.deleteContact(req.params._id)
-        .then(function(results) {
+        .then(function (results) {
             res.sendStatus(200);
         })
-        .catch(function(err) {
+        .catch(function (err) {
             console.log("fichecontact could not be deleted");
             res.status(400).send(err);
         });
@@ -347,16 +361,16 @@ function _delete(req, res) {
         contactService.deleteContratsById(req.params._id),
         contactService.deleteLinkQualification(req.params._id),
         pdfService.deleteContact(req.params._id)])
-        .then(function(results) {
+        .then(function (results) {
             deleteContact();
         })
-        .catch(function(err) {
+        .catch(function (err) {
             console.log("Fail deleting infos annexes");
             res.status(400).send(err);
         });
 
 
-    function deleteContact(){
+    function deleteContact() {
         contactService.delete(req.params._id)
             .then(function () {
                 res.sendStatus(200);
@@ -365,7 +379,6 @@ function _delete(req, res) {
                 res.status(400).send(err);
             });
     }
-
 
 
 }
@@ -383,6 +396,7 @@ function getByIdencours(req, res) {
             res.status(400).send(err);
         });
 }
+
 function getByIdchantier(req, res) {
     contactService.getByIdchantier(req.params.id_contact)
         .then(function (phase) {
@@ -436,7 +450,7 @@ function addcontrat(req, res) {
 }
 
 function newcontrat(req, res) {
-    contactService.newcontrat(req.body,req.params.id_contact)
+    contactService.newcontrat(req.body, req.params.id_contact)
         .then(function () {
             res.sendStatus(200);
         })
@@ -459,14 +473,15 @@ function getByIdDevisclient(req, res) {
         });
 }
 
-function  addForm(req, res) {
+function addForm(req, res) {
     //console.log("test3");
     contactService.addForm(req.body)
         .then(function () {
             res.send(200);
         })
         .catch(function (err) {
-            res.status(400).send(err);}
+                res.status(400).send(err);
+            }
         );
 }
 
@@ -527,7 +542,8 @@ function addCaces(req, res) {
             res.send(200);
         })
         .catch(function (err) {
-            res.status(400).send(err);}
+                res.status(400).send(err);
+            }
         );
 }
 
@@ -570,7 +586,7 @@ function upFormation(req, res) {
 
 function equipement(req, res) {
     console.log('test');
-    contactService.equipement(req.body,req.params.id_contact)
+    contactService.equipement(req.body, req.params.id_contact)
         .then(function () {
             res.sendStatus(200);
         })

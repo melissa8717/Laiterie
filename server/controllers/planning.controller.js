@@ -3,8 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
-var multer = require('multer');
-var fs = require('fs');
+
 var planningService = require('services/planning.service');
 
 // routes pour les contacts
@@ -14,25 +13,24 @@ router.post('/addTeamEvents', addTeamEvents);
 router.get('/', getAll);
 router.get('/travail', getAllTravail);
 router.get('/alarms/:id', getAlarms);
-router.put('/ouvrier',upouvrier);
+router.put('/ouvrier', upouvrier);
 router.put('/:id', update);
 router.put('/validate/:id', validate);
 router.put('/validateTeam/:id', validateTeam);
 router.delete('/:id', _delete);
 router.delete('/travail/:id', _deleteTravail);
 router.delete('/travailEquipe/:id', _deleteTravailEquipe);
-router.put('/:id_planning',updateplanning_simple);
+router.put('/:id_planning', updateplanning_simple);
 router.post('/addEquipe', addEquipe);
-router.delete('/:id_equipe',deleteEquipe);
-router.get('/equipe',getAllEquipe);
-router.get('/recap/:month/:year',getAllRecap);
+router.delete('/:id_equipe', deleteEquipe);
+router.get('/equipe', getAllEquipe);
+router.get('/recap/:month/:year', getAllRecap);
 
-router.get('/semaine/:month/:year',getAllHeuresem);
+router.get('/semaine/:month/:year', getAllHeuresem);
 
-router.get('/worker',getAllEquipeouvrier);
-router.get('/allouvrier',getAllouvrier);
-router.post('/adoubvrir',addWorker);
-
+router.get('/worker', getAllEquipeouvrier);
+router.get('/allouvrier', getAllouvrier);
+router.post('/adoubvrir', addWorker);
 
 
 module.exports = router;
@@ -155,13 +153,14 @@ function validateTeam(req, res) {
 function create(req, res) {
     planningService.create(req.body)
         .then(function (data) {
-            console.log(""+data);
-            res.send(""+data);
+            console.log("" + data);
+            res.send("" + data);
         })
         .catch(function (err) {
             res.status(400).send(err);
         });
 }
+
 function updateplanning_simple(req, res) {
     planningService.update(req.params.id, req.body)
         .then(function (data) {
@@ -178,12 +177,13 @@ function updateplanning_simple(req, res) {
 
 function addEquipe(req, res) {
     //console.log("test3");
-    planningService.addEquipe(req.body,req.params.id_equipe)
+    planningService.addEquipe(req.body, req.params.id_equipe)
         .then(function (data) {
             res.send(data);
         })
         .catch(function (err) {
-            res.status(400).send(err);}
+                res.status(400).send(err);
+            }
         );
 }
 
@@ -255,7 +255,6 @@ function upouvrier(req, res) {
 }
 
 
-
 function getAllouvrier(req, res) {
     planningService.getAllouvrier()
         .then(function (Equipe) {
@@ -266,13 +265,14 @@ function getAllouvrier(req, res) {
         });
 }
 
-function  addWorker(req, res) {
+function addWorker(req, res) {
     //console.log("test3");
     planningService.addWorker(req.body)
         .then(function () {
             res.send(200);
         })
         .catch(function (err) {
-            res.status(400).send(err);}
+                res.status(400).send(err);
+            }
         );
 }

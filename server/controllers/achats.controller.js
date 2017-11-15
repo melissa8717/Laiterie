@@ -1,5 +1,3 @@
-var config = require('config.json');
-var config = require('config.json');
 var express = require('express');
 var router = express.Router();
 
@@ -10,21 +8,21 @@ var fs = require('fs');
 
 // routes
 router.post('/new', create);
-router.post('/mat',addMat);
+router.post('/mat', addMat);
 router.get('/', getAll);
 router.get('/achat/all', getAllProduitsAchat);
 
-router.put('/suivivehicule/:id_vehmat',updatevehmat);
+router.put('/suivivehicule/:id_vehmat', updatevehmat);
 router.get('/suivivehicule/:id_vehmat', getByIdmat);
 router.get('/suivimateriel/:id_vehmat', getByIdvehmat);
-router.get('/vehi',getAllVehimat);
+router.get('/vehi', getAllVehimat);
 router.get('/stock', getAllStock);
 router.put('/stock/:id_produit/:stock', getStockclick);
 router.delete('/vehimat/:id_vehmat', deletemat);
-router.get('/suivimateriel/entretien/:id_vehmat',getByIdEntretien);
-router.get('/suivivehicule/entre/:id_vehmat',getByIdEntretien1);
-router.post('/entretien/:id_vehmat',addEntretien);
-router.delete('/entre/:id_entretien',deleteEntre);
+router.get('/suivimateriel/entretien/:id_vehmat', getByIdEntretien);
+router.get('/suivivehicule/entre/:id_vehmat', getByIdEntretien1);
+router.post('/entretien/:id_vehmat', addEntretien);
+router.delete('/entre/:id_entretien', deleteEntre);
 
 
 router.put('/:_id', update);
@@ -35,7 +33,7 @@ router.get('/tvas/alltvas', getAllTva);
 router.get('/histo/:_id', getAllHisto);
 router.get('/fournisseurs/all', getAllFournisseur);
 router.get('/cat/all', getAllCategories);
-router.get('/unite',getAllUnite);
+router.get('/unite', getAllUnite);
 
 router.get('/mainoeuvre/all', getAllMainOeuvre);
 router.post('/mainoeuvre/new', createMainOeuvre);
@@ -54,10 +52,10 @@ router.get('/:_id/image/download', downloadImage);
 router.get('/:_id/ged/download', downloadGED);
 
 
-router.post('/:_id/image/upload',function(req,res){
+router.post('/:_id/image/upload', function (req, res) {
     console.log(req.body);
-    uploadImage(req,res,function(err) {
-        if(err) {
+    uploadImage(req, res, function (err) {
+        if (err) {
             console.log("Error uploading file.");
             console.log(err);
             return res.end(JSON.stringify(err));
@@ -66,10 +64,10 @@ router.post('/:_id/image/upload',function(req,res){
         res.end("Image uploaded");
     });
 });
-router.post('/:_id/ged/upload',function(req,res){
+router.post('/:_id/ged/upload', function (req, res) {
     console.log("In Router ged");
-    uploadGED(req,res,function(err) {
-        if(err) {
+    uploadGED(req, res, function (err) {
+        if (err) {
             console.log("Error uploading file.");
             return res.end(JSON.stringify(err));
         }
@@ -84,11 +82,19 @@ module.exports = router;
 
 var storageImage = multer.diskStorage({
     destination: function (req, file, callback) {
-        try{ fs.mkdirSync('./files/produits/'+req.params._id); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        try{ fs.mkdirSync('./files/produits/'+req.params._id+'/image'); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        callback(null, './files/produits/'+req.params._id+'/image');
+        try {
+            fs.mkdirSync('./files/produits/' + req.params._id);
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        try {
+            fs.mkdirSync('./files/produits/' + req.params._id + '/image');
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        callback(null, './files/produits/' + req.params._id + '/image');
 
     },
     filename: function (req, file, callback) {
@@ -96,29 +102,38 @@ var storageImage = multer.diskStorage({
         callback(null, file.originalname);
     }
 });
-var uploadImage = multer({ storage : storageImage}).fields([{name:'file'}]);
+var uploadImage = multer({storage: storageImage}).fields([{name: 'file'}]);
 
 var storageGED = multer.diskStorage({
     destination: function (req, file, callback) {
-        try{ fs.mkdirSync('./files/produits/'+req.params._id); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        try{ fs.mkdirSync('./files/produits/'+req.params._id+'/ged'); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        callback(null, './files/produits/'+req.params._id+'/ged');
+        try {
+            fs.mkdirSync('./files/produits/' + req.params._id);
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        try {
+            fs.mkdirSync('./files/produits/' + req.params._id + '/ged');
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        callback(null, './files/produits/' + req.params._id + '/ged');
     },
     filename: function (req, file, callback) {
         console.log(file.originalname);
         callback(null, file.originalname);
     }
 });
-var uploadGED = multer({ storage : storageGED}).fields([{name:'file'}]);
+var uploadGED = multer({storage: storageGED}).fields([{name: 'file'}]);
 
-function downloadImage(req,res){
-    res.download("./files/produits/"+req.params._id+"/image/"+req.params.url);
+function downloadImage(req, res) {
+    res.download("./files/produits/" + req.params._id + "/image/" + req.params.url);
 }
 
-function downloadGED(req,res){
-    res.download("./files/produits/"+req.params._id+"/ged"+req.params.url);C
+function downloadGED(req, res) {
+    res.download("./files/produits/" + req.params._id + "/ged" + req.params.url);
+    C
 }
 
 
@@ -377,6 +392,7 @@ function getByIdmat(req, res) {
             res.status(400).send(err);
         });
 }
+
 function deletemat(req, res) {
     //console.log('test1');
     achatsService.deletemat(req.params.id_vehmat)
@@ -401,6 +417,7 @@ function getByIdEntretien(req, res) {
             res.status(400).send(err);
         });
 }
+
 function getByIdEntretien1(req, res) {
     achatsService.getByIdEntretien1(req.params.id_vehmat)
         .then(function (entretien) {
@@ -425,16 +442,18 @@ function getAllRef(req, res) {
             res.status(400).send(err);
         });
 }
+
 function addEntretien(req, res) {
-      //console.log("test3");
-    achatsService.addEntretien(req.body,req.params.id_vehmat)
-     .then(function (entretien) {
-        res.send(entretien);
-               })
-    .catch(function (err) {
-       res.status(400).send(err);}
-      );
-    }
+    //console.log("test3");
+    achatsService.addEntretien(req.body, req.params.id_vehmat)
+        .then(function (entretien) {
+            res.send(entretien);
+        })
+        .catch(function (err) {
+                res.status(400).send(err);
+            }
+        );
+}
 
 function deleteEntre(req, res) {
     //console.log('test1');

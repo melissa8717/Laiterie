@@ -1,47 +1,45 @@
-
-var config = require('config.json');
 var express = require('express');
 var router = express.Router();
 var paramsService = require('services/params.service');
 
 
 router.get('/footer', getFooter);
-router.post('/agen',addagence);
+router.post('/agen', addagence);
 router.get('/agence', getAllAgence);
 
-router.put('/modifyagence',updateAgence);
+router.put('/modifyagence', updateAgence);
 
-router.get('/tva',getAllTVA);
-router.put('/modtva',updateTva);
+router.get('/tva', getAllTVA);
+router.put('/modtva', updateTva);
 
-router.get('/cat',getAllCat);
-router.put('/up',updateCat);
-router.post('/addcat',addCat);
-router.get('/unite',getAllUnite);
-router.put('/upunite',updateUnite);
-router.post('/addunite',addUnite);
+router.get('/cat', getAllCat);
+router.put('/up', updateCat);
+router.post('/addcat', addCat);
+router.get('/unite', getAllUnite);
+router.put('/upunite', updateUnite);
+router.post('/addunite', addUnite);
 
-router.get('/condition',getAllVente);
-router.put('/addcondition',updateVente);
+router.get('/condition', getAllVente);
+router.put('/addcondition', updateVente);
 
-router.post('/addfrais',addfraisprev);
-router.get('/frais',getAllFrais);
+router.post('/addfrais', addfraisprev);
+router.get('/frais', getAllFrais);
 
-router.post('/addLicence',addLicence);
+router.post('/addLicence', addLicence);
 
-router.get('/home',getAllHome);
+router.get('/home', getAllHome);
 
-router.get('/util/:id',getByIduser);
-router.get('/droit/:id',getByIdDroit);
+router.get('/util/:id', getByIduser);
+router.get('/droit/:id', getByIdDroit);
 
-router.delete('/supp/:id',deleteuser);
-router.put('/upuser',updateuser);
+router.delete('/supp/:id', deleteuser);
+router.put('/upuser', updateuser);
 
-router.post('/formation',addFormation);
-router.get('/retfor',getAllFormation);
+router.post('/formation', addFormation);
+router.get('/retfor', getAllFormation);
 
-router.get('/alarmform',getAlarmeformation);
-router.get('/alarcaces',getAlarmecaces);
+router.get('/alarmform', getAlarmeformation);
+router.get('/alarcaces', getAlarmecaces);
 
 
 module.exports = router;
@@ -91,6 +89,7 @@ function updateAgence(req, res) {
             res.status(400).send(err);
         });
 }
+
 /*----------------------------------TVA----------------------------------------*/
 
 function getAllTVA(req, res) {
@@ -235,7 +234,8 @@ function addLicence(req, res) {
             res.send(licence);
         })
         .catch(function (err) {
-            res.status(400).send(err);}
+                res.status(400).send(err);
+            }
         );
 }
 

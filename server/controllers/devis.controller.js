@@ -1,18 +1,12 @@
 /**
- * Created by Wbat on 04/07/2017.
- */
-/**
  * Created by Alexandre on 08/06/2017.
  */
-var config = require('config.json');
 var express = require('express');
 var router = express.Router();
 var devisService = require('services/devis.service');
-var multer = require('multer');
-var fs = require('fs');
 
-router.put('/detail',updateDevisdetail);
-router.put('/opdet',updateDevisoption);
+router.put('/detail', updateDevisdetail);
+router.put('/opdet', updateDevisoption);
 
 // routes
 router.post('/addLibre', addLibre);
@@ -35,18 +29,17 @@ router.get('/log/', getLogo);
 
 
 /*----------------------------devis libre-------------------------------------------*/
-router.get('/tva',getAllTVA);
+router.get('/tva', getAllTVA);
 
 /*----------------Analyse Devis----------------------------*/
-router.get('/analyse/:id_devis/:num_version',getByIdAnalyse);
-router.get('/option/:id_devis/:num_version',getByIdAnalyseopt);
-router.get('/anldevis/:id_devis/:num_version',getByIdAnaldevis);
-router.get('/fichedevis/:id_devis/:num_version',getByIdLibre);
-router.get('/ffdevis/:id_devis/:num_version',getByIdLibreproduit);
+router.get('/analyse/:id_devis/:num_version', getByIdAnalyse);
+router.get('/option/:id_devis/:num_version', getByIdAnalyseopt);
+router.get('/anldevis/:id_devis/:num_version', getByIdAnaldevis);
+router.get('/fichedevis/:id_devis/:num_version', getByIdLibre);
+router.get('/ffdevis/:id_devis/:num_version', getByIdLibreproduit);
 
-router.get('/duplibre/:id_devis/:num_version',getByIddupliquer);
-router.post('/libreduplicate/:id_devis',duplicatelibre);
-
+router.get('/duplibre/:id_devis/:num_version', getByIddupliquer);
+router.post('/libreduplicate/:id_devis', duplicatelibre);
 
 
 module.exports = router;
@@ -212,7 +205,7 @@ function getAllTVA(req, res) {
 
 function getByIdAnalyse(req, res) {
     //console.log('test12');
-    devisService.getByIdAnalyse(req.params.id_devis,req.params.num_version, req.body)
+    devisService.getByIdAnalyse(req.params.id_devis, req.params.num_version, req.body)
         .then(function (test) {
             if (test) {
                 res.send(test);
@@ -235,9 +228,10 @@ function getLogo(req, res) {
             res.status(400).send(err);
         });
 }
+
 function getByIdAnalyseopt(req, res) {
     //console.log('test12');
-    devisService.getByIdAnalyseopt(req.params.id_devis,req.params.num_version, req.body)
+    devisService.getByIdAnalyseopt(req.params.id_devis, req.params.num_version, req.body)
         .then(function (test) {
             if (test) {
                 res.send(test);
@@ -271,8 +265,9 @@ function updateDevisoption(req, res) {
             res.status(400).send(err);
         });
 }
+
 function getByIdAnaldevis(req, res) {
-    devisService.getByIdAnaldevis(req.params.id_devis,req.params.num_version, req.body)
+    devisService.getByIdAnaldevis(req.params.id_devis, req.params.num_version, req.body)
         .then(function (test) {
             if (test) {
                 res.send(test);
@@ -286,7 +281,7 @@ function getByIdAnaldevis(req, res) {
 }
 
 function getByIdLibre(req, res) {
-    devisService.getByIdLibre(req.params.id_devis,req.params.num_version, req.body)
+    devisService.getByIdLibre(req.params.id_devis, req.params.num_version, req.body)
         .then(function (test) {
             if (test) {
                 res.send(test);
@@ -300,7 +295,7 @@ function getByIdLibre(req, res) {
 }
 
 function getByIdLibreproduit(req, res) {
-    devisService.getByIdLibreproduit(req.params.id_devis,req.params.num_version, req.body)
+    devisService.getByIdLibreproduit(req.params.id_devis, req.params.num_version, req.body)
         .then(function (test) {
             if (test) {
                 res.send(test);

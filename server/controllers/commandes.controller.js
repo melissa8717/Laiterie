@@ -1,21 +1,20 @@
 /**
  * Created by Alexandre on 08/06/2017.
  */
-var config = require('config.json');
 var express = require('express');
 var router = express.Router();
 var commandeService = require('services/commandes.service');
 
 // routes
 router.post('/add', add);
-router.get('/listing',getAllListing);
-router.get('/details/:id_demande',getByIdDetail);
+router.get('/listing', getAllListing);
+router.get('/details/:id_demande', getByIdDetail);
 router.get('/products/:_id', getAllProducts);
 router.get('/', getAllDate);
 router.get('/imprevu/:_id', getAllImprevuProducts);
 router.get('/:month/:year', getAll);
 router.get('/:_id', getById);
-router.put('/state/:_id',changeState);
+router.put('/state/:_id', changeState);
 router.put('/validate/:_id', validate);
 router.put('/:_id', update);
 router.delete('/:_id', _delete);
@@ -94,7 +93,6 @@ function add(req, res) {
             res.status(400).send(err);
         });
 }
-
 
 
 function getById(req, res) {

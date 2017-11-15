@@ -1,78 +1,77 @@
 /**
  * Created by cédric on 10/07/2017.
  */
-var config = require('config.json');
 var express = require('express');
 var router = express.Router();
 var factureService = require('services/facture.service');
 
 router.get('/listefacture', getAllFacture);
-router.get('/modifierfacture',getAllFooter);
-router.get('/nfact/',getAllnfact);
+router.get('/modifierfacture', getAllFooter);
+router.get('/nfact/', getAllnfact);
 
-router.get('/editer_facture/:id_devis',getByIdFacture);
-router.get('/retenu/:id_devis',getByIdRetenu);
-router.get('/version/:id_devis/:num_version',getByIdVersion);
-router.get('/detail/:id_devis/:num_version',getByIdDetail);
-router.get('/option/:id_devis/:num_version',getByIdOption);
-router.get('/totalfacture/:id_devis/:num_version',getByIdTotalfact);
-router.get('/totaloption/:id_devis/:num_version',getByIdTotalopt);
+router.get('/editer_facture/:id_devis', getByIdFacture);
+router.get('/retenu/:id_devis', getByIdRetenu);
+router.get('/version/:id_devis/:num_version', getByIdVersion);
+router.get('/detail/:id_devis/:num_version', getByIdDetail);
+router.get('/option/:id_devis/:num_version', getByIdOption);
+router.get('/totalfacture/:id_devis/:num_version', getByIdTotalfact);
+router.get('/totaloption/:id_devis/:num_version', getByIdTotalopt);
 router.post('/add', add);
 
-router.get('/modif/:id_facture/:n_situation',getByIdModif);
-router.get('/situation/:id_facture/:n_situation',getByIdSituation);
-router.get('/totalsit/:id_facture/:n_situation',getByIdTotalSit);
-router.get('/valeur/:id_facture',getByIdValeur);
-router.get('/sitopt/:id_facture/:n_situation',getByIdSitoption);
-router.get('/siteuption/:id_facture/:n_situation',getByIdOptSit);
-router.post('/new/:id_facture',createSituation);
+router.get('/modif/:id_facture/:n_situation', getByIdModif);
+router.get('/situation/:id_facture/:n_situation', getByIdSituation);
+router.get('/totalsit/:id_facture/:n_situation', getByIdTotalSit);
+router.get('/valeur/:id_facture', getByIdValeur);
+router.get('/sitopt/:id_facture/:n_situation', getByIdSitoption);
+router.get('/siteuption/:id_facture/:n_situation', getByIdOptSit);
+router.post('/new/:id_facture', createSituation);
 
-router.get('/listechantierfact/:id_chantier',getByIdListeFacture);
-router.get('/nom/:id_chantier',getByIdNom);
-router.get('/fournisseur',getAllFournisseur);
-router.get('/bdcdetail',getAllBdcdetail);
-router.post('/addbdc',createfacturefournisseur);
-router.get('/mois/:month/:year',getAllMois);
-router.get('/lfournisseur/:id_factfour',getByIdFournisseur);
-router.get('/bdc/:id_factfour',getByIdBDC);
-router.put('/modifbdc',updateBDC);
+router.get('/listechantierfact/:id_chantier', getByIdListeFacture);
+router.get('/nom/:id_chantier', getByIdNom);
+router.get('/fournisseur', getAllFournisseur);
+router.get('/bdcdetail', getAllBdcdetail);
+router.post('/addbdc', createfacturefournisseur);
+router.get('/mois/:month/:year', getAllMois);
+router.get('/lfournisseur/:id_factfour', getByIdFournisseur);
+router.get('/bdc/:id_factfour', getByIdBDC);
+router.put('/modifbdc', updateBDC);
 
-router.get('/categoriefrais',getALLFraiscategorie);
-router.post('/addfrais',addfrais);
-router.get('/fraismois/:month/:year',getAllFraismois);
-router.put('/ajoutfrais',updateFraismois);
-router.delete('/delfrais/:id_frais',deleteFrais);
+router.get('/categoriefrais', getALLFraiscategorie);
+router.post('/addfrais', addfrais);
+router.get('/fraismois/:month/:year', getAllFraismois);
+router.put('/ajoutfrais', updateFraismois);
+router.delete('/delfrais/:id_frais', deleteFrais);
 
-router.post('/addprev',addprev);
+router.post('/addprev', addprev);
 router.get('/prev/:month/:year', getAllPrev);
 
-router.get('/annee/:year',getAllAnnee);
-router.get('/yprev/:year',getAllYprev);
+router.get('/annee/:year', getAllAnnee);
+router.get('/yprev/:year', getAllYprev);
 
-router.get('/totalfact/:year',getAlltotalfact);
-router.get('/totaldevis/:year',getAlltotaldevis);
-router.get('/devisachat/:year',getAlldevisachat);
-router.get('/optionachat/:year',getAllOptionachat);
-router.get('/frainan/:year',getAllFraisan);
-router.get('/moan/:year',getAllMoan);
-router.get('/bdcreel/:year',getAllBdcreel);
-router.get('/annnefrais/:year',getAllAnnefrais);
+router.get('/totalfact/:year', getAlltotalfact);
+router.get('/totaldevis/:year', getAlltotaldevis);
+router.get('/devisachat/:year', getAlldevisachat);
+router.get('/optionachat/:year', getAllOptionachat);
+router.get('/frainan/:year', getAllFraisan);
+router.get('/moan/:year', getAllMoan);
+router.get('/bdcreel/:year', getAllBdcreel);
+router.get('/annnefrais/:year', getAllAnnefrais);
 
-router.get('/fraispour',getAllFraispour);
+router.get('/fraispour', getAllFraispour);
 
 
-router.get('/primopt/:id_facture/:n_situation',getByIdPrimOpt);
-router.get('/primsit/:id_facture/:n_situation',getByIdPrimSit);
-router.get('/accompte/:id_facture/:n_situation',getByIdAccpt);
+router.get('/primopt/:id_facture/:n_situation', getByIdPrimOpt);
+router.get('/primsit/:id_facture/:n_situation', getByIdPrimSit);
+router.get('/accompte/:id_facture/:n_situation', getByIdAccpt);
 
-router.get('/avoir',getAllNavoir);
-router.post('/addavoir',addavoir);
-router.get('/listavoir',getAllListavoir);
-router.get('/impravoir/:id_avoir',getByIdAvoir);
-router.get('/avoiprim/:id_avoir',getByIdPeodavoir);
+router.get('/avoir', getAllNavoir);
+router.post('/addavoir', addavoir);
+router.get('/listavoir', getAllListavoir);
+router.get('/impravoir/:id_avoir', getByIdAvoir);
+router.get('/avoiprim/:id_avoir', getByIdPeodavoir);
 
-router.post('/acote',addacompte);
-router.get('/acolist/:id_facture/:n_situation',getByIdAcopmte);
+router.post('/acote', addacompte);
+router.get('/acolist/:id_facture/:n_situation', getByIdAcopmte);
 
 module.exports = router;
 
@@ -86,6 +85,7 @@ function getAllFacture(req, res) {
             res.status(400).send(err);
         });
 }
+
 function getAllFooter(req, res) {
     //console.log("test");
     factureService.getAllFooter()
@@ -137,7 +137,7 @@ function getByIdRetenu(req, res) {
 }
 
 function getByIdVersion(req, res) {
-    factureService.getByIdVersion(req.params.id_devis,req.params.num_version, req.body)
+    factureService.getByIdVersion(req.params.id_devis, req.params.num_version, req.body)
         .then(function (devis) {
             if (devis) {
                 res.send(devis);
@@ -151,7 +151,7 @@ function getByIdVersion(req, res) {
 }
 
 function getByIdDetail(req, res) {
-    factureService.getByIdDetail(req.params.id_devis,req.params.num_version, req.body)
+    factureService.getByIdDetail(req.params.id_devis, req.params.num_version, req.body)
         .then(function (devis) {
             if (devis) {
                 res.send(devis);
@@ -165,7 +165,7 @@ function getByIdDetail(req, res) {
 }
 
 function getByIdOption(req, res) {
-    factureService.getByIdOption(req.params.id_devis,req.params.num_version, req.body)
+    factureService.getByIdOption(req.params.id_devis, req.params.num_version, req.body)
         .then(function (devis) {
             if (devis) {
                 res.send(devis);
@@ -179,7 +179,7 @@ function getByIdOption(req, res) {
 }
 
 function getByIdTotalfact(req, res) {
-    factureService.getbyIdTotalfact(req.params.id_devis,req.params.num_version)
+    factureService.getbyIdTotalfact(req.params.id_devis, req.params.num_version)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -193,7 +193,7 @@ function getByIdTotalfact(req, res) {
 }
 
 function getByIdTotalopt(req, res) {
-    factureService.getbyIdTotalopt(req.params.id_devis,req.params.num_version)
+    factureService.getbyIdTotalopt(req.params.id_devis, req.params.num_version)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -220,7 +220,7 @@ function add(req, res) {
 
 function getByIdModif(req, res) {
     console.log('test1');
-    factureService.getByIdModif(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdModif(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (devis) {
             if (devis) {
                 res.send(devis);
@@ -234,7 +234,7 @@ function getByIdModif(req, res) {
 }
 
 function getByIdSituation(req, res) {
-    factureService.getByIdSituation(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdSituation(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -248,7 +248,7 @@ function getByIdSituation(req, res) {
 }
 
 function getByIdSitoption(req, res) {
-    factureService.getByIdSitoption(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdSitoption(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -262,7 +262,7 @@ function getByIdSitoption(req, res) {
 }
 
 function getByIdTotalSit(req, res) {
-    factureService.getByIdTotalSit(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdTotalSit(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -276,7 +276,7 @@ function getByIdTotalSit(req, res) {
 }
 
 function getByIdOptSit(req, res) {
-    factureService.getByIdOptSit(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdOptSit(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -443,6 +443,7 @@ function getALLFraiscategorie(req, res) {
             res.status(400).send(err);
         });
 }
+
 function addfrais(req, res) {
     factureService.addfrais(req.body)
         .then(function () {
@@ -571,6 +572,7 @@ function getAllOptionachat(req, res) {
             res.status(400).send(err);
         });
 }
+
 function getAllFraisan(req, res) {
     //console.log("test12");
     factureService.getAllFraisan(req.params.year)
@@ -630,7 +632,7 @@ function getAllFraispour(req, res) {
 /****************************************************************************Imprimer*************************************************************************************/
 
 function getByIdPrimSit(req, res) {
-    factureService.getByIdPrimSit(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdPrimSit(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -644,7 +646,7 @@ function getByIdPrimSit(req, res) {
 }
 
 function getByIdPrimOpt(req, res) {
-    factureService.getByIdPrimOpt(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdPrimOpt(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -658,7 +660,7 @@ function getByIdPrimOpt(req, res) {
 }
 
 function getByIdAccpt(req, res) {
-    factureService.getByIdAccpt(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdAccpt(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (results) {
             if (results) {
                 res.send(results);
@@ -742,7 +744,7 @@ function addacompte(req, res) {
 }
 
 function getByIdAcopmte(req, res) {
-    factureService.getByIdAcopmte(req.params.id_facture,req.params.n_situation, req.body)
+    factureService.getByIdAcopmte(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (devis) {
             if (devis) {
                 res.send(devis);

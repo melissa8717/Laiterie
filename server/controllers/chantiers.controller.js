@@ -1,4 +1,3 @@
-var config = require('config.json');
 var express = require('express');
 var router = express.Router();
 var chantierService = require('services/chantier.service');
@@ -8,78 +7,78 @@ var fs = require('fs');
 
 // routes
 router.post('/add', add);
-router.get ('/', getAllChantier);
+router.get('/', getAllChantier);
 router.get('/', getAll);
 
 
-router.get('/chantier',getAll);
+router.get('/chantier', getAll);
 
 /*-----------------nom chantier-----------------------*/
 
-router.get('/nom/:id_chantier',getByIdNom);
+router.get('/nom/:id_chantier', getByIdNom);
 
 /*--------------------------------------fiche chantier--------------------------------*/
-router.get('/fichechantier/:id_chantier',getByIdTout);
-router.put('/up',updateFiche);
-router.get('/phase/:id_chantier',getByIdPhase);
-router.delete('/dphase/:id_phase',deletePhase);
-router.post('/adphase/:id_chantier',addPhase);
-router.get('/rapport/:id_chantier',getByIdRapport);
-router.post('/adrap/:id_chantier',addRapport);
-router.delete('/drapport/:id_rapport',deleteRapport);
+router.get('/fichechantier/:id_chantier', getByIdTout);
+router.put('/up', updateFiche);
+router.get('/phase/:id_chantier', getByIdPhase);
+router.delete('/dphase/:id_phase', deletePhase);
+router.post('/adphase/:id_chantier', addPhase);
+router.get('/rapport/:id_chantier', getByIdRapport);
+router.post('/adrap/:id_chantier', addRapport);
+router.delete('/drapport/:id_rapport', deleteRapport);
 
 
 router.get('/ajout/:id_devis/:num_version', getByIdCdevis);
-router.post('/new',createChantier);
+router.post('/new', createChantier);
 
 router.get('/devisproduit/:id_chantier', getByIdDevis);
-router.get('/devisoption/:id_chantier',getByIdDevisoption);
+router.get('/devisoption/:id_chantier', getByIdDevisoption);
 
 /*----------------previsionnelle--------------------------*/
-router.get('/prevision/:id_chantier',getByIdPrev);
-router.get('/prevopt/:id_chantier',getByIdPrevopt);
+router.get('/prevision/:id_chantier', getByIdPrev);
+router.get('/prevopt/:id_chantier', getByIdPrevopt);
 
 /*------------chantier du mois--------------------------------*/
-router.get('/mois/:month/:year',getAllMois);
-router.get('/cmois',getAllCmois);
+router.get('/mois/:month/:year', getAllMois);
+router.get('/cmois', getAllCmois);
 
 /*-----------------------devis chantier ----------------------------------------*/
-router.get('/devischantier/:id_chantier',getByIdDevischantier);
-router.put('/chantierdevis',updateDevischantier);
+router.get('/devischantier/:id_chantier', getByIdDevischantier);
+router.put('/chantierdevis', updateDevischantier);
 
 /*----------analyse temps---------------------*/
-router.get('/analyse/:id_chantier',getByIdAnalyse);
-router.get('/optanalyse/:id_chantier',getByIdAnalyseoption);
+router.get('/analyse/:id_chantier', getByIdAnalyse);
+router.get('/optanalyse/:id_chantier', getByIdAnalyseoption);
 
 /*-----------Reel--------------------*/
-router.get('/reel/:id_chantier',getByIdReel);
+router.get('/reel/:id_chantier', getByIdReel);
 
 router.put('/:_id', update);
 router.delete('/:_id', _delete);
-router.put('/chantier/:id_chantier',update);
+router.put('/chantier/:id_chantier', update);
 
 router.get('/:_id', getById);
 
 /*-------------------------------balance chantier-------------------------------*/
 
-router.get('/accompte/:id_chantier',getByIdAcco);
+router.get('/accompte/:id_chantier', getByIdAcco);
 router.get('/totaldevis/:id_chantier', getByIdTotalDevis);
-router.get('/factures/:id_chantier',getByIdFacturechantier);
-router.get('/libre/:id_chantier',getByIdDevislibre);
-router.get('/prevois/:id_chantier',getByIdfraispre);
-router.get('/reelgeneraux/:id_chantier',getByIdfraisreel);
-router.get('/pourcentdevis/:id_chantier',getByIdpourcentdevis);
-router.get('/mainreel/:id_chantier',getByIdmainreel);
-router.get('/balance/:id_chantier',getByIdBalance);
+router.get('/factures/:id_chantier', getByIdFacturechantier);
+router.get('/libre/:id_chantier', getByIdDevislibre);
+router.get('/prevois/:id_chantier', getByIdfraispre);
+router.get('/reelgeneraux/:id_chantier', getByIdfraisreel);
+router.get('/pourcentdevis/:id_chantier', getByIdpourcentdevis);
+router.get('/mainreel/:id_chantier', getByIdmainreel);
+router.get('/balance/:id_chantier', getByIdBalance);
 
 /******************GED***********************************/
 router.get('/:_id/image/download', downloadImage);
 router.get('/:_id/ged/download', downloadGED);
 
-router.post('/:_id/image/upload',function(req,res){
+router.post('/:_id/image/upload', function (req, res) {
     console.log(req.body);
-    uploadImage(req,res,function(err) {
-        if(err) {
+    uploadImage(req, res, function (err) {
+        if (err) {
             console.log("Error uploading file.");
             console.log(err);
             return res.end(JSON.stringify(err));
@@ -88,10 +87,10 @@ router.post('/:_id/image/upload',function(req,res){
         res.end("Image uploaded");
     });
 });
-router.post('/:_id/ged/upload',function(req,res){
+router.post('/:_id/ged/upload', function (req, res) {
     console.log("In Router ged");
-    uploadGED(req,res,function(err) {
-        if(err) {
+    uploadGED(req, res, function (err) {
+        if (err) {
             console.log("Error uploading file.");
             return res.end(JSON.stringify(err));
         }
@@ -104,11 +103,19 @@ module.exports = router;
 
 var storageImage = multer.diskStorage({
     destination: function (req, file, callback) {
-        try{ fs.mkdirSync('./files/chantiers/'+req.params._id); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        try{ fs.mkdirSync('./files/chantiers/'+req.params._id+'/image'); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        callback(null, './files/chantiers/'+req.params._id+'/image');
+        try {
+            fs.mkdirSync('./files/chantiers/' + req.params._id);
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        try {
+            fs.mkdirSync('./files/chantiers/' + req.params._id + '/image');
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        callback(null, './files/chantiers/' + req.params._id + '/image');
 
     },
     filename: function (req, file, callback) {
@@ -116,29 +123,38 @@ var storageImage = multer.diskStorage({
         callback(null, file.originalname);
     }
 });
-var uploadImage = multer({ storage : storageImage}).fields([{name:'file'}]);
+var uploadImage = multer({storage: storageImage}).fields([{name: 'file'}]);
 
 var storageGED = multer.diskStorage({
     destination: function (req, file, callback) {
-        try{ fs.mkdirSync('./files/chantiers/'+req.params._id); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        try{ fs.mkdirSync('./files/chantiers/'+req.params._id+'/ged'); }
-        catch(err){ if(err.code != "EEXIST") throw err; }
-        callback(null, './files/chantiers/'+req.params._id+'/ged');
+        try {
+            fs.mkdirSync('./files/chantiers/' + req.params._id);
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        try {
+            fs.mkdirSync('./files/chantiers/' + req.params._id + '/ged');
+        }
+        catch (err) {
+            if (err.code != "EEXIST") throw err;
+        }
+        callback(null, './files/chantiers/' + req.params._id + '/ged');
     },
     filename: function (req, file, callback) {
         console.log(file.originalname);
         callback(null, file.originalname);
     }
 });
-var uploadGED = multer({ storage : storageGED}).fields([{name:'file'}]);
+var uploadGED = multer({storage: storageGED}).fields([{name: 'file'}]);
 
-function downloadImage(req,res){
-    res.download("./files/chantiers/"+req.params._id+"/image/"+req.params.url);
+function downloadImage(req, res) {
+    res.download("./files/chantiers/" + req.params._id + "/image/" + req.params.url);
 }
 
-function downloadGED(req,res){
-    res.download("./files/chantiers/"+req.params._id+"/ged"+req.params.url);C
+function downloadGED(req, res) {
+    res.download("./files/chantiers/" + req.params._id + "/ged" + req.params.url);
+    C
 }
 
 
@@ -185,7 +201,7 @@ function getByIdChantier(req, res) {
 
 function add(req, res) {
     console.log("test");
-   chantierService.create(req.body)
+    chantierService.create(req.body)
         .then(function () {
             res.sendStatus(200);
         })
@@ -206,7 +222,6 @@ function getAllChantier(req, res) {
 }
 
 
-
 function update(req, res) {
     chantierService.update(req.params._id, req.body)
         .then(function () {
@@ -216,7 +231,6 @@ function update(req, res) {
             res.status(400).send(err);
         });
 }
-
 
 
 function _delete(req, res) {
@@ -300,12 +314,13 @@ function deletePhase(req, res) {
 
 function addPhase(req, res) {
     console.log("test3");
-    chantierService.addPhase(req.body,req.params.id_chantier)
+    chantierService.addPhase(req.body, req.params.id_chantier)
         .then(function (phase) {
             res.send(phase);
         })
         .catch(function (err) {
-            res.status(400).send(err);}
+                res.status(400).send(err);
+            }
         );
 }
 
@@ -325,12 +340,13 @@ function getByIdRapport(req, res) {
 
 function addRapport(req, res) {
     console.log("test3");
-    chantierService.addRapport(req.body,req.params.id_chantier)
+    chantierService.addRapport(req.body, req.params.id_chantier)
         .then(function (phase) {
             res.send(phase);
         })
         .catch(function (err) {
-            res.status(400).send(err);}
+                res.status(400).send(err);
+            }
         );
 }
 
@@ -344,6 +360,7 @@ function deleteRapport(req, res) {
             res.status(400).send(err);
         });
 }
+
 /*------------------------------------ajout chantier---------------------------------*/
 
 
@@ -592,7 +609,6 @@ function getByIdDevislibre(req, res) {
             res.status(400).send(err);
         });
 }
-
 
 
 function getByIdfraispre(req, res) {

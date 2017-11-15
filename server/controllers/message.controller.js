@@ -1,7 +1,6 @@
 /**
  * Created by Wbat on 04/06/2017.
  */
-var config = require('config.json');
 var express = require('express');
 var router = express.Router();
 var messageService = require('services/message.service');
@@ -15,7 +14,7 @@ router.get('/conversation/:_id', getConversation);
 router.delete('/:_id', _delete);
 router.post('/answer', answer);
 router.get('/unread/:id', unreadMsg);
-router.get('/home/:_id',getAllHome);
+router.get('/home/:_id', getAllHome);
 
 module.exports = router;
 
@@ -60,7 +59,7 @@ function getConversation(req, res) {
 
     messageService.getConversation(req.params._id)
         .then(function (conversation) {
-           //console.log(conversation);
+            //console.log(conversation);
             if (conversation) {
                 res.send(conversation);
             } else {
@@ -109,7 +108,6 @@ function getMessage(req, res) {
             res.status(400).send(err);
         });
 }
-
 
 
 function _delete(req, res) {

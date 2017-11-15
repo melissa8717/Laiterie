@@ -1,5 +1,4 @@
-﻿var config = require('config.json');
-var express = require('express');
+﻿var express = require('express');
 var router = express.Router();
 var userService = require('services/user.service');
 
@@ -8,20 +7,17 @@ router.post('/authenticate', authenticate);
 router.post('/register', register);
 router.get('/', getAll);
 router.get('/current', getCurrent);
-router.put('/upuser',modifdroit);
+router.put('/upuser', modifdroit);
 router.put('/:_id', update);
 router.delete('/:_id', _delete);
 
 
-router.get('/utilisation',getAllUser);
-router.put('/test/:id',updateUser);
-router.get('/compte',getCount);
-router.get('/test/:id',getCurrentnb);
+router.get('/utilisation', getAllUser);
+router.put('/test/:id', updateUser);
+router.get('/compte', getCount);
+router.get('/test/:id', getCurrentnb);
 
-router.post('/droit/:id',createdroit);
-
-
-
+router.post('/droit/:id', createdroit);
 
 
 module.exports = router;
@@ -110,7 +106,7 @@ function getAllUser(req, res) {
 
 function updateUser(req, res) {
     //console.log('toto');
-    userService.updateUser(req.params.id,req.body)
+    userService.updateUser(req.params.id, req.body)
         .then(function () {
             res.sendStatus(200);
         })
@@ -146,13 +142,14 @@ function getCurrentnb(req, res) {
 }
 
 function createdroit(req, res) {
-   // console.log("test3");
-    userService.createdroit(req.body,req.params.id)
+    // console.log("test3");
+    userService.createdroit(req.body, req.params.id)
         .then(function (results) {
             res.send(results);
         })
         .catch(function (err) {
-            res.status(400).send(err);}
+                res.status(400).send(err);
+            }
         );
 }
 
