@@ -1,5 +1,7 @@
+
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
+
 import {AlertService, AuthenticationService} from '../_services/index';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
@@ -10,10 +12,15 @@ import {ChantierService} from "../_services/chantier.service";
 import {FactureService} from "../_services/facture.service";
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
+import {FileUploader} from 'ng2-file-upload';
+
+
+const URL = 'http://localhost:4000/ged/';
+const URLimg = 'http://'+location.hostname+':4000/image/';
+
+
 import {Observable} from "rxjs/Observable";
 import {isUndefined} from "util";
-
-const URL = 'http://' + location.hostname + ':4000/ged/';
 
 @Component({
     moduleId: module.id,
@@ -22,19 +29,33 @@ const URL = 'http://' + location.hostname + ':4000/ged/';
 
 export class DevisComponent implements OnInit {
 
+    public uploaderImg: FileUploader;
+
+
     devis: any = {};
+
     produit: any = {};
+
     produits: {}[] = [];
     chantiers: {}[] = [];
     clients: {}[] = [];
     fact: any = {};
     model: any = {};
     address = false;
-    currentUser: User;
-    droitsuser: any = {};
-    _id: any;
-    data: any = {};
+    currentUser: User;         //
+    droitsuser:any={};         //
+    _id:any;                   //
+    data:any={};
+
+    loc = location.hostname;
+    image: any[];
+    id_agence: number;
+    img: any = {};
+
+
+
     num_version: number;
+
     produitDevis: any[] = [];
     produitDevisOptions: any[] = [];
 
@@ -46,11 +67,12 @@ export class DevisComponent implements OnInit {
     cgv: any = {};
     id: number;
     ged: any[];
-    logo: any = {};
-    Var: any;
+    logo: any ={};
+    Var:any;
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files: any;
+    base64Files:any;
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -63,7 +85,8 @@ export class DevisComponent implements OnInit {
                 private factureService: FactureService,
                 private paramsService: ParamsService,
                 private builder: FormBuilder,
-                private _sanitizer: DomSanitizer,) {
+                private _sanitizer: DomSanitizer,
+    ) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
@@ -75,6 +98,10 @@ export class DevisComponent implements OnInit {
         this.loadAllFooter();
         this.loadCat();
         this.loaddroituser();
+        this.loadAllagence();
+
+
+
 
         this.sub = this.route.params.subscribe(params => {
             this.id = params['id'];
@@ -85,14 +112,16 @@ export class DevisComponent implements OnInit {
                     this.devis = data.devis[0];
                     this.produitDevis = data.detaille;
                     this.produitDevisOptions = data.options;
-                    console.log(this.devis);
-                    console.log(this.produitDevis);
+                    //console.log(this.devis);
+                    //console.log(this.produitDevis);
+
                 }
             )
         });
 
         this.route.params.subscribe(params => {
             this.id = params['id'];
+
         });
     }
 
@@ -101,14 +130,17 @@ export class DevisComponent implements OnInit {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
+            //console.log(this.data);
+            //onsole.log(this.currentUser._id);
+
         });
     }
+
 
     //getdevis
     //getalldevisprod
     //getalldevisoptions
+
 
     ajouter() {
         let tmp: any = {};
@@ -136,6 +168,7 @@ export class DevisComponent implements OnInit {
                         this.produitDevis[i].prix = prix;
                     }
                 }
+
             }
             else {
                 this.alertService.error("Veuillez ajouter un produit existant.");
@@ -144,6 +177,7 @@ export class DevisComponent implements OnInit {
         else {
             this.alertService.error("Le produit " + tmp.obj.libelle + " n'a pas pu être ajouté.");
         }
+
 
         this.produit.qte = null;
         this.produit.prix = null;
@@ -209,6 +243,18 @@ export class DevisComponent implements OnInit {
         return total;
     }
 
+    countTotalVI() {
+        let total = 0;
+        for (let produit of this.produitDevis) {
+            if(produit.taux == 20){
+                total += produit.prix_devis * produit.qte_devis *(produit.taux/100);
+            }
+
+        }
+        return total;
+    }
+
+
     totalRemiseprod() {
         return this.countTotal() - (this.countTotal() * ((this.devis.remise ? this.devis.remise : 0) / 100));
     }
@@ -218,7 +264,7 @@ export class DevisComponent implements OnInit {
     }
 
     countTotalTVA() {
-        return this.totalRemiseprod() > 0 ? this.totalRemiseprod() * (1 + (this.devis.tva ? this.devis.tva : 0) / 100) : this.countTotal() * (1 + (this.devis.tva ? this.devis.tva : 0) / 100);
+        return this.totalRemiseprod() > 0 ? this.totalRemiseprod() + this.countAllTVA() : 0 ;
     }
 
 
@@ -249,7 +295,7 @@ export class DevisComponent implements OnInit {
     }
 
     totalTVA() {
-        return this.Totaloption() + this.countTotalTVA();
+        return this.Totaloption() + this.countAllTVAO();
     }
 
     countTotalRemise() {
@@ -319,10 +365,12 @@ export class DevisComponent implements OnInit {
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
+
     autocompleListFormatterchantier = (data: any): SafeHtml => {
         let html = `<span>${data.nom_chantier} </span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
+
 
     imprimer() {
         this.alertService.clear();
@@ -369,6 +417,11 @@ export class DevisComponent implements OnInit {
         );
     }
 
+
+
+
+
+
     public onChange(event: Event) {
         let files = event.target['files'];
         if (event.target['files']) {
@@ -389,6 +442,194 @@ export class DevisComponent implements OnInit {
         };
         this.fileReader.readAsDataURL(file);
     }
+
+
+    loadAllagence() {
+
+        this.paramsService.getAllAgence().subscribe(img => {
+
+            this.img = img[0];
+            console.log(this.img);
+            //console.log(this.currentUser);
+
+            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+            this.uploader.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };*/
+
+        });
+    }
+    countNTVAZ() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+            if (produit.taux == 0) {
+                total +=  0;
+
+
+            }
+        }
+        return total;
+
+    }
+    countNTVA() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+            if (produit.taux == 2.1) {
+                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+
+
+            }
+        }
+        return total;
+
+    }
+
+
+
+
+    countNTVAC() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+            if (produit.taux == 5.5) {
+                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVAD() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+
+            if (produit.taux == 10) {
+                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVAs() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+
+            if (produit.taux == 20) {
+                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+            }
+        }
+        return total;
+
+    }
+
+
+    countNTVAZO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+
+            if (produit.taux == 0) {
+                total +=  0;
+
+
+            }
+        }
+        return total;
+
+    }
+    countNTVAO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+            if (produit.taux == 2.1) {
+                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVACO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+            if (produit.taux == 5.5) {
+                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVADO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+
+            if (produit.taux == 10) {
+                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVAsO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+            console.log(produit.prix);
+            console.log(parseInt(produit.taux));
+            if (produit.taux == 20) {
+                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+
+            }
+        }
+        return total;
+
+    }
+
+
+    countAllTVA(){
+        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 )  + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
+
+
+    }
+
+    countAllTVAO(){
+        return ((this.countNTVAO() ? this.countNTVAO() : 0 ) + (this.countNTVACO() ? this.countNTVACO() : 0 ) + (this.countNTVADO() ? this.countNTVADO() : 0 )) + (this.countNTVAsO() ? this.countNTVAsO() : 0 );
+
+
+    }
+
+
+
+
 }
 
 
