@@ -5,25 +5,26 @@
             <div class="fill">
                 <div class="container-fluid">
 
-                    <img src="image/menu/chantiers_grand_gris.png">
+                    <img  *ngIf="!print" src="image/menu/chantiers_grand_gris.png">
 
-                    <span>Chantier</span>
+                    <span  *ngIf="!print">Chantier</span>
 
                 </div>
             </div>
         </div>
 
     </header>
+    <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print"  (click)=" imprimer()">Imprimer le listing</button>
 
     <div class=" container-fluid ">
 
         <recherchechantier #recherche [chantier] = "this" ></recherchechantier>
 
         <div class="col-sm-9 ">
-            <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <div *ngIf="!print" class=" col-sm-offset-6" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
                 <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
             </div>
-            <h3>Liste des chantiers en cours</h3>
+            <h3  >Liste des chantiers en cours</h3>
 
             <ng-container *ngIf="!date">
 
@@ -32,15 +33,21 @@
 
 
                 <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
             </ng-container>
+            <div>
+                <span style="font-weight: bold;" class="col-sm-2 col-sm-offset-7">Total devis :</span><span class="col-sm-1"> {{countDevis() | number:'1.0-2'}}</span>
+                <span style="font-weight: bold;" class="col-sm-2 col-sm-offset-7">Total situation :</span><span class="col-sm-1"> {{countFacture() | number:'1.0-2'}}</span>
+            </div>
 
 
-            <div class=" table-responsive " style="height: 400px;">
+
+            <div  style="height: 400px;">
                 <table class="table table-striped bord">
                     <thead>
                     <tr>
 
-                        <th class="col-sm-2">Client</th><th class="col-sm-3">Chantier</th><th class="col-sm-1">Code</th><th>Date démarrage</th><th class="col-sm-2">Lieu</th><th class="col-sm-1">Statut</th><th class="col-sm-1">Devis HT</th><th class="col-sm-1">Total HT situation</th><th class="col-sm-1">Action</th>
+                        <th class="col-sm-2">Client</th><th class="col-sm-3">Chantier</th><th class="col-sm-1">Code</th><th>Date démarrage</th><th class="col-sm-2">Lieu</th><th class="col-sm-1">Statut</th><th class="col-sm-1">Devis HT</th><th class="col-sm-1">Total HT situation</th><th class="col-sm-1"  *ngIf="!print">Action</th>
                     </tr>
                     <br>
                     </thead>
@@ -62,12 +69,15 @@
                         <td>{{chantiers.status}}</td>
                         <td>{{chantiers.total| number:'1.0-2'}}</td>
                         <td>{{chantiers.montantfact | number:'1.0-2'}}</td>
-                        <td><div class="input-group">
+                        <td  *ngIf="!print"><div class="input-group">
                             <input type="hidden" class="form-control">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
                                 <ul class="dropdown-menu dropdown-menu-right" >
+
                                     <li *ngIf="droitsuser.accescha"><a [routerLink]="['/fichechantier' , chantiers.id_chantier]">Ouvrir</a></li>
+                                    <li *ngIf="droitsuser.accescha"><a [routerLink]="['/gestionproj' , chantiers.id_chantier]">Gestion</a></li>
+
                                 </ul>
                             </div><!-- /btn-group -->
                         </div><!-- /input-group --></td>
@@ -78,16 +88,6 @@
             </div>
         </div><!--fin col sm 9-->
 
-        <span style="font-weight: bold;" class="col-sm-1 col-sm-offset-10">Total devis :</span><span class="col-sm-1"> {{countDevis() | number:'1.0-2'}}</span>
-        <span style="font-weight: bold;" class="col-sm-1 col-sm-offset-10">Total situation :</span><span class="col-sm-1"> {{countFacture() | number:'1.0-2'}}</span>
-
-        <div *ngIf="droitsuser.accescha" class="bouton">
-            <form>
-
-                <button class="col-sm-offset-10" style="margin-top: 10px;">Imprimer le listing</button>
-
-            </form>
-        </div>
 
         <!--Javascript pour nav et bouton-->
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>

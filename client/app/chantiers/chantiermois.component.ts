@@ -25,6 +25,8 @@ export class ChantiermoisComponent {
     loading = false;
 
     my: Date = new Date();
+    print: boolean = false;
+
 
     monthArray: string[] = [
 
@@ -139,5 +141,15 @@ export class ChantiermoisComponent {
 
         });
     }
+
+    imprimer(){
+        this.alertService.clear();
+        this.print = true;
+        setTimeout(() => {
+            window.print();
+            this.print = false;
+        }, 1000);
+    }
+
 
 }
