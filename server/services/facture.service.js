@@ -76,13 +76,25 @@ service.getByIdPeodavoir = getByIdPeodavoir;
 service.addacompte = addacompte;
 service.getByIdAcopmte = getByIdAcopmte;
 
+service.Flibre = Flibre;
+
+
 
 module.exports = service;
 
 function getAllFacture() {
     var deferred = Q.defer();
     //console.log('ttest');
-    db.query('SELECT contact.id_contact AS contact, contact.nom AS nom, facture.id_facture, facture.nfactclient,facture.n_situation,facture.factured, facture.id_devis AS devis, facture.date_echeance as eche,facture.montant_ht AS montant, facture.date_fact AS dates, facture.statut AS statut \ FROM contact, devis, facture \ WHERE devis.id_contact = contact.id_contact AND devis.id_devis = facture.id_devis', function (error, results, fields) {
+    db.query(' SELECT contact.id_contact AS contact, contact.nom AS nom, facture.id_facture, facture.nfactclient, facture.n_situation, facture.factured, facture.id_devis AS devis, facture.date_echeance AS eche, facture.montant_ht AS montant, facture.date_fact AS dates, facture.statut AS statut, facture.acompte,facture.libre ' +
+        'FROM contact, devis, facture ' +
+        'WHERE devis.id_contact = contact.id_contact ' +
+        'AND devis.id_devis = facture.id_devis ' +
+        'UNION  ' +
+        'SELECT contact.id_contact AS contact, contact.nom AS nom, facture.id_facture, facture.nfactclient, facture.n_situation, facture.factured, facture.id_devis AS devis, facture.date_echeance AS eche, facture.montant_ht AS montant, facture.date_fact AS dates, facture.statut AS statut, facture.acompte,facture.libre ' +
+        'FROM facture ' +
+        'LEFT JOIN contact ON facture.id_contact = contact.id_contact ' +
+        'WHERE facture.libre IS TRUE ' +
+        'ORDER BY nfactclient DESC', function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
             console.log(error.name + ': ' + error.message);
@@ -1262,5 +1274,58 @@ function getByIdAcopmte(_id_facture, _n_situation) {
 
         deferred.resolve(results);
     });
+    return deferred.promise;
+}
+
+function Flibre(facture_param) {
+    var deferred = Q.defer();
+
+    console.log(facture_param);
+
+
+    db.query("INSERT INTO facture (n_situation, montant_ht,date_fact,date_echeance,nfactclient,id_contact,libre) VALUES (? , ?, ?,?,?,?,? )",
+        [facture_param.n_situataion ? facture_param.n_situation : 1,  facture_param.devis.montant_ht ? facture_param.devis.montant_ht : facture_param.devis.montant, facture_param.devis.date_fact , facture_param.devis.date_echeance, facture_param.nfact.nfact,facture_param.devis.nomclient.id_contact,1],
+        function (error, results, fields) {
+            if (error) {
+                deferred.reject(error.name + ': ' + error.message);
+                console.log(error.name + ': ' + error.message);
+            }
+
+            for (var p in facture_param.produitDevis) {
+                (function (facture) {
+                    db.query("INSERT INTO facture_librebase (id_fact, n_situation, id_prod,num_version,prix_fact,qte_fact,pourcent,tva) VALUES (? ,? , ? , ? , ?, ? , ?,? )",
+                        [results.insertId, 1, facture_param.produitDevis[facture].obj.id_prc, facture_param.produitDevis[facture].obj.num_version,  facture_param.produitDevis[facture].prix, facture_param.produitDevis[facture].qte, facture_param.produitDevis[facture].pourcent,facture_param.produitDevis[facture].taux],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            if (facture = facture_param.produitDevis.length) {
+                                deferred.resolve()
+                            }
+                        });
+                })(p);
+            }
+
+            for (var p in facture_param.produitFact) {
+                (function (facture) {
+                    db.query("INSERT INTO facture_libredetail (id_fact, n_situation,nom_produit,qteprod,prix_prod, pourcent,unite,tva) VALUES (? , ? , ? , ?, ? , ?,? ,?)",
+                        [results.insertId, 1,  facture_param.produitFact[facture].produit,  facture_param.produitFact[facture].qte_devis, facture_param.produitFact[facture].prix_devis, facture_param.produitFact[facture].pourcentf,facture_param.produitFact[facture].unitef,facture_param.produitFact[facture].tauxf],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            if (facture = facture_param.produitFact.length) {
+                                deferred.resolve()
+                            }
+                        });
+                })(p);
+            }
+
+
+
+        });
+
     return deferred.promise;
 }

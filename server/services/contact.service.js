@@ -151,7 +151,7 @@ function getAll() {
 
 function getList() {
     var deferred = Q.defer();
-    db.query('SELECT * FROM listecontacts', function (error, contacts, fields) {
+    db.query('SELECT * FROM ListeContacts', function (error, contacts, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
         deferred.resolve(contacts);

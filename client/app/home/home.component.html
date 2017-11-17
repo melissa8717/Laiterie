@@ -180,7 +180,8 @@
                             <li class="divider"></li>
                             <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/listefacturefournisseur']" >Liste factures fournisseurs</a></li>
                             <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/facture_fournisseur']" >Ajouter factures fournisseurs</a></li>
-                            <!--<li class="divider"></li>-->
+                            <li class="divider"></li>
+                            <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/newfactlibre']" >Ajouter une facture libre</a></li>
                             <!--<li><a href="#">Analyse des ventes</a></li>-->
                             <li *ngIf="droitsuser.accesfrais" class="divider"></li>
                             <li *ngIf="droitsuser.accesfrais"><a [routerLink]="['/fraismois']" >Frais généraux / mois</a></li>

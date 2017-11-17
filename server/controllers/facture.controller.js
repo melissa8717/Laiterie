@@ -73,6 +73,8 @@ router.get('/avoiprim/:id_avoir', getByIdPeodavoir);
 router.post('/acote', addacompte);
 router.get('/acolist/:id_facture/:n_situation', getByIdAcopmte);
 
+router.post('/libreadd',Flibre);
+
 module.exports = router;
 
 function getAllFacture(req, res) {
@@ -751,6 +753,16 @@ function getByIdAcopmte(req, res) {
             } else {
                 res.sendStatus(404);
             }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function Flibre(req, res) {
+    factureService.Flibre(req.body)
+        .then(function () {
+            res.sendStatus(200);
         })
         .catch(function (err) {
             res.status(400).send(err);

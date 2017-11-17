@@ -249,13 +249,15 @@ export class FactureService {
     }
 
     addacompte(facture: any) {
-        //console.log(facture);
         return this.http.post(this.config.apiUrl + '/facture/acote', facture, this.jwt());
     }
 
     getByIdAcopmte(id_facture:number,n_situation:number) {
-        //console.log(this.config.apiUrl + '/facture')
         return this.http.get(this.config.apiUrl + '/facture/acolist/' + id_facture+"/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    Flibre(factureparams: any) {
+        return this.http.post(this.config.apiUrl + '/facture/libreadd', factureparams, this.jwt());
     }
 
     /***************************************************GED*********************************************************************************/

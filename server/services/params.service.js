@@ -143,7 +143,7 @@ function updateAgence(ag_param) {
 /*----------------------------------------------------- TVA ----------------------------------------------------*/
 function getAllTVA() {
     var deferred = Q.defer();
-    db.query('SELECT  * FROM tva  ', function (error, params, fields) {
+    db.query('SELECT  * , taux AS tauxf FROM tva  ', function (error, params, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }

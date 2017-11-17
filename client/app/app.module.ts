@@ -157,6 +157,7 @@ import {AccompteimprimComponent} from "./facture/accompteimprim.component";
 import {GestionprojComponent} from "./chantiers/gestionproj.component"; ////////////////////////////////////////////////////
 import {GanttComponent} from "./chantiers/gantt.component"; /////////////////////////////////////////////////////////////
 import {MenuchantierComponent} from "./chantiers/menuchantier.component";
+import {NewfactlibreComponent} from "./facture/newfactlibre.component";
 
 @NgModule({
     imports: [
@@ -306,7 +307,10 @@ import {MenuchantierComponent} from "./chantiers/menuchantier.component";
         AccompteimprimComponent,
         GestionprojComponent,
         GanttComponent,
-        MenuchantierComponent
+        MenuchantierComponent,
+        NewfactlibreComponent
+
+
     ],
     providers: [
         AppConfig,
