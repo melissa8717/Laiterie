@@ -260,6 +260,21 @@ export class FactureService {
         return this.http.post(this.config.apiUrl + '/facture/libreadd', factureparams, this.jwt());
     }
 
+    getByIdLibreModif(id_facture:number,n_situation:number) {
+        //console.log(this.config.apiUrl + '/facture/primsit')
+        return this.http.get(this.config.apiUrl + '/facture/libmodif/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdLibrebase(id_facture:number,n_situation:number) {
+        //console.log(this.config.apiUrl + '/facture/primsit')
+        return this.http.get(this.config.apiUrl + '/facture/Librebase/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdLibredetail(id_facture:number,n_situation:number) {
+        //console.log(this.config.apiUrl + '/facture/primsit')
+        return this.http.get(this.config.apiUrl + '/facture/Libredetail/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
     /***************************************************GED*********************************************************************************/
     getGed(id_gedfac:number) {
         return this.http.get(this.config.apiUrl + '/ged/fac/+id_gedfac', this.jwt()).map((response: Response) => response.json());

@@ -74,11 +74,13 @@ router.post('/acote', addacompte);
 router.get('/acolist/:id_facture/:n_situation', getByIdAcopmte);
 
 router.post('/libreadd',Flibre);
+router.get('/libmodif/:id_facture/:n_situation',getByIdLibreModif);
+router.get('/Librebase/:id_facture/:n_situation',getByIdLibrebase);
+router.get('/Libredetail/:id_facture/:n_situation',getByIdLibredetail);
 
 module.exports = router;
 
 function getAllFacture(req, res) {
-    //console.log("test");
     factureService.getAllFacture()
         .then(function (results) {
             res.send(results);
@@ -89,7 +91,6 @@ function getAllFacture(req, res) {
 }
 
 function getAllFooter(req, res) {
-    //console.log("test");
     factureService.getAllFooter()
         .then(function (results) {
             res.send(results);
@@ -100,7 +101,6 @@ function getAllFooter(req, res) {
 }
 
 function getAllnfact(req, res) {
-    console.log("test fact");
     factureService.getAllnfact()
         .then(function (results) {
             res.send(results);
@@ -221,7 +221,6 @@ function add(req, res) {
 /*---------------------------------modifier facture----------------*/
 
 function getByIdModif(req, res) {
-    console.log('test1');
     factureService.getByIdModif(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (devis) {
             if (devis) {
@@ -292,7 +291,6 @@ function getByIdOptSit(req, res) {
 }
 
 function getByIdValeur(req, res) {
-    console.log('test1');
     factureService.getByIdValeur(req.params.id_facture, req.body)
         .then(function (devis) {
             if (devis) {
@@ -319,7 +317,6 @@ function createSituation(req, res) {
 /*-----------------------------Liste facture chantier-------------------------------------*/
 
 function getByIdListeFacture(req, res) {
-    console.log('test1');
     factureService.getByIdListeFacture(req.params.id_chantier, req.body)
         .then(function (results) {
             if (results) {
@@ -350,7 +347,6 @@ function getByIdNom(req, res) {
 /*---------------------------facture fournisseur-------------------------------------------*/
 
 function getAllFournisseur(req, res) {
-    //console.log("test");
     factureService.getAllFournisseur()
         .then(function (results) {
             res.send(results);
@@ -361,7 +357,6 @@ function getAllFournisseur(req, res) {
 }
 
 function getAllBdcdetail(req, res) {
-    //console.log("test");
     factureService.getAllBdcdetail()
         .then(function (results) {
             res.send(results);
@@ -384,7 +379,6 @@ function createfacturefournisseur(req, res) {
 }
 
 function getAllMois(req, res) {
-    //console.log("test");
     factureService.getAllMois(req.params.month, req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -424,7 +418,6 @@ function getByIdBDC(req, res) {
 }
 
 function updateBDC(req, res) {
-    //console.log("test3");
     factureService.updateBDC(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -436,7 +429,6 @@ function updateBDC(req, res) {
 
 /*-------------------------------------frais mois -----------------------------------*/
 function getALLFraiscategorie(req, res) {
-    //console.log("test");
     factureService.getALLFraiscategorie()
         .then(function (results) {
             res.send(results);
@@ -457,7 +449,6 @@ function addfrais(req, res) {
 }
 
 function getAllFraismois(req, res) {
-    //console.log("test");
     factureService.getAllFraismois(req.params.month, req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -468,7 +459,6 @@ function getAllFraismois(req, res) {
 }
 
 function updateFraismois(req, res) {
-    //console.log("test3");
     factureService.updateFraismois(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -489,7 +479,6 @@ function deleteFrais(req, res) {
 }
 
 function getAllPrev(req, res) {
-    console.log("test");
     factureService.getAllPrev(req.params.month, req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -510,7 +499,6 @@ function addprev(req, res) {
 }
 
 function getAllAnnee(req, res) {
-    //console.log("test");
     factureService.getAllAnnee(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -521,7 +509,6 @@ function getAllAnnee(req, res) {
 }
 
 function getAllYprev(req, res) {
-    //console.log("test");
     factureService.getAllYprev(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -532,7 +519,6 @@ function getAllYprev(req, res) {
 }
 
 function getAlltotalfact(req, res) {
-    //console.log("test");
     factureService.getAlltotalfact(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -543,7 +529,6 @@ function getAlltotalfact(req, res) {
 }
 
 function getAlltotaldevis(req, res) {
-    //console.log("test");
     factureService.getAlltotaldevis(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -554,7 +539,6 @@ function getAlltotaldevis(req, res) {
 }
 
 function getAlldevisachat(req, res) {
-    //console.log("test12");
     factureService.getAlldevisachat(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -565,7 +549,6 @@ function getAlldevisachat(req, res) {
 }
 
 function getAllOptionachat(req, res) {
-    //console.log("test12");
     factureService.getAllOptionachat(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -576,7 +559,6 @@ function getAllOptionachat(req, res) {
 }
 
 function getAllFraisan(req, res) {
-    //console.log("test12");
     factureService.getAllFraisan(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -587,7 +569,6 @@ function getAllFraisan(req, res) {
 }
 
 function getAllMoan(req, res) {
-    //console.log("test12");
     factureService.getAllMoan(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -598,7 +579,6 @@ function getAllMoan(req, res) {
 }
 
 function getAllBdcreel(req, res) {
-    //console.log("test1");
     factureService.getAllBdcreel(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -609,7 +589,6 @@ function getAllBdcreel(req, res) {
 }
 
 function getAllAnnefrais(req, res) {
-    //console.log("test1");
     factureService.getAllAnnefrais(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -620,7 +599,6 @@ function getAllAnnefrais(req, res) {
 }
 
 function getAllFraispour(req, res) {
-    console.log("test18");
     factureService.getAllFraispour()
         .then(function (results) {
             res.send(results);
@@ -697,7 +675,6 @@ function addavoir(req, res) {
 }
 
 function getAllListavoir(req, res) {
-    console.log("test18");
     factureService.getAllListavoir()
         .then(function (results) {
             res.send(results);
@@ -759,10 +736,53 @@ function getByIdAcopmte(req, res) {
         });
 }
 
+/*********************libre ***********************************************/
 function Flibre(req, res) {
     factureService.Flibre(req.body)
         .then(function () {
             res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdLibreModif(req, res) {
+    factureService.getByIdLibreModif(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdLibrebase(req, res) {
+    factureService.getByIdLibrebase(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdLibredetail(req, res) {
+    factureService.getByIdLibredetail(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
         })
         .catch(function (err) {
             res.status(400).send(err);

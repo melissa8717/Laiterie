@@ -77,7 +77,9 @@ service.addacompte = addacompte;
 service.getByIdAcopmte = getByIdAcopmte;
 
 service.Flibre = Flibre;
-
+service.getByIdLibreModif = getByIdLibreModif;
+service.getByIdLibrebase = getByIdLibrebase;
+service.getByIdLibredetail = getByIdLibredetail;
 
 
 module.exports = service;
@@ -264,11 +266,6 @@ function getbyIdTotalopt(_id_devis, _num_version) {
 
 function create(facture_param) {
     var deferred = Q.defer();
-    //console.log(facture_param.model);
-    //console.log(facture_param.detail);
-    //console.log(facture_param.option);
-    //console.log(facture_param.version);
-    console.log(facture_param.nfact);
 
 
     db.query("INSERT INTO facture (n_situation, id_devis, id_version,remise,montant_ht,date_fact,date_echeance,nfactclient) VALUES (? , ?, ?,?,?,?,?,? )",
@@ -374,7 +371,7 @@ function getByIdSitoption(_id_facture, _n_situation) {
     var inserts = [_id_facture, _n_situation];
 
     sql = mysql.format(sql, inserts);
-    console.log(sql);
+    //console.log(sql);
     db.query(sql, function (error, results, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
@@ -442,9 +439,6 @@ function getByIdValeur(_id_facture) {
 
 function createSituation(id_facture, facture_param) {
     var deferred = Q.defer();
-    //console.log(facture_param.model);
-    //console.log(facture_param.valeur);
-    //console.log(facture_param.option);
 
     db.query("UPDATE facture SET `factured` = 1 WHERE id_facture=? AND n_situation = ?",
         [id_facture, facture_param.model.n_situation],
@@ -593,9 +587,6 @@ function getAllBdcdetail() {
 
 function createfacturefournisseur(facture_param) {
     var deferred = Q.defer();
-    //console.log(facture_param.bdcdet);
-    //console.log(facture_param.list);
-    //console.log(facture_param)
 
     db.query("INSERT INTO facture_fournisseur (id_contact, datefourn, n_facture,montantfact) VALUES (? , ?, ?,? )",
         [facture_param.fournisseur.id_contact, facture_param.bdcdet.datefourn, facture_param.bdcdet.n_facture, facture_param.bdcdet.montantfact],
@@ -699,7 +690,6 @@ function getByIdBDC(_id_factfour) {
 }
 
 function updateBDC(factureParam) {
-    // console.log("update rappro service server");
     var deferred = Q.defer();
 
     var params = [
@@ -740,7 +730,6 @@ function getALLFraiscategorie() {
 function addfrais(facture_param) {
     var deferred = Q.defer();
 
-    //console.log(facture_param);
 
     db.query("INSERT INTO fraisgeneraux (designation,categorie, pourcentage,valeur,date_debut,date_fin) VALUES ( ? , ? , ? , ?,?,? )",
         [facture_param.designation, facture_param.categorie, facture_param.pourcentage, facture_param.valeur, facture_param.date_debut, facture_param.date_fin],
@@ -1277,14 +1266,16 @@ function getByIdAcopmte(_id_facture, _n_situation) {
     return deferred.promise;
 }
 
+
+/**************************************facture  libre*****************************************************************/
 function Flibre(facture_param) {
     var deferred = Q.defer();
 
     console.log(facture_param);
 
 
-    db.query("INSERT INTO facture (n_situation, montant_ht,date_fact,date_echeance,nfactclient,id_contact,libre) VALUES (? , ?, ?,?,?,?,? )",
-        [facture_param.n_situataion ? facture_param.n_situation : 1,  facture_param.devis.montant_ht ? facture_param.devis.montant_ht : facture_param.devis.montant, facture_param.devis.date_fact , facture_param.devis.date_echeance, facture_param.nfact.nfact,facture_param.devis.nomclient.id_contact,1],
+    db.query("INSERT INTO facture (n_situation, montant_ht,date_fact,date_echeance,nfactclient,id_contact,libre,remise) VALUES (? , ?, ?,?,?,?,? ,?)",
+        [facture_param.n_situataion ? facture_param.n_situation : 1,  facture_param.devis.montant_ht ? facture_param.devis.montant_ht : facture_param.devis.montant, facture_param.devis.date_fact , facture_param.devis.date_echeance, facture_param.nfact.nfact,facture_param.devis.nomclient.id_contact,1,facture_param.devis.remise],
         function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
@@ -1327,5 +1318,64 @@ function Flibre(facture_param) {
 
         });
 
+    return deferred.promise;
+}
+
+
+function getByIdLibreModif(_id_facture, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT facture . * , contact.nom, contact.prenom, contact.raison_sociale, contact.titre, contact.adresse, contact.code_postal, contact.ville, mail.mail, telephone.numero, n_situation +1 as number "+
+    "FROM facture "+
+    "LEFT JOIN contact ON contact.id_contact = facture.id_contact "+
+    "LEFT JOIN mail ON facture.id_contact = mail.id_contact AND mail.type_mail =  'pro' "+
+    "LEFT JOIN telephone ON facture.id_contact = telephone.id_contact AND telephone.type_tel ='fax'  "+
+    "WHERE facture.id_facture =? AND facture.n_situation =?  ";
+    var inserts = [_id_facture, _n_situation];
+
+    sql = mysql.format(sql, inserts);//console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdLibrebase(_id_facture, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT facture_librebase . * , produit_vente.libelle, produit_vente.unite FROM facture_librebase LEFT JOIN produit_vente ON produit_vente.id_prc = facture_librebase.id_prod " +
+        "AND produit_vente.num_version = facture_librebase.num_version WHERE id_fact =? AND n_situation =?";
+    var inserts = [_id_facture, _n_situation];
+
+    sql = mysql.format(sql, inserts);//console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdLibredetail(_id_facture, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT *  FROM facture_libredetail " +
+        "WHERE id_fact =? AND n_situation =?";
+    var inserts = [_id_facture, _n_situation];
+
+    sql = mysql.format(sql, inserts);//console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
     return deferred.promise;
 }

@@ -113,7 +113,8 @@ import {AcompteComponent} from "./facture/acompte.component";
 import {AccompteimprimComponent} from "./facture/accompteimprim.component";
 
 import {GestionprojComponent} from "./chantiers/gestionproj.component";
-import {NewfactlibreComponent} from "./facture/newfactlibre.component"; ///////////////////////////////////////////////////
+import {NewfactlibreComponent} from "./facture/newfactlibre.component";
+import {FactlibreComponent} from "./facture/factlibre.component"; ///////////////////////////////////////////////////
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -240,6 +241,7 @@ const appRoutes: Routes = [
     {path: 'utilisation', component: UtilisationComponent, canActivate: [AuthGuard]},
 
     {path: 'newfactlibre', component: NewfactlibreComponent, canActivate: [AuthGuard]} ,
+    {path: 'factlibre/:id_facture/:n_situation', component: FactlibreComponent, canActivate: [AuthGuard]} ,
 
 
     // otherwise redirect to home

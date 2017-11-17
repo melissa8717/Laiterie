@@ -527,7 +527,7 @@ export class NewfactlibreComponent {
 
         for (let produitf of this.produitFact) {
             if (produitf.tauxf == 0){
-                total += (produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf ? produitf.pourcentf / 100 : 1)* (parseInt(produitf.tauxf) /100);
+                total += 0;
             }
         }
         return total;
@@ -539,7 +539,7 @@ export class NewfactlibreComponent {
 
         for (let produit of this.produitDevis) {
             if (produit.taux == 0){
-                total +=( produit.prix * produit.qte *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (parseInt(produit.taux) /100);
+                total +=0;
             }
         }
         return total;

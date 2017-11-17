@@ -158,6 +158,7 @@ import {GestionprojComponent} from "./chantiers/gestionproj.component"; ////////
 import {GanttComponent} from "./chantiers/gantt.component"; /////////////////////////////////////////////////////////////
 import {MenuchantierComponent} from "./chantiers/menuchantier.component";
 import {NewfactlibreComponent} from "./facture/newfactlibre.component";
+import {FactlibreComponent} from "./facture/factlibre.component";
 
 @NgModule({
     imports: [
@@ -308,8 +309,8 @@ import {NewfactlibreComponent} from "./facture/newfactlibre.component";
         GestionprojComponent,
         GanttComponent,
         MenuchantierComponent,
-        NewfactlibreComponent
-
+        NewfactlibreComponent,
+        FactlibreComponent
 
     ],
     providers: [
