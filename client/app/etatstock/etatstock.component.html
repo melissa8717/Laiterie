@@ -21,7 +21,10 @@
     <div class=" container-fluid">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
             <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+            <button class="col-sm-offset-1 btn" type="button" *ngIf="!print && droitsuser.accescom" (click)=" imprimer()">Imprimer</button>
+
         </div>
+
         <h3>Listing des produits en stock</h3>
 
         <div class="table-responsive">
@@ -38,7 +41,7 @@
                     <th class="col-sm-1">Valeur en €</th>
                     <th class="col-sm-1">Stock mini</th>
                     <th class="col-sm-1">Stock maxi</th>
-                    <th class="col-sm-1">Alerte</th><!--si stock inférieur à stock mini faire apparaitre une alerte!!-->
+                    <th *ngIf="!print" class="col-sm-1">Alerte</th><!--si stock inférieur à stock mini faire apparaitre une alerte!!-->
                     <th  *ngIf="!print" class="col-sm-1" colspan="1">action</th>
                     <th class="col-sm-1"></th>
                 </tr>
@@ -53,7 +56,7 @@
                     <td>{{prod.stock * prod.prix_achat | number:'1.0-2'}}</td>
                     <td>{{prod.stockmini}}</td><!--variable-->
                     <td>{{prod.stockmaxi}}</td><!--variable-->
-                    <td><span *ngIf="prod.stock < prod.stockmini || prod.stock > prod.stockmaxi" class="glyphicon glyphicon-warning-sign"></span></td><!--variable-->
+                    <td *ngIf="!print"><span *ngIf="prod.stock < prod.stockmini || prod.stock > prod.stockmaxi" class="glyphicon glyphicon-warning-sign"></span></td><!--variable-->
                     <td  *ngIf="!print && droitsuser.accescom">
                         <button [routerLink]="['/produitachat/'+prod.id_produit+'/'+prod.num_version]"  target="_blank" class="btn btn-default">Ouvrir</button>
                     </td><!--variable-->
@@ -70,7 +73,6 @@
 
 
 
-        <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accescom" (click)=" imprimer()">Imprimer</button>
     </div><!--container-fluid-->
 
 
