@@ -77,6 +77,11 @@ router.post('/libreadd',Flibre);
 router.get('/libmodif/:id_facture/:n_situation',getByIdLibreModif);
 router.get('/Librebase/:id_facture/:n_situation',getByIdLibrebase);
 router.get('/Libredetail/:id_facture/:n_situation',getByIdLibredetail);
+router.get('/sumlibre/:id_facture',getByIdLibresum);
+router.post('/createlibre/:id_facture',createSituationlibre);
+router.get('/imprimsitlibre/:id_facture/:n_situation',getByIdLibresumimprim);
+router.get('/Libreimpribase/:id_facture/:n_situation',getByIdLibrebaseimprim);
+router.get('/Libredetimprim/:id_facture/:n_situation',getByIdLibredetailimprim);
 
 module.exports = router;
 
@@ -777,6 +782,72 @@ function getByIdLibrebase(req, res) {
 
 function getByIdLibredetail(req, res) {
     factureService.getByIdLibredetail(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdLibresum(req, res) {
+    factureService.getByIdLibresum(req.params.id_facture, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function createSituationlibre(req, res) {
+    factureService.createSituationlibre(req.params.id_facture, req.body)
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdLibresumimprim(req, res) {
+    factureService.getByIdLibresumimprim(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdLibrebaseimprim(req, res) {
+    factureService.getByIdLibrebaseimprim(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdLibredetailimprim(req, res) {
+    factureService.getByIdLibredetailimprim(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (devis) {
             if (devis) {
                 res.send(devis);

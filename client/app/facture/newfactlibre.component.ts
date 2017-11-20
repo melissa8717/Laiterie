@@ -108,8 +108,7 @@ export class NewfactlibreComponent {
             data => {
                 this.produits = data;
                 console.log(this.produits);
-            }
-        )
+            });
     }
 
     ajouter() {
@@ -232,7 +231,6 @@ export class NewfactlibreComponent {
         this.paramsService.getAllTVA().subscribe(tvataux => {
 
             this.tvataux = tvataux;
-            console.log(this.tvataux);
 
         });
     }
@@ -409,10 +407,8 @@ export class NewfactlibreComponent {
         let total = 0;
 
         for (let produitf of this.produitFact) {
-            console.log(produitf.tauxf);
-            console.log(produitf.prix_devis);
             if (produitf.tauxf == 20){
-            total += ( produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf/100 )* (parseInt(produitf.tauxf) /100) ;
+            total += ( produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf/100 )* (produitf.tauxf /100) ;
 
         }
     }
@@ -426,7 +422,7 @@ export class NewfactlibreComponent {
         for (let produit of this.produitDevis) {
 
             if (produit.taux == 20){
-                total += (produit.prix * produit.qte *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (parseInt(produit.taux) /100);
+                total += (produit.prix * produit.qte *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (produit.taux /100);
             }
 
         }
@@ -443,7 +439,7 @@ export class NewfactlibreComponent {
 
         for (let produitf of this.produitFact) {
             if (produitf.tauxf == 10){
-                total += (produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf ? produitf.pourcentf / 100 : 1)* (parseInt(produitf.tauxf) /100);
+                total += (produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf ? produitf.pourcentf / 100 : 1)* (produitf.tauxf /100);
             }
         }
         return total;
@@ -455,7 +451,7 @@ export class NewfactlibreComponent {
 
         for (let produit of this.produitDevis) {
             if (produit.taux == 10){
-                total +=( produit.prix * produit.qte *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (parseInt(produit.taux) /100);
+                total +=( produit.prix * produit.qte *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (produit.taux /100);
             }
         }
         return total;
@@ -471,7 +467,7 @@ export class NewfactlibreComponent {
 
         for (let produitf of this.produitFact) {
             if (produitf.tauxf == 5.5){
-                total += (produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf ? produitf.pourcentf / 100 : 1)* (parseInt(produitf.tauxf) /100);
+                total += (produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf ? produitf.pourcentf / 100 : 1)* (produitf.tauxf /100);
             }
         }
         return total;
@@ -483,7 +479,7 @@ export class NewfactlibreComponent {
 
         for (let produit of this.produitDevis) {
             if (produit.taux == 5.5){
-                total +=( produit.prix * produit.qte *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (parseInt(produit.taux) /100);
+                total +=( produit.prix * produit.qte ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (produit.taux /100);
             }
         }
         return total;
@@ -499,7 +495,7 @@ export class NewfactlibreComponent {
 
         for (let produitf of this.produitFact) {
             if (produitf.tauxf == 2.1){
-                total += (produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf ? produitf.pourcentf / 100 : 1)* (parseInt(produitf.tauxf) /100);
+                total += (produitf.prix_devis * produitf.qte_devis *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produitf.pourcentf ? produitf.pourcentf / 100 : 1)* (produitf.tauxf /100);
             }
         }
         return total;
@@ -511,7 +507,7 @@ export class NewfactlibreComponent {
 
         for (let produit of this.produitDevis) {
             if (produit.taux == 2.1){
-                total += (produit.prix * produit.qte *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (parseInt(produit.taux) /100);
+                total += (produit.prix * produit.qte *  (this.devis.remise ? (1-(this.devis.remise / 100)) : 1) ) * (produit.pourcent ? produit.pourcent / 100 : 1)* (produit.taux /100);
             }
         }
         return total;

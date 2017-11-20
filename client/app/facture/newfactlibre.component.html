@@ -221,6 +221,7 @@
                             <span *ngIf="(produit.qte && produit.prix)">{{produit.qte*produit.prix * (produit.pourcent ? produit.pourcent / 100 : 1) | currency:'EUR':true:'1.2-2'}}</span>
                         </td>
 
+
                         <td>
                             <button *ngIf="droitsuser.ajoutdev" class="btn btn-default input-sm col-sm-offset-1"
                                     (click)="ajouter()"
@@ -508,7 +509,7 @@
                         <td class="total">{{SumTvaV() | number: '1.0-2'}}</td>
                     </tr>
 
-                    <tr *ngIf="SummTvaC(SummTvaD())">
+                    <tr *ngIf="SummTvaD()">
                         <td  colspan="6" class="total" style="text-align: right;">TVA 10 %</td>
                         <td class="total">{{SummTvaD() | number: '1.0-2'}}</td>
                     </tr>

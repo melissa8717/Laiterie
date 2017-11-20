@@ -14,10 +14,10 @@ import {User} from "../_models/user";
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'factlibre.component.html'
+    templateUrl: 'factlibreimprim.component.html'
 })
 
-export class FactlibreComponent {
+export class FactlibreimprimComponent {
 
     currentUser: User;
     droitsuser: any = {};
@@ -37,6 +37,8 @@ export class FactlibreComponent {
     base: any [] = [];
     detail: any [] = [];
     summe: any = {};
+    detailimprim: any [] = [];
+    baseimprim: any [] = [];
 
 
     constructor(private route: ActivatedRoute,
@@ -61,6 +63,8 @@ export class FactlibreComponent {
         this.loadBase();
         this.loadDetail();
         this.loadSum();
+        this.loadBaseimprim();
+        this.loadDetimprim();
 
     }
 
@@ -129,13 +133,43 @@ export class FactlibreComponent {
         this.route.params.subscribe(params => {
 
             this.id_facture = params['id_facture'];
-            this.factureService.getByIdLibresum(this.id_facture).subscribe(
+            this.n_situation = params['n_situation'];
+            this.factureService.getByIdLibresumimprim(this.id_facture,this.n_situation).subscribe(
                 data => {
                     this.summe = data[0];
                 }
             )
         });
     }
+
+    loadDetimprim(){
+        this.route.params.subscribe(params => {
+
+            this.id_facture = params['id_facture'];
+            this.n_situation = params['n_situation'];
+            this.factureService.getByIdLibredetailimprim(this.id_facture,this.n_situation).subscribe(
+                data => {
+                    this.detailimprim = data;
+                    console.log(this.detailimprim);
+                }
+            )
+        });
+    }
+
+    loadBaseimprim(){
+        this.route.params.subscribe(params => {
+
+            this.id_facture = params['id_facture'];
+            this.n_situation = params['n_situation'];
+            this.factureService.getByIdLibrebaseimprim(this.id_facture,this.n_situation).subscribe(
+                data => {
+                    this.baseimprim = data;
+                    console.log(this.baseimprim);
+                }
+            )
+        });
+    }
+
 
     totaligne(bases: any) {
         if (bases.pourcent)
@@ -203,8 +237,8 @@ export class FactlibreComponent {
     }
 
     CountTotalsituation(){
-         this.model.situation = this.countTotalNet() - (this.summe.somme);
-         return this.model.situation;
+        this.model.situation = this.countTotalNet() - (this.summe.somme);
+        return this.model.situation;
     }
 
     /**********************************TVA**************************************************************************************/
@@ -237,34 +271,38 @@ export class FactlibreComponent {
         return total;
     }
 
-    TVATVt()
+    TVAVtd()
     {
         let total = 0;
 
-        for (let bases of this.base) {
+        for (let detaili of this.detailimprim) {
 
-            if (bases.tva == 20){
-                total += bases.totaltva *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ;
-            }
+            if (detaili.tva == 20){
+                total += detaili.totaltvad ;
 
-        }
-        return total;
-    }
-
-    TVATVOt()
-    {
-        let total = 0;
-        for (let details of this.detail) {
-
-            if (details.tva == 20){
-                total += details.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
             }
         }
         return total;
     }
+
+    TVAVtb()
+    {
+        let total = 0;
+
+        for (let basei of this.baseimprim) {
+
+            if (basei.tva == 20){
+                total += basei.totaltvab ;
+
+            }
+        }
+        return total;
+    }
+
+
 
     SumTvaV(){
-        return this.TVAV()  + this.TVAVO()  - this.TVATVOt() -this.TVATVt() ;
+        return this.TVAV()  + this.TVAVO()- (this.TVAVtd()? this.TVAVtd():0) - (this.TVAVtb()? this.TVAVtb() : 0) ;
     }
 
     TVADO()
@@ -295,34 +333,38 @@ export class FactlibreComponent {
         return total;
     }
 
-    TVADt()
+    TVADtd()
     {
         let total = 0;
 
-        for (let bases of this.base) {
+        for (let detaili of this.detailimprim) {
 
-            if (bases.tva == 10){
-                total += bases.totaltva *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ;
-            }
+            if (detaili.tva == 10){
+                total += detaili.totaltvad ;
 
-        }
-        return total;
-    }
-
-    TVADOt()
-    {
-        let total = 0;
-        for (let details of this.detail) {
-
-            if (details.tva == 10){
-                total += details.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
             }
         }
         return total;
     }
+
+    TVADtb()
+    {
+        let total = 0;
+
+        for (let basei of this.baseimprim) {
+
+            if (basei.tva == 10){
+                total += basei.totaltvab ;
+
+            }
+        }
+        return total;
+    }
+
+
 
     SummTvaD(){
-        return this.TVAD() + this.TVADO() - this.TVADt() - this.TVADOt();
+        return this.TVAD() + this.TVADO()- (this.TVADtd()? this.TVADtd():0) - (this.TVADtb()? this.TVADtb() : 0);
     }
 
     TVACO()
@@ -353,36 +395,12 @@ export class FactlibreComponent {
         return total;
     }
 
-    TVACt()
-    {
-        let total = 0;
 
-        for (let bases of this.base) {
-
-            if (bases.tva == 5.5){
-                total += bases.totaltva *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ;
-            }
-
-        }
-        return total;
-    }
-
-    TVACOt()
-    {
-        let total = 0;
-        for (let details of this.detail) {
-
-            if (details.tva == 5.5){
-                total += details.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
-            }
-        }
-        return total;
-    }
 
 
 
     SummTvaC(){
-        return this.TVAC() + this.TVACO() - this.TVACt() - this.TVACOt();
+        return this.TVAC() + this.TVACO();
     }
 
     TVADUO()
@@ -411,34 +429,10 @@ export class FactlibreComponent {
         return total;
     }
 
-    TvaDUOt()
-    {
-        let total = 0;
 
-        for (let details of this.detail) {
-
-            if (details.tva == 2.1){
-                total += details.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
-            }
-        }
-        return total;
-    }
-
-    TvaDUt()
-    {
-        let total = 0;
-
-        for (let bases of this.base) {
-
-            if (bases.tva == 2.1){
-                total += bases.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
-            }
-        }
-        return total;
-    }
 
     SummTvaDU(){
-        return this.TVADU() + this.TVADUO()- this.TvaDUt() -  this.TvaDUOt();
+        return this.TVADU() + this.TVADUO();
     }
 
     TVAZO()
@@ -478,25 +472,7 @@ export class FactlibreComponent {
     }
 
 
-    submit() {
 
-        let factureparams: any = {};
-        factureparams.detail = this.detail;
-        factureparams.base = this.base;
-        factureparams.model = this.model;
-        factureparams.nfact =this.nfact;
-
-        var test = +confirm ("Etes vous sür de vouloir enregitrer votre facture :");
-        //console.log(factureparams);
-        if(test) {
-            console.log(factureparams);
-            this.factureService.createSituationlibre(factureparams, this.id_facture).subscribe(
-                data => {
-                    this.router.navigate(["/listefacture"]);
-                    this.alertService.success("La nouvelle situation de la facture a été créée avec succès.");
-                });
-        }
-    }
 
 
 }

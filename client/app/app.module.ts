@@ -159,6 +159,7 @@ import {GanttComponent} from "./chantiers/gantt.component"; ////////////////////
 import {MenuchantierComponent} from "./chantiers/menuchantier.component";
 import {NewfactlibreComponent} from "./facture/newfactlibre.component";
 import {FactlibreComponent} from "./facture/factlibre.component";
+import {FactlibreimprimComponent} from "./facture/factlibreimprim.component";
 
 @NgModule({
     imports: [
@@ -310,7 +311,8 @@ import {FactlibreComponent} from "./facture/factlibre.component";
         GanttComponent,
         MenuchantierComponent,
         NewfactlibreComponent,
-        FactlibreComponent
+        FactlibreComponent,
+        FactlibreimprimComponent
 
     ],
     providers: [
