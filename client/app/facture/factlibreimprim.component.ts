@@ -99,6 +99,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibreModif(this.id_facture,this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
+                    console.log(this.model)
                 }
             )
         });
@@ -150,7 +151,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibredetailimprim(this.id_facture,this.n_situation).subscribe(
                 data => {
                     this.detailimprim = data;
-                    console.log(this.detailimprim);
+
                 }
             )
         });
@@ -164,7 +165,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibrebaseimprim(this.id_facture,this.n_situation).subscribe(
                 data => {
                     this.baseimprim = data;
-                    console.log(this.baseimprim);
+
                 }
             )
         });
@@ -266,7 +267,7 @@ export class FactlibreimprimComponent {
             if (bases.tva == 20){
                 total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
             }
-
+            console.log(total);
         }
         return total;
     }
@@ -278,8 +279,7 @@ export class FactlibreimprimComponent {
         for (let detaili of this.detailimprim) {
 
             if (detaili.tva == 20){
-                total += detaili.totaltvad ;
-
+                total += detaili.totaltvad;
             }
         }
         return total;
@@ -292,17 +292,22 @@ export class FactlibreimprimComponent {
         for (let basei of this.baseimprim) {
 
             if (basei.tva == 20){
-                total += basei.totaltvab ;
+                total += basei.totaltvab  ;
+                console.log(total);
 
             }
         }
         return total;
+
     }
 
-
+    sumTvavre(){
+        return ((this.TVAVtd()? this.TVAVtd():0) + (this.TVAVtb()? this.TVAVtb() : 0));
+    }
 
     SumTvaV(){
-        return this.TVAV()  + this.TVAVO()- (this.TVAVtd()? this.TVAVtd():0) - (this.TVAVtb()? this.TVAVtb() : 0) ;
+        return (this.TVAV() ? this.TVAV():0)  + (this.TVAVO() ? this.TVAVO() :0) - this.sumTvavre()  ;
+
     }
 
     TVADO()
@@ -395,12 +400,40 @@ export class FactlibreimprimComponent {
         return total;
     }
 
+    TVACtd()
+    {
+        let total = 0;
+
+        for (let detaili of this.detailimprim) {
+
+            if (detaili.tva == 5.5){
+                total += detaili.totaltvad ;
+
+            }
+        }
+        return total;
+    }
+
+    TVACtb()
+    {
+        let total = 0;
+
+        for (let basei of this.baseimprim) {
+
+            if (basei.tva == 5.5){
+                total += basei.totaltvab ;
+
+            }
+        }
+        return total;
+    }
+
 
 
 
 
     SummTvaC(){
-        return this.TVAC() + this.TVACO();
+        return this.TVAC() + this.TVACO() - (this.TVACtd()? this.TVACtd():0) - (this.TVACtb()? this.TVACtb() : 0);
     }
 
     TVADUO()
@@ -429,10 +462,38 @@ export class FactlibreimprimComponent {
         return total;
     }
 
+    TVADUtd()
+    {
+        let total = 0;
+
+        for (let detaili of this.detailimprim) {
+
+            if (detaili.tva == 5.5){
+                total += detaili.totaltvad ;
+
+            }
+        }
+        return total;
+    }
+
+    TVADUtb()
+    {
+        let total = 0;
+
+        for (let basei of this.baseimprim) {
+
+            if (basei.tva == 5.5){
+                total += basei.totaltvab ;
+
+            }
+        }
+        return total;
+    }
+
 
 
     SummTvaDU(){
-        return this.TVADU() + this.TVADUO();
+        return this.TVADU() + this.TVADUO() - (this.TVADUtd()? this.TVADUtd():0) - (this.TVADUtb()? this.TVADUtb() : 0);
     }
 
     TVAZO()

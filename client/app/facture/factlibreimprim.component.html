@@ -55,17 +55,17 @@
                     <p>&nbsp;</p>
 
                     <div class="form-group"  >
-                        <span  style="margin-top: 40px;">{{fact.villefact}}* , le <input style="border:1px solid white;" type="date" name="date_fact" [ngModel]="model.date_fact | date:'yyyy-MM-dd'" (ngModelChange)="model.date_fact = $event" [value]="model.date_fact | date:'yyyy-MM-dd'" required><!--variable--></span>
+                        <span  style="margin-top: 40px;">{{fact.villefact}} , le {{model.date_fact | date:'dd-MM-yyyy'}}</span>
                     </div>
 
                 </div>
 
                 <div class="col-sm-5">
                     <div class="form-group">
-                        <span class="col-sm-5" style="text-decoration: underline;">N° de facturation: </span><span >{{nfact.nfact}}<!--variable--></span>
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de facturation: </span><span >{{model.nfactclient}}</span>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-5" style="text-decoration: underline;">N° de situation: </span><span >{{model.number}}<!--variable--></span>
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de situation: </span><span >{{model.n_situation}}</span>
                     </div>
 
 
@@ -99,7 +99,7 @@
                     <td style=" border-right: 1px solid black;">{{base[i].prix_fact}}</td>
                     <td style=" border-right: 1px solid black;">{{base[i].qte_fact * base[i].prix_fact | number:'1.0-2'}}</td>
                     <td style=" border-right: 1px solid black;">{{ totaligne(bases) | number:'1.0-2'}}</td>
-                    <td style=" border-right: 1px solid black;"><input style="width: 70px;" type="number" name="pourcent{{i}}" [(ngModel)]="base[i].pourcent"  class="col-sm-12" min="0" max="100"></td>
+                    <td style=" border-right: 1px solid black;">{{base[i].pourcent}}</td>
 
                 </tr>
 
@@ -113,7 +113,7 @@
                     <td style=" border-right: 1px solid black;">{{detail[i].prix_prod}}</td>
                     <td style=" border-right: 1px solid black;">{{detail[i].qteprod * detail[i].prix_prod | number:'1.0-2'}}</td>
                     <td style=" border-right: 1px solid black;">{{totaligndet(details) | number:'1.0-2'}}</td>
-                    <td style=" border-right: 1px solid black;"><input style="width: 70px;" type="number" name="pourcentf{{i}}" [(ngModel)]="detail[i].pourcentf"  class="col-sm-12" min="0" max="100"></td>
+                    <td style=" border-right: 1px solid black;">{{detail[i].pourcentf}}</td>
 
                 </tr>
                 </tbody>
@@ -147,11 +147,11 @@
                     <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="basr gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total situation H.T. :</td><td style="text-align:right;" >{{CountTotalsituation() | number:'1.0-2'}}</td></tr>
 
 
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à 20 % </td><td style="text-align: right;" >{{SumTvaV() | number:'1.0-2'}}</td></tr>
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaD()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à 10 % </td><td style="text-align: right;" >{{SummTvaD() | number:'1.0-2'}}</td></tr>
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaC()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à 5.5 % </td><td style="text-align: right;" >{{SummTvaC() | number:'1.0-2'}}</td></tr>
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaDU()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à 2.1 % </td><td style="text-align: right;" >{{SummTvaDU() | number:'1.0-2'}}</td></tr>
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaZ()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à 0 % </td><td style="text-align: right;" >{{SummTvaZ() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 20 % </td><td style="text-align: right;" >{{SumTvaV() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaD()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 10 % </td><td style="text-align: right;" >{{SummTvaD() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaC()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 5.5 % </td><td style="text-align: right;" >{{SummTvaC() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaDU()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 2.1 % </td><td style="text-align: right;" >{{SummTvaDU() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaZ()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 0 % </td><td style="text-align: right;" >{{SummTvaZ() | number:'1.0-2'}}</td></tr>
                     <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total TVA :</td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;">{{TotalTva() | number:'1.0-2'}}</td></tr>
                     <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" class="basr grass"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" class="gauche" style="text-align: left;">Total TTC :</td><td style="text-align: right;">{{countTotalttc() | number:'1.0-2'}}</td></tr>
 
@@ -167,9 +167,9 @@
                 <div class="gauche"  style="border:1px solid white; float: right;margin-right:125px;">Net à payer :</div>
 
                 <p>&nbsp;</p>
-                <div><input style="border:1px solid white; float: right;margin-right:40px;" type="date" name="model.date_echeance"  [ngModel]="model.date_echeance | date:'yyyy-MM-dd'" (ngModelChange)="model.date_echeance = $event" [value]="model.date_echeance | date:'yyyy-MM-dd'" required/>
+                <div>
                 </div>
-                <div  style="float: right;margin-right:50px;">* Echéance au :</div>
+                <div  style="float: right;margin-right:50px;">Echéance au : {{model.date_echeance | date:'dd-MM-yyyy'}}</div>
 
             </div>
 

@@ -1499,8 +1499,9 @@ function getByIdLibresumimprim(_id_facture, _n_situation) {
 
 function getByIdLibrebaseimprim(_id_facture, _n_situation) {
     var deferred = Q.defer();
-    var sql = "SELECT tva,ROUND( (prix_fact * qte_fact * ( pourcent /100 ) * ( tva /100 )),2) AS totaltvab " +
-        "FROM facture_librebase WHERE id_fact =? AND n_situation <?";
+    var sql = "SELECT facture_librebase.tva, ROUND( (prix_fact * qte_fact * ( pourcent /100 ) * ( tva /100 ) * ( 1 - ( facture.remise /100 ) ) ) , 2) AS totaltvab, facture.remise FROM facture_librebase "+
+    "LEFT JOIN facture ON facture.id_facture = facture_librebase.id_fact AND facture_librebase.n_situation = facture.n_situation "+
+   "WHERE facture_librebase.id_fact =? AND facture_librebase.n_situation = ( ( ? ) -1 ) ";
     var inserts = [_id_facture, _n_situation];
 
     sql = mysql.format(sql, inserts);//console.log(sql);
@@ -1517,11 +1518,12 @@ function getByIdLibrebaseimprim(_id_facture, _n_situation) {
 
 function getByIdLibredetailimprim(_id_facture, _n_situation) {
     var deferred = Q.defer();
-    var sql = "SELECT tva , ROUND((prix_prod * qteprod * ( pourcent /100 ) * ( tva /100 )),2) AS totaltvad FROM facture_libredetail " +
-        "WHERE id_fact =? AND n_situation <?";
+    var sql = "SELECT facture_libredetail.tva, ROUND( (prix_prod * qteprod * ( pourcent /100 ) * ( tva /100 ) * ( 1 - ( facture.remise /100 ) ) ) , 2) AS totaltvad FROM facture_libredetail "+
+    "LEFT JOIN facture ON facture.id_facture = facture_libredetail.id_fact AND facture_libredetail.n_situation = facture.n_situation "+
+    "WHERE facture_libredetail.id_fact =? AND facture_libredetail.n_situation = ( ( ? ) -1 ) ";
     var inserts = [_id_facture, _n_situation];
 
-    sql = mysql.format(sql, inserts);//console.log(sql);
+    sql = mysql.format(sql, inserts);
     db.query(sql, function (error, results, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);

@@ -100,8 +100,8 @@
                             <td>{{countNeuf(semaines) }}</td>
                             <td>{{countQuart(semaines)}}</td>
                             <td>{{countQTroi(semaines) }}</td>
-                            <td>{{semaine[i].somme * semaine[i].panier}}</td>
-                            <td>{{countTotalligne(semaines)}}</td>
+                            <td>{{semaine[i].somme * semaine[i].panier  | number:'1.0-2'}}</td>
+                            <td>{{countTotalligne(semaines) | number:'1.0-2'}}</td>
                         </tr>
 
 
@@ -113,8 +113,8 @@
                             <td>{{ counttotalHeureneuf(semaines)}}</td>
                             <td>{{ counttotalHeuretrois(semaines)}}</td>
                             <td>{{ counttotalHeuresup(semaines)}}</td>
-                            <td>{{counttotalpanier(semaines)}}</td>
-                            <td>{{counttotalCout(semaines)}}</td>
+                            <td>{{counttotalpanier(semaines) | number:'1.0-2'}}</td>
+                            <td>{{counttotalCout(semaines) | number:'1.0-2'}}</td>
                         </tr>
 
                         </tbody>
