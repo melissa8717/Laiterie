@@ -86,6 +86,9 @@ service.getByIdLibresumimprim = getByIdLibresumimprim;
 service.getByIdLibrebaseimprim = getByIdLibrebaseimprim;
 service.getByIdLibredetailimprim = getByIdLibredetailimprim;
 
+service.getByIdAvoirlibre = getByIdAvoirlibre;
+service.addavoirlibre = addavoirlibre;
+
 
 module.exports = service;
 
@@ -1532,5 +1535,67 @@ function getByIdLibredetailimprim(_id_facture, _n_situation) {
 
         deferred.resolve(results);
     });
+    return deferred.promise;
+}
+
+function getByIdAvoirlibre(_id_facture, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT facture_librebase.id_prod, facture_librebase.prix_fact AS prix, facture_librebase.qte_fact AS qte, facture_librebase.tva, produit_vente.libelle AS nom FROM facture_librebase "+
+    "LEFT JOIN produit_vente ON produit_vente.id_prc = facture_librebase.id_prod AND produit_vente.num_version = facture_librebase.num_version "+
+    "WHERE id_fact =? AND n_situation =? "+
+    "UNION "+
+    "SELECT id_prod, prix_prod AS prix, qteprod AS qte, tva, nom_produit AS nom FROM facture_libredetail "+
+    "WHERE id_fact =? AND n_situation =? ";
+    var inserts = [_id_facture, _n_situation,_id_facture, _n_situation];
+
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function addavoirlibre(avoirparams) {
+    var deferred = Q.defer();
+
+
+    db.query("INSERT INTO avoir (id_avoir,id_facture,n_situation,date_avoir,id_contact,libre) VALUES (? ,? , ? , ? , ?, ?)",
+        [avoirparams.navoir.navoir, avoirparams.model.id_facture, avoirparams.model.n_situation, avoirparams.model.date_avoir, avoirparams.model.id_contact, 1], function (error, results, fields) {
+            if (error) {
+                deferred.reject(error.name + ': ' + error.message);
+                console.log("(2)" + error.name + ': ' + error.message);
+            }
+
+
+            for (var p in avoirparams.produitDevis) {
+                (function (product) {
+                    db.query("INSERT INTO avoirlibre (id_avlibre,  nom, tva,  prix, qte ,id_fact, n_situation) VALUES ( ? , ? , ?, ?, ?, ?,?)",
+                        [
+                            avoirparams.navoir.navoir,
+                            avoirparams.produitDevis[product].obj.nom,
+                            avoirparams.produitDevis[product].tva,
+                            avoirparams.produitDevis[product].prix,
+                            avoirparams.produitDevis[product].qte,
+                            avoirparams.model.id_facture,
+                            avoirparams.model.n_situation
+                        ],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            if (product = avoirparams.produitDevis.length) {
+                                deferred.resolve()
+                            }
+                        });
+                })(p);
+            }
+
+        });
     return deferred.promise;
 }

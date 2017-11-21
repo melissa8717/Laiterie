@@ -160,6 +160,7 @@ import {MenuchantierComponent} from "./chantiers/menuchantier.component";
 import {NewfactlibreComponent} from "./facture/newfactlibre.component";
 import {FactlibreComponent} from "./facture/factlibre.component";
 import {FactlibreimprimComponent} from "./facture/factlibreimprim.component";
+import {AvoirlibreComponent} from "./facture/avoirlibre.component";
 
 @NgModule({
     imports: [
@@ -312,7 +313,8 @@ import {FactlibreimprimComponent} from "./facture/factlibreimprim.component";
         MenuchantierComponent,
         NewfactlibreComponent,
         FactlibreComponent,
-        FactlibreimprimComponent
+        FactlibreimprimComponent,
+        AvoirlibreComponent
 
     ],
     providers: [

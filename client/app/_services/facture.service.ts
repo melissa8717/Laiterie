@@ -292,6 +292,13 @@ export class FactureService {
         return this.http.get(this.config.apiUrl + '/facture/Libredetimprim/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
     }
 
+    getByIdAvoirlibre(id_facture:number,n_situation:number) {
+        return this.http.get(this.config.apiUrl + '/facture/Libreavoir/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+    addavoirlibre(facture: any) {
+        return this.http.post(this.config.apiUrl + '/facture/adavoirlibre', facture, this.jwt());
+    }
+
 
 
     /***************************************************GED*********************************************************************************/

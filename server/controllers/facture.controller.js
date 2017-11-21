@@ -83,6 +83,9 @@ router.get('/imprimsitlibre/:id_facture/:n_situation',getByIdLibresumimprim);
 router.get('/Libreimpribase/:id_facture/:n_situation',getByIdLibrebaseimprim);
 router.get('/Libredetimprim/:id_facture/:n_situation',getByIdLibredetailimprim);
 
+router.get('/Libreavoir/:id_facture/:n_situation',getByIdAvoirlibre);
+router.post('/adavoirlibre',addavoirlibre);
+
 module.exports = router;
 
 function getAllFacture(req, res) {
@@ -854,6 +857,30 @@ function getByIdLibredetailimprim(req, res) {
             } else {
                 res.sendStatus(404);
             }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdAvoirlibre(req, res) {
+    factureService.getByIdAvoirlibre(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function addavoirlibre(req, res) {
+    factureService.addavoirlibre(req.body)
+        .then(function () {
+            res.sendStatus(200);
         })
         .catch(function (err) {
             res.status(400).send(err);
