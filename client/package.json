@@ -4,7 +4,7 @@
   "description": "une application pour aider les entreprises du batiment",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "lite": "lite-server",
+    "lite": "lite-server -c bs-config.json",
     "tsc": "tsc",
     "tsc:w": "tsc -w"
   },
