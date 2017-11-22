@@ -7,6 +7,9 @@ import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {FormBuilder} from "@angular/forms";
+import {FileUploader} from 'ng2-file-upload';
+
+const URLimg = 'http://'+location.hostname+':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -14,6 +17,8 @@ import {FormBuilder} from "@angular/forms";
 })
 
 export class AvoirlibreComponent {
+    public uploaderImg: FileUploader;
+
 
     currentUser: User;
     droitsuser: any = {};
@@ -31,6 +36,17 @@ export class AvoirlibreComponent {
     navoir: any = {};
     situa: any[] = [];
     situas:any = {};
+
+    files: any[] = [];
+    fileReader = new FileReader();
+    base64Files:any;
+    loc = location.hostname;
+    image: any[];
+    id_agence: number;
+    img: any = {};
+
+    print: boolean = false;
+
 
 
     constructor(private route: ActivatedRoute,
@@ -55,6 +71,8 @@ export class AvoirlibreComponent {
        this.loadAllAvoir();
        this.loadModif();
         this.loadSituation();
+        this.loadAllagence();
+
 
     }
 
@@ -272,4 +290,47 @@ export class AvoirlibreComponent {
             });
     }
 
+    private readFiles(files: any[], index: number) {
+        let file = files[index];
+        this.fileReader.onload = () => {
+            this.base64Files.push(this.fileReader.result);
+            if (files[index + 1]) {
+                this.readFiles(files, index + 1);
+            } else {
+                console.log('loaded all files');
+            }
+        };
+        this.fileReader.readAsDataURL(file);
+    }
+
+
+    loadAllagence() {
+
+        this.paramsService.getAllAgence().subscribe(img => {
+
+            this.img = img[0];
+            console.log(this.img);
+            //console.log(this.currentUser);
+
+            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+            this.uploader.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };*/
+        });
+
+    }
+
+    imprimer(){
+        this.alertService.clear();
+        this.print = true;
+        setTimeout(() => {
+            window.print();
+            this.print = false;
+        }, 1000);
+    }
 }
