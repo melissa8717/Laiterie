@@ -1,13 +1,13 @@
 ﻿import {Component, OnInit} from '@angular/core';
 
-import {User} from '../_models/index';
+import {User} from '../_models/user';
 import {UserService} from '../_services/index';
-import {MessageService} from "../_services/message.service";
-import {PlanningService} from "../_services/planning.service";
-import {ParamsService} from "../_services/params.service";
-import {FileUploader} from 'ng2-file-upload'; //////////////////////////////////////////////////////////////////////////
+import {MessageService} from '../_services/message.service';
+import {PlanningService} from '../_services/planning.service';
+import {ParamsService} from '../_services/params.service';
+import {FileUploader} from 'ng2-file-upload';
 
-const URLimg = 'http://' + location.hostname + ':4000/image/'; /////////////////////////////////////////////////////////////
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -16,7 +16,7 @@ const URLimg = 'http://' + location.hostname + ':4000/image/'; /////////////////
 
 export class HomeComponent implements OnInit {
 
-    public uploaderImg: FileUploader; //////////////////////////////////////////////////////////////////////////////////
+    public uploaderImg: FileUploader;
 
     currentUser: User;
     users: User[] = [];
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
     form: any [] = [];
     caces: any [] = [];
 
-    model: any = {}; //////////////////////////////////////////////////////////////////////////////////////////////////
+    model: any = {};
     loc = location.hostname;
     image: any[];
     id_agence: number;
@@ -45,9 +45,8 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        console.log("passage a flat");
-        body.className += "flat";
+        body.className = '';
+        body.className += 'flat';
         //this.loadAllUsers();
         this.loadUnreadMsg();
         this.loadAlarmes();
@@ -64,7 +63,7 @@ export class HomeComponent implements OnInit {
             if (model && model[0]) {
                 this.model = model[0];
 
-                this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.model.id_agence}); ////////////////////////
+                this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.model.id_agence});
                 this.uploaderImg.onAfterAddingFile = (file) => {
                     file.withCredentials = false;
                 };
@@ -93,8 +92,6 @@ export class HomeComponent implements OnInit {
         this.planningService.loadAlarms(+this.currentUser._id).subscribe(
             alarms => {
                 this.alarms = alarms;
-                //console.log(this.alarms);
-
             });
     }
 
@@ -113,12 +110,8 @@ export class HomeComponent implements OnInit {
     }
 
     loadparam() {
-
         this.paramsService.getAllHome().subscribe(param => {
-
             this.param = param;
-            //console.log(this.param);
-
         });
     }
 
@@ -131,30 +124,20 @@ export class HomeComponent implements OnInit {
 
     loadAllMessages() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        //console.log(currentUser._id);
         this.messageService.getAllHome(currentUser._id).subscribe(messages => {
-
             this.messages = messages;
-            //console.log(this.messages);
         });
     }
 
     loadAlarmeform() {
-        this.paramsService.getAlarmeformation().subscribe(
-            form => {
-                this.form = form;
-                console.log(this.form);
-
-            });
+        this.paramsService.getAlarmeformation().subscribe(form => {
+            this.form = form;
+        });
     }
 
     loadAlarmecaces() {
-        this.paramsService.getAlarmecaces().subscribe(
-            caces => {
-                this.caces = caces;
-                console.log(this.caces);
-
-            });
+        this.paramsService.getAlarmecaces().subscribe(caces => {
+            this.caces = caces;
+        });
     }
-
 }
