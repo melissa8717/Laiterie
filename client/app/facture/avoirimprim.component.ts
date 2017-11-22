@@ -24,6 +24,7 @@ export class AvoirimprimComponent {
     id_avoir:number;
     fact: any = {};
     produit:any[]=[];
+    libre:any[]=[];
 
 
 
@@ -48,6 +49,7 @@ export class AvoirimprimComponent {
         this.loadAvoir();
         this.loadAllFooter();
         this.loadProduit();
+        this.loadlibre();
 
     }
 
@@ -61,7 +63,6 @@ export class AvoirimprimComponent {
 
         this.factureService.getAllFooter().subscribe(fact => {
             this.fact = fact[0];
-            //console.log(this.fact);
 
         });
     }
@@ -72,7 +73,7 @@ export class AvoirimprimComponent {
             this.factureService.getByIdAvoir(this.id_avoir).subscribe(
                 data => {
                     this.valeur = data[0];
-                    //console.log(data)
+                    console.log(data);
                 }
             )
         });
@@ -89,6 +90,18 @@ export class AvoirimprimComponent {
             )
         });
     }
+
+    loadlibre() {
+        this.route.params.subscribe(params => {
+            this.id_avoir = params['id_avoir']
+            this.factureService.getByIdPeodavlibre(this.id_avoir).subscribe(
+                data => {
+                    this.libre = data;
+                    console.log(data)
+                }
+            )
+        });
+    }
     countTotalProduit() {
         let total = 0;
         for (let prod of this.produit) {
@@ -97,11 +110,95 @@ export class AvoirimprimComponent {
         return total;
     }
 
+    countTotallibre() {
+        let total = 0;
+        for (let prod of this.libre) {
+            total += prod.prix * prod.qte;
+        }
+        return total;
+    }
+
+    countTotallibreremise() {
+        let total = 0;
+        for (let prod of this.libre) {
+            total += prod.prix * prod.qte* (this.valeur.remise ? (1-(this.valeur.remise/100)) :1);
+        }
+        return total;
+    }
     countTva(){
         return this.countTotalProduit() *(this.valeur.tva /100);
     }
 
+
+    TVAV()
+    {
+        let total = 0;
+
+        for (let produit of this.libre) {
+
+            if (produit.tva == 20){
+                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) )* (produit.tva /100);
+            }
+
+        }
+        return total;
+    }
+
+    TVAD()
+    {
+        let total = 0;
+
+        for (let produit of this.libre) {
+
+            if (produit.tva == 10){
+                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) )* (produit.tva /100);
+            }
+
+        }
+        return total;
+    }
+    TVAC()
+    {
+        let total = 0;
+
+        for (let produit of this.libre) {
+
+            if (produit.tva == 5.5){
+                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) )* (produit.tva /100);
+            }
+
+        }
+        return total;
+    }
+
+    TVADU()
+    {
+        let total = 0;
+
+        for (let produit of this.libre) {
+
+            if (produit.tva == 2.1){
+                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) )* (produit.tva /100);
+            }
+
+        }
+        return total;
+    }
+    TVAZ()
+    {
+        let total = 0;
+
+        for (let produit of this.libre) {
+
+            if (produit.tva == 0){
+                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) );
+            }
+
+        }
+        return total;
+    }
+
     countTotalavoir(){
-        return this.countTotalProduit() +this.countTva();
+        return this.countTotalProduit() + this.countTotallibreremise() +this.countTva()+ this. TVAV() +this.TVAD() + this.TVAC() +this.TVADU() +this.TVAZ();
     }
 }

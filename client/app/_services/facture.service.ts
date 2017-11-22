@@ -244,8 +244,11 @@ export class FactureService {
     }
 
     getByIdPeodavoir(id_avoir:number) {
-        //console.log(this.config.apiUrl + '/facture/primsit')
         return this.http.get(this.config.apiUrl + '/facture/avoiprim/' + id_avoir, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdPeodavlibre(id_avoir:number) {
+        return this.http.get(this.config.apiUrl + '/facture/avlibreiprim/' + id_avoir, this.jwt()).map((response: Response) => response.json());
     }
 
     addacompte(facture: any) {
@@ -291,6 +294,14 @@ export class FactureService {
     getByIdLibredetailimprim(id_facture:number,n_situation:number) {
         return this.http.get(this.config.apiUrl + '/facture/Libredetimprim/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
     }
+
+    getByIdAvoirlibre(id_facture:number,n_situation:number) {
+        return this.http.get(this.config.apiUrl + '/facture/Libreavoir/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+    addavoirlibre(facture: any) {
+        return this.http.post(this.config.apiUrl + '/facture/adavoirlibre', facture, this.jwt());
+    }
+
 
 
 

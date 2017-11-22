@@ -48,7 +48,8 @@
                                     <li *ngIf="prod.factured != 1 && !prod.acompte && prod.libre && droitsuser.modiffact"><a [routerLink]="['/factlibre',prod.id_facture,prod.n_situation]" >Ouvrir / Modifier</a></li><!--ouvrir en un PDF-->
                                     <li *ngIf="!prod.acompte && !prod.libre && droitsuser.modiffact"><a [routerLink]="['/facture_fini',prod.id_facture,prod.n_situation]">Imprimer</a></li><!--ouvrir en un PDF-->
                                     <li *ngIf="prod.libre  && droitsuser.modiffact"><a [routerLink]="['/factlibreimprim',prod.id_facture,prod.n_situation]">Imprimer</a></li><!--ouvrir fact libre-->
-                                    <li *ngIf="prod.factured != 1 && droitsuser.modiffact  && !prod.acompte"><a [routerLink]="['/avoir',prod.id_facture,prod.n_situation]" >Avoir</a></li>
+                                    <li *ngIf="(prod.factured != 1) && (prod.libre!=1) && droitsuser.modiffact  && !prod.acompte"><a [routerLink]="['/avoir',prod.id_facture,prod.n_situation]" >Avoir</a></li>
+                                    <li *ngIf="(prod.factured != 1) && prod.libre && droitsuser.modiffact  && !prod.acompte"><a [routerLink]="['/avoirlibre',prod.id_facture,prod.n_situation]" >Avoir</a></li>
                                     <li *ngIf="prod.acompte  && droitsuser.modiffact"><a [routerLink]="['/accompteimprim',prod.id_facture,prod.n_situation]" >Ouvrir acompte</a></li>
                                 </ul>
                             </div><!-- /btn-group -->

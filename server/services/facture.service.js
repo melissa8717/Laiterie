@@ -72,6 +72,7 @@ service.addavoir = addavoir;
 service.getAllListavoir = getAllListavoir;
 service.getByIdAvoir = getByIdAvoir;
 service.getByIdPeodavoir = getByIdPeodavoir;
+service.getByIdPeodavlibre = getByIdPeodavlibre;
 
 service.addacompte = addacompte;
 service.getByIdAcopmte = getByIdAcopmte;
@@ -85,6 +86,9 @@ service.createSituationlibre = createSituationlibre;
 service.getByIdLibresumimprim = getByIdLibresumimprim;
 service.getByIdLibrebaseimprim = getByIdLibrebaseimprim;
 service.getByIdLibredetailimprim = getByIdLibredetailimprim;
+
+service.getByIdAvoirlibre = getByIdAvoirlibre;
+service.addavoirlibre = addavoirlibre;
 
 
 module.exports = service;
@@ -1153,7 +1157,7 @@ function addavoir(avoirparams) {
 function getAllListavoir() {
     var deferred = Q.defer();
     console.log('avoir');
-    db.query('SELECT avoir.id_avoir, avoir.id_facture, avoir.n_situation,avoir.date_avoir, contact.nom, contact.prenom, contact.raison_sociale, SUM( qtefact * prixfact ) AS somme, facture.nfactclient ' +
+    db.query('SELECT avoir.id_avoir, avoir.id_facture, avoir.n_situation,avoir.date_avoir, contact.nom, contact.prenom, contact.raison_sociale, SUM( qtefact * prixfact ) AS somme, facture.nfactclient,avoir.montant_ht ' +
         'FROM avoir ' +
         'LEFT JOIN avoir_detail ON avoir_detail.id_avoir = avoir.id_avoir ' +
         'LEFT JOIN contact ON avoir.id_contact = contact.id_contact ' +
@@ -1165,7 +1169,6 @@ function getAllListavoir() {
             deferred.reject(error.name + ': ' + error.message);
             console.log(error.name + ': ' + error.message);
         }
-        //console.log(results);
         deferred.resolve(results);
     });
     return deferred.promise;
@@ -1194,7 +1197,6 @@ function getByIdAvoir(_id_avoir) {
 
 
 function getByIdPeodavoir(_id_avoir) {
-    //console.log('facture');
     var deferred = Q.defer();
     var sql = "SELECT avoir_detail . * , produit_vente.libelle FROM  avoir_detail " +
         "LEFT JOIN produit_vente ON produit_vente.id_prc = avoir_detail.id_produit AND produit_vente.num_version = avoir_detail.num_version " +
@@ -1214,14 +1216,28 @@ function getByIdPeodavoir(_id_avoir) {
     return deferred.promise;
 }
 
+function getByIdPeodavlibre(_id_avoir) {
+    var deferred = Q.defer();
+    var sql = "SELECT * FROM  avoirlibre WHERE id_avlibre =?";
+    var inserts = [_id_avoir];
+
+    sql = mysql.format(sql, inserts);
+    console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
 
 function addacompte(facture_param) {
     var deferred = Q.defer();
-    //console.log(facture_param.model);
-    //console.log(facture_param.detail);
-    //console.log(facture_param.option);
-    //console.log(facture_param.version);
-    console.log(facture_param.nfact);
+
 
 
     db.query("INSERT INTO facture (n_situation, id_devis, id_version,remise,montant_ht,date_fact,date_echeance,nfactclient,acompte) VALUES (? , ?, ?,?,?,?,?,? ,?)",
@@ -1251,7 +1267,6 @@ function addacompte(facture_param) {
 }
 
 function getByIdAcopmte(_id_facture, _n_situation) {
-    //console.log('facture');
     var deferred = Q.defer();
     var sql = "SELECT COALESCE( SUM( devis_detaille.prix_devis * devis_detaille.qte_devis ) , SUM( devis_detaille_libre.prix_devis * devis_detaille_libre.qte_devis ) ) AS summe FROM facture " +
         "LEFT JOIN devis_detaille ON devis_detaille.id_devis = facture.id_devis AND devis_detaille.num_version = facture.id_version " +
@@ -1532,5 +1547,67 @@ function getByIdLibredetailimprim(_id_facture, _n_situation) {
 
         deferred.resolve(results);
     });
+    return deferred.promise;
+}
+
+function getByIdAvoirlibre(_id_facture, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT facture_librebase.id_prod, facture_librebase.prix_fact AS prix, facture_librebase.qte_fact AS qte, facture_librebase.tva, produit_vente.libelle AS nom FROM facture_librebase "+
+    "LEFT JOIN produit_vente ON produit_vente.id_prc = facture_librebase.id_prod AND produit_vente.num_version = facture_librebase.num_version "+
+    "WHERE id_fact =? AND n_situation =? "+
+    "UNION "+
+    "SELECT id_prod, prix_prod AS prix, qteprod AS qte, tva, nom_produit AS nom FROM facture_libredetail "+
+    "WHERE id_fact =? AND n_situation =? ";
+    var inserts = [_id_facture, _n_situation,_id_facture, _n_situation];
+
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function addavoirlibre(avoirparams) {
+    var deferred = Q.defer();
+
+
+    db.query("INSERT INTO avoir (id_avoir,id_facture,n_situation,date_avoir,id_contact,libre,montant_ht,remise) VALUES (? ,? , ? , ? , ?, ?,?,?)",
+        [avoirparams.navoir.navoir, avoirparams.model.id_facture, avoirparams.model.n_situation, avoirparams.model.date_avoir, avoirparams.model.id_contact, 1,avoirparams.model.montant_ht,avoirparams.remise], function (error, results, fields) {
+            if (error) {
+                deferred.reject(error.name + ': ' + error.message);
+                console.log("(2)" + error.name + ': ' + error.message);
+            }
+
+
+            for (var p in avoirparams.produitDevis) {
+                (function (product) {
+                    db.query("INSERT INTO avoirlibre (id_avlibre,  nom, tva,  prix, qte ,id_fact, n_situation) VALUES ( ? , ? , ?, ?, ?, ?,?)",
+                        [
+                            avoirparams.navoir.navoir,
+                            avoirparams.produitDevis[product].obj.nom,
+                            avoirparams.produitDevis[product].tva,
+                            avoirparams.produitDevis[product].prix,
+                            avoirparams.produitDevis[product].qte,
+                            avoirparams.model.id_facture,
+                            avoirparams.model.n_situation
+                        ],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            if (product = avoirparams.produitDevis.length) {
+                                deferred.resolve()
+                            }
+                        });
+                })(p);
+            }
+
+        });
     return deferred.promise;
 }

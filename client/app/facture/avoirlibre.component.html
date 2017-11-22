@@ -1,0 +1,232 @@
+<div id="devis">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/facturation_grand_gris.png">
+
+                    <span *ngIf="!print">Facturation</span>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+</div>
+<div id="dev">
+    <div class=" container "  id="pageContent" style="background-color: white;">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3 *ngIf="!print" >Editer une nouvelle situation de la facture</h3>
+
+
+        <form (ngSubmit)="submit()">
+
+            <fieldset class="separe">
+                <div class="row marge">
+                    <img *ngIf="!print" src="image/logo_wBAT_horizontal.png"  style="margin-left:100px;">
+                </div>
+                <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
+                <div class="row marge">
+                    <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:0px; position: absolute;">
+                </div>
+                <p>&nbsp;</p>
+
+                <div  style="margin-left: 50%;margin-top: 70px;">
+
+                    <div class="form-group" *ngIf="model.raison_sociale!=('' || 'null')">
+                        <span>{{model.raison_sociale}}</span>
+                    </div>
+                    <div class="form-group" >
+                        <span>{{model.nom}} {{model.prenom}}</span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.adresse}}</span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.code_postal}} </span>
+
+                        <span > {{model.ville}}</span>
+                    </div>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+
+                    <div class="form-group"  >
+                        <span  style="margin-top: 40px;">{{fact.villefact}}* , le <input style="border:1px solid white;" type="date" name="date_fact" [ngModel]="model.date_fact | date:'yyyy-MM-dd'" (ngModelChange)="model.date_fact = $event" [value]="model.date_fact | date:'yyyy-MM-dd'" required><!--variable--></span>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-5">
+                <div class="form-group">
+                    <span class="col-sm-5" style="font-weight: bold;">Facture d'avoir N° : </span><span style="font-weight: bold;">{{navoir.navoir}}</span>
+                </div>
+
+
+
+            </div>
+
+                <div class="col-sm-12" style="margin-top: 25px;">
+                    <span style="font-weight: bold;">Infomations additionnelles :</span><br>
+                    <span>Facture d'avoir, en remboursemant de la facture N° {{model.nfactclient}} </span>
+                </div>
+            </fieldset>
+
+
+            <div class="table-responsive">
+                <table class="table">
+
+                    <thead>
+                    <th class="col-sm-5 mil">Article</th>
+                    <th class="col-sm-1 mil">P.U. en €</th>
+                    <th class="col-sm-1 mil">Qte.</th>
+                    <th class="col-sm-2 mil">Total HT en €</th>
+                    <th class="col-sm-2 mil">TVA %</th>
+                    <th class="col-sm-1 mil">Action</th>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+
+                        <td>
+                            <input ng2-auto-complete
+                                   #prod
+                                   [source]="situa"
+                                   [list-formatter]="autocompleListFormatterSitua"
+                                   value-property-name="id_prod"
+                                   display-property-name="nom"
+                                   class="form-control input-sm"
+                                   placeholder="Ajoutez un produit"
+                                   name="produit"
+                                   [(ngModel)]="situas.obj"
+                                   (ngModelChange)="test()"
+                            >
+                        </td>
+                        <td>{{situas.prix}}
+
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm"  placeholder=""
+                                   name="qtefact"
+                                   [(ngModel)]="situas.qte">
+                        </td>
+                        <td>
+                            <span *ngIf="situas.qte && situas.prix">{{situas.qte * situas.prix *(-1)}}</span>
+                        </td>
+                        <td>{{situas.tva}}</td>
+                        <td><button  class="btn btn-default input-sm col-sm-offset-1"
+                                     (click)="ajouter()"
+                                     [disabled]="!situas.obj">Ajouter</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ng-container *ngFor="let situas of produitDevis, let i = index; trackBy:customTrackBy">
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                        <th class="col-sm-5 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-2 mil"></th>
+                        <th class="col-sm-2 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        </thead>
+
+                        <tbody>
+
+                        <tr >
+
+                            <td>
+                                <div class="form-group">
+                                    <span>{{situas.obj.nom}}</span>
+                                </div>
+
+                            </td>
+
+                            <td>
+                                {{produitDevis[i].prix}}
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                    <input type="number"
+                                           class="form-control input-sm"
+                                           name="qte{{i}}"
+                                           placeholder=""
+                                           min="0"
+                                           [(ngModel)]="produitDevis[i].qte"
+                                           required>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span>{{produitDevis[i].qte * produitDevis[i].prix * (-1) | number:'1.0-2'}}</span>
+                            </td>
+                            <td>{{produitDevis[i].tva}}</td>
+                            <td>
+                                <a class=" col-sm-offset-1"
+                                   (click)="supprimer(produitDevis[i])">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                                      style="color: #0f0f0f"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </ng-container>
+
+            <table class="col-sm-offset-8 col-sm-4 gras ">
+                <tr>
+                    <td class="col-sm-6">Total H.T en € :</td>
+                    <td class="col-sm-6 ">- {{ countTotalSit() | number:'1.0-2'}}</td>
+                </tr>
+                <tr>
+                    <td class="col-sm-6" *ngIf="model.remise >0">Après remise de {{model.remise}} % :</td>
+                    <td class="col-sm-6 ">- {{ countRemise() | number:'1.0-2'}}</td>
+                </tr>
+                <tr *ngIf="TVAV()">
+                    <td class="col-sm-6" >TVA 20 % :</td>
+                    <td class="col-sm-6 ">- {{TVAV() | number:'1.0-2'}}</td>
+                </tr>
+                <tr *ngIf="TVAD()">
+                    <td class="col-sm-6" >TVA 10 % :</td>
+                    <td class="col-sm-6 "> -{{TVAD() | number:'1.0-2'}}</td>
+                </tr>
+                <tr *ngIf="TVAC()">
+                    <td class="col-sm-6" >TVA 5.5 % :</td>
+                    <td class="col-sm-6 ">- {{TVAC() | number:'1.0-2'}}</td>
+                </tr>
+                <tr *ngIf="TVADU()">
+                    <td class="col-sm-6" >TVA 2.1 % :</td>
+                    <td class="col-sm-6 ">- {{TVADU() | number:'1.0-2'}}</td>
+                </tr>
+                <tr *ngIf="TVAZ()">
+                    <td class="col-sm-6" >TVA 0 % :</td>
+                    <td class="col-sm-6 ">{{TVAZ() | number:'1.0-2'}}</td>
+                </tr>
+                <tr >
+                    <td class="col-sm-6">Total TTC en € :</td>
+                    <td class="col-sm-6 ">- {{countTotalTTC() | number:'1.0-2'}}</td>
+                </tr>
+            </table>
+
+            <button  class="btn btn-default input-sm col-sm-offset-11"
+                     type="submit"
+                     [disabled]="produitDevis.length  < 1 ">
+                Valider
+            </button>
+
+        </form>
+    </div>
+</div>

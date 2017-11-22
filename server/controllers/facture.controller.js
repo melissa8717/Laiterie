@@ -69,6 +69,7 @@ router.post('/addavoir', addavoir);
 router.get('/listavoir', getAllListavoir);
 router.get('/impravoir/:id_avoir', getByIdAvoir);
 router.get('/avoiprim/:id_avoir', getByIdPeodavoir);
+router.get('/avlibreiprim/:id_avoir',getByIdPeodavlibre);
 
 router.post('/acote', addacompte);
 router.get('/acolist/:id_facture/:n_situation', getByIdAcopmte);
@@ -82,6 +83,9 @@ router.post('/createlibre/:id_facture',createSituationlibre);
 router.get('/imprimsitlibre/:id_facture/:n_situation',getByIdLibresumimprim);
 router.get('/Libreimpribase/:id_facture/:n_situation',getByIdLibrebaseimprim);
 router.get('/Libredetimprim/:id_facture/:n_situation',getByIdLibredetailimprim);
+
+router.get('/Libreavoir/:id_facture/:n_situation',getByIdAvoirlibre);
+router.post('/adavoirlibre',addavoirlibre);
 
 module.exports = router;
 
@@ -717,6 +721,20 @@ function getByIdPeodavoir(req, res) {
         });
 }
 
+function getByIdPeodavlibre(req, res) {
+    factureService.getByIdPeodavlibre(req.params.id_avoir, req.body)
+        .then(function (results) {
+            if (results) {
+                res.send(results);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
 function addacompte(req, res) {
     factureService.addacompte(req.body)
         .then(function () {
@@ -854,6 +872,30 @@ function getByIdLibredetailimprim(req, res) {
             } else {
                 res.sendStatus(404);
             }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdAvoirlibre(req, res) {
+    factureService.getByIdAvoirlibre(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function addavoirlibre(req, res) {
+    factureService.addavoirlibre(req.body)
+        .then(function () {
+            res.sendStatus(200);
         })
         .catch(function (err) {
             res.status(400).send(err);

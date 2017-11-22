@@ -179,9 +179,6 @@ export class AvoirComponent {
 
             this.droitsuser = data[0];
 
-            //console.log(this.data);
-            //console.log(this.currentUser._id);
-
         });
     }
 
@@ -189,7 +186,6 @@ export class AvoirComponent {
 
         this.factureService.getAllFooter().subscribe(fact => {
             this.fact = fact[0];
-            //console.log(this.fact);
 
         });
     }
@@ -208,11 +204,9 @@ export class AvoirComponent {
     loadValeur() {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture']
-            //console.log(this.id_facture);
             this.factureService.getByIdValeur(this.id_facture).subscribe(
                 data => {
                     this.valeur = data[0];
-                    // console.log(data)
                 }
             )
         });
@@ -226,7 +220,7 @@ export class AvoirComponent {
             this.factureService.getByIdModif(this.id_facture,this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-                    //console.log(this.model)
+                    console.log(this.model)
                 }
             )
         });
@@ -240,8 +234,6 @@ export class AvoirComponent {
             this.factureService.getByIdSituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.situa = data;
-                    //console.log("situa");
-                    //console.log(data);
                 }
             )
         });
@@ -255,8 +247,6 @@ export class AvoirComponent {
             this.factureService.getByIdSitoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.option = data;
-                    //console.log("option");
-                    //console.log(data);
                 }
             )
         });
@@ -311,10 +301,9 @@ export class AvoirComponent {
         avoirparams.produitDevis = this.produitDevis;
         avoirparams.produitDevisopt = this.produitDevisopt;
 
-        console.log(avoirparams);
         this.factureService.addavoir(avoirparams).subscribe(
             data=>{
-                this.router.navigate(["/listefacture"]);
+                this.router.navigate(["/listeavoir"]);
                 this.alertService.success("L'avoir a été créé avec succès.");
             });
     }
