@@ -11,6 +11,9 @@ import { AlertService, AuthenticationService } from '../_services/index';
 import {FactureService} from "../_services/facture.service";
 import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
+import {FileUploader} from 'ng2-file-upload';
+
+const URLimg = 'http://'+location.hostname+':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -18,6 +21,8 @@ import {User} from "../_models/user";
 })
 
 export class ModifierfactureComponent {
+    public uploaderImg: FileUploader;
+
 
     currentUser: User;         //
     droitsuser:any={};         //
@@ -45,6 +50,14 @@ export class ModifierfactureComponent {
     style: any [] = [];
     accomp: any = {};
 
+    files: any[] = [];
+    fileReader = new FileReader();
+    base64Files:any;
+    loc = location.hostname;
+    image: any[];
+    id_agence: number;
+    img: any = {};
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -71,6 +84,7 @@ export class ModifierfactureComponent {
         this.loadAllNfact();
         this.loaddroituser();
         this.loadAccompte();
+        this.loadAllagence();
     }
 
     loaddroituser() {                                 //
@@ -346,4 +360,26 @@ export class ModifierfactureComponent {
         }, 1000);
     }
 
+
+
+    loadAllagence() {
+
+        this.paramsService.getAllAgence().subscribe(img => {
+
+            this.img = img[0];
+            console.log(this.img);
+            //console.log(this.currentUser);
+
+            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+            this.uploader.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };*/
+        });
+
+    }
 }

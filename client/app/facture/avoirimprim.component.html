@@ -28,8 +28,15 @@
                     <img *ngIf="!print" src="image/logo_wBAT_horizontal.png"  style="margin-left:100px;">
                 </div>
                 <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
-                <div class="row marge">
-                    <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:0px; position: absolute;">
+                <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; top:30px; position: fixed;">
+                    <div *ngIf="print">
+                        <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
+                        <img *ngIf="!url && img.image" style="height: 150px; width: 300px;"
+                             src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="..."
+                             class="img-responsive col-sm-12"/>
+
+                        <!--<input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>-->
+                    </div>
                 </div>
                 <p>&nbsp;</p>
 
@@ -96,7 +103,7 @@
                         <td>{{prod.prixfact}}</td>
                         <td>{{prod.qtefact}}</td>
                         <td></td>
-                        <td>{{ prod.prixfact * prod.qtefact | number:'1.0-2'}}</td>
+                        <td>{{ prod.prixfact * prod.qtefact | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr *ngFor="let prod of libre">
@@ -105,56 +112,56 @@
                         <td>{{prod.prix}}</td>
                         <td>{{prod.qte}}</td>
                         <td>{{prod.tva}}</td>
-                        <td>{{ prod.prix * prod.qte | number:'1.0-2'}}</td>
+                        <td>{{ prod.prix * prod.qte | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr class="gras">
                         <td colspan="4"></td>
                         <td>Total H.T en € :</td>
-                        <td>- {{countTotalProduit()+ countTotallibre() | number:'1.0-2'}}</td>
+                        <td>- {{countTotalProduit()+ countTotallibre() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr class="gras" *ngIf="valeur.remise">
                         <td colspan="4"></td>
                         <td>Total après Remise : {{valeur.remise}} % :</td>
-                        <td>- {{countTotallibreremise() | number:'1.0-2'}}</td>
+                        <td>- {{countTotallibreremise() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr class="gras" *ngIf="valeur.tva">
                         <td colspan="4"></td>
                         <td>TVA  {{valeur.tva}} % :</td>
-                        <td>- {{countTva() | number:'1.0-2'}}</td>
+                        <td>- {{countTva() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr *ngIf="TVAV()">
                         <td colspan="4"></td>
                         <td  >TVA 20 % :</td>
-                        <td >- {{TVAV() | number:'1.0-2'}}</td>
+                        <td >- {{TVAV() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
                     <tr *ngIf="TVAD()">
                         <td colspan="4"></td>
                         <td  >TVA 10 % :</td>
-                        <td >- {{TVAD() | number:'1.0-2'}}</td>
+                        <td >- {{TVAD() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
                     <tr *ngIf="TVAC()">
                         <td colspan="4"></td>
                         <td  >TVA 5.5 % :</td>
-                        <td >- {{TVAC() | number:'1.0-2'}}</td>
+                        <td >- {{TVAC() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
                     <tr *ngIf="TVADU()">
                         <td colspan="3"></td>
                         <td  >TVA 2.1 % :</td>
-                        <td >- {{TVADU() | number:'1.0-2'}}</td>
+                        <td >- {{TVADU() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
                     <tr *ngIf="TVAZ()">
                         <td colspan="4"></td>
                         <td  >TVA 0 % :</td>
-                        <td >- {{TVAZ() | number:'1.0-2'}}</td>
+                        <td >- {{TVAZ() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
                     <tr class="gras">
                         <td colspan="4"></td>
                         <td> Total TTC en € :</td>
-                        <td>- {{countTotalavoir() | number:'1.0-2'}}</td>
+                        <td>- {{countTotalavoir() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
                     </tbody>
 
@@ -164,8 +171,8 @@
 
         </form>
 
-        <div  class="col-sm-12">
-            <article  >
+        <div   *ngIf="print" class="col-sm-12">
+            <article style="margin-top: 40px;bottom: 0;left: 0; right: 0;position: fixed;width: 100%;text-align: center;z-index:1000;font-size:9px;line-height: 1px;" >
                 <p>{{fact.pied_page1}}</p>
                 <p>{{fact.pied_page2}}</p>
                 <p>{{fact.pied_page3}}</p>
@@ -174,8 +181,9 @@
                 <p>{{fact.pied_page6}}</p>
             </article>
         </div>
-
-        <button class="col-sm-10 col-sm-2">Imprimer</button>
+        <form style="margin-bottom: 10px;">
+            <button class="col-sm-offset-8 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accesfact" (click)=" imprimer()">Imprimer</button>
+        </form>
 
     </div>
 </div>

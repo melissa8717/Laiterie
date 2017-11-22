@@ -7,6 +7,9 @@ import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {FormBuilder} from "@angular/forms";
+import {FileUploader} from 'ng2-file-upload';
+
+const URLimg = 'http://'+location.hostname+':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -14,6 +17,9 @@ import {FormBuilder} from "@angular/forms";
 })
 
 export class AvoirimprimComponent {
+
+    public uploaderImg: FileUploader;
+
 
     currentUser: User;
     droitsuser: any = {};
@@ -25,6 +31,15 @@ export class AvoirimprimComponent {
     fact: any = {};
     produit:any[]=[];
     libre:any[]=[];
+    print: boolean = false;
+
+    files: any[] = [];
+    fileReader = new FileReader();
+    base64Files:any;
+    loc = location.hostname;
+    image: any[];
+    id_agence: number;
+    img: any = {};
 
 
 
@@ -50,6 +65,8 @@ export class AvoirimprimComponent {
         this.loadAllFooter();
         this.loadProduit();
         this.loadlibre();
+        this.loadAllagence();
+
 
     }
 
@@ -200,5 +217,56 @@ export class AvoirimprimComponent {
 
     countTotalavoir(){
         return this.countTotalProduit() + this.countTotallibreremise() +this.countTva()+ this. TVAV() +this.TVAD() + this.TVAC() +this.TVADU() +this.TVAZ();
+    }
+
+    imprimer(){
+        this.alertService.clear();
+        this.print = true;
+        setTimeout(() => {
+            window.print();
+            this.print = false;
+        }, 1000);
+    }
+    public onChange(event: Event) {
+        let files = event.target['files'];
+        if (event.target['files']) {
+            console.log(event.target['files']);
+            this.readFiles(event.target['files'], 0);
+        }
+    };
+
+    private readFiles(files: any[], index: number) {
+        let file = files[index];
+        this.fileReader.onload = () => {
+            this.base64Files.push(this.fileReader.result);
+            if (files[index + 1]) {
+                this.readFiles(files, index + 1);
+            } else {
+                console.log('loaded all files');
+            }
+        };
+        this.fileReader.readAsDataURL(file);
+    }
+
+
+    loadAllagence() {
+
+        this.paramsService.getAllAgence().subscribe(img => {
+
+            this.img = img[0];
+            console.log(this.img);
+            //console.log(this.currentUser);
+
+            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+            this.uploader.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };*/
+        });
+
     }
 }
