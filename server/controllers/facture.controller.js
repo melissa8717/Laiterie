@@ -69,6 +69,7 @@ router.post('/addavoir', addavoir);
 router.get('/listavoir', getAllListavoir);
 router.get('/impravoir/:id_avoir', getByIdAvoir);
 router.get('/avoiprim/:id_avoir', getByIdPeodavoir);
+router.get('/avlibreiprim/:id_avoir',getByIdPeodavlibre);
 
 router.post('/acote', addacompte);
 router.get('/acolist/:id_facture/:n_situation', getByIdAcopmte);
@@ -708,6 +709,20 @@ function getByIdAvoir(req, res) {
 
 function getByIdPeodavoir(req, res) {
     factureService.getByIdPeodavoir(req.params.id_avoir, req.body)
+        .then(function (results) {
+            if (results) {
+                res.send(results);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdPeodavlibre(req, res) {
+    factureService.getByIdPeodavlibre(req.params.id_avoir, req.body)
         .then(function (results) {
             if (results) {
                 res.send(results);

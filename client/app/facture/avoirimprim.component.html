@@ -84,6 +84,7 @@
                         <th>Libellé</th>
                         <th>P.U.</th>
                         <th>Quantité</th>
+                        <th>TVA en %</th>
                         <th>Prix H.T en €</th>
                     </tr>
                     </thead>
@@ -94,23 +95,66 @@
                         <td>{{prod.libelle}}</td>
                         <td>{{prod.prixfact}}</td>
                         <td>{{prod.qtefact}}</td>
+                        <td></td>
                         <td>{{ prod.prixfact * prod.qtefact | number:'1.0-2'}}</td>
                     </tr>
 
+                    <tr *ngFor="let prod of libre">
+                        <td>{{prod.id_prod}} </td>
+                        <td>{{prod.nom}}</td>
+                        <td>{{prod.prix}}</td>
+                        <td>{{prod.qte}}</td>
+                        <td>{{prod.tva}}</td>
+                        <td>{{ prod.prix * prod.qte | number:'1.0-2'}}</td>
+                    </tr>
+
                     <tr class="gras">
-                        <td colspan="3"></td>
+                        <td colspan="4"></td>
                         <td>Total H.T en € :</td>
-                        <td>{{countTotalProduit() | number:'1.0-2'}}</td>
+                        <td>- {{countTotalProduit()+ countTotallibre() | number:'1.0-2'}}</td>
                     </tr>
-                    <tr class="gras">
-                        <td colspan="3"></td>
+
+                    <tr class="gras" *ngIf="valeur.remise">
+                        <td colspan="4"></td>
+                        <td>Total après Remise : {{valeur.remise}} % :</td>
+                        <td>- {{countTotallibreremise() | number:'1.0-2'}}</td>
+                    </tr>
+
+                    <tr class="gras" *ngIf="valeur.tva">
+                        <td colspan="4"></td>
                         <td>TVA  {{valeur.tva}} % :</td>
-                        <td>{{countTva() | number:'1.0-2'}}</td>
+                        <td>- {{countTva() | number:'1.0-2'}}</td>
+                    </tr>
+
+                    <tr *ngIf="TVAV()">
+                        <td colspan="4"></td>
+                        <td  >TVA 20 % :</td>
+                        <td >- {{TVAV() | number:'1.0-2'}}</td>
+                    </tr>
+                    <tr *ngIf="TVAD()">
+                        <td colspan="4"></td>
+                        <td  >TVA 10 % :</td>
+                        <td >- {{TVAD() | number:'1.0-2'}}</td>
+                    </tr>
+                    <tr *ngIf="TVAC()">
+                        <td colspan="4"></td>
+                        <td  >TVA 5.5 % :</td>
+                        <td >- {{TVAC() | number:'1.0-2'}}</td>
+                    </tr>
+                    <tr *ngIf="TVADU()">
+                        <td colspan="3"></td>
+                        <td  >TVA 2.1 % :</td>
+                        <td >- {{TVADU() | number:'1.0-2'}}</td>
+                    </tr>
+                    <tr *ngIf="TVAZ()">
+                        <td colspan="4"></td>
+                        <td  >TVA 0 % :</td>
+                        <td >- {{TVAZ() | number:'1.0-2'}}</td>
                     </tr>
                     <tr class="gras">
-                        <td colspan="3"></td>
+                        <td colspan="4"></td>
                         <td> Total TTC en € :</td>
-                        <td>{{countTotalavoir() | number:'1.0-2'}}</td>
+                        <td>- {{countTotalavoir() | number:'1.0-2'}}</td>
                     </tr>
                     </tbody>
 

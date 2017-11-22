@@ -244,8 +244,11 @@ export class FactureService {
     }
 
     getByIdPeodavoir(id_avoir:number) {
-        //console.log(this.config.apiUrl + '/facture/primsit')
         return this.http.get(this.config.apiUrl + '/facture/avoiprim/' + id_avoir, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdPeodavlibre(id_avoir:number) {
+        return this.http.get(this.config.apiUrl + '/facture/avlibreiprim/' + id_avoir, this.jwt()).map((response: Response) => response.json());
     }
 
     addacompte(facture: any) {
@@ -298,6 +301,7 @@ export class FactureService {
     addavoirlibre(facture: any) {
         return this.http.post(this.config.apiUrl + '/facture/adavoirlibre', facture, this.jwt());
     }
+
 
 
 
