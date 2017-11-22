@@ -16,6 +16,9 @@ services:
       - mysql
     environment:
       - NODE_ENV=production
+    volumes:
+      - "./files:/usr/src/app/files"
+      - "./images:/usr/src/app/images"
 
   mysql:
     image: mysql:5.6
