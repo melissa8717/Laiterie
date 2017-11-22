@@ -99,23 +99,15 @@ export class Param_genComponent {
     }
 
     loadAllagence() {
-
         this.paramsService.getAllAgence().subscribe(model => {
+            if (model && model[0]) {
+                this.model = model[0];
 
-            this.model = model[0];
-            console.log(this.model);
-            //console.log(this.currentUser);
-
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.model.id_agence});
-            this.uploaderImg.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-
-            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };*/
-
+                this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.model.id_agence});
+                this.uploaderImg.onAfterAddingFile = (file) => {
+                    file.withCredentials = false;
+                };
+            }
         });
     }
 

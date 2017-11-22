@@ -16,7 +16,7 @@ function buildContact(body) {
     var options = {format: 'A4'};
 
     pdf.create(html, options).toFile('./files/fichecontact/fichecontact_' + body.contact.id_contact + '.pdf', function (err, res) {
-        if (err) deferred.reject(error.name + ': ' + error.message);
+        if (err) deferred.reject(err.name + ': ' + err.message);
 
         deferred.resolve();
     });
@@ -26,7 +26,7 @@ function buildContact(body) {
 function deleteContact(id) {
     var deferred = Q.defer();
     fs.unlink('./files/fichecontact/fichecontact_' + id + '.pdf', function (err) {
-        //if(err) deferred.reject(err);
+        if(err) deferred.reject(err);
 
         deferred.resolve();
     });

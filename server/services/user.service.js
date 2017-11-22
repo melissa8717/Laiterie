@@ -1,5 +1,4 @@
-﻿var config = require('config.json');
-var _ = require('lodash');
+﻿var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var Q = require('q');
@@ -43,7 +42,7 @@ function authenticate(username, password) {
                 statutName: user.statut,
                 firstName: user.firstname,
                 lastName: user.lastname,
-                token: jwt.sign({sub: user.id}, config.secret)
+                token: jwt.sign({sub: user.id}, " ")
             });
         } else {
             // authentication failed
