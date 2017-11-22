@@ -62,8 +62,9 @@
             </div>
         <h3 class="col-sm-12">Agence</h3>
 
-
             <div *ngIf="uploaderImg" class="col-sm-2">
+                <h4>Logo</h4>
+
                 <div style="height: 15%; width: 100%;">
                     <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
                     <img *ngIf="!url && model.image"
