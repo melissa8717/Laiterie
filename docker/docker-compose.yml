@@ -3,6 +3,7 @@ version: '3' # specify docker-compose version
 services:
   client:
     build: ../client
+    container_name: client
     ports:
       - "3000:3000"
     depends_on:
@@ -11,6 +12,7 @@ services:
 
   server:
     build: ../server
+    container_name: server
     ports:
       - "4000:4000"
     volumes:
@@ -26,8 +28,9 @@ services:
 
   mysql:
     image: mysql:5.6
+    container_name: mysql
     volumes:
-      - "./schema.sql:/docker-entrypoint-initdb.d/schema.sql"
+      - "./sql_init:/docker-entrypoint-initdb.d"
       - "./mysql_data:/var/lib/mysql"
     environment:
       MYSQL_ROOT_PASSWORD: 'root'

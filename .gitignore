@@ -49,3 +49,6 @@ client/app/**/*.js.map
 server/files
 client/nbproject/private/
 docker/mysql_data/
+docker/files/
+docker/images/
+docker/script.sql
