@@ -131,7 +131,7 @@
 
                 </div>
 
-                <div class="form-group col-sm-6 col-sm-offset-6"  style="margin-top: 20px;">
+                <div *ngIf="fact" class="form-group col-sm-6 col-sm-offset-6"  style="margin-top: 20px;">
                     <span  style="margin-top: 40px;">{{fact.villefact}}* , le <input style="border:1px solid white;" type="date" name="date_fact" [(ngModel)]="devis.date_fact" required><!--variable--></span>
                 </div>
 
@@ -555,7 +555,7 @@
         </form>
         <article style="margin-top: 0px;bottom: 16px;left: 0; right: 0;position: fixed;text-align: center;z-index: 4;font-size: 9px;" >
 
-            <p style="font-size:7px; height: 10px;" class="red">{{fact.pied_page1}}
+            <p *ngIf="fact" style="font-size:7px; height: 10px;" class="red">{{fact.pied_page1}}
                 {{fact.pied_page2}}
                 {{fact.pied_page3}}
                 {{fact.pied_page4}}
