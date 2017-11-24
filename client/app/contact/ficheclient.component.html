@@ -158,6 +158,30 @@
 					</div>
 				</div>
 
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Siret :</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="siret" [(ngModel)]="contact.siret" >
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Type :</label>
+					<div class="col-sm-3">
+						<select name="energie"   [(ngModel)]="contact.type" class="input-sm col-sm-12" >
+							<option [selected]="contact.type =='Employé'">Employé</option>
+							<option [selected]="contact.type =='Fournisseur'">Fournisseur</option>
+							<option [selected]="contact.type =='Client'">Client</option>
+							<option [selected]="contact.type =='Entreprise de travaux'">Entreprise de travaux</option>
+							<option [selected]="contact.type =='Laboratoire d analyse'">Laboratoire d analyse</option>
+							<option [selected]="contact.type =='Transporteur'">Transporteur</option>
+							<option [selected]="contact.type =='Site de traitement'">Site de traitement</option>
+							<option [selected]="contact.type =='Ouvrier'">Ouvrier</option>
+							<option [selected]="contact.type =='Sous-traitant'">Sous_traitant</option>
+						</select>
+					</div>
+				</div>
+
 				<h5 class="col-sm-12">Informations complémentaires</h5>
 				<!--retenue de garantie est valable un an prévoir une alerte-->
 
