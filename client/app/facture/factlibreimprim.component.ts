@@ -4,16 +4,17 @@
 /**
  * Created by cédric on 17/07/2017.
  */
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../_services/index';
-import {FactureService} from "../_services/facture.service";
-import {ParamsService} from "../_services/params.service"; //
-import {User} from "../_models/user";
+import {AlertService, AuthenticationService} from '../_services/index';
+import {FactureService} from '../_services/facture.service';
+import {ParamsService} from '../_services/params.service'; //
+import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
-const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -48,7 +49,7 @@ export class FactlibreimprimComponent {
 
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files:any;
+    base64Files: any;
     loc = location.hostname;
     image: any[];
     id_agence: number;
@@ -60,14 +61,15 @@ export class FactlibreimprimComponent {
                 private authenticationService: AuthenticationService,
                 private alertService: AlertService,
                 private factureService: FactureService,
-                private paramsService: ParamsService) {
+                private paramsService: ParamsService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
         let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
+        body.className = '';
+        body.className += 'flatclair';
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         this.loadAllFooter();
@@ -112,7 +114,7 @@ export class FactlibreimprimComponent {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibreModif(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibreModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
                     console.log(this.model)
@@ -125,7 +127,7 @@ export class FactlibreimprimComponent {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibrebase(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
                 }
@@ -138,7 +140,7 @@ export class FactlibreimprimComponent {
 
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibredetail(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detail = data;
                 }
@@ -146,12 +148,12 @@ export class FactlibreimprimComponent {
         });
     }
 
-    loadSum(){
+    loadSum() {
         this.route.params.subscribe(params => {
 
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibresumimprim(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibresumimprim(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.summe = data[0];
                 }
@@ -159,12 +161,12 @@ export class FactlibreimprimComponent {
         });
     }
 
-    loadDetimprim(){
+    loadDetimprim() {
         this.route.params.subscribe(params => {
 
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibredetailimprim(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibredetailimprim(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detailimprim = data;
 
@@ -173,12 +175,12 @@ export class FactlibreimprimComponent {
         });
     }
 
-    loadBaseimprim(){
+    loadBaseimprim() {
         this.route.params.subscribe(params => {
 
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibrebaseimprim(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibrebaseimprim(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.baseimprim = data;
 
@@ -190,125 +192,121 @@ export class FactlibreimprimComponent {
 
     totaligne(bases: any) {
         if (bases.pourcent)
-            return bases.qte_fact  * bases.prix_fact * (bases.pourcent/100);
+            return bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         else return 0;
     }
 
     totaligndet(details: any) {
         if (details.pourcent)
-            return details.qteprod  * details.prix_prod * (details.pourcentf/100);
+            return details.qteprod * details.prix_prod * (details.pourcentf / 100);
         else return 0;
     }
 
-    totalbase(){
+    totalbase() {
         let total = 0;
 
         for (let bases of this.base) {
-            total += bases.qte_fact  * bases.prix_fact ;
+            total += bases.qte_fact * bases.prix_fact;
         }
         return total;
     }
 
-    totaldetail(){
+    totaldetail() {
         let total = 0;
 
         for (let details of this.detail) {
-            total += details.qteprod  * details.prix_prod ;
+            total += details.qteprod * details.prix_prod;
         }
         return total;
     }
 
 
-    counttotalbase(){
+    counttotalbase() {
         let total = 0;
 
         for (let bases of this.base) {
-            total += bases.qte_fact  * bases.prix_fact * (bases.pourcent/100);
+            total += bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         }
         return total;
     }
 
-    counttotaldetail(){
+    counttotaldetail() {
         let total = 0;
 
         for (let details of this.detail) {
-            total += details.qteprod  * details.prix_prod * (details.pourcentf/100);
+            total += details.qteprod * details.prix_prod * (details.pourcentf / 100);
         }
         return total;
     }
 
-    totalfacture(){
-        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) * (1-(this.model.remise ? (this.model.remise /100 ):1) );
+    totalfacture() {
+        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) * (1 - (this.model.remise ? (this.model.remise / 100 ) : 1) );
     }
 
     countTotals() {
-        return (this.counttotalbase() + this.counttotaldetail()) * (1-(this.model.remise ? (this.model.remise/100) : 1));
+        return (this.counttotalbase() + this.counttotaldetail()) * (1 - (this.model.remise ? (this.model.remise / 100) : 1));
     }
 
     countRemise() {
-        return this. countTotals() * ((this.model.remise ? (this.model.remise / 100) : 1) );
+        return this.countTotals() * ((this.model.remise ? (this.model.remise / 100) : 1) );
     }
 
-    countTotalNet(){
+    countTotalNet() {
         return this.countTotals();
     }
 
-    CountTotalsituation(){
+    CountTotalsituation() {
         this.model.situation = this.countTotalNet() - (this.summe.somme);
         return this.model.situation;
     }
 
     /**********************************TVA**************************************************************************************/
 
-    TVAVO()
-    {
+    TVAVO() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 20){
-                total += ( details.prix_prod * details.qteprod *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (details.pourcentf/100)* (details.tva /100) ;
+            if (details.tva == 20) {
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
 
             }
         }
         return total;
     }
 
-    TVAV()
-    {
+    TVAV() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 20){
-                total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
+            if (bases.tva == 20) {
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
             console.log(total);
         }
         return total;
     }
 
-    TVAVtd()
-    {
+    TVAVtd() {
         let total = 0;
 
         for (let detaili of this.detailimprim) {
 
-            if (detaili.tva == 20){
+            if (detaili.tva == 20) {
                 total += detaili.totaltvad;
             }
         }
         return total;
     }
 
-    TVAVtb()
-    {
+    TVAVtb() {
         let total = 0;
 
         for (let basei of this.baseimprim) {
 
-            if (basei.tva == 20){
-                total += basei.totaltvab  ;
+            if (basei.tva == 20) {
+                total += basei.totaltvab;
                 console.log(total);
 
             }
@@ -317,65 +315,61 @@ export class FactlibreimprimComponent {
 
     }
 
-    sumTvavre(){
-        return ((this.TVAVtd()? this.TVAVtd():0) + (this.TVAVtb()? this.TVAVtb() : 0));
+    sumTvavre() {
+        return ((this.TVAVtd() ? this.TVAVtd() : 0) + (this.TVAVtb() ? this.TVAVtb() : 0));
     }
 
-    SumTvaV(){
-        return (this.TVAV() ? this.TVAV():0)  + (this.TVAVO() ? this.TVAVO() :0) - this.sumTvavre()  ;
+    SumTvaV() {
+        return (this.TVAV() ? this.TVAV() : 0) + (this.TVAVO() ? this.TVAVO() : 0) - this.sumTvavre();
 
     }
 
-    TVADO()
-    {
+    TVADO() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 10){
-                total += ( details.prix_prod * details.qteprod *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (details.pourcentf/100)* (details.tva /100) ;
+            if (details.tva == 10) {
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
 
             }
         }
         return total;
     }
 
-    TVAD()
-    {
+    TVAD() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 10){
-                total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
+            if (bases.tva == 10) {
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
 
         }
         return total;
     }
 
-    TVADtd()
-    {
+    TVADtd() {
         let total = 0;
 
         for (let detaili of this.detailimprim) {
 
-            if (detaili.tva == 10){
-                total += detaili.totaltvad ;
+            if (detaili.tva == 10) {
+                total += detaili.totaltvad;
 
             }
         }
         return total;
     }
 
-    TVADtb()
-    {
+    TVADtb() {
         let total = 0;
 
         for (let basei of this.baseimprim) {
 
-            if (basei.tva == 10){
-                total += basei.totaltvab ;
+            if (basei.tva == 10) {
+                total += basei.totaltvab;
 
             }
         }
@@ -383,61 +377,56 @@ export class FactlibreimprimComponent {
     }
 
 
-
-    SummTvaD(){
-        return this.TVAD() + this.TVADO()- (this.TVADtd()? this.TVADtd():0) - (this.TVADtb()? this.TVADtb() : 0);
+    SummTvaD() {
+        return this.TVAD() + this.TVADO() - (this.TVADtd() ? this.TVADtd() : 0) - (this.TVADtb() ? this.TVADtb() : 0);
     }
 
-    TVACO()
-    {
+    TVACO() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 5.5){
-                total += ( details.prix_prod * details.qteprod *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (details.pourcentf/100)* (details.tva /100) ;
+            if (details.tva == 5.5) {
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
 
             }
         }
         return total;
     }
 
-    TVAC()
-    {
+    TVAC() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 5.5){
-                total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
+            if (bases.tva == 5.5) {
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
 
         }
         return total;
     }
 
-    TVACtd()
-    {
+    TVACtd() {
         let total = 0;
 
         for (let detaili of this.detailimprim) {
 
-            if (detaili.tva == 5.5){
-                total += detaili.totaltvad ;
+            if (detaili.tva == 5.5) {
+                total += detaili.totaltvad;
 
             }
         }
         return total;
     }
 
-    TVACtb()
-    {
+    TVACtb() {
         let total = 0;
 
         for (let basei of this.baseimprim) {
 
-            if (basei.tva == 5.5){
-                total += basei.totaltvab ;
+            if (basei.tva == 5.5) {
+                total += basei.totaltvab;
 
             }
         }
@@ -445,61 +434,54 @@ export class FactlibreimprimComponent {
     }
 
 
-
-
-
-    SummTvaC(){
-        return this.TVAC() + this.TVACO() - (this.TVACtd()? this.TVACtd():0) - (this.TVACtb()? this.TVACtb() : 0);
+    SummTvaC() {
+        return this.TVAC() + this.TVACO() - (this.TVACtd() ? this.TVACtd() : 0) - (this.TVACtb() ? this.TVACtb() : 0);
     }
 
-    TVADUO()
-    {
+    TVADUO() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 2.1){
-                total += ( details.prix_prod * details.qteprod *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (details.pourcentf/100)* (details.tva /100) ;
+            if (details.tva == 2.1) {
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
             }
         }
         return total;
     }
 
-    TVADU()
-    {
+    TVADU() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 2.1){
-                total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
+            if (bases.tva == 2.1) {
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
         }
         return total;
     }
 
-    TVADUtd()
-    {
+    TVADUtd() {
         let total = 0;
 
         for (let detaili of this.detailimprim) {
 
-            if (detaili.tva == 5.5){
-                total += detaili.totaltvad ;
+            if (detaili.tva == 5.5) {
+                total += detaili.totaltvad;
 
             }
         }
         return total;
     }
 
-    TVADUtb()
-    {
+    TVADUtb() {
         let total = 0;
 
         for (let basei of this.baseimprim) {
 
-            if (basei.tva == 5.5){
-                total += basei.totaltvab ;
+            if (basei.tva == 5.5) {
+                total += basei.totaltvab;
 
             }
         }
@@ -507,48 +489,45 @@ export class FactlibreimprimComponent {
     }
 
 
-
-    SummTvaDU(){
-        return this.TVADU() + this.TVADUO() - (this.TVADUtd()? this.TVADUtd():0) - (this.TVADUtb()? this.TVADUtb() : 0);
+    SummTvaDU() {
+        return this.TVADU() + this.TVADUO() - (this.TVADUtd() ? this.TVADUtd() : 0) - (this.TVADUtb() ? this.TVADUtb() : 0);
     }
 
-    TVAZO()
-    {
+    TVAZO() {
         let total = 0;
 
         for (let details of this.detail) {
-            if (details.tva  == 0){
+            if (details.tva == 0) {
                 total += 0;
             }
         }
         return total;
     }
 
-    TVAZ()
-    {
+    TVAZ() {
         let total = 0;
 
         for (let bases of this.base) {
-            if (bases.tva == 0){
-                total +=0;
+            if (bases.tva == 0) {
+                total += 0;
             }
         }
         return total;
     }
 
-    SummTvaZ(){
+    SummTvaZ() {
         return this.TVAZ() + this.TVAZO();
     }
 
-    TotalTva(){
-        return this.SummTvaZ() +this.SummTvaDU() + this.SummTvaC() + this.SummTvaD() + this.SumTvaV();
+    TotalTva() {
+        return this.SummTvaZ() + this.SummTvaDU() + this.SummTvaC() + this.SummTvaD() + this.SumTvaV();
     }
 
-    countTotalttc(){
-        return this.TotalTva() +  this. CountTotalsituation();
+    countTotalttc() {
+        return this.TotalTva() + this.CountTotalsituation();
     }
 
-    imprimer(){
+    imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
@@ -587,7 +566,7 @@ export class FactlibreimprimComponent {
             console.log(this.img);
             //console.log(this.currentUser);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };

@@ -2,27 +2,28 @@
  * Created by Wbat on 23/05/2017.
  */
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, AuthenticationService, AchatsService, ContactService} from '../_services/index';
-import {Product} from "../_models/products/produit";
-import {Histo} from "../_models/histo";
-import {VentesService} from "../_services/ventes.service";
-import {FormBuilder} from "@angular/forms";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {ParamsService} from "../_services/params.service";
-import {User} from "../_models/user";
+import {AchatsService, AlertService, AuthenticationService, ContactService} from '../_services/index';
+import {Product} from '../_models/products/produit';
+import {Histo} from '../_models/histo';
+import {VentesService} from '../_services/ventes.service';
+import {FormBuilder} from '@angular/forms';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {ParamsService} from '../_services/params.service';
+import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
-const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'produitvente.component.html',
+    templateUrl: 'produitvente.component.html'
 })
 
 export class ProduitventeComponent implements OnInit {
-    unites = ["m", "m²", "m3", "litre", "tonne", "kilogramme", "heure", "unité", "m linéaire", "lot", "sac", "big bag"];
+    unites = ['m', 'm²', 'm3', 'litre', 'tonne', 'kilogramme', 'heure', 'unité', 'm linéaire', 'lot', 'sac', 'big bag'];
 
     public uploaderImg: FileUploader;
 
@@ -60,7 +61,8 @@ export class ProduitventeComponent implements OnInit {
                 private alertService: AlertService,
                 private builder: FormBuilder, private _sanitizer: DomSanitizer,
                 private _route: ActivatedRoute,
-                private paramsService: ParamsService) {
+                private paramsService: ParamsService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
@@ -93,7 +95,7 @@ export class ProduitventeComponent implements OnInit {
                     this.loadHistorique(this.id);
                     console.log(this.product);
 
-                    this.uploaderImg = new FileUploader({url: URLimg + "produitv/" + params['id']});
+                    this.uploaderImg = new FileUploader({url: URLimg + 'produitv/' + params['id']});
                     this.uploaderImg.onAfterAddingFile = (file) => {
                         file.withCredentials = false;
                     };
@@ -146,7 +148,7 @@ export class ProduitventeComponent implements OnInit {
             data => {
                 this.loading = false;
                 this.router.navigate(['/listevente']);
-                this.alertService.success("Le produit a bien été mis a jour. ")
+                this.alertService.success('Le produit a bien été mis a jour. ')
             },
             err => {
                 console.log(err);
@@ -163,7 +165,7 @@ export class ProduitventeComponent implements OnInit {
                 this.historique = data;
             },
             err => {
-                console.log("impossible de charger l'historique");
+                console.log('impossible de charger l\'historique');
             }
         )
     }
@@ -197,7 +199,7 @@ export class ProduitventeComponent implements OnInit {
 
     verifymarge(mo: any) {
         if (+mo.margepc < +mo.margemin) {
-            alert("Attention, votre marge est inférieure à la marge minimale !");
+            alert('Attention, votre marge est inférieure à la marge minimale !');
         }
     }
 
@@ -215,12 +217,12 @@ export class ProduitventeComponent implements OnInit {
     private chooseMainOeuvreLibelle(i: number) {
         var prod = this.mainOeuvre.filter(x => x.libelle == this.mainOeuvreAdd.libelle.libelle)[0];
         this.mainOeuvreAdd = Object.assign({}, prod);
-        this.mainOeuvreAdd.quantite = "00:00";
+        this.mainOeuvreAdd.quantite = '00:00';
         this.calcpercent(this.mainOeuvreAdd);
     }
 
     calcpercent(mo: any) {
-        console.log("lol", mo.marge, this.getTotalPrixAchat());
+        console.log('lol', mo.marge, this.getTotalPrixAchat());
         mo.margepc = (mo.marge && this.getTotalPrixAchat()) ?
             (mo.marge / this.getTotalPrixAchat() * 100).toFixed(2) : 0;
     }
@@ -267,7 +269,7 @@ export class ProduitventeComponent implements OnInit {
         }
         else {
             this.produitadd = {};
-            this.alertService.error("Le produit n'a pas pu être ajouté. Il est déjà présent dans la liste.")
+            this.alertService.error('Le produit n\'a pas pu être ajouté. Il est déjà présent dans la liste.')
         }
 
         this.calcvalue(this.product);
@@ -284,7 +286,7 @@ export class ProduitventeComponent implements OnInit {
         }
         else {
             this.mainOeuvreAdd = {};
-            this.alertService.error("Cette main d'oeuvre n'a pas pu être ajoutée. Elle est déjà présente dans la liste.");
+            this.alertService.error('Cette main d\'oeuvre n\'a pas pu être ajoutée. Elle est déjà présente dans la liste.');
         }
 
         this.calcvalue(this.product);
@@ -336,7 +338,7 @@ export class ProduitventeComponent implements OnInit {
     }
 
     autocompleListFormatterProducts = (data: any): SafeHtml => {
-        let html = `<span>${data.libelle} : ${data.prix_achat}€ - ${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom} </span>`;
+        let html = `<span>${data.libelle} : ${data.prix_achat}€ - ${data.raison_sociale ? data.raison_sociale : data.nom + ' ' + data.prenom} </span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
@@ -376,8 +378,8 @@ export class ProduitventeComponent implements OnInit {
 
 
     private formatDate(date: Date) {
-        var day = ("0" + date.getDate()).slice(-2);
-        var month = ("0" + (date.getMonth() + 1)).slice(-2)
+        var day = ('0' + date.getDate()).slice(-2);
+        var month = ('0' + (date.getMonth() + 1)).slice(-2)
         var year = date.getFullYear();
 
         return year + '-' + month + '-' + day; // format pour chrome, not tested in other browsers
@@ -411,8 +413,8 @@ export class ProduitventeComponent implements OnInit {
          let currentUser = JSON.parse(localStorage.getItem('currentUser'));
          console.log(currentUser._id);
          console.log(currentUser.firstName);*/
-        console.log("in debug");
-        console.log("prod modifie: " + JSON.stringify(this.updateProduct));
+        console.log('in debug');
+        console.log('prod modifie: ' + JSON.stringify(this.updateProduct));
 
     }
 

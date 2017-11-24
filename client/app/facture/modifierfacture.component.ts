@@ -4,16 +4,17 @@
 /**
  * Created by cédric on 17/07/2017.
  */
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../_services/index';
-import {FactureService} from "../_services/facture.service";
-import {ParamsService} from "../_services/params.service"; //
-import {User} from "../_models/user";
+import {AlertService, AuthenticationService} from '../_services/index';
+import {FactureService} from '../_services/facture.service';
+import {ParamsService} from '../_services/params.service'; //
+import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
-const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -25,9 +26,9 @@ export class ModifierfactureComponent {
 
 
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
     model: any = {};
     nfact: any = {};
@@ -52,7 +53,7 @@ export class ModifierfactureComponent {
 
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files:any;
+    base64Files: any;
     loc = location.hostname;
     image: any[];
     id_agence: number;
@@ -64,14 +65,15 @@ export class ModifierfactureComponent {
                 private authenticationService: AuthenticationService,
                 private alertService: AlertService,
                 private factureService: FactureService,
-                private paramsService:ParamsService) {
+                private paramsService: ParamsService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
         let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
+        body.className = '';
+        body.className += 'flatclair';
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         this.loadAllFooter();
@@ -121,7 +123,7 @@ export class ModifierfactureComponent {
             this.id_facture = params['id_facture']
             this.n_situation = params['n_situation']
             console.log(this.id_facture);
-            this.factureService.getByIdModif(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
                     console.log(this.model)
@@ -139,7 +141,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdSituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.situa = data;
-                    console.log("situa");
+                    console.log('situa');
                     console.log(data);
                 }
             )
@@ -154,7 +156,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdSitoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.option = data;
-                    console.log("option");
+                    console.log('option');
                     console.log(data);
                 }
             )
@@ -169,7 +171,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdOptSit(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.optsit = data[0];
-                    console.log("option");
+                    console.log('option');
                     console.log(data);
                 }
             )
@@ -195,7 +197,7 @@ export class ModifierfactureComponent {
             this.id_facture = params['id_facture']
             this.n_situation = params['n_situation']
             console.log(this.id_facture);
-            this.factureService.getByIdAccpt(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdAccpt(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.accomp = data[0];
                     console.log(this.accomp)
@@ -211,16 +213,16 @@ export class ModifierfactureComponent {
         factureparams.option = this.option;
         factureparams.model = this.model;
         factureparams.valeur = this.valeur;
-        factureparams.nfact =this.nfact;
+        factureparams.nfact = this.nfact;
 
-        var test = +confirm ("Etes vous sür de vouloir enregitrer votre facture :");
+        var test = +confirm('Etes vous sür de vouloir enregitrer votre facture :');
         //console.log(factureparams);
-        if(test) {
+        if (test) {
             console.log(factureparams);
             this.factureService.createSituation(factureparams, this.id_facture).subscribe(
                 data => {
-                    this.router.navigate(["/listefacture"]);
-                    this.alertService.success("La nouvelle situation de la facture a été créée avec succès.");
+                    this.router.navigate(['/listefacture']);
+                    this.alertService.success('La nouvelle situation de la facture a été créée avec succès.');
                 });
         }
     }
@@ -317,8 +319,8 @@ export class ModifierfactureComponent {
 
     totalsituation(valeur: any) {
         if (this.valeur.remise)
-            return ((this.totalsit.totaldet + (this.optsit.totalopt>0 ? this.optsit.totalopt :0 )) * (1 - (this.valeur.remise / 100)))+(this.accomp.accompte_value ? this.accomp.accompte_value :0);
-        else return (this.totalsit.totaldet + (this.optsit.totalopt>0 ? this.optsit.totalopt :0 ))+(this.accomp.accompte_value ? this.accomp.accompte_value :0);
+            return ((this.totalsit.totaldet + (this.optsit.totalopt > 0 ? this.optsit.totalopt : 0 )) * (1 - (this.valeur.remise / 100))) + (this.accomp.accompte_value ? this.accomp.accompte_value : 0);
+        else return (this.totalsit.totaldet + (this.optsit.totalopt > 0 ? this.optsit.totalopt : 0 )) + (this.accomp.accompte_value ? this.accomp.accompte_value : 0);
     }
 
     countTotalsituation(situas: any, valeur: any, options: any) {
@@ -361,7 +363,6 @@ export class ModifierfactureComponent {
     }
 
 
-
     loadAllagence() {
 
         this.paramsService.getAllAgence().subscribe(img => {
@@ -370,7 +371,7 @@ export class ModifierfactureComponent {
             console.log(this.img);
             //console.log(this.currentUser);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
