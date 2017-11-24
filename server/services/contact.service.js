@@ -61,6 +61,7 @@ service.getByIdNom = getByIdNom;
 service.getAllform = getAllform;
 service.getAllCaces = getAllCaces;
 service.getByIdFormation = getByIdFormation;
+service.deleteFormation = deleteFormation;
 service.addCaces = addCaces;
 service.getByIdCaces = getByIdCaces;
 service.upCaces = upCaces;
@@ -930,6 +931,20 @@ function getByIdFormation(id_contact) {
 
 }
 
+function deleteFormation(id_formationcontact) {
+    var deferred = Q.defer();
+    db.query("DELETE FROM formationcontact WHERE id_formationcontact = ? ", [id_formationcontact], function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+
+        }
+        deferred.resolve();
+    });
+
+    return deferred.promise;
+}
+
 
 ///CACES::::
 
@@ -1029,7 +1044,7 @@ function equipement(equipement, id_contact) {
     console.log(id_contact);
 
 
-    db.query("INSERT INTO equipement(id_contact,designation,nbre,taille,commentaire) VALUES (? , ?,?,?,?)", [id_contact, equipement.designation, equipement.nbre, equipement.taille, equipement.commentaire], function (error, results, fields) {
+    db.query("INSERT INTO equipement(id_contact,designation,nbre,taille,commentaire,date) VALUES (? , ?,?,?,?,?)", [id_contact, equipement.designation, equipement.nbre, equipement.taille, equipement.commentaire, equipement.date], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
@@ -1053,7 +1068,6 @@ function getByIdequipement(id_contact) {
 }
 
 function deleteEquipement(id_equipement) {
-    console.log("DELETE FROM equipement WHERE id_equipement = ? ", [id_equipement]);
     var deferred = Q.defer();
     db.query("DELETE FROM equipement WHERE id_equipement = ? ", [id_equipement], function (error, results, fields) {
         if (error) {

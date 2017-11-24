@@ -67,6 +67,7 @@ router.get('/devis/:id_contact', getByIdDevisclient);
 router.post('/formation', addForm);
 router.get('/nom/:id_contact', getByIdNom);
 router.get('/idform/:id_contact', getByIdFormation);
+router.delete('/deform/:id_formationcontact',deleteFormation);
 router.post('/ajoutcaces', addCaces);
 router.get('/selcaces/:id_contact', getByIdCaces);
 
@@ -493,6 +494,16 @@ function getByIdNom(req, res) {
             } else {
                 res.sendStatus(404);
             }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function deleteFormation(req, res) {
+    contactService.deleteFormation(req.params.id_formationcontact)
+        .then(function () {
+            res.sendStatus(200);
         })
         .catch(function (err) {
             res.status(400).send(err);

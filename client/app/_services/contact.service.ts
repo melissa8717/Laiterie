@@ -147,7 +147,6 @@ export class ContactService {
 
 
     getAllCaces() {
-        console.log(this.config.apiUrl + '/contacts')
         return this.http.get(this.config.apiUrl + '/contacts/listcaces', this.jwt()).map((response: Response) => response.json());
     }
 
@@ -156,7 +155,6 @@ export class ContactService {
     }
 
     addCaces(eparams:any) {
-        console.log(this.config.apiUrl + '/contacts/formation')
         return this.http.post(this.config.apiUrl + '/contacts/ajoutcaces',eparams, this.jwt());
     }
 
@@ -164,12 +162,10 @@ export class ContactService {
         return this.http.get(this.config.apiUrl + '/contacts/selcaces/' + id_contact, this.jwt()).map((response: Response) => response.json());
     }
     upCaces(eParams:any){
-        console.log('test')
         return this.http.put(this.config.apiUrl + '/contacts/upcaces' ,eParams, this.jwt());
     }
 
     upFormation(eParams:any){
-        console.log('test')
         return this.http.put(this.config.apiUrl + '/contacts/modiform' ,eParams, this.jwt());
     }
     equipement(id_contact:number,equipement: any) {
@@ -181,6 +177,10 @@ export class ContactService {
     }
     deleteEquipement(id_equipement:number) {
         return this.http.delete(this.config.apiUrl + '/contacts/entre/' + id_equipement, this.jwt());
+    }
+
+    deleteFormation(id_formationcontact:number) {
+        return this.http.delete(this.config.apiUrl + '/contacts/deform/' + id_formationcontact, this.jwt());
     }
 
     // private helper methods
