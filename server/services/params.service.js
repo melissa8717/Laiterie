@@ -36,6 +36,10 @@ service.getByIdDroit = getByIdDroit;
 service.deleteuser = deleteuser;
 service.updateuser = updateuser;
 
+service.updateTest = updateTest;
+service.getCompte = getCompte;
+service.getComlic = getComlic;
+
 service.addFormation = addFormation;
 service.getAllFormation = getAllFormation;
 
@@ -514,6 +518,73 @@ function updateuser(user_param) {
     return deferred.promise;
 }
 
+
+/*****************************************************************test*******************************************************/
+
+
+function updateTest(ag_param) {
+    var deferred = Q.defer();
+    console.log(ag_param);
+
+    var params = [
+        ag_param.numtest
+
+    ];
+
+
+
+    var query = "UPDATE  testing SET datedeb = NOW(), datefin = ( ADDDATE( NOW( ) , INTERVAL 5 YEAR ) ), validate=1 WHERE numtest = ? and validate IS NOT TRUE";
+    //console.log(query, params);
+    db.query(query, params, function (error, results, fields) {
+        if (error) {
+            console.log(+error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
+        }
+        //console.log(results)
+
+        deferred.resolve();
+    });
+
+    var query = "INSERT INTO accept_right (date_accept,validate) VALUES (NOW(),1)";
+
+    db.query(query, params, function (error, results, fields) {
+        if (error) {
+            console.log("error in licence service :" + error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        //console.log(results);
+        deferred.resolve(results);
+
+    });
+
+
+    return deferred.promise;
+}
+
+function getCompte() {
+    var deferred = Q.defer();
+    db.query('SELECT SUM( id_test ) AS test FROM  `testing` WHERE datefin >= NOW( )', function (error, params, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        //console.log(params);
+        deferred.resolve(params);
+    });
+    return deferred.promise;
+}
+
+function getComlic() {
+    var deferred = Q.defer();
+    db.query('SELECT * FROM testing WHERE validate IS TRUE AND datefin >= NOW( )', function (error, params, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        //console.log(params);
+        deferred.resolve(params);
+    });
+    return deferred.promise;
+}
 
 /********************************************FORMATION ************************************************************************************/
 

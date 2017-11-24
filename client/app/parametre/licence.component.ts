@@ -17,6 +17,7 @@ export class LicenceComponent  {
     model: any = {};
     lic:any;
     currentUser: User;
+    com:any[]=[];
 
 
 
@@ -29,32 +30,41 @@ export class LicenceComponent  {
     }
 
     ngOnInit() {
+        //this.authenticationService.logout();
         let body = document.getElementsByTagName('body')[0];
         body.className = "";
         body.className += "flatclair";
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-
+        this.loadCom();
 
     }
 
+    modify(ag_params:any) {
 
+        console.log(ag_params);
 
-    addLicence() {
+        var test = +confirm ("Acceptez vous les conditions de vente :");
+        //console.log(factureparams);
+        if(test) {
+            this.paramsService.updateTest(ag_params).subscribe(
+                data => {
+                    this.router.navigate(["/login"]);
+                    this.alertService.success("La licence a bien été mise à jour.");
+                });
+        }
+    }
 
+    loadCom(){
+        //console.log(this.com)
 
-        this.paramsService.addLicence(this.model).subscribe(lic => {
+        this.paramsService.getComlic().subscribe(com => {
 
-            this.lic = lic;
-            console.log(this.model);
-            //console.log("compo ts" this.lic);
-            this.alertService.success('Nouvelle licence ajoutée avec succès', true);
-            this.router.navigate(['/licence']);
+            this.com = com;
+            console.log(this.com);
 
         });
     }
-
-
 
 
 

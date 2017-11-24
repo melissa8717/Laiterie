@@ -18,6 +18,7 @@ export class UtilisationComponent {
     loading = false;
     count: any = {};
     test: any = {};
+    compte: any = {};
 
 
     currentUser: User;
@@ -35,15 +36,13 @@ export class UtilisationComponent {
     ngOnInit() {
         this.loadAllUser();
         this.loadCount();
-       // this.loadCurrentnb(this.currentUser);
+        this.loadCompte();
     }
 
 
     loadAllUser() {
         this.userService.getAllUser().subscribe(util => {
             this.util = util;
-            //console.log(this.util)
-            //console.log(this.currentUser);
 
         });
     }
@@ -55,7 +54,6 @@ export class UtilisationComponent {
         console.log(id);
         this.userService.updateUser(id,userparams).subscribe(
             data=>{
-                //console.log(userparams);
                 this.alertService.success("Les données ont bien été modifiées.");
             });
 
@@ -119,6 +117,15 @@ export class UtilisationComponent {
             data=>{
                 this.alertService.success("Les données ont bien été modifiées.");
             });
+    }
+
+    loadCompte() {
+        this.paramsService.getCompte().subscribe(compte => {
+            this.compte = compte[0];
+            console.log(this.compte)
+
+
+        });
     }
 
 }
