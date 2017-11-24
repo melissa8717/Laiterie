@@ -7,6 +7,8 @@ import {PlanningService} from '../_services/planning.service';
 import {ParamsService} from '../_services/params.service';
 import {FileUploader} from 'ng2-file-upload';
 
+import {AppConfig} from '../app.config';
+
 const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
@@ -38,7 +40,8 @@ export class HomeComponent implements OnInit {
     constructor(private userService: UserService,
                 private planningService: PlanningService,
                 private paramsService: ParamsService,
-                private messageService: MessageService) {
+                private messageService: MessageService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         console.log(this.currentUser);
     }

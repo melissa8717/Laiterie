@@ -6,6 +6,8 @@ services:
     container_name: client
     ports:
       - "3000:3000"
+    volumes:
+      - "./config.js:/usr/src/app/config.js"
     depends_on:
       - "server"
     command: ./wait-for-it.sh -t 0 server:4000 -- npm start

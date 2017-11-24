@@ -1,16 +1,17 @@
 /**
  * Created by cédric on 17/07/2017.
  */
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../_services/index';
-import {FactureService} from "../_services/facture.service";
-import {ParamsService} from "../_services/params.service"; //
-import {User} from "../_models/user";
+import {AlertService, AuthenticationService} from '../_services/index';
+import {FactureService} from '../_services/facture.service';
+import {ParamsService} from '../_services/params.service'; //
+import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
-const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -23,24 +24,23 @@ export class Editer_factureComponent {
     model: any = {};
     ret: any = {};
     version: any = {};
-    fact: any={};
-    nfact: any={};
+    fact: any = {};
+    nfact: any = {};
     detail: any[] = [];
     totalfact: any[] = [];
-    id_devis:number;
-    num_version:number;
-    qte_devis :number;
-    prix_devis :number;
-    pourcentage : number;
-    tva:number;
-    remise:number;
-    montant_ht:number;
+    id_devis: number;
+    num_version: number;
+    qte_devis: number;
+    prix_devis: number;
+    pourcentage: number;
+    tva: number;
+    remise: number;
+    montant_ht: number;
 
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
-
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
 
     option: any[] = [];
@@ -50,13 +50,11 @@ export class Editer_factureComponent {
 
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files:any;
+    base64Files: any;
     loc = location.hostname;
     image: any[];
     id_agence: number;
     img: any = {};
-
-
 
 
     constructor(private route: ActivatedRoute,
@@ -64,14 +62,15 @@ export class Editer_factureComponent {
                 private authenticationService: AuthenticationService,
                 private alertService: AlertService,
                 private factureService: FactureService,
-                private paramsService:ParamsService) {
+                private paramsService: ParamsService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
         let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
+        body.className = '';
+        body.className += 'flatclair';
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         this.loadAllFooter();
@@ -97,6 +96,7 @@ export class Editer_factureComponent {
 
         });
     }
+
     loaddroituser() {                                 //
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
 
@@ -107,13 +107,14 @@ export class Editer_factureComponent {
 
         });
     }
-    loadFacture(){
+
+    loadFacture() {
         this.route.params.subscribe(params => {
-            this.id_devis=params['id']
-           // console.log(this.id_devis);
+            this.id_devis = params['id']
+            // console.log(this.id_devis);
             this.factureService.getByIdFacture(this.id_devis).subscribe(
-                data=>{
-                    this.model=data[0];
+                data => {
+                    this.model = data[0];
                     //console.log(data)
                 }
             )
@@ -129,90 +130,75 @@ export class Editer_factureComponent {
         });
     }
 
-    loadRetenu(){
+    loadRetenu() {
         this.route.params.subscribe(params => {
-            this.id_devis=params['id']
+            this.id_devis = params['id']
             //console.log(this.id_devis);
             this.factureService.getByIdRetenu(this.id_devis).subscribe(
-                data=>{
-                    this.ret=data[0];
+                data => {
+                    this.ret = data[0];
                     //console.log(data)
                 }
             )
         });
     }
 
-    loadVersion(){
+    loadVersion() {
         this.route.params.subscribe(params => {
-            this.id_devis=params['id']
-            this.num_version=params['num_version']
+            this.id_devis = params['id']
+            this.num_version = params['num_version']
             console.log(this.id_devis);
-            this.factureService.getByIdVersion(this.id_devis,this.num_version).subscribe(
-                data=>{
-                    this.version=data[0];
+            this.factureService.getByIdVersion(this.id_devis, this.num_version).subscribe(
+                data => {
+                    this.version = data[0];
                     console.log(data)
                 }
             )
         });
     }
 
-    loadDetail(){
+    loadDetail() {
         this.route.params.subscribe(params => {
-            this.id_devis=params['id']
-            this.num_version=params['num_version']
-            console.log(this.id_devis,this.num_version);
-            this.factureService.getByIdDetail(this.id_devis,this.num_version).subscribe(
-                data=>{
-                    this.detail=data;
+            this.id_devis = params['id']
+            this.num_version = params['num_version']
+            console.log(this.id_devis, this.num_version);
+            this.factureService.getByIdDetail(this.id_devis, this.num_version).subscribe(
+                data => {
+                    this.detail = data;
                     //console.log(data)
 
-                   /* let totalligne = 0;
-                    for (let details of this.detail) {
-                        totalligne += (details.qte_devis / 100) * details.prix_devis*details.pourcentage;
-                    }*/
+                    /* let totalligne = 0;
+                     for (let details of this.detail) {
+                         totalligne += (details.qte_devis / 100) * details.prix_devis*details.pourcentage;
+                     }*/
 
                 }
             )
         });
     }
 
-    loadOption(){
+    loadOption() {
         this.route.params.subscribe(params => {
-            this.id_devis=params['id']
-            this.num_version=params['num_version']
-            console.log(this.id_devis,this.num_version);
-            this.factureService.getByIdOption(this.id_devis,this.num_version).subscribe(
-                data=>{
-                    this.option=data;
+            this.id_devis = params['id']
+            this.num_version = params['num_version']
+            console.log(this.id_devis, this.num_version);
+            this.factureService.getByIdOption(this.id_devis, this.num_version).subscribe(
+                data => {
+                    this.option = data;
                     //console.log(data)
                 }
             )
         });
     }
 
-    loadTotalfact(){
+    loadTotalfact() {
         this.route.params.subscribe(params => {
-            this.id_devis=params['id']
-            this.num_version=params['num_version']
-            console.log(this.id_devis,this.num_version);
-            this.factureService.getByIdTotalfact(this.id_devis,this.num_version).subscribe(
-                data=>{
-                    this.totalfact=data[0];
-                    //console.log(data)
-
-                }
-            )
-        });
-    }
-
-    loadTotalopt(){
-        this.route.params.subscribe(params => {
-            this.id_devis=params['id']
-            this.num_version=params['num_version']
-            console.log(this.id_devis,this.num_version);
-            this.factureService.getByIdTotalopt(this.id_devis,this.num_version).subscribe(
-                data=>{
-                    this.totalopt=data[0];
+            this.id_devis = params['id']
+            this.num_version = params['num_version']
+            console.log(this.id_devis, this.num_version);
+            this.factureService.getByIdTotalfact(this.id_devis, this.num_version).subscribe(
+                data => {
+                    this.totalfact = data[0];
                     //console.log(data)
 
                 }
@@ -220,98 +206,119 @@ export class Editer_factureComponent {
         });
     }
 
-    totaligne(details:any){
+    loadTotalopt() {
+        this.route.params.subscribe(params => {
+            this.id_devis = params['id']
+            this.num_version = params['num_version']
+            console.log(this.id_devis, this.num_version);
+            this.factureService.getByIdTotalopt(this.id_devis, this.num_version).subscribe(
+                data => {
+                    this.totalopt = data[0];
+                    //console.log(data)
+
+                }
+            )
+        });
+    }
+
+    totaligne(details: any) {
         if (details.pourcentage)
             return (details.qte_devis / 100) * details.prix_devis * details.pourcentage;
         else return 0;
     }
-    totaligneopt(options:any){
+
+    totaligneopt(options: any) {
         if (options.pourcentage)
             return (options.qte_devis / 100) * options.prix_devis * options.pourcentage;
         else return 0;
     }
 
-    countTotaldet(details:any) {
+    countTotaldet(details: any) {
 
         let totaldet = 0;
 
-            for (let details of this.detail) {
-                if (details.pourcentage )
+        for (let details of this.detail) {
+            if (details.pourcentage)
                 totaldet += (details.qte_devis / 100) * details.prix_devis * details.pourcentage;
-                else totaldet += 0;
-            }
+            else totaldet += 0;
+        }
         return totaldet;
     }
 
-    countTotalopt(options:any) {
+    countTotalopt(options: any) {
         let totalopt = 0;
 
         for (let options of this.option) {
             if (options.pourcentage)
-            totalopt += (options.qte_devis / 100) * options.prix_devis * options.pourcentage;
+                totalopt += (options.qte_devis / 100) * options.prix_devis * options.pourcentage;
             else totalopt += 0;
         }
-            return totalopt;
+        return totalopt;
     }
 
-    countTotal(details:any,options:any,version:any){//travaux réalisés
+    countTotal(details: any, options: any, version: any) {//travaux réalisés
 
-        return this.countTotaldet(details) + this.countTotalopt(options) ;
+        return this.countTotaldet(details) + this.countTotalopt(options);
     }
-    countRemise(details:any,options:any,version:any){
-        return this.countTotal(details,options,version)* (this.version.remise ? this.version.remise : 0)/100;
+
+    countRemise(details: any, options: any, version: any) {
+        return this.countTotal(details, options, version) * (this.version.remise ? this.version.remise : 0) / 100;
     }
-    countTotalRemise(details:any,options:any,version:any){
-        return this.countTotal(details,options,version)* (1-((this.version.remise ? this.version.remise : 0)/100));
+
+    countTotalRemise(details: any, options: any, version: any) {
+        return this.countTotal(details, options, version) * (1 - ((this.version.remise ? this.version.remise : 0) / 100));
     }
-    countTotalNet(details:any,options:any,version:any){// en attendant plus value moins value
-        return this.countTotalRemise(details,options,version)
+
+    countTotalNet(details: any, options: any, version: any) {// en attendant plus value moins value
+        return this.countTotalRemise(details, options, version)
     }
-    countTotalsituation(details:any,options:any,version:any){
-        this.model.montant_ht = this.countTotalNet(details,options,version)- (this.version.accompte_value ? this.version.accompte_value :0);
+
+    countTotalsituation(details: any, options: any, version: any) {
+        this.model.montant_ht = this.countTotalNet(details, options, version) - (this.version.accompte_value ? this.version.accompte_value : 0);
         return this.model.montant_ht;
     }
-    countTVA(version:any,details:any,options:any) {
-        return this.countTotalsituation(details,options,version) * (this.version.tva ? this.version.tva : 0)/100;
+
+    countTVA(version: any, details: any, options: any) {
+        return this.countTotalsituation(details, options, version) * (this.version.tva ? this.version.tva : 0) / 100;
     }
 
-    countSTotal(version:any,details:any,options:any){
-        return this.countTotalsituation(details,options,version) + this.countTVA(version,details,options);
+    countSTotal(version: any, details: any, options: any) {
+        return this.countTotalsituation(details, options, version) + this.countTVA(version, details, options);
     }
 
-    countRetenu(version:any,details:any,options:any) {
+    countRetenu(version: any, details: any, options: any) {
 
-        return this.countSTotal(version,details,options) * (this.ret.pourcentage ? this.ret.pourcentage : 0)/100;
+        return this.countSTotal(version, details, options) * (this.ret.pourcentage ? this.ret.pourcentage : 0) / 100;
     }
 
-    countTTC(version:any,details:any,options:any){
-        return this.countSTotal(version,details,options) - this.countRetenu(version,details,options);
+    countTTC(version: any, details: any, options: any) {
+        return this.countSTotal(version, details, options) - this.countRetenu(version, details, options);
 
     }
 
     add() {
 
-        let factureparams : any = {};
+        let factureparams: any = {};
         console.log(this.model)
         factureparams.model = this.model;
         factureparams.version = this.version;
         factureparams.detail = this.detail;
         factureparams.option = this.option;
-        factureparams.nfact =this.nfact;
+        factureparams.nfact = this.nfact;
 
-        var test = +confirm ("Etes vous sür de vouloir enregitrer votre facture :");
+        var test = +confirm('Etes vous sür de vouloir enregitrer votre facture :');
         console.log(factureparams);
-        if(test) {
+        if (test) {
             console.log(factureparams);
             this.factureService.add(factureparams).subscribe(
                 data => {
-                    this.router.navigate(["/listefacture"]);
-                    this.alertService.success("La facture a été créée avec succès.");
+                    this.router.navigate(['/listefacture']);
+                    this.alertService.success('La facture a été créée avec succès.');
                 });
         }
     }
 
-    imprimer(){
+    imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
@@ -343,7 +350,7 @@ export class Editer_factureComponent {
             console.log(this.img);
             //console.log(this.currentUser);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };

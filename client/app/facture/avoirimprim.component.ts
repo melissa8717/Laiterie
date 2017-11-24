@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../_services/index';
-import {FactureService} from "../_services/facture.service";
-import {ParamsService} from "../_services/params.service"; //
-import {User} from "../_models/user";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {FormBuilder} from "@angular/forms";
+import {AlertService, AuthenticationService} from '../_services/index';
+import {FactureService} from '../_services/facture.service';
+import {ParamsService} from '../_services/params.service'; //
+import {User} from '../_models/user';
+import {DomSanitizer} from '@angular/platform-browser';
+import {FormBuilder} from '@angular/forms';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
-const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -26,21 +27,20 @@ export class AvoirimprimComponent {
     _id: any;                   //
     data: any = {};
 
-    valeur:any = {};
-    id_avoir:number;
+    valeur: any = {};
+    id_avoir: number;
     fact: any = {};
-    produit:any[]=[];
-    libre:any[]=[];
+    produit: any[] = [];
+    libre: any[] = [];
     print: boolean = false;
 
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files:any;
+    base64Files: any;
     loc = location.hostname;
     image: any[];
     id_agence: number;
     img: any = {};
-
 
 
     constructor(private route: ActivatedRoute,
@@ -50,14 +50,15 @@ export class AvoirimprimComponent {
                 private factureService: FactureService,
                 private builder: FormBuilder,
                 private _sanitizer: DomSanitizer,
-                private paramsService: ParamsService) {
+                private paramsService: ParamsService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
         let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
+        body.className = '';
+        body.className += 'flatclair';
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         this.loaddroituser();
@@ -119,6 +120,7 @@ export class AvoirimprimComponent {
             )
         });
     }
+
     countTotalProduit() {
         let total = 0;
         for (let prod of this.produit) {
@@ -138,88 +140,86 @@ export class AvoirimprimComponent {
     countTotallibreremise() {
         let total = 0;
         for (let prod of this.libre) {
-            total += prod.prix * prod.qte* (this.valeur.remise ? (1-(this.valeur.remise/100)) :1);
+            total += prod.prix * prod.qte * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1);
         }
         return total;
     }
-    countTva(){
-        return this.countTotalProduit() *(this.valeur.tva /100);
+
+    countTva() {
+        return this.countTotalProduit() * (this.valeur.tva / 100);
     }
 
 
-    TVAV()
-    {
+    TVAV() {
         let total = 0;
 
         for (let produit of this.libre) {
 
-            if (produit.tva == 20){
-                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) )* (produit.tva /100);
+            if (produit.tva == 20) {
+                total += (produit.prix * produit.qte * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (produit.tva / 100);
             }
 
         }
         return total;
     }
 
-    TVAD()
-    {
+    TVAD() {
         let total = 0;
 
         for (let produit of this.libre) {
 
-            if (produit.tva == 10){
-                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) )* (produit.tva /100);
-            }
-
-        }
-        return total;
-    }
-    TVAC()
-    {
-        let total = 0;
-
-        for (let produit of this.libre) {
-
-            if (produit.tva == 5.5){
-                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) )* (produit.tva /100);
+            if (produit.tva == 10) {
+                total += (produit.prix * produit.qte * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (produit.tva / 100);
             }
 
         }
         return total;
     }
 
-    TVADU()
-    {
+    TVAC() {
         let total = 0;
 
         for (let produit of this.libre) {
 
-            if (produit.tva == 2.1){
-                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) )* (produit.tva /100);
-            }
-
-        }
-        return total;
-    }
-    TVAZ()
-    {
-        let total = 0;
-
-        for (let produit of this.libre) {
-
-            if (produit.tva == 0){
-                total += (produit.prix * produit.qte *  (this.valeur.remise ? (1-(this.valeur.remise / 100)) : 1) );
+            if (produit.tva == 5.5) {
+                total += (produit.prix * produit.qte * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (produit.tva / 100);
             }
 
         }
         return total;
     }
 
-    countTotalavoir(){
-        return this.countTotalProduit() + this.countTotallibreremise() +this.countTva()+ this. TVAV() +this.TVAD() + this.TVAC() +this.TVADU() +this.TVAZ();
+    TVADU() {
+        let total = 0;
+
+        for (let produit of this.libre) {
+
+            if (produit.tva == 2.1) {
+                total += (produit.prix * produit.qte * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (produit.tva / 100);
+            }
+
+        }
+        return total;
     }
 
-    imprimer(){
+    TVAZ() {
+        let total = 0;
+
+        for (let produit of this.libre) {
+
+            if (produit.tva == 0) {
+                total += (produit.prix * produit.qte * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) );
+            }
+
+        }
+        return total;
+    }
+
+    countTotalavoir() {
+        return this.countTotalProduit() + this.countTotallibreremise() + this.countTva() + this.TVAV() + this.TVAD() + this.TVAC() + this.TVADU() + this.TVAZ();
+    }
+
+    imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
@@ -227,6 +227,7 @@ export class AvoirimprimComponent {
             this.print = false;
         }, 1000);
     }
+
     public onChange(event: Event) {
         let files = event.target['files'];
         if (event.target['files']) {
@@ -257,7 +258,7 @@ export class AvoirimprimComponent {
             console.log(this.img);
             //console.log(this.currentUser);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
