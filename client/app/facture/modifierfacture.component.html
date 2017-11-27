@@ -112,7 +112,7 @@
                         <td style=" border-right: 1px solid black;">{{situa[i].prixfact}}</td>
                         <td style=" border-right: 1px solid black;">{{situa[i].qtefact * situa[i].prixfact | number:'1.0-2'}}</td>
                         <td style=" border-right: 1px solid black;">{{totaligne(situa[i]) | number:'1.0-2'}}</td>
-                        <td style=" border-right: 1px solid black;"><input style="width: 70px;" type="number" name="pourcentage{{i}}" [(ngModel)]="situa[i].pourcentage"  class="col-sm-12" min="0" max="100"></td>
+                        <td style=" border-right: 1px solid black;"><input style="width: 70px;" type="number" name="pourcentage{{i}}" [(ngModel)]="situa[i].pourcentage"  class="col-sm-12" min="0" max="100" *ngIf="situa[i].pourcentage<=100"></td>
 
                     </tr>
                     <tr ><td colspan="8">Options acceptées</td></tr>
@@ -125,7 +125,7 @@
                         <td style=" border-right: 1px solid black;">{{option[i].prixfact}}</td>
                         <td style=" border-right: 1px solid black;">{{option[i].qtefact * option[i].prixfact | number:'1.0-2'}}</td>
                         <td style=" border-right: 1px solid black;">{{totaligneopt(option[i]) | number:'1.0-2'}}</td>
-                        <td style=" border-right: 1px solid black;"><input type="number" name="pourcentageoptio{{i}}" [(ngModel)]="option[i].pourcentage"  class="col-sm-12" min="0" max="100"></td>
+                        <td style=" border-right: 1px solid black;"><input type="number" name="pourcentageoptio{{i}}" [(ngModel)]="option[i].pourcentage"  class="col-sm-12" min="0" max="100" *ngIf="option[i].pourcentage<=100"></td>
 
                     </tr>
 

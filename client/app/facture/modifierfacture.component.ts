@@ -217,7 +217,7 @@ export class ModifierfactureComponent {
 
         var test = +confirm('Etes vous sür de vouloir enregitrer votre facture :');
         //console.log(factureparams);
-        if (test) {
+        if (test ) {
             console.log(factureparams);
             this.factureService.createSituation(factureparams, this.id_facture).subscribe(
                 data => {
