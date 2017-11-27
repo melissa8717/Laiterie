@@ -68,7 +68,7 @@
                         <td>{{devi.raison_sociale ? devi.raison_sociale : devi.nom}}</td>
                         <td>{{devi.statut}}</td>
                         <td>{{devi.date_version | date :"dd/MM/yyyy"}}</td>
-                        <td>{{devi.total| currency:'EUR':true:'1.2-2'}}</td>
+                        <td>{{(devi.remise ? (devi.total*(1-(devi.remise/100))) : devi.total) | currency:'EUR':true:'1.2-2'}}</td>
 
                         <td>
                             <input type="checkbox" [(ngModel)]="devis[i].envoye" [disabled]="devis[i].envoye" (ngModelChange)="sendEnvoye(devis[i])" name="check{{i}}">

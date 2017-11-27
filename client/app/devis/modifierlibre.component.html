@@ -349,7 +349,7 @@
                             <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-                        <tr>
+                        <tr *ngIf="produitDevisOptions.length> 0 ">
                             <td  class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">TVA {{devis.tvadevis}} %:</td>
                             <td   style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;" class="total">{{countTotalOptionsTVA()  | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>

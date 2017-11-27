@@ -13,6 +13,7 @@
             </div>
         </div>
 
+
     </header>
     <body style="margin:0px;font-size: 18px;background-color: white;">
     <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
@@ -102,7 +103,8 @@
 
             <tbody>
             <tr *ngFor="let prod of produit, let  i = index">
-                <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;">{{prod.produit}} <br>{{prod.commentaire}} </td>
+                <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;"><span style="font-weight: bold;">{{prod.produit}}</span> <br>
+                    <textarea  *ngIf="prod.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prod.commentaire}}</textarea></td>
                 <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
 
                     <span *ngIf="(produit[i].accepted == 0) || (produit[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produit[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produit[i])"></span></td>
@@ -149,7 +151,7 @@
                 <td style="border-right:1px solid black;text-align: left;">Total H.T. des options non acceptées </td>
                 <td colspan="3">{{countTotalopt() | number:'1.0-2'}} €</td>
             </tr>
-            <tr *ngIf="devis.remise" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
+            <tr *ngIf="countTotalopt(0)" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
                 <td style="border-right:1px solid black;text-align: left;">Total H.T. après remise de {{devis.remise}}%</td>
                 <td colspan="3">{{countTotalopt() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
             </tr>

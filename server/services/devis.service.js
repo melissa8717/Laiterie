@@ -420,7 +420,7 @@ function createLibre(bdc_param) {
         }
         db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, tva, remise,montantht,offre,designation, libre)" +
             " VALUES (? , ? , ? , ?, ?, ?, ?, ?, ?,?,?,?,?,?)",
-            [results.insertId, 1, bdc_param.devis.accompte, bdc_param.devis.accompteeuros, bdc_param.devis.accomptepercentage, false, new Date(), "Créé", bdc_param.devis.tva, bdc_param.devis.remise, bdc_param.devis.montantht, bdc_param.devis.offre, bdc_param.devis.designation, 1],
+            [results.insertId, 1, bdc_param.devis.accompte, bdc_param.devis.accompteeuros, bdc_param.devis.accomptepercentage, false, new Date(), "Créé", bdc_param.devis.tva, bdc_param.devis.remise, bdc_param.devis.montant_ht ? bdc_param.devis.montant_ht :bdc_param.devis.total , bdc_param.devis.offre, bdc_param.devis.designation, 1],
             function (error, result, fields) {
                 if (error) {
                     deferred.reject(error.name + ': ' + error.message);
