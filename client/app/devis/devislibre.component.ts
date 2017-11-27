@@ -79,19 +79,19 @@ export class DevislibreComponent  implements OnInit{
         var check = this.produitDevis.filter(obj => obj.ref == this.produit.obj); //.id_prc
 
         if (check.length < 1) {
-                if(tmp.option){
-                    this.produitDevisOptions.push(tmp);
+            if(tmp.option){
+                this.produitDevisOptions.push(tmp);
+            }
+            else{
+                this.produitDevis.push(tmp);
+                for(var i = 0 ; i <  this.produitDevis.length; i++){
+                    //console.log('TEST TS AJOUTER : '+this.produitDevis[i].prix);
+                    let qte = this.produitDevis[i].qte;
+                    let prix = this.produitDevis[i].prix;
+                    this.produitDevis[i].qte = qte;
+                    this.produitDevis[i].prix = prix;
                 }
-                else{
-                    this.produitDevis.push(tmp);
-                    for(var i = 0 ; i <  this.produitDevis.length; i++){
-                        //console.log('TEST TS AJOUTER : '+this.produitDevis[i].prix);
-                        let qte = this.produitDevis[i].qte;
-                        let prix = this.produitDevis[i].prix;
-                        this.produitDevis[i].qte = qte;
-                        this.produitDevis[i].prix = prix;
-                    }
-                }
+            }
         }
         else {
             this.alertService.error("Le produit " + tmp.obj + " n'a pas pu être ajouté.");

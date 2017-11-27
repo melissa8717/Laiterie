@@ -211,10 +211,10 @@ export class ModifierlibreComponent {
     }
 
     countTotalprodTVA(){
-        return this.countTotalRemise()>0 ? this.countTotalRemise()* ((this.devis.tva ? this.devis.tva : 0) /100) : this.countTotal()* ((this.devis.tva ? this.devis.tva : 0) /100);
+        return this.countTotalRemise()>0 ? this.countTotalRemise()* ((this.devis.tvadevis ? this.devis.tvadevis : 0) /100) : this.countTotal()* ((this.devis.tvadevis ? this.devis.tvadevis : 0) /100);
     }
     countTotalTVA() {
-        return this.countTotalRemise()>0 ? this.countTotalRemise()* (1+((this.devis.tva ? this.devis.tva : 0) /100)) : this.countTotal()* (1+((this.devis.tva ? this.devis.tva : 0) /100));
+        return this.countTotalRemise()>0 ? this.countTotalRemise()* (1+((this.devis.tvadevis ? this.devis.tvadevis : 0) /100)) : this.countTotal()* (1+((this.devis.tvadevis ? this.devis.tvadevis : 0) /100));
     }
 
     countTotalOptions() {
@@ -229,10 +229,10 @@ export class ModifierlibreComponent {
         return this.countTotalOptions() - (this.countTotalOptions() * this.devis.remise / 100);
     }
     countTotalOptionsTVA() {
-        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((this.devis.tva ? this.devis.tva : 0) /100):this.countTotalOptions()* ((this.devis.tva ? this.devis.tva : 0) /100);
+        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((this.devis.tvadevis ? this.devis.tvadevis : 0) /100):this.countTotalOptions()* ((this.devis.tvadevis ? this.devis.tvadevis : 0) /100);
     }
     countTotalOptionstotalTVA() {
-        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((1+(this.devis.tva ? this.devis.tva : 0) /100)):this.countTotalOptions()* (1+((this.devis.tva ? this.devis.tva : 0) /100));
+        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((1+(this.devis.tvadevis ? this.devis.tvadevis : 0) /100)):this.countTotalOptions()* (1+((this.devis.tvadevis ? this.devis.tvadevis : 0) /100));
     }
 
     total() {

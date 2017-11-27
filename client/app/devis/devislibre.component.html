@@ -57,12 +57,12 @@
                                value=""
                                [(ngModel)]="devis.chantier">-->
                         <input
-                               value-property-name="id_chantier"
-                               display-property-name="nom_chantier"
-                               type="text"
-                               name="chantier"
-                               value=""
-                               [(ngModel)]="devis.chantier">
+                                value-property-name="id_chantier"
+                                display-property-name="nom_chantier"
+                                type="text"
+                                name="chantier"
+                                value=""
+                                [(ngModel)]="devis.chantier">
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4">Remise:</label>
@@ -193,13 +193,13 @@
                             <td>
                                 <div class="form-group">
                                     <input
-                                           value-property-name="id"
-                                           display-property-name="libelle"
-                                           class="form-control input-sm"
-                                           placeholder="Ajoutez un produit"
-                                           name="produit"
-                                           [(ngModel)]="produit.obj"
-                                           (ngModelChange)="test()">
+                                            value-property-name="id"
+                                            display-property-name="libelle"
+                                            class="form-control input-sm"
+                                            placeholder="Ajoutez un produit"
+                                            name="produit"
+                                            [(ngModel)]="produit.obj"
+                                            (ngModelChange)="test()">
                                 </div>
                             </td>
 
@@ -258,7 +258,8 @@
                                 </td>
                                 <td>
                                     <div class="form-group">
-                                        <span><a *ngIf="produit.obj" target="_blank">{{produit.obj}}</a></span>
+                                        <span><a *ngIf="produit.obj" target="_blank">{{produit.obj}}</a></span><br>
+                                        <span *ngIf="produit.commentaire">{{produitDevis[i].commentaire}}</span>
                                     </div>
                                 </td>
                                 <td>
@@ -303,11 +304,7 @@
                                 </td>
                             </tr>
 
-                            <tr *ngIf="produit.commentaire">
-                                <td colspan="2"></td>
-                                <td colspan="4"><textarea rows="2" class="col-sm-12" placeholder="Commentaire" name="commentaire{{i}}" [(ngModel)]="produitDevis[i].commentaire"></textarea></td>
-                                <td></td>
-                            </tr>
+
                         </ng-container>
 
                         <!-- CALCULS ******************************************************************************* -->
@@ -324,7 +321,7 @@
                         </tr>
 
                         <tr>
-                            <td colspan="6" class="total" style="text-align: right;">TVA {{valeur.taux}} %:</td>
+                            <td colspan="6" class="total" style="text-align: right;">TVA  {{devis.tva}} %</td>
                             <td class="total">{{countTVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
@@ -363,8 +360,8 @@
                                 </td>
                                 <td>
                                     <div class="form-group">
-                                        <span><a *ngIf="produit.obj" target="_blank">{{produit.obj}}</a></span>
-
+                                        <span><a *ngIf="produit.obj" target="_blank">{{produit.obj}}</a></span><br>
+                                        <span *ngIf="produitDevisOptions[i].commentaire">{{produitDevisOptions[i].commentaire}}</span>
                                     </div>
                                 </td>
                                 <td>
@@ -406,11 +403,6 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td colspan="2"></td>
-                                <td colspan="4"><textarea rows="2" class="col-sm-12" placeholder="Commentaire" name="commentaire{{i}}" [(ngModel)]="produitDevisOptions[i].commentaire"></textarea></td>
-                                <td></td>
-                            </tr>
                         </ng-container>
 
 
@@ -427,7 +419,7 @@
                         </tr>
 
                         <tr *ngIf="produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right;">TVA :</td>
+                            <td colspan="6" class="total" style="text-align: right;">TVA {{devis.tva}} %:</td>
                             <td class="total">{{ totalTVAoption() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>

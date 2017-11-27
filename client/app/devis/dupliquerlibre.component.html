@@ -43,9 +43,9 @@
                         <label class="col-sm-4">TVA:</label>
                         <input style="border:1px solid white;" type="number"
                                step="0.1"
-                               name="tva"
+                               name="tvadevis"
                                value=""
-                               [(ngModel)]="devis.tva">%
+                               [(ngModel)]="devis.tvadevis">%
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4">Remise:</label>
@@ -287,7 +287,7 @@
 
                         <tr>
                             <td colspan="14"></td>
-                            <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA {{devis.tva}} %:</td>
+                            <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA {{devis.tvadevis}} %:</td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" class="total">{{countTotalprodTVA()  | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
                         <tr>
@@ -390,7 +390,7 @@
                         <tr>
                             <td colspan="14"></td>
 
-                            <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA {{devis.tva}} %:</td>
+                            <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA {{devis.tvadevis}} %:</td>
                             <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">{{countTotalOptionsTVA()  | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
                         <tr *ngIf="produitDevisOptions.length> 0">
@@ -488,5 +488,3 @@
 </div>
 
 <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accesdev"  (click)=" imprimer()">Imprimer</button>
-
-

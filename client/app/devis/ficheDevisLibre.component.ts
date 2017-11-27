@@ -1,15 +1,26 @@
-import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {AlertService, AuthenticationService} from '../_services/index';
-import {ChantierService} from '../_services/chantier.service';
-import {ParamsService} from '../_services/params.service';
-import {FactureService} from '../_services/facture.service';
+import { AlertService, AuthenticationService} from '../_services/index';
+import {ChantierService} from "../_services/chantier.service";
+import {ParamsService} from "../_services/params.service";
+import {FactureService} from "../_services/facture.service";
 
-import {User} from '../_models/user';
-import {addDays, addHours, endOfDay, endOfMonth, format, isSameDay, isSameMonth, startOfDay, subDays} from 'date-fns';
-import {DevisService} from '../_services/devis.service';
-import {AppConfig} from '../app.config';
+import {User} from "../_models/user";
+import {
+    startOfDay,
+    endOfDay,
+    subDays,
+    addDays,
+    endOfMonth,
+    isSameDay,
+    isSameMonth,
+    addHours,
+    format,
+} from 'date-fns';
+import {DevisService} from "../_services/devis.service";
+
+
 
 
 @Component({
@@ -18,23 +29,26 @@ import {AppConfig} from '../app.config';
 })
 
 export class FicheDevisLibreComponent {
-    id_chantier: number;
-    fact: any = {};
-    devis: any = {};
-    nom: any = {};
+    id_chantier:number;
+    fact:any={};
+    devis:any={};
+    nom : any = {};
     print: boolean = false;
-    date: string;
+    date:string;
     currentUser: User;
-    droitsuser: any = {};
-    id_devis: number;
-    num_version: number;
-    data: any = {};
-    produit: any = [] = [];
-    prod: any;
+    droitsuser:any={};
+    id_devis:number;
+    num_version:number;
+    data:any={};
+    produit:any=[]=[];
+    prod:any;
     cgv: any = {};
 
     produitDevis: any[] = [];
     produitDevisOptions: any[] = [];
+
+
+
 
 
     constructor(private route: ActivatedRoute,
@@ -44,8 +58,7 @@ export class FicheDevisLibreComponent {
                 private devisService: DevisService,
                 private factureService: FactureService,
                 private alertService: AlertService,
-                private paramsService: ParamsService,
-                private config: AppConfig) {
+                private paramsService:ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     }
@@ -54,8 +67,8 @@ export class FicheDevisLibreComponent {
 
 
         let body = document.getElementsByTagName('body')[0];
-        body.className = '';
-        body.className += 'flatclair';
+        body.className = "";
+        body.className += "flatclair";
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.loadDevis();
         this.loadAllFooter();
@@ -63,14 +76,7 @@ export class FicheDevisLibreComponent {
         this.produits();
         this.loadCat();
 
-        this.devisService.getByIddupliquer(this.id_devis, this.num_version).subscribe(
-            (data: any) => {
-                this.devis = data.devis[0];
-                this.produitDevis = data.detaille;
-                this.produitDevisOptions = data.options;
-                console.log(this.devis);
-            }
-        )
+
 
     }
 
@@ -89,32 +95,32 @@ export class FicheDevisLibreComponent {
 
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-            console.log(this.fact);
+            //console.log(this.fact);
 
         });
     }
 
-    loadDevis() {
+    loadDevis(){
         this.route.params.subscribe(params => {
-            this.id_devis = params['id_devis'];
-            this.num_version = params['num_version'];
+            this.id_devis=params['id_devis'];
+            this.num_version=params['num_version'];
             this.devisService.getByIdLibre(this.id_devis, this.num_version).subscribe(
-                data => {
-                    this.devis = data[0];
-                    // console.log(data)
+                data=>{
+                    this.devis=data[0];
+                    console.log(data)
                 }
             )
         });
     }
 
-    produits() {
+    produits(){
         this.route.params.subscribe(params => {
-            this.id_devis = params['id_devis'];
-            this.num_version = params['num_version'];
+            this.id_devis=params['id_devis'];
+            this.num_version=params['num_version'];
             this.devisService.getByIdLibreproduit(this.id_devis, this.num_version).subscribe(
-                data => {
-                    this.produit = data;
-                    console.log(data)
+                data=>{
+                    this.produit=data;
+                    //console.log(data)
                 }
             )
         });
@@ -125,19 +131,19 @@ export class FicheDevisLibreComponent {
         let totaldet = 0;
 
         for (let prod of this.produit) {
-            if (prod.accepted != 0)
-                totaldet += prod.qte_devis * prod.prix_devis;
+            if (prod.accepted != 0 )
+                totaldet += prod.qte_devis  * prod.prix_devis ;
             else totaldet += 0;
         }
         return totaldet;
     }
 
-    countTva() {
-        return this.countTotaldet() * (this.devis.tva / 100);
+    countTva(){
+        return this.countTotaldet() *(this.devis.tva/100)*(this.devis.remise?(1-(this.devis.remise/100)):1);
     }
 
-    countTtc() {
-        return this.countTotaldet() + this.countTva();
+    countTtc(){
+        return (this.countTotaldet()*(this.devis.remise?(1-(this.devis.remise/100)):1)) +  this.countTva();
     }
 
     countTotalopt() {
@@ -146,18 +152,18 @@ export class FicheDevisLibreComponent {
 
         for (let prod of this.produit) {
             if (prod.accepted == 0)
-                totaldet += prod.qte_devis * prod.prix_devis;
+                totaldet += prod.qte_devis  * prod.prix_devis ;
             else totaldet += 0;
         }
         return totaldet;
     }
 
-    countTvaopt() {
-        return this.countTotalopt() * (this.devis.tva / 100);
+    countTvaopt(){
+        return this.countTotalopt() *(this.devis.tva/100)*(this.devis.remise?(1-(this.devis.remise/100)):1);
     }
 
-    countTtcopt() {
-        return this.countTotalopt() + this.countTvaopt();
+    countTtcopt(){
+        return (this.countTotalopt()*(this.devis.remise?(1-(this.devis.remise/100)):1)) +  this.countTvaopt();
     }
 
     acceptOfferLibre(prod: any) {
@@ -168,7 +174,6 @@ export class FicheDevisLibreComponent {
             }
         );
     }
-
     imprimer() {
         this.alertService.clear();
 
