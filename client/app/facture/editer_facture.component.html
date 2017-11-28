@@ -111,7 +111,17 @@
                                 <td >{{totaligne(details) | number:'1.0-2'}} </td>
                                 <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="details.pourcentage" min="0" max="100"> </td>
                             </tr>
-                            <tr *ngIf="option.length>0"><td colspan="8">Options acceptées</td></tr>
+                            <tr *ngFor="let libres of libre">
+                                <td>{{libres.id_produit}}-{{libres.num_version}}</td>
+                                <td>{{libres.produit}}</td>
+                                <td>{{libres.unite}}</td>
+                                <td>{{libres.qte_devis}}</td>
+                                <td>{{libres.prix_devis}}</td>
+                                <td>{{libres.qte_devis * libres.prix_devis | number:'1.0-2'}}</td>
+                                <td >{{totalignelibre(libres) | number:'1.0-2'}}</td>
+                                <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="libres.pourcentage" min="0" max="100"> </td>
+                            </tr>
+                            <tr *ngIf="(option.length>0) || (libreoption.length>0)"><td colspan="8">Options acceptées</td></tr>
                             <tr *ngFor="let options of option">
                                 <td>{{options.id_produit}}-{{options.num_version}}</td>
                                 <td>{{options.libelle}}</td>
@@ -120,7 +130,17 @@
                                 <td>{{options.prix_devis}}</td>
                                 <td>{{options.qte_devis * options.prix_devis | number:'1.0-2'}}</td>
                                 <td >{{totaligneopt(options) | number:'1.0-2'}} </td>
-                                <td><input style="width: 70px;border:1px solid white;" type="number" name="pourcentage" [(ngModel)]="options.pourcentage" class="col-sm-12" min="0" max="100"> </td>
+                                <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="options.pourcentage" class="col-sm-12" min="0" max="100"> </td>
+                            </tr>
+                            <tr *ngFor="let libreoptions of libreoption">
+                                <td>{{libreoptions.id_produit}}</td>
+                                <td>{{libreoptions.produit}}</td>
+                                <td>{{libreoptions.unite}}</td>
+                                <td>{{libreoptions.qte_devis}}</td>
+                                <td>{{libreoptions.prix_devis}}</td>
+                                <td>{{libreoptions.qte_devis * libreoptions.prix_devis | number:'1.0-2'}}</td>
+                                <td >{{totalignelibreoption(libreoptions) | number:'1.0-2'}}</td>
+                                <td><input style="width: 70px;border:1px solid white;" type="number" name="pourcentage" [(ngModel)]="libreoptions.pourcentage" class="col-sm-12" min="0" max="100"> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -136,8 +156,8 @@
                 <table class=" separe1 table-striped">
                     <tbody >
 
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">Rappel Montant H.T. Devis :</td><td style="text-align: right;">{{totalfact.totalht + totalopt.totaloption | number:'1.0-2'}}</td></tr>
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr"><td class="gauche" style="text-align: left;">Total des travaux H.T. :</td><td style="text-align: right;">{{totalfact.totalht + totalopt.totaloption  | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">Rappel Montant H.T. Devis :</td><td style="text-align: right;">{{totalfact.totalht + totalopt.totaloption + countTotallib() + countTotalliboption() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr"><td class="gauche" style="text-align: left;">Total des travaux H.T. :</td><td style="text-align: right;">{{totalfact.totalht + totalopt.totaloption + countTotallib() + countTotalliboption() | number:'1.0-2'}}</td></tr>
 
 
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">Travaux réalisés/devis :</td><td style="text-align: right;">{{countTotal()  | number:'1.0-2'}}</td></tr>

@@ -58,6 +58,9 @@ export class ModifierfactureComponent {
     image: any[];
     id_agence: number;
     img: any = {};
+    libsitua: any[] = [];
+    libsituaop: any[] = [];
+    totalfact: any[] = [];
 
 
     constructor(private route: ActivatedRoute,
@@ -87,6 +90,9 @@ export class ModifierfactureComponent {
         this.loaddroituser();
         this.loadAccompte();
         this.loadAllagence();
+        this.loadlibreSituation();
+        this.loadlibreSituationoption();
+        this.loadTotlafact();
     }
 
     loaddroituser() {                                 //
@@ -94,8 +100,8 @@ export class ModifierfactureComponent {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
+            //console.log(this.data);
+           // console.log(this.currentUser._id);
 
         });
     }
@@ -126,7 +132,20 @@ export class ModifierfactureComponent {
             this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-                    console.log(this.model)
+
+                }
+            )
+        });
+    }
+
+    loadTotlafact() {
+        this.route.params.subscribe(params => {
+            this.id_facture = params['id_facture'];
+            this.n_situation = params['n_situation'];
+            this.factureService.getByIdTotlafacture(this.id_facture, this.n_situation).subscribe(
+                data => {
+                    this.totalfact = data;
+                    console.log(data);
                 }
             )
         });
@@ -135,14 +154,11 @@ export class ModifierfactureComponent {
 
     loadSituation() {
         this.route.params.subscribe(params => {
-            this.id_facture = params['id_facture']
-            this.n_situation = params['n_situation']
-            console.log(this.id_facture, this.n_situation);
-            this.factureService.getByIdSituation(this.id_facture, this.n_situation).subscribe(
+            this.id_facture = params['id_facture'];
+            this.n_situation = params['n_situation'];
+           this.factureService.getByIdSituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.situa = data;
-                    console.log('situa');
-                    console.log(data);
                 }
             )
         });
@@ -156,7 +172,33 @@ export class ModifierfactureComponent {
             this.factureService.getByIdSitoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.option = data;
-                    console.log('option');
+                }
+            )
+        });
+    }
+
+    loadlibreSituation() {
+        this.route.params.subscribe(params => {
+            this.id_facture = params['id_facture']
+            this.n_situation = params['n_situation']
+            console.log(this.id_facture, this.n_situation);
+            this.factureService. getByIdlibresituation(this.id_facture, this.n_situation).subscribe(
+                data => {
+                    this.libsitua = data;
+
+                }
+            )
+        });
+    }
+
+    loadlibreSituationoption() {
+        this.route.params.subscribe(params => {
+            this.id_facture = params['id_facture']
+            this.n_situation = params['n_situation']
+            console.log(this.id_facture, this.n_situation);
+            this.factureService. getByIdlibresituationoption(this.id_facture, this.n_situation).subscribe(
+                data => {
+                    this.libsituaop = data;
                     console.log(data);
                 }
             )
@@ -171,8 +213,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdOptSit(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.optsit = data[0];
-                    console.log('option');
-                    console.log(data);
+                    //console.log(data);
                 }
             )
         });
@@ -186,7 +227,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdTotalSit(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.totalsit = data[0];
-                    console.log(data);
+                    //console.log(data);
                 }
             )
         });
@@ -200,7 +241,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdAccpt(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.accomp = data[0];
-                    console.log(this.accomp)
+                    //console.log(this.accomp)
                 }
             )
         });
@@ -238,7 +279,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdValeur(this.id_facture).subscribe(
                 data => {
                     this.valeur = data[0];
-                    console.log(data)
+                    //console.log(data)
                 }
             )
         });
@@ -254,6 +295,18 @@ export class ModifierfactureComponent {
     totaligneopt(options: any) {
         if (options.pourcentage)
             return (options.qtefact / 100) * options.prixfact * options.pourcentage;
+        else return 0;
+    }
+
+    totalignesitua(lsituas: any) {
+        if (lsituas.pourcent)
+            return (lsituas.qteprod / 100) * lsituas.prix_prod * lsituas.pourcent;
+        else return 0;
+    }
+
+    totalignesituaop(situaop: any) {
+        if (situaop.pourcent)
+            return (situaop.qteprod / 100) * situaop.prix_prod * situaop.pourcent;
         else return 0;
     }
 

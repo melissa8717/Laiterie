@@ -90,6 +90,11 @@ service.getByIdLibredetailimprim = getByIdLibredetailimprim;
 service.getByIdAvoirlibre = getByIdAvoirlibre;
 service.addavoirlibre = addavoirlibre;
 
+service.getByIdDevislibre = getByIdDevislibre;
+service.getByIdDevislibreoption = getByIdDevislibreoption;
+service.getByIdlibresituationoption = getByIdlibresituationoption;
+service.getByIdlibresituation = getByIdlibresituation;
+service.vgetByIdTotlafact = getByIdTotlafact;
 
 module.exports = service;
 
@@ -311,6 +316,38 @@ function create(facture_param) {
                                 console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
                             }
                             if (facture = facture_param.option.length) {
+                                deferred.resolve()
+                            }
+                        });
+                })(p);
+            }
+
+            for (var p in facture_param.libre) {
+                (function (facture) {
+                    db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod) VALUES (? , ? , ? , ? , ?, ?  )",
+                        [results.insertId, 1, facture_param.libre[facture].produit,  facture_param.libre[facture].pourcentage, facture_param.libre[facture].qte_devis, facture_param.libre[facture].prix_devis],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            if (facture = facture_param.libre.length) {
+                                deferred.resolve()
+                            }
+                        });
+                })(p);
+            }
+
+            for (var p in facture_param.libreoption) {
+                (function (facture) {
+                    db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,option) VALUES (? , ? , ? , ? , ?, ? ,? )",
+                        [results.insertId, 1, facture_param.libreoption[facture].produit,  facture_param.libreoption[facture].pourcentage, facture_param.libreoption[facture].qte_devis, facture_param.libreoption[facture].prix_devis,1],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            if (facture = facture_param.libre.length) {
                                 deferred.resolve()
                             }
                         });
@@ -1609,5 +1646,91 @@ function addavoirlibre(avoirparams) {
             }
 
         });
+    return deferred.promise;
+}
+
+function getByIdDevislibre(_id_devis, _num_version) {
+    var deferred = Q.defer();
+    var sql = "SELECT * FROM  devis_detaille_libre WHERE id_devis =? AND num_version =?  ";
+    var inserts = [_id_devis, _num_version];
+
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdDevislibreoption(_id_devis, _num_version) {
+    var deferred = Q.defer();
+    var sql = "SELECT * FROM  devis_option_libre WHERE id_devis =? AND num_version =? AND accepted IS TRUE ";
+    var inserts = [_id_devis, _num_version];
+
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+
+function getByIdlibresituation(_id_fact, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT * FROM  facture_libredetail WHERE id_fact =? AND n_situation =? and option IS NOT TRUE ";
+    var inserts = [_id_fact, _n_situation];
+
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdlibresituationoption(_id_fact, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT * FROM  facture_libredetail WHERE id_fact =? AND n_situation =? and option IS TRUE ";
+    var inserts = [_id_fact, _n_situation];
+
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdTotlafact(_id_fact, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT montant_ht FROM  facture WHERE id_fact =? AND n_situation <=? ";
+    var inserts = [_id_fact, _n_situation];
+
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
     return deferred.promise;
 }

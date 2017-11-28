@@ -56,6 +56,9 @@ export class Editer_factureComponent {
     id_agence: number;
     img: any = {};
 
+    libre: any[] = [];
+    libreoption: any[] = [];
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -84,6 +87,8 @@ export class Editer_factureComponent {
         this.loadAllNfact();
         this.loaddroituser();
         this.loadAllagence();
+        this.loadLibre();
+        this.loadLibreoption();
 
     }
 
@@ -102,8 +107,8 @@ export class Editer_factureComponent {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
+            //console.log(this.data);
+            //console.log(this.currentUser._id);
 
         });
     }
@@ -125,7 +130,7 @@ export class Editer_factureComponent {
 
         this.factureService.getAllnfact().subscribe(data => {
             this.nfact = data[0];
-            console.log(this.nfact);
+            //console.log(this.nfact);
 
         });
     }
@@ -191,6 +196,38 @@ export class Editer_factureComponent {
         });
     }
 
+    loadLibre() {
+        this.route.params.subscribe(params => {
+            this.id_devis = params['id']
+            this.num_version = params['num_version']
+            console.log(this.id_devis, this.num_version);
+            this.factureService.getByIdDevislibre(this.id_devis, this.num_version).subscribe(
+                data => {
+                    this.libre = data;
+                   // console.log(data)
+
+
+                }
+            )
+        });
+    }
+
+    loadLibreoption() {
+        this.route.params.subscribe(params => {
+            this.id_devis = params['id']
+            this.num_version = params['num_version']
+            console.log(this.id_devis, this.num_version);
+            this.factureService.getByIdDevislibreoption(this.id_devis, this.num_version).subscribe(
+                data => {
+                    this.libreoption = data;
+                    //console.log(data);
+
+
+                }
+            )
+        });
+    }
+
     loadTotalfact() {
         this.route.params.subscribe(params => {
             this.id_devis = params['id']
@@ -199,7 +236,6 @@ export class Editer_factureComponent {
             this.factureService.getByIdTotalfact(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.totalfact = data[0];
-                    //console.log(data)
 
                 }
             )
@@ -233,6 +269,18 @@ export class Editer_factureComponent {
         else return 0;
     }
 
+    totalignelibre(libres: any) {
+        if (libres.pourcentage)
+            return (libres.qte_devis / 100) * libres.prix_devis * libres.pourcentage;
+        else return 0;
+    }
+
+    totalignelibreoption(libreoptions: any) {
+        if (libreoptions.pourcentage)
+            return (libreoptions.qte_devis / 100) * libreoptions.prix_devis * libreoptions.pourcentage;
+        else return 0;
+    }
+
     countTotaldet(details: any) {
 
         let totaldet = 0;
@@ -256,43 +304,87 @@ export class Editer_factureComponent {
         return totalopt;
     }
 
-    countTotal(details: any, options: any, version: any) {//travaux réalisés
+    countTotallibre(libres: any) {
 
-        return this.countTotaldet(details) + this.countTotalopt(options);
+        let totaldet = 0;
+
+        for (let libres of this.libre) {
+            if (libres.pourcentage)
+                totaldet += (libres.qte_devis / 100) * libres.prix_devis * libres.pourcentage;
+            else totaldet += 0;
+        }
+        return totaldet;
     }
 
-    countRemise(details: any, options: any, version: any) {
-        return this.countTotal(details, options, version) * (this.version.remise ? this.version.remise : 0) / 100;
+    countTotallibreoption(libreoptions: any) {
+
+        let totaldet = 0;
+
+        for (let libreoptions of this.libreoption) {
+            if (libreoptions.pourcentage)
+                totaldet += (libreoptions.qte_devis / 100) * libreoptions.prix_devis * libreoptions.pourcentage;
+            else totaldet += 0;
+        }
+        return totaldet;
     }
 
-    countTotalRemise(details: any, options: any, version: any) {
-        return this.countTotal(details, options, version) * (1 - ((this.version.remise ? this.version.remise : 0) / 100));
+    countTotallib(libres: any) {
+
+        let totaldet = 0;
+
+        for (let libres of this.libre) {
+                totaldet += (libres.qte_devis ) * libres.prix_devis;
+        }
+        return totaldet;
     }
 
-    countTotalNet(details: any, options: any, version: any) {// en attendant plus value moins value
-        return this.countTotalRemise(details, options, version)
+    countTotalliboption(libreoptions: any) {
+
+        let totaldet = 0;
+
+        for (let libreoptions of this.libreoption) {
+                totaldet += (libreoptions.qte_devis ) * libreoptions.prix_devis ;
+        }
+        return totaldet;
     }
 
-    countTotalsituation(details: any, options: any, version: any) {
-        this.model.montant_ht = this.countTotalNet(details, options, version) - (this.version.accompte_value ? this.version.accompte_value : 0);
+    countTotal(details: any, options: any, version: any,libres:any,libreoptions: any) {//travaux réalisés
+
+        return this.countTotaldet(details) + this.countTotalopt(options) + this.countTotallibre(libres) + this.countTotallibreoption(libreoptions);
+    }
+
+    countRemise(details: any, options: any, version: any,libres:any,libreoptions: any) {
+        return this.countTotal(details, options, version,libres,libreoptions) * (this.version.remise ? this.version.remise/100 : 0) ;
+    }
+
+    countTotalRemise(details: any, options: any, version: any,libres:any,libreoptions: any) {
+        return this.countTotal(details, options, version,libres,libreoptions) * (1 - ((this.version.remise ? this.version.remise /100: 0) ));
+    }
+
+    countTotalNet(details: any, options: any, version: any,libres:any,libreoptions: any) {// en attendant plus value moins value
+        return this.countTotalRemise(details, options, version,libres,libreoptions)
+    }
+
+    countTotalsituation(details: any, options: any, version: any,libres:any,libreoptions: any) {
+        this.model.montant_ht = this.countTotalNet(details, options, version,libres,libreoptions) - (this.version.accompte_value ? this.version.accompte_value : 0);
         return this.model.montant_ht;
     }
 
-    countTVA(version: any, details: any, options: any) {
-        return this.countTotalsituation(details, options, version) * (this.version.tva ? this.version.tva : 0) / 100;
+    countTVA(version: any, details: any, options: any,libres:any,libreoptions: any) {
+        return this.countTotalsituation(details, options, version,libres,libreoptions) * (this.version.tva ? this.version.tva/ 100 : 0) ;
     }
 
-    countSTotal(version: any, details: any, options: any) {
-        return this.countTotalsituation(details, options, version) + this.countTVA(version, details, options);
+    countSTotal(version: any, details: any, options: any,libres:any,libreoptions: any) {
+        return this.countTotalsituation(details, options, version,libres,libreoptions) + this.countTVA(version, details, options,libres,libreoptions);
     }
 
-    countRetenu(version: any, details: any, options: any) {
+    countRetenu(version: any, details: any, options: any,libres:any,libreoptions: any) {
 
-        return this.countSTotal(version, details, options) * (this.ret.pourcentage ? this.ret.pourcentage : 0) / 100;
+        return this.countSTotal(version, details, options,libres,libreoptions) * (this.ret.pourcentage ? this.ret.pourcentage : 0) / 100;
     }
 
-    countTTC(version: any, details: any, options: any) {
-        return this.countSTotal(version, details, options) - this.countRetenu(version, details, options);
+    countTTC(version: any, details: any, options: any,libres:any,libreoptions: any) {
+        return this.countSTotal(version, details, options,libres,libreoptions) - this.countRetenu(version, details, options,libres,libreoptions);
 
     }
 
@@ -305,6 +397,8 @@ export class Editer_factureComponent {
         factureparams.detail = this.detail;
         factureparams.option = this.option;
         factureparams.nfact = this.nfact;
+        factureparams.libre = this.libre;
+        factureparams.libreoption = this.libreoption;
 
         var test = +confirm('Etes vous sür de vouloir enregitrer votre facture :');
         console.log(factureparams);
