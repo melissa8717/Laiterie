@@ -52,9 +52,7 @@ import {DevislibreComponent} from "./devis/devislibre.component";
 import {Facture_fournisseurComponent} from "./facture/facture_fournisseur.componnet";
 import {ListefacturefournisseurComponent} from "./facture/listefacturefournisseur.component";
 import {Param_genComponent} from "./parametre/param_gen.component";
-import {SauvegardeComponent} from "./parametre/sauvegarde.component";
 import {TvaComponent} from "./parametre/tva.component";
-import {Droit_utilisateurComponent} from "./parametre/droit_utilisateur.component";
 import {Cat_prodComponent} from "./parametre/cat_prod.component";
 import {Deverouillage_prodComponent} from "./parametre/deverouillage_prod.component";
 import {Utilisateur_connectComponent} from "./parametre/utilisateur_connect.component";
@@ -178,9 +176,7 @@ const appRoutes: Routes = [
     {path: 'facture_fournisseur', component: Facture_fournisseurComponent, canActivate: [AuthGuard]},
     {path: 'listefacturefournisseur', component: ListefacturefournisseurComponent, canActivate: [AuthGuard]},
     {path: 'param_gen', component: Param_genComponent, canActivate: [AuthGuard]},
-    {path: 'sauvegarde', component: SauvegardeComponent, canActivate: [AuthGuard]},
     {path: 'tva', component: TvaComponent, canActivate: [AuthGuard]},
-    {path: 'droit_utilisateur', component: Droit_utilisateurComponent, canActivate: [AuthGuard]},
     {path: 'cat_prod', component: Cat_prodComponent, canActivate: [AuthGuard]},
     {path: 'deverouillage_prod', component: Deverouillage_prodComponent, canActivate: [AuthGuard]},
     {path: 'utilisateur_connect', component: Utilisateur_connectComponent, canActivate: [AuthGuard]},
