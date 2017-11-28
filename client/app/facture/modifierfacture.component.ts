@@ -100,8 +100,6 @@ export class ModifierfactureComponent {
 
             this.droitsuser = data[0];
 
-            //console.log(this.data);
-           // console.log(this.currentUser._id);
 
         });
     }
@@ -110,7 +108,7 @@ export class ModifierfactureComponent {
 
         this.factureService.getAllFooter().subscribe(fact => {
             this.fact = fact[0];
-            console.log(this.fact);
+
 
         });
     }
@@ -119,7 +117,6 @@ export class ModifierfactureComponent {
 
         this.factureService.getAllnfact().subscribe(data => {
             this.nfact = data[0];
-            console.log(this.nfact);
 
         });
     }
@@ -133,6 +130,7 @@ export class ModifierfactureComponent {
                 data => {
                     this.model = data[0];
 
+
                 }
             )
         });
@@ -145,7 +143,6 @@ export class ModifierfactureComponent {
             this.factureService.getByIdTotlafact(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.totalfact = data;
-                    console.log(data);
                 }
             )
         });
@@ -199,7 +196,7 @@ export class ModifierfactureComponent {
             this.factureService. getByIdlibresituationoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.libsituaop = data;
-                    console.log(data);
+                    //console.log(data);
                 }
             )
         });
@@ -354,6 +351,15 @@ export class ModifierfactureComponent {
         return totalopt;
     }
 
+    countTotaldessitua(options: any) {
+        let totalopt = 0;
+
+        for (let options of this.totalfact) {
+                totalopt += options.montant_ht;
+        }
+        return  totalopt;
+    }
+
     countTotal(situas: any, valeur: any, options: any) {
         return this.countLigne(situas) + this.countOption(options);
     }
@@ -370,14 +376,13 @@ export class ModifierfactureComponent {
         return this.countTotalRemise(situas, valeur, options)
     }
 
-    totalsituation(valeur: any) {
-        if (this.valeur.remise)
-            return ((this.totalsit.totaldet + (this.optsit.totalopt > 0 ? this.optsit.totalopt : 0 )) * (1 - (this.valeur.remise / 100))) + (this.accomp.accompte_value ? this.accomp.accompte_value : 0);
-        else return (this.totalsit.totaldet + (this.optsit.totalopt > 0 ? this.optsit.totalopt : 0 )) + (this.accomp.accompte_value ? this.accomp.accompte_value : 0);
+    totalsituation(valeur: any,options:any) {
+            return   this.countTotaldessitua(options) + (this.accomp.accompte_value ? this.accomp.accompte_value : 0);
+
     }
 
     countTotalsituation(situas: any, valeur: any, options: any) {
-        this.model.montant_ht = this.countTotalNet(situas, valeur, options) - this.totalsituation(valeur);
+        this.model.montant_ht = this.countTotalNet(situas, valeur, options) - this.totalsituation(valeur,options);
         return this.model.montant_ht;
     }
 
@@ -436,4 +441,6 @@ export class ModifierfactureComponent {
         });
 
     }
+
+
 }

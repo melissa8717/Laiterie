@@ -501,14 +501,15 @@ function create(bdc_param) {
 
                 for (var p in bdc_param.produitDevis) {
                     (function (product) {
-                        db.query("INSERT INTO devis_detaille (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis,commentaire) VALUES (? , ? , ? , ?, ?, ?,?)",
+                        db.query("INSERT INTO devis_detaille (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis,commentaire,taux) VALUES (? , ? , ? , ?, ?, ?,?,?)",
                             [results.insertId,
                                 1,
                                 bdc_param.produitDevis[product].obj.id_prc,
                                 bdc_param.produitDevis[product].obj.num_version,
                                 bdc_param.produitDevis[product].qte,
                                 bdc_param.produitDevis[product].prix,
-                                bdc_param.produitDevis[product].commentaire
+                                bdc_param.produitDevis[product].commentaire,
+                                bdc_param.produitDevis[product].taux
                             ],
                             function (error, result, fields) {
                                 if (error) {
@@ -524,14 +525,15 @@ function create(bdc_param) {
 
                 for (var p in bdc_param.produitDevisOptions) {
                     (function (product) {
-                        db.query("INSERT INTO devis_option (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis,commentaire) VALUES (? , ? , ? , ?, ?, ? ,?)",
+                        db.query("INSERT INTO devis_option (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis,commentaire,taux) VALUES (? , ? , ? , ?, ?, ? ,?,?)",
                             [results.insertId,
                                 1,
                                 bdc_param.produitDevisOptions[product].obj.id_prc,
                                 bdc_param.produitDevisOptions[product].obj.num_version,
                                 bdc_param.produitDevisOptions[product].qte,
                                 bdc_param.produitDevisOptions[product].prix,
-                                bdc_param.produitDevisOptions[product].commentaire
+                                bdc_param.produitDevisOptions[product].commentaire,
+                                bdc_param.produitDevisOptions[product].taux
                             ],
                             function (error, result, fields) {
                                 if (error) {
