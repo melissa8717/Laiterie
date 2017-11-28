@@ -94,7 +94,7 @@ service.getByIdDevislibre = getByIdDevislibre;
 service.getByIdDevislibreoption = getByIdDevislibreoption;
 service.getByIdlibresituationoption = getByIdlibresituationoption;
 service.getByIdlibresituation = getByIdlibresituation;
-service.vgetByIdTotlafact = getByIdTotlafact;
+service.getByIdTotlafact = getByIdTotlafact;
 
 module.exports = service;
 
@@ -1720,7 +1720,7 @@ function getByIdlibresituationoption(_id_fact, _n_situation) {
 
 function getByIdTotlafact(_id_fact, _n_situation) {
     var deferred = Q.defer();
-    var sql = "SELECT montant_ht FROM  facture WHERE id_fact =? AND n_situation <=? ";
+    var sql = "SELECT montant_ht FROM  facture WHERE id_facture =? AND n_situation <=? ";
     var inserts = [_id_fact, _n_situation];
 
     sql = mysql.format(sql, inserts);

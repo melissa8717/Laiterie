@@ -106,7 +106,7 @@ export class DevisComponent implements OnInit {
                     this.devis = data.devis[0];
                     this.produitDevis = data.detaille;
                     this.produitDevisOptions = data.options;
-                    //console.log(this.devis);
+                    console.log(this.devis);
                     //console.log(this.produitDevis);
 
                 }
@@ -208,7 +208,7 @@ export class DevisComponent implements OnInit {
     private loadAllChantiers() {
         this.chantierService.getAll().subscribe(chantiers => {
             this.chantiers = chantiers;
-            console.log(this.chantiers)
+
         });
     }
 
@@ -216,7 +216,7 @@ export class DevisComponent implements OnInit {
         // console.log("on envoie la requette");
         this.contactService.getAllClients().subscribe(clients => {
             this.clients = clients;
-            console.log(this.clients);
+
         });
     }
 
@@ -386,7 +386,7 @@ export class DevisComponent implements OnInit {
         //console.log(this.recherche.seek)
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-            console.log(this.fact);
+
 
         });
     }
@@ -397,7 +397,7 @@ export class DevisComponent implements OnInit {
         this.paramsService.getAllVente().subscribe(cgv => {
 
             this.cgv = cgv[0];
-            console.log(this.cgv);
+
 
         });
     }
@@ -415,7 +415,7 @@ export class DevisComponent implements OnInit {
     public onChange(event: Event) {
         let files = event.target['files'];
         if (event.target['files']) {
-            console.log(event.target['files']);
+            //console.log(event.target['files']);
             this.readFiles(event.target['files'], 0);
         }
     };
@@ -594,8 +594,7 @@ export class DevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
+
             if (produit.taux == 20) {
                 total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
 

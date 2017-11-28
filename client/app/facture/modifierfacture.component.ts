@@ -142,7 +142,7 @@ export class ModifierfactureComponent {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdTotlafacture(this.id_facture, this.n_situation).subscribe(
+            this.factureService.getByIdTotlafact(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.totalfact = data;
                     console.log(data);
