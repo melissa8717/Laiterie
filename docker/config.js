@@ -1,7 +1,7 @@
 // 'wbat' | 'rexbat'
 
 var config = {
-    'company': 'rexbat'
+    'company': 'wbat'
 };
 
 try {
