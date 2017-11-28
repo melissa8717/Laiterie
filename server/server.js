@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 //app.use(expressJwt({ secret: config.secret }).unless({ path: ['/users/authenticate', '/users/register'] }));
 
 // routes
-app.use('/', require('./controllers/common.controller'));
 app.use('/users', require('./controllers/users.controller'));
 app.use('/contacts', require('./controllers/contacts.controller'));
 app.use('/products', require('./controllers/achats.controller'));

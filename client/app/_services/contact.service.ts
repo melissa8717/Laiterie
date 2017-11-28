@@ -40,10 +40,6 @@ export class ContactService {
         return this.http.get(this.config.apiUrl + '/contacts/clients', this.jwt()).map((response: Response) => response.json());
     }
 
-    getCACES() {
-        return this.http.get(this.config.apiUrl + '/caces/', this.jwt()).map((response: Response) => response.json());
-    }
-
     getAddress(id: number) {
         return this.http.get(this.config.apiUrl + '/contacts/address/'+ id, this.jwt()).map((response: Response) => response.json());
     }

@@ -1,74 +1,42 @@
-<div id="planning1">
-
+<div id="chantier">
     <header>
-
         <div class="toobar">
             <div class="fill">
                 <div class="container-fluid">
-
                     <img src="image/menu/parametres_grand_gris.png" alt="params">
-
-                    <span >Licences</span>
-
-
-
+                    <span>Licences</span>
                 </div>
             </div>
         </div>
-
     </header>
 
-    <nav class="navbar navbar-default">
 
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li  ><a [routerLink]="['/param_gen']">Agence</a></li>
-                <li ><a [routerLink]="['/cgv']">Conditions vente</a></li>
-                <li ><a [routerLink]="['/fraisprevisionel']">Frais prévisionnels</a></li>
-                <!--<li  ><a [routerLink]="['/sauvegarde']">Sauvegarde</a></li>-->
-                <li role="presentation" ><a [routerLink]="['/tva']" >TVA</a></li>
-                <li role="presentation" ><a [routerLink]="['/cat_prod']" >Catégories de produits</a></li>
-                <li role="presentation" ><a [routerLink]="['/formation']" >Formation</a></li>
-                <li role="presentation"  *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/utilisation']" >Droits utilisateurs</a></li>
-                <li role="presentation"  class="active" *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/licence']" >Licence</a></li>
-                <!--
-                <li role="presentation"><a [routerLink]="['/deverouillage_prod']" >Dévérouillage produits</a></li>
-                <li role="presentation"><a [routerLink]="['/utilisateur_connect']" >Voir activité utilisateurs</a></li>-->
-            </ul>
-
-
-        </div>
-    </nav>
+    <menu-param></menu-param>
 
 
     <div class=" container-fluid ">
         <div *ngIf="!print" class=" col-sm-offset-6" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
 
 
         <div class="col-sm-12">
 
 
-            <h3>Ajouté une licence</h3>
+            <h3>Ajouter une licence</h3>
             <div class="col-sm-12" style="margin-top: 10px;">
 
                 <div class=" table-responsive">
-                    <table class="table table-bordered" >
+                    <table class="table table-bordered">
 
                         <tr>
                             <td class="col-sm-3">N° de la clé de licence</td>
-                            <td class="col-sm-7"><input  type="text" class="col-sm-12" name="numtest" [(ngModel)]="model.numtest"></td>
-                            <td class="col-sm-2"> <button type="submit" (click)="modify(model)" class="col-sm-12 input-sm">Enregistrer</button></td>
+                            <td class="col-sm-7"><input type="text" class="col-sm-12" name="numtest"
+                                                        [(ngModel)]="model.numtest"></td>
+                            <td class="col-sm-2">
+                                <button type="submit" (click)="modify(model)" class="col-sm-12 input-sm">Enregistrer
+                                </button>
+                            </td>
 
                         </tr>
 
@@ -79,31 +47,28 @@
             </div>
 
             <h3 class="col-sm-12">Vos licences valident</h3>
-            <table class="table" >
+            <table class="table">
 
                 <tbody>
 
                 <tr *ngFor="let coms of com, let i = index">
-                    <td >
+                    <td>
 
                     </td>
-                    <td >
+                    <td>
                         Nombre d'utilisateur : {{com[i].id_test}}
                     </td>
-                    <td >
-                        Date de création : {{com[i].datedeb  | date: 'dd/MM/yyyy HH:mm'}}
+                    <td>
+                        Date de création : {{com[i].datedeb | date: 'dd/MM/yyyy HH:mm'}}
                     </td>
                     <td>
-                        Date de validité : {{com[i].datefin  | date: 'dd/MM/yyyy HH:mm'}}
+                        Date de validité : {{com[i].datefin | date: 'dd/MM/yyyy HH:mm'}}
                     </td>
                 </tr>
                 </tbody>
 
 
-
             </table>
-
-
 
 
         </div><!--fin container fluid-->

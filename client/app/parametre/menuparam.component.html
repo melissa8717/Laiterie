@@ -1,0 +1,26 @@
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li id="param_gen"><a [routerLink]="['/param_gen']">Agence</a></li>
+            <li id="cgv"><a [routerLink]="['/cgv']">Conditions vente</a></li>
+            <li id="fraisprevisionel"><a [routerLink]="['/fraisprevisionel']">Frais prévisionnels</a></li>
+            <li id="tva" role="presentation"><a [routerLink]="['/tva']">TVA</a></li>
+            <li id="cat_prod" role="presentation"><a [routerLink]="['/cat_prod']">Catégories de produits</a></li>
+            <li id="formation" role="presentation"><a [routerLink]="['/formation']">Formation</a></li>
+            <li id="utilisation" role="presentation" *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/utilisation']">Droits utilisateurs</a></li>
+            <li id="licence" role="presentation" *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/licence']">Licence</a></li>
+            <!--<li role="presentation"><a [routerLink]="['/deverouillage_prod']" >Dévérouillage produits</a></li>-->
+            <!--<li role="presentation" class="active"><a [routerLink]="['/utilisateur_connect']" >Voir activité utilisateurs</a></li>-->
+        </ul>
+    </div>
+</nav>

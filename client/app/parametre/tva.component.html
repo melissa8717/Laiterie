@@ -1,5 +1,3 @@
-
-
 <div id="chantier">
     <header>
 
@@ -18,68 +16,40 @@
     </header>
 
 
-
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-            </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li  ><a [routerLink]="['/param_gen']">Agence</a></li>
-                    <li ><a [routerLink]="['/cgv']">Conditions vente</a></li>
-                    <li ><a [routerLink]="['/fraisprevisionel']">Frais prévisionnels</a></li>
-                    <!--<li  ><a [routerLink]="['/sauvegarde']">Sauvegarde</a></li>-->
-                    <li role="presentation" class="active"><a [routerLink]="['/tva']" >TVA</a></li>
-                    <li role="presentation" ><a [routerLink]="['/cat_prod']" >Catégories de produits</a></li>
-                    <li role="presentation"  *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/utilisation']" >Droits utilisateurs</a></li>
-                    <!--<li role="presentation"><a [routerLink]="['/droit_utilisateur']" >Droits utilisateurs</a></li>
-                    <li role="presentation"><a [routerLink]="['/deverouillage_prod']" >Dévérouillage produits</a></li>
-                    <li role="presentation"><a [routerLink]="['/utilisateur_connect']" >Voir activité utilisateurs</a></li>-->
-                </ul>
-
-            </div>
-        </div>
-    </nav>
+    <menu-param></menu-param>
 
 
     <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-        <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span
+            class="blan1">Retour accueil</span>
     </div>
 
 
-    <h3 class="col-sm-12" >TVA</h3>
+    <h3 class="col-sm-12">TVA</h3>
 
 
+    <div class="  col-sm-12 table-responsive" style="font-size: 16px;">
+        <table class="table table-striped ">
+            <!--<span style="color:red;">Votre devis a été supprimé</span> condition à mettre en ^place lorsuqe le bonton valider à été utiliser pour fair apparaitre le message-->
+            <thead>
+            <th>Libellé</th>
+            <th>Taux en %</th>
+            <th>Action</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let facts of fact">
+                <td>{{facts.Libelle_tva}}</td>
+                <td><input type="number" name="taux" [(ngModel)]="facts.taux"></td>
+                <td>
+                    <button type="button" (click)="modify(facts)">Modifier</button>
+                </td>
+            </tr>
 
 
-            <div class="  col-sm-12 table-responsive" style="font-size: 16px;">
-                <table class="table table-striped ">
-                    <!--<span style="color:red;">Votre devis a été supprimé</span> condition à mettre en ^place lorsuqe le bonton valider à été utiliser pour fair apparaitre le message-->
-                    <thead>
-                        <th>Libellé</th>
-                        <th>Taux en %</th>
-                        <th>Action</th>
-                    </thead>
-                    <tbody >
-                    <tr *ngFor="let facts of fact">
-                        <td>{{facts.Libelle_tva}}</td>
-                        <td><input type="number" name="taux" [(ngModel)]="facts.taux" ></td>
-                        <td><button type="button" (click)="modify(facts)">Modifier</button></td>
-                    </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-default input-sm col-sm-offset-11 col-sm-1" style="margin-bottom: 5px;  ">Imprimer
+        </button>
 
-
-                    </tbody>
-                </table>
-                <button class="btn btn-default input-sm col-sm-offset-11 col-sm-1" style="margin-bottom: 5px;  ">Imprimer</button>
-
-            </div>
+    </div>
 </div>
