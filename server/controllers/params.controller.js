@@ -327,8 +327,8 @@ function updateTest(req, res) {
 
 function getCompte(req, res) {
     paramsService.getCompte()
-        .then(function (agence) {
-            res.send(agence);
+        .then(function (nbUsers) {
+            res.send(nbUsers.toString());
         })
         .catch(function (err) {
             res.status(400).send(err);

@@ -49,12 +49,13 @@
                 <div *ngIf="!devis.adr" class="form-group">
                     <span style="text-align: center;">{{devis.adresse}}</span>
                 </div>
-                <div class="form-group" *ngIf="devis.code_postal || devis.vil">
-                    <span style="text-align: center;">{{devis.code_postal}} - {{devis.vil}}</span>
+                <div class="form-group" >
+                    <span style="text-align: center;">{{devis.code_postal ? devis.code_postal :devis.cp}} - {{devis.vil ? devis.vil :devis.ville}}</span>
                 </div>
-                <div class="form-group" *ngIf="!devis.code_postal && !devis.vil">
-                    <span style="text-align: center;">{{devis.cp}} - {{devis.ville}}</span>
+                <div class="form-group" >
+                    <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
                 </div>
+
             </div>
 
         </div>
@@ -80,9 +81,7 @@
             </div>
         </div>
 
-        <div class="form-group" style="margin-top: 20px; margin-left:45%;">
-            <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
-        </div>
+
 
     </div>
 
