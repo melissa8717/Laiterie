@@ -95,6 +95,7 @@ service.getByIdDevislibreoption = getByIdDevislibreoption;
 service.getByIdlibresituationoption = getByIdlibresituationoption;
 service.getByIdlibresituation = getByIdlibresituation;
 service.getByIdTotlafact = getByIdTotlafact;
+service.getByIdTotlaTVA = getByIdTotlaTVA;
 
 module.exports = service;
 
@@ -1722,6 +1723,36 @@ function getByIdTotlafact(_id_fact, _n_situation) {
     var deferred = Q.defer();
     var sql = "SELECT montant_ht FROM  facture WHERE id_facture =? AND n_situation <=? ";
     var inserts = [_id_fact, _n_situation];
+
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdTotlaTVA(_id_fact, _n_situation) {
+    var deferred = Q.defer();
+    var sql = "SELECT SUM( qtefact * prixfact * ( tvas /100 ) * ( pourcentage /100 ) ) AS somme, tvas AS tva FROM  `situation_facture` " +
+        "LEFT JOIN facture ON facture.id_facture = situation_facture.id_facture AND facture.n_situation = situation_facture.n_situation " +
+        "WHERE facture.id_facture =? AND facture.n_situation =? " +
+        "GROUP BY tvas " +
+        "UNION " +
+        "SELECT SUM( qtefact * prixfact * ( tvao /100 ) * ( pourcentage /100 ) ) AS somme, tvao AS tva FROM  `situation_option` " +
+        "LEFT JOIN facture ON facture.id_facture = situation_option.id_facture AND facture.n_situation = situation_option.n_situation " +
+        "WHERE facture.id_facture =? AND facture.n_situation =? " +
+        "GROUP BY tvao " +
+        "UNION " +
+        "SELECT SUM( qteprod * prix_prod * ( tva /100 ) * ( pourcent /100 ) ) AS somme, tva FROM  `facture_libredetail` " +
+        "LEFT JOIN facture ON facture.id_facture = facture_libredetail.id_fact AND facture.n_situation = facture_libredetail.n_situation " +
+        "WHERE facture.id_facture =? AND facture.n_situation =? " +
+        "GROUP BY tva ";
+    var inserts = [_id_fact, _n_situation,_id_fact, _n_situation,_id_fact, _n_situation];
 
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, results, fields) {

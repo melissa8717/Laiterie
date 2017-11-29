@@ -92,6 +92,7 @@ router.get('/optionlibre/:id_devis/:num_version',getByIdDevislibreoption);
 router.get('/getByIdlibresituation/:id_facture/:n_situation',getByIdlibresituation);
 router.get('/getByIdlibresituationoption/:id_facture/:n_situation',getByIdlibresituationoption);
 router.get('/byIdTotlafacture/:id_facture/:n_situation',getByIdTotlafact);
+router.get('/getByIdTotlaTVA/:id_facture/:n_situation',getByIdTotlaTVA);
 
 module.exports = router;
 
@@ -969,6 +970,20 @@ function getByIdlibresituationoption(req, res) {
 
 function getByIdTotlafact(req, res) {
     factureService.getByIdTotlafact(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdTotlaTVA(req, res) {
+    factureService.getByIdTotlaTVA(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (devis) {
             if (devis) {
                 res.send(devis);
