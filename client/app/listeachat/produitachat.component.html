@@ -23,17 +23,25 @@
         </div>
         <h3>Fiche produit achat</h3>
 
-        <form name="form" (ngSubmit)="f.form.valid && modifyProduct()" #f="ngForm">
+        <form method="POST" action="#">
             <article class="col-sm-4">
 
                 <div style="height: 10%; width: 50%;">
                     <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && product.image" src="http://{{loc}}:4000/image/produit/{{product.id_produit}}/{{product.image}}" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && !product.image" src="image/test.ico" alt="..." class="img-thumbnail images" />
+                    <img
+                         src="http://{{loc}}:4000/image/produit/{{production.id_produit}}/{{production.image_url}}" alt="..." class="img-thumbnail col-sm-12"/>
                     <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
-                </div>
 
-                <div class="form-group col-sm-12" >
+                </div>
+                <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default"
+                        (click)="modifyProduct(id); uploaderImg.queue[0].upload();"> Modifier
+                </button>
+
+
+
+
+    <div class="form-group col-sm-12" >
+
                     <span class="gras col-sm-5">Libellé : </span>
 
                     <textarea name="libelle" [(ngModel)]="updateProduct.libelle" class="col-sm-7" rows="3"></textarea>
@@ -160,6 +168,7 @@
                     </table>
                 </div>
             </div>
+
             <button *ngIf="!print && droitsuser.modifproa" type="submit" [disabled]="loading" class="input-sm col-sm-offset-10 col-sm-1" (click)="uploaderImg.queue[0].upload();">Modifier</button>
         </form>
 

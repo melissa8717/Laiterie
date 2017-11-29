@@ -16,7 +16,10 @@ import {AppConfig} from '../app.config';
 
 
 const URL = 'http://localhost:4000/ged/';
-const URLimg = 'http://' + location.hostname + ':4000/image/';
+const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLFili = 'http://'+location.hostname+':4000/filigrane/';
+
+
 
 
 @Component({
@@ -27,6 +30,13 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 export class DevisComponent implements OnInit {
 
     public uploaderImg: FileUploader;
+    public uploaderFili: FileUploader;
+    public hasBaseDropZoneOver: boolean = false;
+
+    public fileOverBase(e: any): void {
+        this.hasBaseDropZoneOver = e;
+    }
+
 
 
     devis: any = {};
@@ -48,6 +58,9 @@ export class DevisComponent implements OnInit {
     image: any[];
     id_agence: number;
     img: any = {};
+
+    fili: any = {};
+
 
 
     num_version: number;
@@ -95,6 +108,7 @@ export class DevisComponent implements OnInit {
         this.loadCat();
         this.loaddroituser();
         this.loadAllagence();
+        this.loadAllFili();
 
 
         this.sub = this.route.params.subscribe(params => {
@@ -444,6 +458,30 @@ export class DevisComponent implements OnInit {
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+            this.uploader.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };*/
+
+        });
+
+
+
+    }
+
+    loadAllFili(){
+
+        this.paramsService.getAllFili().subscribe(fili => {
+
+            this.fili = fili[0];
+            console.log(this.fili);
+            //console.log(this.currentUser);
+
+            this.uploaderFili = new FileUploader({url: URLFili + "agence/" + this.fili.id_agence});
+            this.uploaderFili.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
 

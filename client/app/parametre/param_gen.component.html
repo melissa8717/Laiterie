@@ -49,6 +49,33 @@
                         <input type="text" class=" col-sm-3" name="nom_a" [(ngModel)]="model.nom_a">
                     </div>
 
+            <div  *ngIf="uploaderFili" class="col-sm-offset-2">
+                <h4>Filigrane</h4>
+
+                <div style="height: 15%; width: 100%;">
+                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url && fili.image"
+                         src="http://{{loc}}:4000/image/agence/{{fili.id_agence}}/{{fili.image}}" alt="..."
+                         class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url && !fili.image" src="image/test.ico" alt="..."
+                         class="img-thumbnail images"/>
+                    <input type="file" ng2FileSelect [uploader]="uploaderFili" (change)="readUrl($event)"/>
+                </div>
+            </div>
+
+            <button *ngIf="uploaderFili && uploaderFili.queue[0] && droitsuser.modifparam" class="btn btn-default  col-sm-offset-11 col-sm-1"
+                    (click)="modify(fili); uploaderFili.queue[0].upload();"> Modifier
+            </button>
+            <h3 class="col-sm-12">Agence</h3>
+
+
+    <form *ngIf="droitsuser.accesparam == 1">
+            <div class="col-sm-12">
+                <div class="form-group" style="margin-top: 10px;">
+                    <label class="col-sm-1" >Nom :</label>
+                    <input type="text" class=" col-sm-3" name="nom_a" [(ngModel)]="model.nom_a">
+                </div>
+
                     <div class="form-group">
                         <label class="col-sm-2">Responsable :</label>
                         <input type="text" class=" col-sm-3" name="responsable_a" [(ngModel)]="model.responsable_a">
@@ -151,6 +178,8 @@
 
         </div>
 
+            </form>
+        </div>
     </div>
 
 

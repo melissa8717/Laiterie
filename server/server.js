@@ -9,13 +9,6 @@ var express = require('express');
 var app = express();
 var cors = require('cors');
 var bodyParser = require('body-parser');
-var path = require('path');
-var crypto = require("crypto");
-var multer = require('multer');
-var Q = require('q');
-
-var DIR = './files/';
-var DIRimg = './images/';
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,6 +31,22 @@ app.use('/params', require('./controllers/params.controller'));
 app.use('/planning', require('./controllers/planning.controller'));
 app.use('/gantt', require('./controllers/gantt.controller'));
 
+/*
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', false);
+    next();
+});*/
+
+var path = require('path');
+var crypto = require("crypto");
+var multer = require('multer');
+var fs = require('fs');
+var DIR = './files/';
+var DIRimg = './images/';
+var Q = require('q');
 
 
 app.get('/image', function(req, res, next){
@@ -65,6 +74,9 @@ app.get('/image/contact/:id_contact/:nom_fichier', function (req, res) {
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
 });
 
+
+
+
 app.post('/image/contact/:id', uploadImg.any(), function (req, res, next) {
     console.log(req.files[0].filename);
     db.query ("UPDATE contact SET image_url = ? WHERE id_contact = ?", [req.files[0].filename, req.params.id]);
@@ -72,13 +84,18 @@ app.post('/image/contact/:id', uploadImg.any(), function (req, res, next) {
 });
 
 // IMAGES FICHE PRODUITS ACHAT / AJOUT PRODUIT ACHAT
-app.get('/image/produit/:id_produit/:nom_fichier', function (req, res) {
+app.get('/image/img/:id/:nom_fichier', function (req, res) {
+    console.log("get img"+req.params.nom_fichier,req.params.id_produit);
+
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
+
 });
 
-app.post('/image/produit/:id', uploadImg.any(), function (req, res, next) {
-    console.log(req.files[0].filename);
-    db.query ("UPDATE produit SET image = ? WHERE id_produit = ?", [req.files[0].filename, req.params.id]);
+app.post('/image/img/:id', uploadImg.any(), function (req, res, next) {
+
+    db.query ("UPDATE produit SET image_url = ? WHERE id_produit = ?", [req.files[0].filename, req.params.id]);
+    console.log("post img"+req.files[0].filename, req.params.id_produit);
+
     res.end('image uploaded');
 });
 
@@ -94,13 +111,15 @@ app.post('/image/produitv/:id', uploadImg.any(), function (req, res, next) {
 });
 
 // IMAGES FICHE VEHIMAT / AJOUT VEHIMAT
-app.get('/image/matvehi/:id_prc/:nom_fichier', function (req, res) {
+app.get('/image/matvehi/:id_vehmat/:nom_fichier', function (req, res) {
+   console.log("get"+req.params.nom_fichier);
+
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
 });
 
 app.post('/image/matvehi/:id', uploadImg.any(), function (req, res, next) {
-    //console.log(req.files[0].filename);
-    db.query ("UPDATE vehiculemateriel SET image = ? WHERE id_vehmat = ?", [req.files[0].filename, req.params.id]);
+    console.log(req.files[0].filename);
+    db.query ("UPDATE Vehiculemateriel SET image_vh = ? WHERE id_vehmat = ?", [req.files[0].filename, req.params.id]);
     res.end('image uploaded');
 });
 
@@ -116,6 +135,21 @@ app.post('/image/agence/:id', uploadImg.any(), function (req, res, next) {
     res.end('logo uploaded');
 });
 
+// Filigrane
+var storageFili = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, DIRimg)
+    },
+    filename: function (req, file, cb) {
+        crypto.pseudoRandomBytes(16, function (err, raw) {
+            var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
+            cb(null, url);
+        });
+    }
+});
+var uploadFili = multer({storage: storageFili});
+
+app.options('/image');
 /******************GED CONTACT***************************/
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {

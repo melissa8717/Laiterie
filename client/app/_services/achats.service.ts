@@ -173,7 +173,10 @@ export class AchatsService {
         });
     }
 
-
+    getAllImg() {
+        console.log("get"+this.config.apiUrl + '/products/img')
+        return this.http.get(this.config.apiUrl + '/products/img/', this.jwt()).map((response: Response) => response.json());
+    }
 
     // private helper methods
 

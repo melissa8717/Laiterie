@@ -62,6 +62,13 @@ export class ParamsService {
         return this.http.get(this.config.apiUrl + '/params/agence', this.jwt()).map((response: Response) => response.json());
     }
 
+
+
+    getAllFili() {
+        //console.log(this.config.apiUrl + '/products/agence')
+        return this.http.get(this.config.apiUrl + '/params/agence', this.jwt()).map((response: Response) => response.json());
+    }
+
     updateAgence(a_params: any) {
         //console.log (  this.config.apiUrl + '/params/agence')
         return this.http.put(this.config.apiUrl + '/params/modifyagence', a_params, this.jwt());

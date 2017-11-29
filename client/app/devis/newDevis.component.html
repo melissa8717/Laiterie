@@ -299,16 +299,9 @@
                                                required>
                                     </div>
                                 </td>
-                                <td>
+                                <td >
                                     <div class="form-group">
-                                        <input type="number"
-                                               class="form-control input-sm"
-                                               name="ntva{{i}}"
-                                               placeholder=""
-                                               min="0"
-                                               [(ngModel)]="produitDevis[i].taux"
-                                               (ngModelChange)="accomptepercent()"
-                                               required>
+                                        {{produitDevis[i].taux}}
                                     </div>
                                 </td>
                                 <td>

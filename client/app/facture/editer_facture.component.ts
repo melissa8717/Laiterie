@@ -20,6 +20,8 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 export class Editer_factureComponent {
     public uploaderImg: FileUploader;
+    public uploaderFili: FileUploader;
+
 
     model: any = {};
     ret: any = {};
@@ -58,6 +60,9 @@ export class Editer_factureComponent {
 
     libre: any[] = [];
     libreoption: any[] = [];
+    fili: any = {};
+
+
 
 
     constructor(private route: ActivatedRoute,
@@ -445,13 +450,28 @@ export class Editer_factureComponent {
                 file.withCredentials = false;
             };
 
-            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };*/
-        });
+            this.paramsService.getAllAgence().subscribe(fili => {
+
+                this.fili = fili[0];
+                console.log(this.img);
+                //console.log(this.currentUser);
+
+                this.uploaderFili = new FileUploader({url: URLimg + "agence/" + this.fili.id_agence});
+                this.uploaderFili.onAfterAddingFile = (file) => {
+                    file.withCredentials = false;
+                };
+
+                /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+                this.uploader.onAfterAddingFile = (file) => {
+                    file.withCredentials = false;
+                };*/
+            });
+
+    });
 
     }
+
+
 
     TVAVO() {
         let total = 0;
@@ -732,4 +752,5 @@ export class Editer_factureComponent {
     SumTvaZ() {
         return this.TVAZ() + this.TVAZO() - this.TVATZOt() - this.TVATZt();
     }
+
 }

@@ -155,6 +155,7 @@ export class DevisService {
         return this.http.get(this.config.apiUrl + '/log/', this.jwt()).map((response: Response) => response.json());
     }
 
+
     // private helper methods
 
     private jwt() {
