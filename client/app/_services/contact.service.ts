@@ -183,6 +183,14 @@ export class ContactService {
         return this.http.delete(this.config.apiUrl + '/contacts/entre/' + id_equipement, this.jwt());
     }
 
+    deleteFormation(id_formationcontact:number) {
+        return this.http.delete(this.config.apiUrl + '/contacts/deform/' + id_formationcontact, this.jwt());
+    }
+
+    deleteCaces(id_cacon:number) {
+        return this.http.delete(this.config.apiUrl + '/contacts/deleteCaces/' + id_cacon, this.jwt());
+    }
+
     // private helper methods
 
     private jwt() {

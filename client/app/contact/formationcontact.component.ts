@@ -218,4 +218,28 @@ export class FormationcontactComponent  {
 
     }
 
+    private suprimer(id_formationcontact:any) {
+        this.contactService.deleteFormation(id_formationcontact)
+            .subscribe(
+                data => {
+                    this.form = this.form.filter(x => x.id_formationcontact != id_formationcontact);
+
+                },
+                error => {
+                    this.alertService.error(error._body);
+                });
+    }
+
+    private suprimerca(id_cacon:any) {
+        this.contactService.deleteCaces(id_cacon)
+            .subscribe(
+                data => {
+                    this.caces = this.caces.filter(x => x.id_cacon != id_cacon);
+
+                },
+                error => {
+                    this.alertService.error(error._body);
+                });
+    }
+
 }
