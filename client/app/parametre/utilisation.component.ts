@@ -18,7 +18,7 @@ export class UtilisationComponent {
     loading = false;
     count: any = {};
     test: any = {};
-    compte: any = {};
+    nbUsersMax: any = {};
 
 
     currentUser: User;
@@ -120,11 +120,9 @@ export class UtilisationComponent {
     }
 
     loadCompte() {
-        this.paramsService.getCompte().subscribe(compte => {
-            this.compte = compte[0];
-            console.log(this.compte)
-
-
+        this.paramsService.getCompte().subscribe(nbUsersMax => {
+            this.nbUsersMax = nbUsersMax;
+            console.log(this.nbUsersMax)
         });
     }
 

@@ -183,7 +183,6 @@ export class ParamsService {
     }
 
     updateTest(ag_params: any) {
-        //console.log (  this.config.apiUrl + '/params/test')
         return this.http.put(this.config.apiUrl + '/params/test', ag_params, this.jwt());
     }
 

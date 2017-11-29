@@ -1887,7 +1887,7 @@ CREATE TABLE IF NOT EXISTS `testing` (
   `id_valitest` int(255) NOT NULL AUTO_INCREMENT,
   `numtest` varchar(255) DEFAULT NULL,
   `datedeb` timestamp NULL DEFAULT NULL,
-  `datefin` timestamp NULL DEFAULT NULL,
+  `datefin` varchar(255) DEFAULT NULL,
   `validate` tinyint(2) DEFAULT NULL,
   `id_test` int(11) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
