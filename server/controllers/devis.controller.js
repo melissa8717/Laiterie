@@ -37,6 +37,7 @@ router.get('/option/:id_devis/:num_version', getByIdAnalyseopt);
 router.get('/anldevis/:id_devis/:num_version', getByIdAnaldevis);
 router.get('/fichedevis/:id_devis/:num_version', getByIdLibre);
 router.get('/ffdevis/:id_devis/:num_version', getByIdLibreproduit);
+router.get('/getByIdLibreproduitopt/:id_devis/:num_version',getByIdLibreproduitopt);
 
 router.get('/duplibre/:id_devis/:num_version', getByIddupliquer);
 router.post('/libreduplicate/:id_devis', duplicatelibre);
@@ -296,6 +297,20 @@ function getByIdLibre(req, res) {
 
 function getByIdLibreproduit(req, res) {
     devisService.getByIdLibreproduit(req.params.id_devis, req.params.num_version, req.body)
+        .then(function (test) {
+            if (test) {
+                res.send(test);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdLibreproduitopt(req, res) {
+    devisService.getByIdLibreproduitopt(req.params.id_devis, req.params.num_version, req.body)
         .then(function (test) {
             if (test) {
                 res.send(test);

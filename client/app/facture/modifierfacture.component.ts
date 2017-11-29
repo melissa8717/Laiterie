@@ -184,7 +184,7 @@ export class ModifierfactureComponent {
             this.factureService. getByIdlibresituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.libsitua = data;
-
+                    console.log(data);
                 }
             )
         });
@@ -198,7 +198,7 @@ export class ModifierfactureComponent {
             this.factureService. getByIdlibresituationoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.libsituaop = data;
-                    //console.log(data);
+                    console.log(data);
                 }
             )
         });
