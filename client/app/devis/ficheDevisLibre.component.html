@@ -94,7 +94,7 @@
             <tr>
                 <th colspan="10" style="border-bottom:1px solid black; border-top:1px solid black;border-left: 1px solid black;border-right: 1px solid black;text-align: center;" class="col-sm-4">Désignation</th>
 
-                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1" >Option acceptée</th>
+                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1" >Option</th>
                 <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
                 <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">Qte</th>
                 <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;width: 150px;" class="col-sm-1">P.U. HT</th>
@@ -105,7 +105,9 @@
             </thead>
 
             <tbody>
+
             <tr *ngFor="let prod of produit, let  i = index">
+
                 <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;"><span style="font-weight: bold;">{{prod.produit}}</span> <br>
                     <textarea  *ngIf="prod.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prod.commentaire}}</textarea></td>
                 <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
@@ -124,6 +126,36 @@
                 <td colspan="2" style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
                     {{prod.qte_devis * prod.prix_devis | number:'1.0-2'}}</td>
             </tr>
+
+            <tr *ngIf="produitop.length > 0">
+                <td colspan="24"
+                    class="total"
+                    style="text-align: left;
+                                background-color: #0f0f0f;
+                                color: white">
+                    Options:
+                </td>
+            <tr *ngFor="let prode of produitop, let  i = index">
+
+                <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;"><span style="font-weight: bold;">{{prode.produit}}</span> <br>
+                    <textarea  *ngIf="prode.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prode.commentaire}}</textarea></td>
+                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+
+                    <span *ngIf="(produitop[i].accepted == 0) || (produitop[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produitop[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produitop[i])"></span></td>
+                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                    {{prode.unite}}
+                </td>
+                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+
+                    {{prode.qte_devis}}</td>
+                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+
+                    {{prode.prix_devis}}</td>
+
+                <td colspan="2" style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                    {{prode.qte_devis * prode.prix_devis | number:'1.0-2'}}</td>
+            </tr>
+
 
             </tbody>
 
@@ -151,7 +183,7 @@
             <br />
 
             <tr *ngIf="countTotalopt(0)" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
-                <td style="border-right:1px solid black;text-align: left;">Total H.T. des options non acceptées </td>
+                <td style="border-right:1px solid black;text-align: left;">Total H.T. des options : </td>
                 <td colspan="3">{{countTotalopt() | number:'1.0-2'}} €</td>
             </tr>
             <tr *ngIf="countTotalopt(0)" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
