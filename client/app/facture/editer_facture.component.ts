@@ -120,7 +120,7 @@ export class Editer_factureComponent {
             this.factureService.getByIdFacture(this.id_devis).subscribe(
                 data => {
                     this.model = data[0];
-                    //console.log(data)
+                   // console.log(data)
                 }
             )
         });
@@ -156,7 +156,7 @@ export class Editer_factureComponent {
             this.factureService.getByIdVersion(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.version = data[0];
-                    console.log(data)
+                    //console.log(data)
                 }
             )
         });
@@ -172,10 +172,6 @@ export class Editer_factureComponent {
                     this.detail = data;
                     //console.log(data)
 
-                    /* let totalligne = 0;
-                     for (let details of this.detail) {
-                         totalligne += (details.qte_devis / 100) * details.prix_devis*details.pourcentage;
-                     }*/
 
                 }
             )
@@ -190,7 +186,7 @@ export class Editer_factureComponent {
             this.factureService.getByIdOption(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.option = data;
-                    //console.log(data)
+                    console.log(data)
                 }
             )
         });
@@ -371,7 +367,7 @@ export class Editer_factureComponent {
     }
 
     countTVA(version: any, details: any, options: any,libres:any,libreoptions: any) {
-        return this.countTotalsituation(details, options, version,libres,libreoptions) * (this.version.tva ? this.version.tva/ 100 : 0) ;
+        return this.countTotalsituation(details, options, version,libres,libreoptions) * (this.version.tva ? this.version.tva/ 100 : 0) + this.SumTvaV() +this.SumTvaD()+this.SumTvaC()+this.SumTvaDX()+this.SumTvaZ();
     }
 
     countSTotal(version: any, details: any, options: any,libres:any,libreoptions: any) {
@@ -455,5 +451,285 @@ export class Editer_factureComponent {
             };*/
         });
 
+    }
+
+    TVAVO() {
+        let total = 0;
+
+        for (let libres of this.libre) {
+
+            if (libres.taux == 20) {
+                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+
+            }
+        }
+        return total;
+    }
+
+     TVAV() {
+         let total = 0;
+
+         for (let details of this.detail) {
+
+             if (details.taux == 20) {
+                 total += (details.prix_devis * details.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (details.pourcentage / 100) * (details.taux / 100);
+             }
+
+         }
+         return total;
+     }
+
+     TVATVt() {
+         let total = 0;
+
+         for (let options of this.option) {
+
+             if (options.taux == 20) {
+                 total += (options.prix_devis * options.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.taux / 100);
+             }
+
+         }
+         return total;
+     }
+
+     TVATVOt() {
+         let total = 0;
+
+         for (let libreoptions of this.libreoption) {
+
+             if (libreoptions.taux == 20) {
+                 total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+             }
+
+         }
+         return total;
+     }
+
+    SumTvaV() {
+        return this.TVAV() + this.TVAVO() + this.TVATVOt() + this.TVATVt();
+    }
+
+    TVADO() {
+        let total = 0;
+
+        for (let libres of this.libre) {
+
+            if (libres.taux == 10) {
+                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVAD() {
+        let total = 0;
+
+        for (let details of this.detail) {
+
+            if (details.taux == 10) {
+                total += (details.prix_devis * details.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (details.pourcentage / 100) * (details.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATDt() {
+        let total = 0;
+
+        for (let options of this.option) {
+
+            if (options.taux == 10) {
+                total += (options.prix_devis * options.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATDOt() {
+        let total = 0;
+
+        for (let libreoptions of this.libreoption) {
+
+            if (libreoptions.taux == 10) {
+                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    SumTvaD() {
+        return this.TVAD() + this.TVADO() + this.TVATDOt() + this.TVATDt();
+    }
+
+    TVACO() {
+        let total = 0;
+
+        for (let libres of this.libre) {
+
+            if (libres.taux == 5.5) {
+                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVAC() {
+        let total = 0;
+
+        for (let details of this.detail) {
+
+            if (details.taux == 5.5) {
+                total += (details.prix_devis * details.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (details.pourcentage / 100) * (details.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATCt() {
+        let total = 0;
+
+        for (let options of this.option) {
+
+            if (options.taux == 5.5) {
+                total += (options.prix_devis * options.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATCOt() {
+        let total = 0;
+
+        for (let libreoptions of this.libreoption) {
+
+            if (libreoptions.taux == 5.5) {
+                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    SumTvaC() {
+        return this.TVAC() + this.TVACO() + this.TVATCOt() + this.TVATCt();
+    }
+
+    TVADXO() {
+        let total = 0;
+
+        for (let libres of this.libre) {
+
+            if (libres.taux == 2.1) {
+                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVADX() {
+        let total = 0;
+
+        for (let details of this.detail) {
+
+            if (details.taux == 2.1) {
+                total += (details.prix_devis * details.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (details.pourcentage / 100) * (details.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATDXt() {
+        let total = 0;
+
+        for (let options of this.option) {
+
+            if (options.taux == 2.1) {
+                total += (options.prix_devis * options.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATDXOt() {
+        let total = 0;
+
+        for (let libreoptions of this.libreoption) {
+
+            if (libreoptions.taux == 2.1) {
+                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+            }
+
+        }
+        return total;
+    }
+
+    SumTvaDX() {
+        return this.TVADX() + this.TVADXO() + this.TVATDXOt() + this.TVATDXt();
+    }
+
+    TVAZO() {
+        let total = 0;
+
+        for (let libres of this.libre) {
+
+            if (libres.taux == 0) {
+                total +=0;
+
+            }
+        }
+        return total;
+    }
+
+    TVAZ() {
+        let total = 0;
+
+        for (let details of this.detail) {
+
+            if (details.taux == 0) {
+                total += 0;
+            }
+
+        }
+        return total;
+    }
+
+    TVATZt() {
+        let total = 0;
+
+        for (let options of this.option) {
+
+            if (options.taux == 0) {
+                total += 0;
+            }
+
+        }
+        return total;
+    }
+
+    TVATZOt() {
+        let total = 0;
+
+        for (let libreoptions of this.libreoption) {
+
+            if (libreoptions.taux == 0) {
+                total += 0;
+            }
+
+        }
+        return total;
+    }
+
+    SumTvaZ() {
+        return this.TVAZ() + this.TVAZO() - this.TVATZOt() - this.TVATZt();
     }
 }

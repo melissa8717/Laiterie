@@ -320,7 +320,7 @@ export class FactureService {
         return this.http.get(this.config.apiUrl + '/facture/getByIdlibresituationoption/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
     }
 
-    getByIdTotlafacture(id_facture:number,n_situation:number) {
+    getByIdTotlafact(id_facture:number,n_situation:number) {
         return this.http.get(this.config.apiUrl + '/facture/byIdTotlafacture/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
     }
 

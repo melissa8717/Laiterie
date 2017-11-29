@@ -74,6 +74,10 @@
                 <label class="col-sm-4" style="text-decoration: underline;">Nom du chantier:</label>
                 <span >{{devis.nom_chantier}}</span>
             </div>
+            <div class="form-group" *ngIf="devis.accompte_value">
+                <label class="col-sm-4" style="text-decoration: underline;">Acompte:</label>
+                <span >{{devis.accompte_value}} €</span>
+            </div>
         </div>
 
         <div class="form-group" style="margin-top: 20px; margin-left:45%;">
