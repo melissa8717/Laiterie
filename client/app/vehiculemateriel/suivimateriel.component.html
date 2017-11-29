@@ -36,12 +36,15 @@
 
                 <div style="height: auto; max-width: 20%;">
                     <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && model.image"
-                         src="http://{{loc}}:4000/image/matvehi/{{model.id_vehmat}}/{{model.image}}" alt="..."
+                    <img
+                         src="http://{{loc}}:4000/image/matvehi/{{rik.id_vehmat}}/{{rik.image}}" alt="..."
                          class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && !model.image" src="image/test.ico" alt="..." class="img-thumbnail images"/>
                     <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
                 </div>
+                <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default  col-sm-offset-3 col-sm-1"
+                        (click)="modify(); uploaderImg.queue[0].upload();"> Modifier
+                </button>
+                <br />
 
                 <div class="form-group">
                     <span class="col-sm-2 " >Modèle : </span><input type="text" name="libelle"  [(ngModel)]="model.libelle" class="col-sm-8 " style="color: #993300; font-weight: bold;" /><!--variable pour value-->
@@ -195,7 +198,9 @@
 
 
 
-                <button *ngIf="!print && (droitsuser.modifproa || droitsuser.modifprov)" class="btn btn-default input-sm col-sm-offset-11" (click)="modify(id_vehmat); uploaderImg.queue[0].upload();">Modifier</button>
+                <button *ngIf="!print && (droitsuser.modifproa || droitsuser.modifprov)"  class="btn btn-default  col-sm-offset-11 col-sm-1"
+                        (click)="modify(id_vehmat);uploaderImg.queue[0].upload();"> Modifier
+                </button>
 
 
 

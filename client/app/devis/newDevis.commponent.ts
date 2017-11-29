@@ -298,7 +298,7 @@ export class NewDevisComponent implements OnInit {
         devisparams.produitDevis = this.produitDevis;
         devisparams.produitDevisOptions = this.produitDevisOptions;
 
-        console.log(devisparams);
+        console.log("submit"+devisparams);
         this.devisService.add(devisparams).subscribe(
             data => {
                 this.router.navigate(["/listedevis"]);

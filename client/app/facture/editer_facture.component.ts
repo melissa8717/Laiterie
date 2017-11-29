@@ -19,6 +19,8 @@ const URLimg = 'http://'+location.hostname+':4000/image/';
 
 export class Editer_factureComponent {
     public uploaderImg: FileUploader;
+    public uploaderFili: FileUploader;
+
 
     model: any = {};
     ret: any = {};
@@ -55,6 +57,8 @@ export class Editer_factureComponent {
     image: any[];
     id_agence: number;
     img: any = {};
+
+    fili: any = {};
 
 
 
@@ -348,11 +352,26 @@ export class Editer_factureComponent {
                 file.withCredentials = false;
             };
 
-            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };*/
+            this.paramsService.getAllAgence().subscribe(fili => {
+
+                this.fili = fili[0];
+                console.log(this.img);
+                //console.log(this.currentUser);
+
+                this.uploaderFili = new FileUploader({url: URLimg + "agence/" + this.fili.id_agence});
+                this.uploaderFili.onAfterAddingFile = (file) => {
+                    file.withCredentials = false;
+                };
+
+                /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+                this.uploader.onAfterAddingFile = (file) => {
+                    file.withCredentials = false;
+                };*/
+            });
+
+
         });
 
+      }
+
     }
-}

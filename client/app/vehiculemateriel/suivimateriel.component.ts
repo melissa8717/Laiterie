@@ -12,7 +12,7 @@ import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
 
 const URL = 'http://' + location.hostname + ':4000/ged/';
-const URLimg = 'http://' + location.hostname + ':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/images/';
 
 @Component({
     moduleId: module.id,
@@ -46,6 +46,7 @@ export class SuivimaterielComponent implements OnInit {
     _id: any;
     data: any = {};
     image: any[];
+    rik: any = {};
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -74,7 +75,7 @@ export class SuivimaterielComponent implements OnInit {
             //ged
             this.getGed(params['id']);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "matvehi/" + params['id']});
+            this.uploaderImg = new FileUploader({url: URLimg + "matvehi/" + params['id_vehmat']});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
@@ -86,7 +87,10 @@ export class SuivimaterielComponent implements OnInit {
             //ged
         });
     }
-
+    getHost(){
+        var h = location.hostname;
+        return h;
+    }
     // visualisation de l'image avant envoi
     url: any;
 
@@ -125,11 +129,11 @@ export class SuivimaterielComponent implements OnInit {
     }
 
     private modify() {
-        console.log("new id_vehmat: " + JSON.stringify(this.model));
+        //console.log("new id_vehmat: " + JSON.stringify(this.model));
         this.achatsService.updatevehmat(this.model).subscribe(
             data => {
                 this.alertService.success('Votre demande a été modifiée avec succès', true);
-                console.log("added successful: " + data);
+               // console.log("added successful: " + data);
             }
         );
     }

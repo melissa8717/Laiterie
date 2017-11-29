@@ -48,12 +48,14 @@ router.get('/:_id/:num_version', getById);
 
 /******************GED***********************************/
 
-router.get('/:_id/image/download', downloadImage);
+router.get('/:_id_vehmat/image/download', downloadImage);
 router.get('/:_id/ged/download', downloadGED);
+router.get('/img', getAllImg);
 
 
-router.post('/:_id/image/upload', function (req, res) {
-    console.log(req.body);
+
+router.post('/:_id_vehmat/image/upload', function (req, res) {
+    console.log("controller img"+req.body + id_vehmat);
     uploadImage(req, res, function (err) {
         if (err) {
             console.log("Error uploading file.");
@@ -460,6 +462,16 @@ function deleteEntre(req, res) {
     achatsService.deleteEntre(req.params.id_entretien)
         .then(function () {
             res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getAllImg(req, res) {
+    achatsService.getAllImg()
+        .then(function (mos) {
+            res.send(mos);
         })
         .catch(function (err) {
             res.status(400).send(err);

@@ -49,6 +49,7 @@ export class ProduitachatComponent implements OnInit {
     id_produit: number;
     cat: any [] = [];
     image: any[];
+    production: any ={};
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -71,7 +72,8 @@ export class ProduitachatComponent implements OnInit {
             // In a real app: dispatch action to load the details here.
             this.achatService.getById(this.id, this.num_version).subscribe(val => {
                 this.product = val[0]; // val c'est l'array d'un seul element
-                console.log(this.product);
+               //
+                // console.log(this.product);
 
                 this.updateProduct = Object.assign({}, this.product);
                 this.updateProduct.tarif_du = this.formattedDate;
@@ -81,6 +83,7 @@ export class ProduitachatComponent implements OnInit {
                 this.formattedDate = this.formatDate(this.productDate);
                 this.loadHistorique(this.id);
                 this.loadCat();
+                this.loadAllImg();
 
             });
 
@@ -88,9 +91,12 @@ export class ProduitachatComponent implements OnInit {
 
             this.route.params.subscribe(params => {
                 this.id = params['id'];
+                console.log("id"+params['id']);
+               // this.id = params['id_produit'];
                 //ged
                 this.getGed(params['id']);
-                this.uploaderImg = new FileUploader({url: URLimg + "produit/" + params['id']});
+                this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id});
+                console.log("id uploader"+  URLimg + "img/" + this.id);
                 this.uploaderImg.onAfterAddingFile = (file) => {
                     file.withCredentials = false;
                 };
@@ -107,9 +113,14 @@ export class ProduitachatComponent implements OnInit {
     loaddroituser() {                                 //
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
             this.droitsuser = data[0];
-            console.log(this.data);
-            console.log(this.currentUser._id);
+            //console.log(this.data);
+            //console.log(this.currentUser._id);
         });
+    }
+
+    getHost(){
+        var h = location.hostname;
+        return h;
     }
 
     // visualisation de l'image avant envoi
@@ -130,7 +141,7 @@ export class ProduitachatComponent implements OnInit {
             modifs => {
                 // charge la date de modif et le prenom de contact qui a fait la modif
                 this.historique = modifs;
-                console.log(this.historique);
+               // console.log(this.historique);
                 //console.log("loaded histo : " + JSON.stringify(this.historique));
             }
         );
@@ -140,7 +151,7 @@ export class ProduitachatComponent implements OnInit {
         this.achatService.getAllCategories().subscribe(
             cat => {
                 this.cat = cat;
-                console.log(this.cat);
+               // console.log(this.cat);
 
             }
         );
@@ -149,17 +160,19 @@ export class ProduitachatComponent implements OnInit {
     private modifyProduct() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.updateProduct.id_user = currentUser._id;
-        console.log(this.updateProduct);
+        console.log("update prd"+this.updateProduct+this.id);
         this.loading = true;
         this.achatService.update(this.updateProduct).subscribe(
             data => {
-                console.log("data: " + data);
+                console.log("data update prod: " + data);
                 this.loading = false;
                 this.router.navigate(['/listeachat']);
                 this.alertService.success("Le produit a bien été modifié. ")
             }
         );
     }
+
+
 
     private formatDate(date: Date) {
         var day = ("0" + date.getDate()).slice(-2);
@@ -178,8 +191,8 @@ export class ProduitachatComponent implements OnInit {
     private debug() {
         console.log("historique avec les noms: " + JSON.stringify(this.historique));
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        console.log(currentUser._id);
-        console.log(currentUser.firstName);
+      //  console.log(currentUser._id);
+        //console.log(currentUser.firstName);
     }
 
 
@@ -191,11 +204,11 @@ export class ProduitachatComponent implements OnInit {
                 .subscribe(
                     data => {
                         this.ged = data;
-                        console.log(this.ged);
+                       // console.log(this.ged);
                     },
                     error => {
-                        console.log("Couldn't load the ged infos");
-                        console.log(error);
+                      //  console.log("Couldn't load the ged infos");
+                        //console.log(error);
                         this.alertService.error(error._body);
                     });
         });
@@ -221,5 +234,28 @@ export class ProduitachatComponent implements OnInit {
             window.print();
             this.print = false;
         }, 1000);
+    }
+
+
+    loadAllImg() {
+
+        this.achatService.getAllImg().subscribe(production => {
+
+            this.production = production[0];
+            console.log("prod"+this.production);
+            //console.log(this.currentUser);
+
+            this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.production.id_produit});
+            this.uploaderImg.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+            this.uploader.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };*/
+
+        });
+
     }
 }

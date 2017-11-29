@@ -9,6 +9,8 @@ var service = {};
 
 service.addagence = addagence;
 service.getAllAgence = getAllAgence;
+service.getAllFili = getAllFili;
+
 service.updateAgence = updateAgence;
 
 service.getAllTVA = getAllTVA;
@@ -96,6 +98,7 @@ function getAllAgence() {
     return deferred.promise;
 }
 
+
 function updateAgence(ag_param) {
     var deferred = Q.defer();
     //console.log(ag_param);
@@ -140,6 +143,19 @@ function updateAgence(ag_param) {
     return deferred.promise;
 }
 
+
+
+function getAllFili() {
+    var deferred = Q.defer();
+    db.query('SELECT  * FROM agence  ', function (error, params, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        //console.log(params);
+        deferred.resolve(params);
+    });
+    return deferred.promise;
+}
 /*----------------------------------------------------- TVA ----------------------------------------------------*/
 function getAllTVA() {
     var deferred = Q.defer();

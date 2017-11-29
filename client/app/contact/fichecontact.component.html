@@ -83,8 +83,8 @@
                     <img *ngIf="!url && contact.image_url"
                          src="http://{{loc}}:4000/image/contact/{{contact.id_contact}}/{{contact.image_url}}" alt="..."
                          style="height: 200px; width: 150px;"/>
-                   <!-- <img *ngIf="!url && !contact.image_url" src="image/test.ico" alt="..."
-                         class="img-thumbnail images"/>-->
+                   <img *ngIf="!url && !contact.image_url" src="image/test.ico" alt="..."
+                         class="img-thumbnail images"/>
                     <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
                 </div>
 
