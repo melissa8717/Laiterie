@@ -9,6 +9,13 @@ var express = require('express');
 var app = express();
 var cors = require('cors');
 var bodyParser = require('body-parser');
+var path = require('path');
+var crypto = require("crypto");
+var multer = require('multer');
+var Q = require('q');
+
+var DIR = './files/';
+var DIRimg = './images/';
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,22 +38,6 @@ app.use('/params', require('./controllers/params.controller'));
 app.use('/planning', require('./controllers/planning.controller'));
 app.use('/gantt', require('./controllers/gantt.controller'));
 
-/*
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Methods', 'POST');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', false);
-    next();
-});*/
-
-var path = require('path');
-var crypto = require("crypto");
-var multer = require('multer');
-var fs = require('fs');
-var DIR = './files/';
-var DIRimg = './images/';
-var Q = require('q');
 
 
 app.get('/image', function(req, res, next){
