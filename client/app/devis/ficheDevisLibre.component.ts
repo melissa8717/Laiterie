@@ -76,14 +76,7 @@ export class FicheDevisLibreComponent {
         this.produits();
         this.loadCat();
 
-        this.devisService.getByIddupliquer(this.id_devis, this.num_version).subscribe(
-            (data : any) =>{
-                this.devis  = data.devis[0];
-                this.produitDevis = data.detaille;
-                this.produitDevisOptions = data.options;
-                console.log(this.devis);
-            }
-        )
+
 
     }
 
@@ -102,7 +95,7 @@ export class FicheDevisLibreComponent {
 
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-            console.log(this.fact);
+            //console.log(this.fact);
 
         });
     }
@@ -114,7 +107,7 @@ export class FicheDevisLibreComponent {
             this.devisService.getByIdLibre(this.id_devis, this.num_version).subscribe(
                 data=>{
                     this.devis=data[0];
-                    // console.log(data)
+                    console.log(data)
                 }
             )
         });
@@ -127,7 +120,7 @@ export class FicheDevisLibreComponent {
             this.devisService.getByIdLibreproduit(this.id_devis, this.num_version).subscribe(
                 data=>{
                     this.produit=data;
-                    console.log(data)
+                    //console.log(data)
                 }
             )
         });
@@ -138,7 +131,7 @@ export class FicheDevisLibreComponent {
         let totaldet = 0;
 
         for (let prod of this.produit) {
-            if (prod.accepted != 0)
+            if (prod.accepted != 0 )
                 totaldet += prod.qte_devis  * prod.prix_devis ;
             else totaldet += 0;
         }
@@ -146,11 +139,11 @@ export class FicheDevisLibreComponent {
     }
 
     countTva(){
-        return this.countTotaldet() *(this.devis.tva/100);
+        return this.countTotaldet() *(this.devis.tva/100)*(this.devis.remise?(1-(this.devis.remise/100)):1);
     }
 
     countTtc(){
-        return this.countTotaldet() +  this.countTva();
+        return (this.countTotaldet()*(this.devis.remise?(1-(this.devis.remise/100)):1)) +  this.countTva();
     }
 
     countTotalopt() {
@@ -166,11 +159,11 @@ export class FicheDevisLibreComponent {
     }
 
     countTvaopt(){
-        return this.countTotalopt() *(this.devis.tva/100);
+        return this.countTotalopt() *(this.devis.tva/100)*(this.devis.remise?(1-(this.devis.remise/100)):1);
     }
 
     countTtcopt(){
-        return this.countTotalopt() +  this.countTvaopt();
+        return (this.countTotalopt()*(this.devis.remise?(1-(this.devis.remise/100)):1)) +  this.countTvaopt();
     }
 
     acceptOfferLibre(prod: any) {

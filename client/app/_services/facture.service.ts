@@ -302,6 +302,27 @@ export class FactureService {
         return this.http.post(this.config.apiUrl + '/facture/adavoirlibre', facture, this.jwt());
     }
 
+    getByIdDevislibre(id_devis:number,num_version:number) {
+        console.log(this.config.apiUrl + '/facture')
+        return this.http.get(this.config.apiUrl + '/facture/devislibre/' + id_devis + "/"+ num_version, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdDevislibreoption(id_devis:number,num_version:number) {
+        console.log(this.config.apiUrl + '/facture')
+        return this.http.get(this.config.apiUrl + '/facture/optionlibre/' + id_devis + "/"+ num_version, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdlibresituation(id_facture:number,n_situation:number) {
+        return this.http.get(this.config.apiUrl + '/facture/getByIdlibresituation/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdlibresituationoption(id_facture:number,n_situation:number) {
+        return this.http.get(this.config.apiUrl + '/facture/getByIdlibresituationoption/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdTotlafact(id_facture:number,n_situation:number) {
+        return this.http.get(this.config.apiUrl + '/facture/byIdTotlafacture/' + id_facture + "/"+ n_situation, this.jwt()).map((response: Response) => response.json());
+    }
 
 
 

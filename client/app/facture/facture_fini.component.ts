@@ -4,16 +4,17 @@
 /**
  * Created by cédric on 17/07/2017.
  */
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../_services/index';
-import {FactureService} from "../_services/facture.service";
-import {ParamsService} from "../_services/params.service"; //
-import {User} from "../_models/user";
+import {AlertService, AuthenticationService} from '../_services/index';
+import {FactureService} from '../_services/facture.service';
+import {ParamsService} from '../_services/params.service'; //
+import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
-const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -25,9 +26,9 @@ export class Facture_finiComponent {
 
 
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
     model: any = {};
     nfact: any = {};
@@ -55,7 +56,7 @@ export class Facture_finiComponent {
 
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files:any;
+    base64Files: any;
     loc = location.hostname;
     image: any[];
     id_agence: number;
@@ -67,14 +68,15 @@ export class Facture_finiComponent {
                 private authenticationService: AuthenticationService,
                 private alertService: AlertService,
                 private factureService: FactureService,
-                private paramsService:ParamsService) {
+                private paramsService: ParamsService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
         let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
+        body.className = '';
+        body.className += 'flatclair';
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         this.loadAllFooter();
@@ -127,7 +129,7 @@ export class Facture_finiComponent {
             this.id_facture = params['id_facture']
             this.n_situation = params['n_situation']
             console.log(this.id_facture);
-            this.factureService.getByIdModif(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
                     console.log(this.model)
@@ -202,7 +204,7 @@ export class Facture_finiComponent {
             this.id_facture = params['id_facture']
             this.n_situation = params['n_situation']
             console.log(this.id_facture);
-            this.factureService.getByIdPrimSit(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdPrimSit(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.prinsit = data[0];
                     console.log(this.prinsit)
@@ -216,7 +218,7 @@ export class Facture_finiComponent {
             this.id_facture = params['id_facture']
             this.n_situation = params['n_situation']
             console.log(this.id_facture);
-            this.factureService.getByIdPrimOpt(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdPrimOpt(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.prinopt = data[0];
                     console.log(this.prinopt)
@@ -230,7 +232,7 @@ export class Facture_finiComponent {
             this.id_facture = params['id_facture']
             this.n_situation = params['n_situation']
             console.log(this.id_facture);
-            this.factureService.getByIdAccpt(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdAccpt(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.accomp = data[0];
                     console.log(this.accomp)
@@ -238,7 +240,6 @@ export class Facture_finiComponent {
             )
         });
     }
-
 
 
     customTrackBy(index: number, obj: any): any {
@@ -333,7 +334,7 @@ export class Facture_finiComponent {
 
     totalsituation(valeur: any) {
 
-        return (this.prinsit.totaldet>0 ?this.prinsit.totaldet :0) + (this.prinopt.totalopt>0 ? this.prinopt.totalopt : 0)  +(this.model.accompte_value>0? this.model.accompte_value :0);
+        return (this.prinsit.totaldet > 0 ? this.prinsit.totaldet : 0) + (this.prinopt.totalopt > 0 ? this.prinopt.totalopt : 0) + (this.model.accompte_value > 0 ? this.model.accompte_value : 0);
     }
 
     countTotalsituation(situas: any, valeur: any, options: any) {
@@ -397,7 +398,7 @@ export class Facture_finiComponent {
             console.log(this.img);
             //console.log(this.currentUser);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };

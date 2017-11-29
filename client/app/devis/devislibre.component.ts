@@ -79,19 +79,19 @@ export class DevislibreComponent  implements OnInit{
         var check = this.produitDevis.filter(obj => obj.ref == this.produit.obj); //.id_prc
 
         if (check.length < 1) {
-                if(tmp.option){
-                    this.produitDevisOptions.push(tmp);
+            if(tmp.option){
+                this.produitDevisOptions.push(tmp);
+            }
+            else{
+                this.produitDevis.push(tmp);
+                for(var i = 0 ; i <  this.produitDevis.length; i++){
+                    //console.log('TEST TS AJOUTER : '+this.produitDevis[i].prix);
+                    let qte = this.produitDevis[i].qte;
+                    let prix = this.produitDevis[i].prix;
+                    this.produitDevis[i].qte = qte;
+                    this.produitDevis[i].prix = prix;
                 }
-                else{
-                    this.produitDevis.push(tmp);
-                    for(var i = 0 ; i <  this.produitDevis.length; i++){
-                        //console.log('TEST TS AJOUTER : '+this.produitDevis[i].prix);
-                        let qte = this.produitDevis[i].qte;
-                        let prix = this.produitDevis[i].prix;
-                        this.produitDevis[i].qte = qte;
-                        this.produitDevis[i].prix = prix;
-                    }
-                }
+            }
         }
         else {
             this.alertService.error("Le produit " + tmp.obj + " n'a pas pu être ajouté.");
@@ -149,7 +149,7 @@ export class DevislibreComponent  implements OnInit{
     private loadAllChantiers() {
         this.chantierService.getAll().subscribe(chantiers => {
             this.chantiers = chantiers;
-            console.log(this.chantiers)
+            //console.log(this.chantiers)
         });
     }
 
@@ -157,7 +157,7 @@ export class DevislibreComponent  implements OnInit{
         // console.log("on envoie la requette");
         this.contactService.getAllClients().subscribe(clients => {
             this.clients = clients;
-            console.log(this.clients);
+            //console.log(this.clients);
         });
     }
 
@@ -165,7 +165,7 @@ export class DevislibreComponent  implements OnInit{
         this.venteService.getAll().subscribe(
             data => {
                 this.produits = data;
-                console.log(this.produits);
+                //console.log(this.produits);
             }
         )
     }
@@ -175,11 +175,12 @@ export class DevislibreComponent  implements OnInit{
         for (let produit of this.produitDevis) {
             total += produit.prix * produit.qte;
         }
-        return total;
+        return this.devis.total = total;
     }
 
     countTotalRemise() {
-        return this.countTotal() - (this.countTotal() * this.devis.remise / 100);
+        this.devis.montant_ht = this.countTotal() - (this.countTotal() * this.devis.remise / 100);
+         return this.devis.montant_ht;
     }
 
     countTotalOptionRemise() {
@@ -233,7 +234,7 @@ export class DevislibreComponent  implements OnInit{
         this.devisService.getAllTVA().subscribe(
             data => {
                 this.valeur = data;
-                console.log(data);
+                //console.log(data);
             }
         )
     }
@@ -285,4 +286,7 @@ export class DevislibreComponent  implements OnInit{
         let html = `<span>${data.nom_chantier} </span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
+
+
+
 }

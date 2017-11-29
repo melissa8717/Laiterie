@@ -56,9 +56,7 @@
                     <th *ngIf="!print">Actions</th>
                     </thead>
                     <tbody>
-                    <!--créer une boucle conditionnelle pour créer les lignes du tableau
-                    sauf le select qui est toujours identique
-                    -->
+
                     <tr *ngFor="let devi of devis; let i=index">
                         <td><span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="!devi.accepted"></span>
                         <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="devi.accepted"></span>
@@ -70,22 +68,20 @@
                         <td>{{devi.raison_sociale ? devi.raison_sociale : devi.nom}}</td>
                         <td>{{devi.statut}}</td>
                         <td>{{devi.date_version | date :"dd/MM/yyyy"}}</td>
-                        <td>{{devi.total| currency:'EUR':true:'1.2-2'}}</td>
+                        <td>{{(devi.remise ? (devi.total*(1-(devi.remise/100))) : devi.total) | currency:'EUR':true:'1.2-2'}}</td>
 
                         <td>
                             <input type="checkbox" [(ngModel)]="devis[i].envoye" [disabled]="devis[i].envoye" (ngModelChange)="sendEnvoye(devis[i])" name="check{{i}}">
-                        </td><!--pour chaque td une variable devras être créer-->
+                        </td>
                         <td>
                             <div class="input-group">
-                                <input type="hidden" class="form-control" name="identifiant du devis">
-                                <!--variable pour l'identifiant-->
                                 <div *ngIf="!print" class="input-group-btn">
                                     <button type="button" class="btn btn-default dropdown-toggle input-sm"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
                                         <span class="caret"></span></button>
                                     <ul *ngIf="!print" class="dropdown-menu dropdown-menu-right">
                                         <li *ngIf="droitsuser.accesdev"><a [routerLink]="(devi.libre == 1)?['/ficheDevisLibre',devi.id_devis, devi.num_version]:['/devis',devi.id_devis, devi.num_version]">Ouvrir</a></li><!--ouvrir en un PDF-->
-                                        <li *ngIf="!devi.accepted && droitsuser.accesdev"><a [routerLink]="['/analysedevis',devi.id_devis, devi.num_version]">Analyse devis</a></li>
+                                        <li *ngIf="!devi.accepted && droitsuser.accesdev && !devi.libre"><a [routerLink]="['/analysedevis',devi.id_devis, devi.num_version]">Analyse devis</a></li>
                                         <li *ngIf="!devi.accepted && devi.envoye && !devi.valide && droitsuser.ajoutdev"><a [routerLink]="(devi.libre == 1)?['/dupliquerlibre',devi.id_devis, devi.num_version]:['/dupliquerdevis',devi.id_devis, devi.num_version]" >Nouvelle version</a></li>
                                         <li *ngIf="!devi.accepted && !devi.envoye && droitsuser.modifdev"><a  [routerLink]="(devi.libre == 1)?['/modifierlibre',devi.id_devis, devi.num_version]:['/modifierdevis',devi.id_devis, devi.num_version]">Modifier</a></li>
                                         <li *ngIf="devi.accepted && !devi.factured && droitsuser.ajoutfact"><a [routerLink]="['/editer_facture',devi.id_devis, devi.num_version]">Facturer</a></li>
@@ -93,8 +89,8 @@
                                         <li *ngIf="!devi.accepted && !devi.valide && devi.envoye && !devi.id_chantier && droitsuser.ajoutdev"><a [routerLink]="['/ajoutchantier',devi.id_devis, devi.num_version]"> Valider / Nouveau chantier </a></li>
                                         <li *ngIf="!devi.accepted && !devi.valide && devi.envoye && devi.id_chantier && droitsuser.validdev"><a (click)="valider(devi)"> Valider  </a></li>
                                     </ul>
-                                </div><!-- /btn-group -->
-                            </div><!-- /input-group --></td>
+                                </div>
+                            </div></td>
                     </tr>
 
                     </tbody>

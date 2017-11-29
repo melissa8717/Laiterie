@@ -180,6 +180,21 @@ export class ParamsService {
         //console.log(this.config.apiUrl + '/products/cat')
         return this.http.get(this.config.apiUrl + '/params/alarcaces', this.jwt()).map((response: Response) => response.json());
     }
+
+    getCompte() {
+        return this.http.get(this.config.apiUrl + '/params/compte', this.jwt()).map((response: Response) => response.json());
+    }
+
+    getComlic() {
+        return this.http.get(this.config.apiUrl + '/params/comlic', this.jwt()).map((response: Response) => response.json());
+    }
+
+    updateTest(ag_params: any) {
+        //console.log (  this.config.apiUrl + '/params/test')
+        return this.http.put(this.config.apiUrl + '/params/test', ag_params, this.jwt());
+    }
+
+
     // private helper methods
 
     private jwt() {

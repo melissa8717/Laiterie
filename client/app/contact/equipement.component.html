@@ -61,6 +61,7 @@
                         <th>Désignation</th>
                         <th>taille</th>
                         <th>Nombre</th>
+                        <th>Date</th>
                         <th>Commentaire</th>
                         <th>Action</th>
                     </tr>
@@ -71,6 +72,7 @@
                         <td><input type="text" name="designation" [(ngModel)]="equipement.designation"></td>
                         <td><input type="text" name="taille" [(ngModel)]="equipement.taille"></td>
                         <td><input type="number" name="nbre" [(ngModel)]="equipement.nbre"> </td>
+                        <td><input type="date" name="date" [(ngModel)]="equipement.date"> </td>
                         <td><input type="text" name="commentaire" [(ngModel)]="equipement.commentaire" ></td>
                         <td> <button type="submit" [disabled]="loading">ajouter</button></td>
                     </tr>
@@ -90,6 +92,7 @@
                     <th>Désignation</th>
                     <th>taille</th>
                     <th>Nombre</th>
+                    <th>Date</th>
                     <th>Commentaire</th>
                     <th>Action</th>
                 </tr>
@@ -100,6 +103,7 @@
                     <td>{{allequip[i].designation}}</td>
                     <td>{{allequip[i].taille}}</td>
                     <td>{{allequip[i].nbre}} </td>
+                    <td>{{allequip[i].date | date: 'dd/MM/yyyy'}}</td>
                     <td>{{allequip[i].commentaire}}</td>
                     <td> <button (click)="suprimer(allequip[i].id_equipement)">Supprimer</button></td>
                 </tr>

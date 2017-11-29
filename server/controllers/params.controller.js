@@ -36,6 +36,10 @@ router.get('/droit/:id', getByIdDroit);
 router.delete('/supp/:id', deleteuser);
 router.put('/upuser', updateuser);
 
+router.put('/test',updateTest);
+router.get('/compte',getCompte);
+router.get('/comlic',getComlic);
+
 router.post('/formation', addFormation);
 router.get('/retfor', getAllFormation);
 
@@ -311,6 +315,35 @@ function updateuser(req, res) {
         });
 }
 
+function updateTest(req, res) {
+    paramsService.updateTest(req.body)
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getCompte(req, res) {
+    paramsService.getCompte()
+        .then(function (agence) {
+            res.send(agence);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getComlic(req, res) {
+    paramsService.getComlic()
+        .then(function (agence) {
+            res.send(agence);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
 
 function addFormation(req, res) {
     //console.log("test");

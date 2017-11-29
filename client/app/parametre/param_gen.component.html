@@ -1,65 +1,26 @@
-
-
 <div id="chantier">
     <header>
-
         <div class="toobar">
             <div class="fill">
                 <div class="container-fluid">
-
                     <img src="image/menu/parametres_grand_orange.png">
-
                     <span style="padding-left: 5px;">Parametres</span>
-
                 </div>
             </div>
         </div>
-
     </header>
 
 
-    <nav class="navbar navbar-default">
-
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-            </div>
+    <menu-param></menu-param>
 
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li  class="active"><a [routerLink]="['/param_gen']">Agence</a></li>
-                    <li ><a [routerLink]="['/cgv']">Conditions vente</a></li>
-                    <li ><a [routerLink]="['/fraisprevisionel']">Frais prévisionnels</a></li>
-                   <!--<li  ><a [routerLink]="['/sauvegarde']">Sauvegarde</a></li>-->
-                    <li role="presentation" ><a [routerLink]="['/tva']" >TVA</a></li>
-                    <li role="presentation" ><a [routerLink]="['/cat_prod']" >Catégories de produits</a></li>
-                    <li role="presentation"  *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/utilisation']" >Droits utilisateurs</a></li>
-                    <!--<li role="presentation"><a [routerLink]="['/droit_utilisateur']" >Droits utilisateurs</a></li>
-                    <li role="presentation"><a [routerLink]="['/deverouillage_prod']" >Dévérouillage produits</a></li>
-                    <li role="presentation"><a [routerLink]="['/utilisateur_connect']" >Voir activité utilisateurs</a></li>-->
+    <div class="container-fluid">
 
-
-                </ul>
-
-            </div>
-
-    </nav>
-
-
-
-
-    <div class="container-fluid" >
-
-        <div >
+        <div class="container-fluid">
             <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-                <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+                <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
             </div>
+            <h3 class="col-sm-12">Agence</h3>
 
             <div *ngIf="uploaderImg" class="col-sm-2">
                 <h4>Logo</h4>
@@ -75,11 +36,18 @@
                 </div>
             </div>
 
-            <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default  col-sm-offset-11 col-sm-1"
+            <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam"
+                    class="btn btn-default  col-sm-offset-11 col-sm-1"
                     (click)="modify(model); uploaderImg.queue[0].upload();"> Modifier
             </button>
 
 
+            <form *ngIf="droitsuser.accesparam == 1">
+                <div class="col-sm-12">
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label class="col-sm-1">Nom :</label>
+                        <input type="text" class=" col-sm-3" name="nom_a" [(ngModel)]="model.nom_a">
+                    </div>
 
             <div  *ngIf="uploaderFili" class="col-sm-offset-2">
                 <h4>Filigrane</h4>
@@ -108,95 +76,113 @@
                     <input type="text" class=" col-sm-3" name="nom_a" [(ngModel)]="model.nom_a">
                 </div>
 
-                <div class="form-group">
-                    <label class="col-sm-2" >Responsable :</label>
-                    <input type="text" class=" col-sm-3" name="responsable_a" [(ngModel)]="model.responsable_a">
+                    <div class="form-group">
+                        <label class="col-sm-2">Responsable :</label>
+                        <input type="text" class=" col-sm-3" name="responsable_a" [(ngModel)]="model.responsable_a">
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-sm-12">
+                <div class="col-sm-12">
 
-                <div class="form-group">
-                    <label class="col-sm-1" >Adresse :</label>
+                    <div class="form-group">
+                        <label class="col-sm-1">Adresse :</label>
                         <input type="text" class=" col-sm-11" name="adresse_a" [(ngModel)]="model.adresse_a">
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label class="col-sm-2" >Département :</label>
+                    <div class="form-group">
+                        <label class="col-sm-2">Département :</label>
                         <input type="text" class=" col-sm-2" name="dep_a" [(ngModel)]="model.dep_a">
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label class="col-sm-1" >Ville :</label>
-                    <input type="text" class=" col-sm-2" name="ville_a" [(ngModel)]="model.ville_a">
-                </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">Ville :</label>
+                        <input type="text" class=" col-sm-2" name="ville_a" [(ngModel)]="model.ville_a">
+                    </div>
 
-                <div class="form-group">
-                    <label class="col-sm-1" >Pays :</label>
+                    <div class="form-group">
+                        <label class="col-sm-1">Pays :</label>
                         <input type="text" class=" col-sm-2" name="pays_a" [(ngModel)]="model.pays_a">
+                    </div>
                 </div>
-            </div>
-        <div class="col-sm-12">
+                <div class="col-sm-12">
 
-            <div class="form-group" style="margin-top: 10px;">
-                <label class="col-sm-2" >Téléphone :</label>
-                    <input type="text" class=" col-sm-2" name="tel_a" [(ngModel)]="model.tel_a">
-            </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label class="col-sm-2">Téléphone :</label>
+                        <input type="text" class=" col-sm-2" name="tel_a" [(ngModel)]="model.tel_a">
+                    </div>
 
-            <div class="form-group">
-                <label class="col-sm-1" >Fax : </label>
-                    <input type="text" class=" col-sm-2" name="fax_a" [(ngModel)]="model.fax_a">
-            </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">Fax : </label>
+                        <input type="text" class=" col-sm-2" name="fax_a" [(ngModel)]="model.fax_a">
+                    </div>
 
-            <div class="form-group">
-                <label class="col-sm-1" >E-mail :</label>
-                    <input type="text" class=" col-sm-2" name="mail_a" [(ngModel)]="model.mail_a">
-            </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">E-mail :</label>
+                        <input type="text" class=" col-sm-2" name="mail_a" [(ngModel)]="model.mail_a">
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+
+                    <div class="form-group">
+                        <label class="col-sm-1">Site :</label>
+                        <input type="text" class=" col-sm-3" name="site_a" [(ngModel)]="model.site_a">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-1">Siret :</label>
+                        <input type="text" class=" col-sm-3" name="siret_a" [(ngModel)]="model.siret_a">
+                    </div>
+                </div>
+
+
+                <h4 class="col-sm-12">Information pour la facturation et les devis</h4>
+
+                <div class="col-sm-12">
+
+                    <span class="col-sm-2">Ville de facturation ::</span> <input type="text" name="villefact"
+                                                                                 [(ngModel)]="model.villefact">
+                </div>
+                <div class="col-sm-12">
+
+
+                    <span class="col-sm-2">Pied de page ligne1 :</span><input type="text" name="pied_page1"
+                                                                              class="col-sm-10"
+                                                                              [(ngModel)]="model.pied_page1">
+                    <span class="col-sm-2">Pied de page ligne2 :</span><input type="text" name="pied_page2"
+                                                                              class="col-sm-10"
+                                                                              [(ngModel)]="model.pied_page2">
+                    <span class="col-sm-2">Pied de page ligne3 :</span><input type="text" name="pied_page3"
+                                                                              class="col-sm-10"
+                                                                              [(ngModel)]="model.pied_page3">
+                    <span class="col-sm-2">Pied de page ligne4 :</span><input type="text" name="pied_page4"
+                                                                              class="col-sm-10"
+                                                                              [(ngModel)]="model.pied_page4">
+                    <span class="col-sm-2">Pied de page ligne5 :</span><input type="text" name="pied_page5"
+                                                                              class="col-sm-10"
+                                                                              [(ngModel)]="model.pied_page5">
+                    <span class="col-sm-2">Pied de page ligne6 :</span><input type="text" name="pied_page6"
+                                                                              class="col-sm-10"
+                                                                              [(ngModel)]="model.pied_page6">
+
+                </div>
+                <button type="button" *ngIf="uploaderImg && droitsuser.modifparam == 1"
+                        class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  "
+                        (click)="modify(model); uploaderImg.queue[0].upload();">Valider
+                </button>
+            </form>
+
+            <button type="button" class="btn btn-default input-sm col-sm-offset-5 col-sm-1"
+                    style="margin-bottom: 5px;  ">Imprimer
+            </button>
+
         </div>
-
-        <div class="col-sm-12">
-
-            <div class="form-group">
-                <label class="col-sm-1" >Site :</label>
-                    <input type="text" class=" col-sm-3" name="site_a" [(ngModel)]="model.site_a">
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-1" >Siret :</label>
-                    <input type="text" class=" col-sm-3" name="siret_a" [(ngModel)]="model.siret_a">
-            </div>
-        </div>
-
-
-            <h4 class="col-sm-12">Information pour la facturation et les devis</h4>
-
-        <div class="col-sm-12">
-
-                    <span class="col-sm-2">Ville de facturation ::</span> <input type="text" name="villefact" [(ngModel)]="model.villefact">
-        </div>
-        <div class="col-sm-12">
-
-
-                    <span class="col-sm-2">Pied de page ligne1 :</span><input type="text" name="pied_page1" class="col-sm-10" [(ngModel)]="model.pied_page1">
-                    <span class="col-sm-2">Pied de page ligne2 :</span><input type="text" name="pied_page2" class="col-sm-10" [(ngModel)]="model.pied_page2">
-                    <span class="col-sm-2">Pied de page ligne3 :</span><input type="text" name="pied_page3" class="col-sm-10" [(ngModel)]="model.pied_page3">
-                    <span class="col-sm-2">Pied de page ligne4 :</span><input type="text" name="pied_page4" class="col-sm-10" [(ngModel)]="model.pied_page4">
-                    <span class="col-sm-2">Pied de page ligne5 :</span><input type="text" name="pied_page5" class="col-sm-10" [(ngModel)]="model.pied_page5">
-                    <span class="col-sm-2">Pied de page ligne6 :</span><input type="text" name="pied_page6" class="col-sm-10" [(ngModel)]="model.pied_page6">
-
-        </div>
-            <button type="button" *ngIf="uploaderImg && droitsuser.modifparam == 1" class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  " (click)="modify(model); uploaderImg.queue[0].upload();" >Valider</button>
-    </form>
-
-            <button type="button" class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  " >Imprimer</button>
 
     </div>
 
-</div>
-
 
     <div *ngIf="uploader" class="row">
-        <h3 >GED</h3>
+        <h3>GED</h3>
 
         <div class="col-md-3">
 
@@ -210,7 +196,7 @@
                 Base drop zone
             </div>
 
-            <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+            <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br/>
 
         </div>
 
@@ -236,7 +222,8 @@
                     </td>
                     <td nowrap>
                         <button type="button" class="btn btn-success btn-xs"
-                                (click)="item.upload(); getGed(id)" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                (click)="item.upload(); getGed(id)"
+                                [disabled]="item.isReady || item.isUploading || item.isSuccess">
                             <span class="glyphicon glyphicon-upload"></span> Mettre en ligne
                         </button>
                         <button type="button" class="btn btn-warning btn-xs"
@@ -256,7 +243,8 @@
                 <div>
                     Avancement:
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                        <div class="progress-bar" role="progressbar"
+                             [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                     </div>
                 </div>
                 <button type="button" class="btn btn-success btn-s"
@@ -288,7 +276,8 @@
                 </thead>
                 <tbody>
                 <tr *ngFor="let item of ged">
-                    <td *ngIf="!print"><strong><a href="http://{{loc}}:4000/ged/param/{{model.id_agence}}/{{item.url}}" target="_blank">{{ item.nom }}</a></strong></td>
+                    <td *ngIf="!print"><strong><a href="http://{{loc}}:4000/ged/param/{{model.id_agence}}/{{item.url}}"
+                                                  target="_blank">{{ item.nom }}</a></strong></td>
                     <td nowrap>{{item.date_ajout | date : 'dd/MM/yyyy'}}</td>
                 </tr>
                 </tbody>

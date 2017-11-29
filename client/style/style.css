@@ -408,6 +408,10 @@ form label
 
 }
 
+#devis .hauteurs{
+	min-height:100%;
+}
+
 #devis header
 {
 	padding-top: 5px;

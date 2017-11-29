@@ -68,7 +68,17 @@
                 <tr *ngFor="let forms of form,let i = index ">
                     <td>{{form[i].nom_formation}}</td>
                     <td> <input type="date" name="datefor{{i}}"  [ngModel]="form[i].datefor | date:'yyyy-MM-dd'" (ngModelChange)="form[i].datefor = $event" [value]="form[i].datefor | date:'yyyy-MM-dd'" > </td>
-                    <td><button (click)="modFormation(forms)">Modifier</button></td>
+                    <td>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right" >
+                                    <li ><a (click)="modFormation(forms)">Modifier</a></li>
+                                    <li ><a (click)="suprimer(form[i].id_formationcontact)">Supprimer</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
 

@@ -4,16 +4,17 @@
 /**
  * Created by cédric on 17/07/2017.
  */
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../_services/index';
-import {FactureService} from "../_services/facture.service";
-import {ParamsService} from "../_services/params.service"; //
-import {User} from "../_models/user";
+import {AlertService, AuthenticationService} from '../_services/index';
+import {FactureService} from '../_services/facture.service';
+import {ParamsService} from '../_services/params.service'; //
+import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
-const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -25,9 +26,9 @@ export class ModifierfactureComponent {
 
 
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
     model: any = {};
     nfact: any = {};
@@ -52,11 +53,14 @@ export class ModifierfactureComponent {
 
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files:any;
+    base64Files: any;
     loc = location.hostname;
     image: any[];
     id_agence: number;
     img: any = {};
+    libsitua: any[] = [];
+    libsituaop: any[] = [];
+    totalfact: any[] = [];
 
 
     constructor(private route: ActivatedRoute,
@@ -64,14 +68,15 @@ export class ModifierfactureComponent {
                 private authenticationService: AuthenticationService,
                 private alertService: AlertService,
                 private factureService: FactureService,
-                private paramsService:ParamsService) {
+                private paramsService: ParamsService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
         let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
+        body.className = '';
+        body.className += 'flatclair';
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         this.loadAllFooter();
@@ -85,6 +90,9 @@ export class ModifierfactureComponent {
         this.loaddroituser();
         this.loadAccompte();
         this.loadAllagence();
+        this.loadlibreSituation();
+        this.loadlibreSituationoption();
+        this.loadTotlafact();
     }
 
     loaddroituser() {                                 //
@@ -92,8 +100,6 @@ export class ModifierfactureComponent {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
 
         });
     }
@@ -102,7 +108,7 @@ export class ModifierfactureComponent {
 
         this.factureService.getAllFooter().subscribe(fact => {
             this.fact = fact[0];
-            console.log(this.fact);
+
 
         });
     }
@@ -111,7 +117,6 @@ export class ModifierfactureComponent {
 
         this.factureService.getAllnfact().subscribe(data => {
             this.nfact = data[0];
-            console.log(this.nfact);
 
         });
     }
@@ -121,10 +126,23 @@ export class ModifierfactureComponent {
             this.id_facture = params['id_facture']
             this.n_situation = params['n_situation']
             console.log(this.id_facture);
-            this.factureService.getByIdModif(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-                    console.log(this.model)
+
+
+                }
+            )
+        });
+    }
+
+    loadTotlafact() {
+        this.route.params.subscribe(params => {
+            this.id_facture = params['id_facture'];
+            this.n_situation = params['n_situation'];
+            this.factureService.getByIdTotlafact(this.id_facture, this.n_situation).subscribe(
+                data => {
+                    this.totalfact = data;
                 }
             )
         });
@@ -133,14 +151,11 @@ export class ModifierfactureComponent {
 
     loadSituation() {
         this.route.params.subscribe(params => {
-            this.id_facture = params['id_facture']
-            this.n_situation = params['n_situation']
-            console.log(this.id_facture, this.n_situation);
-            this.factureService.getByIdSituation(this.id_facture, this.n_situation).subscribe(
+            this.id_facture = params['id_facture'];
+            this.n_situation = params['n_situation'];
+           this.factureService.getByIdSituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.situa = data;
-                    console.log("situa");
-                    console.log(data);
                 }
             )
         });
@@ -154,8 +169,34 @@ export class ModifierfactureComponent {
             this.factureService.getByIdSitoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.option = data;
-                    console.log("option");
-                    console.log(data);
+                }
+            )
+        });
+    }
+
+    loadlibreSituation() {
+        this.route.params.subscribe(params => {
+            this.id_facture = params['id_facture']
+            this.n_situation = params['n_situation']
+            console.log(this.id_facture, this.n_situation);
+            this.factureService. getByIdlibresituation(this.id_facture, this.n_situation).subscribe(
+                data => {
+                    this.libsitua = data;
+
+                }
+            )
+        });
+    }
+
+    loadlibreSituationoption() {
+        this.route.params.subscribe(params => {
+            this.id_facture = params['id_facture']
+            this.n_situation = params['n_situation']
+            console.log(this.id_facture, this.n_situation);
+            this.factureService. getByIdlibresituationoption(this.id_facture, this.n_situation).subscribe(
+                data => {
+                    this.libsituaop = data;
+                    //console.log(data);
                 }
             )
         });
@@ -169,8 +210,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdOptSit(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.optsit = data[0];
-                    console.log("option");
-                    console.log(data);
+                    //console.log(data);
                 }
             )
         });
@@ -184,7 +224,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdTotalSit(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.totalsit = data[0];
-                    console.log(data);
+                    //console.log(data);
                 }
             )
         });
@@ -195,10 +235,10 @@ export class ModifierfactureComponent {
             this.id_facture = params['id_facture']
             this.n_situation = params['n_situation']
             console.log(this.id_facture);
-            this.factureService.getByIdAccpt(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdAccpt(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.accomp = data[0];
-                    console.log(this.accomp)
+                    //console.log(this.accomp)
                 }
             )
         });
@@ -211,16 +251,16 @@ export class ModifierfactureComponent {
         factureparams.option = this.option;
         factureparams.model = this.model;
         factureparams.valeur = this.valeur;
-        factureparams.nfact =this.nfact;
+        factureparams.nfact = this.nfact;
 
-        var test = +confirm ("Etes vous sür de vouloir enregitrer votre facture :");
+        var test = +confirm('Etes vous sür de vouloir enregitrer votre facture :');
         //console.log(factureparams);
-        if(test) {
+        if (test ) {
             console.log(factureparams);
             this.factureService.createSituation(factureparams, this.id_facture).subscribe(
                 data => {
-                    this.router.navigate(["/listefacture"]);
-                    this.alertService.success("La nouvelle situation de la facture a été créée avec succès.");
+                    this.router.navigate(['/listefacture']);
+                    this.alertService.success('La nouvelle situation de la facture a été créée avec succès.');
                 });
         }
     }
@@ -236,7 +276,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdValeur(this.id_facture).subscribe(
                 data => {
                     this.valeur = data[0];
-                    console.log(data)
+                    //console.log(data)
                 }
             )
         });
@@ -252,6 +292,18 @@ export class ModifierfactureComponent {
     totaligneopt(options: any) {
         if (options.pourcentage)
             return (options.qtefact / 100) * options.prixfact * options.pourcentage;
+        else return 0;
+    }
+
+    totalignesitua(lsituas: any) {
+        if (lsituas.pourcent)
+            return (lsituas.qteprod / 100) * lsituas.prix_prod * lsituas.pourcent;
+        else return 0;
+    }
+
+    totalignesituaop(situaop: any) {
+        if (situaop.pourcent)
+            return (situaop.qteprod / 100) * situaop.prix_prod * situaop.pourcent;
         else return 0;
     }
 
@@ -299,6 +351,15 @@ export class ModifierfactureComponent {
         return totalopt;
     }
 
+    countTotaldessitua(options: any) {
+        let totalopt = 0;
+
+        for (let options of this.totalfact) {
+                totalopt += options.montant_ht;
+        }
+        return  totalopt;
+    }
+
     countTotal(situas: any, valeur: any, options: any) {
         return this.countLigne(situas) + this.countOption(options);
     }
@@ -315,14 +376,13 @@ export class ModifierfactureComponent {
         return this.countTotalRemise(situas, valeur, options)
     }
 
-    totalsituation(valeur: any) {
-        if (this.valeur.remise)
-            return ((this.totalsit.totaldet + (this.optsit.totalopt>0 ? this.optsit.totalopt :0 )) * (1 - (this.valeur.remise / 100)))+(this.accomp.accompte_value ? this.accomp.accompte_value :0);
-        else return (this.totalsit.totaldet + (this.optsit.totalopt>0 ? this.optsit.totalopt :0 ))+(this.accomp.accompte_value ? this.accomp.accompte_value :0);
+    totalsituation(valeur: any,options:any) {
+            return   this.countTotaldessitua(options) + (this.accomp.accompte_value ? this.accomp.accompte_value : 0);
+
     }
 
     countTotalsituation(situas: any, valeur: any, options: any) {
-        this.model.montant_ht = this.countTotalNet(situas, valeur, options) - this.totalsituation(valeur);
+        this.model.montant_ht = this.countTotalNet(situas, valeur, options) - this.totalsituation(valeur,options);
         return this.model.montant_ht;
     }
 
@@ -361,7 +421,6 @@ export class ModifierfactureComponent {
     }
 
 
-
     loadAllagence() {
 
         this.paramsService.getAllAgence().subscribe(img => {
@@ -370,7 +429,7 @@ export class ModifierfactureComponent {
             console.log(this.img);
             //console.log(this.currentUser);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
@@ -382,4 +441,6 @@ export class ModifierfactureComponent {
         });
 
     }
+
+
 }

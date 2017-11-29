@@ -218,4 +218,18 @@ export class FormationcontactComponent  {
 
     }
 
+    private suprimer(id_formationcontact:any) {
+        console.log("deleting prod" + id_formationcontact);
+        this.contactService.deleteFormation(id_formationcontact)
+            .subscribe(
+                data => {
+                    this.form = this.form.filter(x => x.id_formationcontact != id_formationcontact);
+
+                    // console.log("after deletind: " + JSON.stringify(this.prod));
+                },
+                error => {
+                    this.alertService.error(error._body);
+                });
+    }
+
 }
