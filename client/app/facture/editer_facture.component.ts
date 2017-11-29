@@ -467,7 +467,11 @@ export class Editer_factureComponent {
                 };*/
             });
 
+    });
+
     }
+
+
 
     TVAVO() {
         let total = 0;
@@ -748,10 +752,5 @@ export class Editer_factureComponent {
     SumTvaZ() {
         return this.TVAZ() + this.TVAZO() - this.TVATZOt() - this.TVATZt();
     }
+
 }
-
-        });
-
-      }
-
-    }

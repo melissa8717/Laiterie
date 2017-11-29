@@ -20,7 +20,6 @@ const URLimg = 'http://'+location.hostname+':4000/image/';
 const URLFili = 'http://'+location.hostname+':4000/filigrane/';
 
 
-const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 
 @Component({

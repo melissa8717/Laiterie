@@ -95,8 +95,8 @@ export class ProduitachatComponent implements OnInit {
                // this.id = params['id_produit'];
                 //ged
                 this.getGed(params['id']);
-                this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id});
-                console.log("id uploader"+  URLimg + "img/" + this.id);
+                this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id_produit});
+                console.log("id uploader"+  URLimg + "img/" + this.id_produit);
                 this.uploaderImg.onAfterAddingFile = (file) => {
                     file.withCredentials = false;
                 };
