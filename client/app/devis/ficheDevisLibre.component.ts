@@ -41,6 +41,7 @@ export class FicheDevisLibreComponent {
     num_version:number;
     data:any={};
     produit:any=[]=[];
+    produitop:any=[]=[];
     prod:any;
     cgv: any = {};
 
@@ -75,6 +76,7 @@ export class FicheDevisLibreComponent {
         this.loaddroituser();
         this.produits();
         this.loadCat();
+        this.produitsop();
 
 
 
@@ -126,6 +128,19 @@ export class FicheDevisLibreComponent {
         });
     }
 
+    produitsop(){
+        this.route.params.subscribe(params => {
+            this.id_devis=params['id_devis'];
+            this.num_version=params['num_version'];
+            this.devisService.getByIdLibreproduitopt(this.id_devis, this.num_version).subscribe(
+                data=>{
+                    this.produitop=data;
+                    //console.log(data)
+                }
+            )
+        });
+    }
+
     countTotaldet() {
 
         let totaldet = 0;
@@ -137,6 +152,8 @@ export class FicheDevisLibreComponent {
         }
         return totaldet;
     }
+
+
 
     countTva(){
         return this.countTotaldet() *(this.devis.tva/100)*(this.devis.remise?(1-(this.devis.remise/100)):1);
@@ -150,10 +167,10 @@ export class FicheDevisLibreComponent {
 
         let totaldet = 0;
 
-        for (let prod of this.produit) {
-            if (prod.accepted == 0)
-                totaldet += prod.qte_devis  * prod.prix_devis ;
-            else totaldet += 0;
+        for (let prode of this.produitop) {
+
+                totaldet += prode.qte_devis  * prode.prix_devis ;
+
         }
         return totaldet;
     }

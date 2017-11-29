@@ -9,13 +9,6 @@ var express = require('express');
 var app = express();
 var cors = require('cors');
 var bodyParser = require('body-parser');
-var path = require('path');
-var crypto = require("crypto");
-var multer = require('multer');
-var Q = require('q');
-
-var DIR = './files/';
-var DIRimg = './images/';
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,6 +31,22 @@ app.use('/params', require('./controllers/params.controller'));
 app.use('/planning', require('./controllers/planning.controller'));
 app.use('/gantt', require('./controllers/gantt.controller'));
 
+/*
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', false);
+    next();
+});*/
+
+var path = require('path');
+var crypto = require("crypto");
+var multer = require('multer');
+var fs = require('fs');
+var DIR = './files/';
+var DIRimg = './images/';
+var Q = require('q');
 
 
 app.get('/image', function(req, res, next){
@@ -59,20 +68,23 @@ var storageImg = multer.diskStorage({
 var uploadImg = multer({storage: storageImg});
 
 app.options('/image');
-/*
+
 // IMAGES FICHE CONTACTS
 app.get('/image/contact/:id_contact/:nom_fichier', function (req, res) {
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
 });
+
+
+
 
 app.post('/image/contact/:id', uploadImg.any(), function (req, res, next) {
     console.log(req.files[0].filename);
     db.query ("UPDATE contact SET image_url = ? WHERE id_contact = ?", [req.files[0].filename, req.params.id]);
     res.end('image uploaded');
 });
-*/
+
 // IMAGES FICHE PRODUITS ACHAT / AJOUT PRODUIT ACHAT
-app.get('/image/img/:id_produit/:nom_fichier', function (req, res) {
+app.get('/image/img/:id/:nom_fichier', function (req, res) {
     console.log("get img"+req.params.nom_fichier,req.params.id_produit);
 
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));

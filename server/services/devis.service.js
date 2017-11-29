@@ -35,6 +35,7 @@ service.updateDevisoption = updateDevisoption;
 service.getByIdAnaldevis = getByIdAnaldevis;
 service.getByIdLibre = getByIdLibre;
 service.getByIdLibreproduit = getByIdLibreproduit;
+service.getByIdLibreproduitopt = getByIdLibreproduitopt;
 service.offerlibre = offerlibre;
 
 service.getByIddupliquer = getByIddupliquer;
@@ -739,10 +740,29 @@ function getByIdLibreproduit(_id_devis,_num_version) {
     // console.log(error.name + ': ' + error.message);
     var deferred = Q.defer();
     var sql = "select devis_detaille_libre.* FROM devis_version, devis_detaille_libre " +
-        "WHERE ((devis_detaille_libre.id_devis = devis_version.id_devis and devis_detaille_libre.num_version = devis_version.num_version) ) AND devis_version.id_devis = ? and devis_version.num_version =? " +
-        "UNION select devis_option_libre.* FROM devis_version, devis_option_libre " +
-        "WHERE ( devis_option_libre.id_devis = devis_version.id_devis and devis_option_libre.num_version = devis_version.num_version) AND devis_version.id_devis = ? and devis_version.num_version =?";
+        "WHERE ((devis_detaille_libre.id_devis = devis_version.id_devis and devis_detaille_libre.num_version = devis_version.num_version) ) AND devis_version.id_devis = ? and devis_version.num_version =? ";
     var inserts = [_id_devis,_num_version,_id_devis,_num_version];
+
+    sql = mysql.format(sql, inserts);
+    //console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error){
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdLibreproduitopt(_id_devis,_num_version) {
+    //console.log('test fact')
+    // console.log(error.name + ': ' + error.message);
+    var deferred = Q.defer();
+    var sql = "select devis_option_libre.* FROM devis_version, devis_option_libre " +
+        "WHERE ( devis_option_libre.id_devis = devis_version.id_devis and devis_option_libre.num_version = devis_version.num_version) AND devis_version.id_devis = ? and devis_version.num_version =?";
+    var inserts = [_id_devis,_num_version];
 
     sql = mysql.format(sql, inserts);
     //console.log(sql);

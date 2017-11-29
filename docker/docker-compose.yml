@@ -8,6 +8,7 @@ services:
       - "3000:3000"
     volumes:
       - "./config.js:/usr/src/app/config.js"
+    restart: always
     depends_on:
       - "server"
     command: ./wait-for-it.sh -t 0 server:4000 -- npm start
@@ -22,6 +23,7 @@ services:
       - "./images:/usr/src/app/images"
     environment:
       - NODE_ENV=production
+    restart: always
     depends_on:
       - "mysql"
     links:
@@ -37,3 +39,4 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_DATABASE: 'wbat_alwaysdata'
+    restart: always
