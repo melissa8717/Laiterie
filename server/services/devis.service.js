@@ -430,14 +430,15 @@ function createLibre(bdc_param) {
 
                 for (var p in bdc_param.produitDevis) {
                     (function (product) {
-                        db.query("INSERT INTO devis_detaille_libre (id_devis, num_version, produit, qte_devis, prix_devis,commentaire, unite) VALUES (? ,?, ?, ?, ?,?, ?)",
+                        db.query("INSERT INTO devis_detaille_libre (id_devis, num_version, produit, qte_devis, prix_devis,commentaire, unite,reference) VALUES (? ,?, ?, ?, ?,?, ?,?)",
                             [results.insertId,
                                 1,
                                 bdc_param.produitDevis[product].obj,
                                 bdc_param.produitDevis[product].qte,
                                 bdc_param.produitDevis[product].prix,
                                 bdc_param.produitDevis[product].commentaire,
-                                bdc_param.produitDevis[product].unite
+                                bdc_param.produitDevis[product].unite,
+                                bdc_param.produitDevis[product].ref
 
                             ],
                             function (error, result, fields) {
@@ -454,14 +455,15 @@ function createLibre(bdc_param) {
 
                 for (var p in bdc_param.produitDevisOptions) {
                     (function (product) {
-                        db.query("INSERT INTO devis_option_libre (id_devis, num_version, produit, qte_devis, prix_devis,commentaire, unite) VALUES (?, ? ,?, ?, ?, ? ,?)",
+                        db.query("INSERT INTO devis_option_libre (id_devis, num_version, produit, qte_devis, prix_devis,commentaire, unite,reference) VALUES (?, ? ,?, ?, ?, ? ,?,?)",
                             [results.insertId,
                                 1,
                                 bdc_param.produitDevisOptions[product].obj,
                                 bdc_param.produitDevisOptions[product].qte,
                                 bdc_param.produitDevisOptions[product].prix,
                                 bdc_param.produitDevisOptions[product].commentaire,
-                                bdc_param.produitDevisOptions[product].unite
+                                bdc_param.produitDevisOptions[product].unite,
+                                bdc_param.produitDevisOptions[product].ref
                             ],
                             function (error, result, fields) {
                                 if (error) {

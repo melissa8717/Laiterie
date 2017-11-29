@@ -69,6 +69,7 @@ export class DevislibreComponent  implements OnInit{
     ajouter() {
         let tmp: any = {};
         tmp.obj = this.produit.obj;
+        tmp.ref = this.produit.ref;
         tmp.qte = this.produit.qte;
         tmp.prix = this.produit.prix;
         tmp.unite = this.produit.unite;
