@@ -300,10 +300,24 @@ export class FichecontactComponent implements OnInit {
     }
 
 
-    imprimer() {
+    imprimer(){
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
+            var css = '@page { size: landscape; }',
+                head = document.head || document.getElementsByTagName('head')[0],
+                style = document.createElement('style');
+
+            style.type = 'text/css';
+            style.media = 'print';
+
+            if (style.sheet){
+            } else {
+                style.appendChild(document.createTextNode(css));
+            }
+
+            head.appendChild(style);
+
             window.print();
             this.print = false;
         }, 1000);

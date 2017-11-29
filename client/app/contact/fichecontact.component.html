@@ -85,13 +85,13 @@
                          style="height: 200px; width: 150px;"/>
                    <img *ngIf="!url && !contact.image_url" src="image/test.ico" alt="..."
                          class="img-thumbnail images"/>
-                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
+                    <input *ngIf="!print" type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
                 </div>
+                <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default  col-sm-offset-2 col-sm-1"
+                        (click)="updateContact(); uploaderImg.queue[0].upload();"> Modifier
+                </button>
 
             </div>
-            <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default  col-sm-offset-11 col-sm-1"
-                    (click)="updateContact(); uploaderImg.queue[0].upload();"> Modifier
-            </button>
 
 
 
@@ -100,69 +100,70 @@
 
                 <div class="form-group" >
                     <span class="col-sm-3">Nom:</span><input type="text" name="nom" [(ngModel)]="contact.nom"
-                                                             class="col-sm-3"/>
+                                                             class="col-sm-11"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-2 ">Prénom:</span><input type="text" name="prenom" [(ngModel)]="contact.prenom"
-                                                                 class="col-sm-4 "/>
+                                                                 class="col-sm-11 "/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-3 ">Raison social:</span><input type="text" name="raison_social"
                                                                         [(ngModel)]="contact.raison_sociale"
-                                                                        class="col-sm-3 "/>
+                                                                        class="col-sm-11 "/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-2 ">SIRET:</span><input type="number" name="siret" [(ngModel)]="contact.siret"
-                                                                class="col-sm-4"/>
+                                                                class="col-sm-11"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-3">Adresse:</span><input type="text" name="adresse"
-                                                                 [(ngModel)]="contact.adresse" class="col-sm-9 "/>
+                                                                 [(ngModel)]="contact.adresse" class="col-sm-11"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-3">Code postal:</span><input type="text" name="code_postal"
+                    <span class="col-sm-2">Code postal:</span><br />
+                    <input type="text" name="code_postal"
                                                                      [(ngModel)]="contact.code_postal"
-                                                                     class="col-sm-3"/>
-                </div>
-                <div class="form-group">
+                                                                     class="col-sm-2"/>
+                </div><br />
+                <div class="form-group"><br />
                     <span class="col-sm-2 ">Ville:</span><input type="text" name="ville" [(ngModel)]="contact.ville"
-                                                                class="col-sm-4"/>
+                                                                class="col-sm-5"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-3 ">N° sécu:</span><input type="text" name="n_secu" [(ngModel)]="contact.n_secu"
-                                                                  class="col-sm-3"/>
+                    <span class="col-sm-2 ">N° sécu:</span><input type="text" name="n_secu" [(ngModel)]="contact.n_secu"
+                                                                  class="col-sm-11"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-2 ">N° Permis :</span><input type="text" name="n_permis"
-                                                                     [(ngModel)]="contact.n_permis" class="col-sm-4 "/>
+                    <span class="col-sm-3 ">N° Permis :</span><input type="text" name="n_permis"
+                                                                     [(ngModel)]="contact.n_permis" class="col-sm-11 "/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-3 ">N° d'identité:</span><input type="text" name="n_identite"
                                                                         [(ngModel)]="contact.n_identite"
-                                                                        class="col-sm-3"/>
+                                                                        class="col-sm-11"/>
                 </div>
 
 
                 <div class="form-group">
                     <span class="col-sm-2">Mutuelle: </span><input type="text" name="mutuelle"
-                                                                   [(ngModel)]="contact.mutuelle" class="col-sm-4 "/>
+                                                                   [(ngModel)]="contact.mutuelle" class="col-sm-11 "/>
                 </div>
 
                 <div class="form-group">
-                    <span class="col-sm-3 ">Date de naissance:</span><input type="date" name="Date_naissance" [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'" (ngModelChange)="contact.Date_naissance = $event" [value]="contact.Date_naissance | date:'yyyy-MM-dd'" class="col-sm-3"/>
+                    <span class="col-sm-3 ">Date de naissance:</span><input type="date" name="Date_naissance" [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'" (ngModelChange)="contact.Date_naissance = $event" [value]="contact.Date_naissance | date:'yyyy-MM-dd'" class="col-sm-11"/>
                 </div>
 
 
                 <div class="form-group">
-                    <span class="col-sm-2 ">Lieu :</span><input type="text" name="lieu_naissance" [ngModel]="contact.lieu_naissance " class="col-sm-4 "/>
+                    <span class="col-sm-3 ">Lieu :</span><input type="text" name="lieu_naissance" [ngModel]="contact.lieu_naissance " class="col-sm-8 "/>
                 </div>
 
                 <div class="form-group">
-                    <span class="col-sm-3 " >Date d'entrée :</span>
-                    <input type="date" name="date_entree"  [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'" class="col-sm-3"/>
+                    <span class="col-sm-4" >Date d'entrée :</span>
+                    <input type="date" name="date_entree"  [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'" class="col-sm-6"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-2 " >Type :</span>
+                    <span class="col-sm-4" >Type :</span>
                     <select name="energie"   [(ngModel)]="contact.type" class="col-sm-4" >
                         <option [selected]="contact.type =='Employé'">Employé</option>
                         <option [selected]="contact.type =='Fournisseur'">Fournisseur</option>
@@ -184,32 +185,32 @@
                 <div class="form-group">
                     <span class="col-sm-4">Téléphone: </span><input type="text" name="numeroFixe"
                                                                     [(ngModel)]="telephoneFixe.numero"
-                                                                    class="col-sm-6 col-sm-offset-1"/>
+                                                                    class="col-sm-10 col-sm-offset-1"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-4">Mobile: </span><input type="text" name="numeroMobile"
                                                                  [(ngModel)]="telephoneMobile.numero"
-                                                                 class="col-sm-6 col-sm-offset-1"/>
+                                                                 class="col-sm-10 col-sm-offset-1"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-4">Téléphone pro: </span><input type="text" name="numeroPro"
                                                                         [(ngModel)]="telephonePro.numero"
-                                                                        class="col-sm-6 col-sm-offset-1"/>
+                                                                        class="col-sm-10 col-sm-offset-1"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-4" >Fax : </span><input type="text" name="numeroFax" [(ngModel)]="telephoneFax.numero" class="col-sm-6 col-sm-offset-1" />
+                    <span class="col-sm-4" >Fax : </span><input type="text" name="numeroFax" [(ngModel)]="telephoneFax.numero" class="col-sm-10 col-sm-offset-1" />
                 </div>
                 <div class="form-group">
                     <span class="col-sm-4">Mail: </span><input type="text" name="mail" [(ngModel)]="mail.mail"
-                                                               class="col-sm-6 col-sm-offset-1"/>
+                                                               class="col-sm-10 col-sm-offset-1"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-4">Mail pro: </span><input type="text" name="mailPro" [(ngModel)]="mailPro.mail"
-                                                                   class="col-sm-6 col-sm-offset-1"/>
+                                                                   class="col-sm-10 col-sm-offset-1"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-4">Site: </span><input type="text" name="site" [(ngModel)]="contact.site"
-                                                               class="col-sm-6 col-sm-offset-1"/>
+                                                               class="col-sm-10 col-sm-offset-1"/>
                 </div>
 
 
@@ -265,42 +266,42 @@
                                                                                        class="col-sm-2 "/>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2 ">Secourisme :</span><input type="date" name="secourisme"
+                        <span class="col-sm-3">Secourisme :</span><input type="date" name="secourisme"
                                                                           [ngModel]="contact.secourisme | date:'yyyy-MM-dd'"
                                                                           (ngModelChange)="contact.secourisme = $event"
                                                                           [value]="contact.secourisme | date:'yyyy-MM-dd'"
-                                                                          class="col-sm-2 "/>
+                                                                          class="col-sm-3 "/>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2 ">Validité amiante :</span><input type="date" name="amiante"
+                        <span class="col-sm-3 ">Validité amiante :</span><input type="date" name="amiante"
                                                                                 [ngModel]="contact.validite_amiante | date:'yyyy-MM-dd'"
                                                                                 (ngModelChange)="contact.validite_amiante = $event"
                                                                                 [value]="contact.validite_amiante | date:'yyyy-MM-dd'"
-                                                                                class="col-sm-2 "/>
+                                                                                class="col-sm-3 "/>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2 ">Travail en hauteur :</span><input type="date" name="travail_hauteur"
+                        <span class="col-sm-3">Travail en hauteur :</span><input type="date" name="travail_hauteur"
                                                                                   [ngModel]="contact.travail_hauteur | date:'yyyy-MM-dd'"
                                                                                   (ngModelChange)="contact.travail_hauteur = $event"
                                                                                   [value]="contact.travail_hauteur | date:'yyyy-MM-dd'"
-                                                                                  class="col-sm-2 "/>
+                                                                                  class="col-sm-3"/>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2 ">Visite médicale :</span><input type="date" name="visite_medicale"
+                        <span class="col-sm-3 ">Visite médicale :</span><input type="date" name="visite_medicale"
                                                                                [ngModel]="contact.visite_medicale | date:'yyyy-MM-dd'"
                                                                                (ngModelChange)="contact.visite_medicale = $event"
                                                                                [value]="contact.visite_medicale | date:'yyyy-MM-dd'"
-                                                                               class="col-sm-2 "/>
+                                                                               class="col-sm-3"/>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2 ">Autorisation conduite :</span><input type="text"
+                        <span class="col-sm-3">Autorisation conduite :</span><input type="text"
                                                                                      name="autorisation_conduite"
                                                                                      [(ngModel)]="contact.autorisation_conduite"
-                                                                                     class="col-sm-2 "/>
+                                                                                     class="col-sm-3"/>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2">Qualification :</span>
-                        <select name="qualification" class="col-sm-2 input-sm" [(ngModel)]="qualifChoisi">
+                        <span class="col-sm-3">Qualification :</span>
+                        <select name="qualification" class="col-sm-3 input-sm" [(ngModel)]="qualifChoisi">
                             <option value=""></option>
                             <option *ngFor="let qualification of qualifications"
                                     [value]="qualification.id_qualification" [title]="qualification.designation">
@@ -313,7 +314,7 @@
 
             <div class="col-sm-12" style="margin-top: 10px;">
 
-                <button *ngIf="droitsuser.modifcontact" class="btn btn-default  col-sm-offset-11 col-sm-1"
+                <button *ngIf="droitsuser.modifcontact && !print" class="btn btn-default  col-sm-offset-11 col-sm-1"
                         (click)="updateContact();">Modifier
                 </button>
 
@@ -358,8 +359,8 @@
                         <!--variable pour value-->
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2">Type contrat :</span>
-                        <select name="type_contrat" class="col-sm-2 input-sm" [(ngModel)]="lastcontrat.type_contrat">
+                        <span class="col-sm-3">Type contrat :</span>
+                        <select name="type_contrat" class="col-sm-3 input-sm" [(ngModel)]="lastcontrat.type_contrat">
                             <option [selected]="lastcontrat.type_contrat=='CDI'">CDI</option>
                             <option [selected]="lastcontrat.type_contrat=='CDD'">CDD</option>
                             <option [selected]="lastcontrat.type_contrat=='Intérimaire'">Intérimaire</option>
@@ -370,26 +371,26 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2 ">Date d'entrée:</span><input type="date" name="date_debut"
+                        <span class="col-sm-3 ">Date d'entrée:</span><input type="date" name="date_debut"
                                                                             [ngModel]="lastcontrat.date_debut | date:'yyyy-MM-dd'"
                                                                             (ngModelChange)="lastcontrat.date_debut = $event"
                                                                             [value]="lastcontrat.date_debut | date:'yyyy-MM-dd'"
-                                                                            class="col-sm-2 "/>
+                                                                            class="col-sm-3 "/>
                         <!--variable pour value-->
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-2 ">Date de sortie:</span><input type="date" name="date_fin"
+                        <span class="col-sm-3 ">Date de sortie:</span><input type="date" name="date_fin"
                                                                              [ngModel]="lastcontrat.date_fin | date:'yyyy-MM-dd'"
                                                                              (ngModelChange)="lastcontrat.date_fin = $event"
                                                                              [value]="lastcontrat.date_fin | date:'yyyy-MM-dd'"
-                                                                             class="col-sm-2 "/>
+                                                                             class="col-sm-3 "/>
                         <!--variable pour value-->
                     </div>
 
                     <div class="form-group">
-                        <span class="col-sm-2 ">Agence intérim :</span><input type="text" name="agence_interim"
+                        <span class="col-sm-3 ">Agence intérim :</span><input type="text" name="agence_interim"
                                                                               [(ngModel)]="lastcontrat.agence_interim"
-                                                                              class="col-sm-2 "/>
+                                                                              class="col-sm-3 "/>
                         <!--variable pour value-->
                     </div>
 
@@ -397,7 +398,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <button *ngIf="droitsuser.modifcontact" class="col-sm-offset-11 col-sm-1 btn" type="button"
+                    <button *ngIf="droitsuser.modifcontact && !print" class="col-sm-offset-11 col-sm-1 btn" type="button"
                             (click)="loadAdd()">Modifier
                     </button>
 
@@ -507,7 +508,7 @@
             </ng-container>
 
             <div class="col-sm-12">
-                <button [routerLink]="['/fichecontactpdf/'+id_contact]" class="col-sm-offset-11 col-sm-1 btn"
+                <button  class="col-sm-offset-11 col-sm-1 btn"
                         type="button" *ngIf="!print && droitsuser.accescontact" (click)=" imprimer()">Imprimer
                 </button>
 
@@ -519,7 +520,7 @@
     </div><!--fin container-->
 
 
-    <div class="row">
+    <div *ngIf="!print" class="row">
         <h3>GED</h3>
 
         <div class="col-md-3">
