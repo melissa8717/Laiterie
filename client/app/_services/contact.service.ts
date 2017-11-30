@@ -40,6 +40,11 @@ export class ContactService {
         return this.http.get(this.config.apiUrl + '/contacts/clients', this.jwt()).map((response: Response) => response.json());
     }
 
+    /* UNUSED
+    getCACES() {
+        return this.http.get(this.config.apiUrl + '/caces/', this.jwt()).map((response: Response) => response.json());
+    }*/
+
     getAddress(id: number) {
         return this.http.get(this.config.apiUrl + '/contacts/address/' + id, this.jwt()).map((response: Response) => response.json());
     }
@@ -147,6 +152,7 @@ export class ContactService {
 
 
     getAllCaces() {
+        console.log(this.config.apiUrl + '/contacts');
         return this.http.get(this.config.apiUrl + '/contacts/listcaces', this.jwt()).map((response: Response) => response.json());
     }
 
@@ -154,20 +160,22 @@ export class ContactService {
         return this.http.get(this.config.apiUrl + '/contacts/idform/' + id_contact, this.jwt()).map((response: Response) => response.json());
     }
 
-    addCaces(eparams: any) {
-        return this.http.post(this.config.apiUrl + '/contacts/ajoutcaces', eparams, this.jwt());
+
+    addCaces(eparams:any) {
+        return this.http.post(this.config.apiUrl + '/contacts/ajoutcaces',eparams, this.jwt());
     }
 
     getByIdCaces(id_contact: number) {
         return this.http.get(this.config.apiUrl + '/contacts/selcaces/' + id_contact, this.jwt()).map((response: Response) => response.json());
     }
 
-    upCaces(eParams: any) {
-        return this.http.put(this.config.apiUrl + '/contacts/upcaces', eParams, this.jwt());
+
+    upCaces(eParams:any){
+        return this.http.put(this.config.apiUrl + '/contacts/upcaces' ,eParams, this.jwt());
     }
 
-    upFormation(eParams: any) {
-        return this.http.put(this.config.apiUrl + '/contacts/modiform', eParams, this.jwt());
+    upFormation(eParams:any){
+        return this.http.put(this.config.apiUrl + '/contacts/modiform' ,eParams, this.jwt());
     }
 
     equipement(id_contact: number, equipement: any) {
@@ -184,6 +192,10 @@ export class ContactService {
 
     deleteFormation(id_formationcontact: number) {
         return this.http.delete(this.config.apiUrl + '/contacts/deform/' + id_formationcontact, this.jwt());
+    }
+
+    deleteCaces(id_cacon:number) {
+        return this.http.delete(this.config.apiUrl + '/contacts/deleteCaces/' + id_cacon, this.jwt());
     }
 
     // private helper methods

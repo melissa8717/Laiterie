@@ -70,6 +70,7 @@ router.get('/idform/:id_contact', getByIdFormation);
 router.delete('/deform/:id_formationcontact',deleteFormation);
 router.post('/ajoutcaces', addCaces);
 router.get('/selcaces/:id_contact', getByIdCaces);
+router.delete('/deleteCaces/:id_cacon',deleteCaces);
 
 router.post('/eequipements/:id_contact', equipement);
 router.get('/allequipe/:id_contact', getByIdequipement);
@@ -546,6 +547,16 @@ function getByIdFormation(req, res) {
         });
 }
 
+function deleteFormation(req, res) {
+    contactService.deleteFormation(req.params.id_formationcontact)
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
 function addCaces(req, res) {
     console.log("test13");
     contactService.addCaces(req.body)
@@ -583,8 +594,18 @@ function upCaces(req, res) {
         });
 }
 
+function deleteCaces(req, res) {
+    contactService.deleteCaces(req.params.id_cacon)
+        .then(function (results) {
+            res.sendStatus(200);
+        })
+        .catch(function (err) {
+            ;
+            res.status(400).send(err);
+        });
+}
+
 function upFormation(req, res) {
-    //console.log("test3");
     contactService.upFormation(req.body)
         .then(function () {
             res.sendStatus(200);

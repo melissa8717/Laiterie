@@ -155,10 +155,20 @@ export class FormationcontactComponent {
         });
     }
 
+
     supprimer(id_formationcontact: any) {
         this.contactService.deleteFormation(id_formationcontact)
             .subscribe(() => {
                 this.form = this.form.filter(x => x.id_formationcontact != id_formationcontact);
+            }, error => {
+                this.alertService.error(error._body);
+            });
+    }
+
+    supprimerca(id_cacon: any) {
+        this.contactService.deleteCaces(id_cacon)
+            .subscribe(() => {
+                this.caces = this.caces.filter(x => x.id_cacon != id_cacon);
             }, error => {
                 this.alertService.error(error._body);
             });

@@ -71,6 +71,7 @@ service.upFormation = upFormation;
 service.equipement = equipement;
 service.getByIdequipement = getByIdequipement;
 service.deleteEquipement = deleteEquipement;
+service.deleteCaces = deleteCaces;
 
 module.exports = service;
 
@@ -1010,6 +1011,20 @@ function upCaces(eParam) {
 
         deferred.resolve();
     });
+    return deferred.promise;
+}
+
+function deleteCaces(id_cacon) {
+    var deferred = Q.defer();
+    db.query("DELETE FROM cacescontact WHERE id_cacon= ? ", [id_cacon], function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+
+        }
+        deferred.resolve();
+    });
+
     return deferred.promise;
 }
 

@@ -73,8 +73,7 @@
                                     <li ><a (click)="supprimer(form[i].id_formationcontact)">Supprimer</a></li>
                                 </ul>
                             </div>
-                        </div>
-                    </td>
+                        </div></td>
                 </tr>
                 </tbody>
 
@@ -132,7 +131,16 @@
                 <tr *ngFor="let cace of caces, let i = index">
                     <td>{{cace.caces}} : {{cace.description}}</td>
                     <td><input type="date" name="date_fin{{i}}"  [ngModel]="caces[i].date_fin | date:'yyyy-MM-dd'" (ngModelChange)="caces[i].date_fin = $event" [value]="caces[i].date_fin | date:'yyyy-MM-dd'" ></td>
-                    <td><button (click)="modCaces(cace)">Modifier</button></td>
+                    <td>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right" >
+                                    <li ><a (click)="modCaces(cace)">Modifier</a></li>
+                                    <li ><a (click)="supprimerca(caces[i].id_cacon)">Supprimer</a></li>
+                                </ul>
+                            </div>
+                        </div>
                 </tr>
                 </tbody>
 
