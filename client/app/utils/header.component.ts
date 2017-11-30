@@ -1,5 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-
+import {Component, Input} from '@angular/core';
 
 @Component({
     moduleId: module.id,
@@ -9,8 +8,8 @@ import {Component, Input, OnInit} from '@angular/core';
 
 export class HeaderComponent {
 
-    @Input() title: string = 'NO TITLE';
-    @Input() img: string = 'image/menu/gestion_grand_gris.png';
+    @Input() title: string;
+    @Input() img: string;
 
     constructor() {
     }

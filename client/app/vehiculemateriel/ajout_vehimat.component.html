@@ -1,14 +1,7 @@
 <div id="planning1">
-    <header>
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-                    <img *ngIf="!print" src="image/menu/produits_grand_gris.png" alt="planning">
-                    <span>Créer véhicule/matériel</span>
-                </div>
-            </div>
-        </div>
-    </header>
+
+    <my-header *ngIf="!print" [title]='"Créer véhicule/matériel"' [img]="'image/menu/produits_grand_gris.png'"></my-header>
+    <my-header *ngIf="print" [title]='"Créer véhicule/matériel"'></my-header>
 
 
     <div class=" container-fluid ">
