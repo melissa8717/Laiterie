@@ -1894,6 +1894,8 @@ CREATE TABLE IF NOT EXISTS `testing` (
   PRIMARY KEY (`id_valitest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+INSERT INTO `testing` (`numtest`, `id_test`) VALUES ('CLE_LICENCE', '1');
+
 -- --------------------------------------------------------
 
 --
