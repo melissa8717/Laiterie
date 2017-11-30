@@ -162,7 +162,7 @@ export class FactlibreComponent {
     }
 
     totaligndet(details: any) {
-        if (details.pourcent)
+        if (details.pourcentf)
             return details.qteprod * details.prix_prod * (details.pourcentf / 100);
         else return 0;
     }
