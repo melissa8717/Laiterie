@@ -120,13 +120,13 @@
                 <th style="border-right: 1px solid black;border-bottom:1px solid black;border-top:1px solid black;text-align: center;" class="col-sm-1">Total HT:</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody >
 
             <ng-container *ngFor="let produit of produitDevis; let i = index" style="height: 10px;">
-                <tr  >
+                <tr  style="border:1px solid black;">
 
 
-                    <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;">
+                    <td colspan="10"  style="text-align: left;">
                         <div  class="form-group">
                             <span style="font-weight: bold;text-align: center;">{{produit.libelle}}</span><br>
                             <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
@@ -134,30 +134,30 @@
                     </td>
 
 
-                    <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: right;">
+                    <td style="text-align: center;">
                         <div class="form-group" >
                             <span >{{produit.id_prc}}</span>
                         </div>
                     </td>
-                    <td  style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+                    <td  style="text-align: center;">
                         <div class="form-group">
                             <span>{{produit.unite}}</span>
                         </div>
                     </td>
-                    <td  style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+                    <td  style="text-align: center;">
                         <div class="form-group">
                             {{produitDevis[i].qte_devis}}
                         </div>
                     </td>
-                    <td  style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+                    <td  style="text-align: center;">
                         {{produitDevis[i].taux}}
                     </td>
-                    <td  style="border-bottom: 1px solid black;border-right: 1px solid black;text-align: right;">
+                    <td  style="text-align: center;">
                         <div class="form-group">
                             {{produitDevis[i].prix_devis| currency:'EUR':true:'1.2-2'}}
                         </div>
                     </td>
-                    <td  style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+                    <td  style="text-align: center">
                         <div class="form-group">{{produitDevis[i].qte_devis * produitDevis[i].prix_devis| currency:'EUR':true:'1.2-2' }}</div>
                     </td>
 
