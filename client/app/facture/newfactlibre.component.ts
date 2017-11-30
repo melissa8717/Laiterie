@@ -237,14 +237,12 @@ export class NewfactlibreComponent {
 
 
     getAddress(id:any){
-
         if(id!=null){
-            this.contactService.getAddress(id).subscribe(
-                data=>{
-                    if(data[0]){
-                        this.devis.address = data[0].adresse;
-                        this.devis.cp = data[0].code_postal;
-                        this.devis.ville = data[0].ville;
+            this.contactService.getById(id).subscribe(contact=>{
+                    if(contact){
+                        this.devis.address = contact.adresse;
+                        this.devis.cp = contact.code_postal;
+                        this.devis.ville = contact.ville;
                         this.address = false
                     }
                     else{

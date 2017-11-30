@@ -115,25 +115,23 @@
                                #prod
                                [source]="clients"
                                [list-formatter]="autocompleListFormatterContact"
-                               [value-formatter]=""
+                               [value-formatter]="autocompleListFormatterContactValue"
                                value-property-name="id_contact"
-                               display-property-name="raison_sociale"
                                type="text"
                                name="Nom_client"
                                value=""
                                class="col-sm-5"
                                [(ngModel)]="devis.nomclient"
-
+                               (ngModelChange)="getAddress(devis.nomclient.id_contact)"
                                required
                         >
-
                         <a [routerLink]="['/ajout_contact']" target="_blank">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true">Nouveau Client</span>
                         </a>
 
                     </div>
-                   <span>adresse:</span> <span >{{devis.adresse}}</span>
-                   <!-- <div class="form-group">
+
+                    <div class="form-group">
                         <label class="col-sm-4">* Adresse chantier </label>
                         <input type="text" name="Adresse1" value="" class="col-sm-5" [(ngModel)]="devis.address" required>
                     </div>
@@ -144,7 +142,7 @@
                     <div class="form-group">
                         <label class="col-sm-4">* Ville:</label>
                         <input type="text" name="ville" value="" class="col-sm-5" min="0" [(ngModel)]="devis.ville" required>
-                    </div>-->
+                    </div>
 
                 </div>
 

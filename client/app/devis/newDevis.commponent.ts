@@ -259,17 +259,16 @@ export class NewDevisComponent implements OnInit {
     }
 
 
-    getAddress(id: any) {
-        if (id != null) {
-            this.contactService.getAddress(id).subscribe(
-                data => {
-                    if (data[0]) {
-                        this.devis.address = data[0].adresse;
-                        this.devis.cp = data[0].code_postal;
-                        this.devis.ville = data[0].ville;
+    getAddress(id:any){
+        if(id!=null){
+            this.contactService.getById(id).subscribe(contact=>{
+                    if(contact){
+                        this.devis.address = contact.adresse;
+                        this.devis.cp = contact.code_postal;
+                        this.devis.ville = contact.ville;
                         this.address = false
                     }
-                    else {
+                    else{
                         this.devis.address = "";
                         this.devis.cp = "";
                         this.devis.ville = "";
@@ -278,7 +277,7 @@ export class NewDevisComponent implements OnInit {
                 }
             )
         }
-        else {
+        else{
             this.address = false;
         }
     }
@@ -312,12 +311,12 @@ export class NewDevisComponent implements OnInit {
     };
 
     autocompleListFormatterContactValue = (data: any): SafeHtml => {
-        let html = `${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}`;
+        let html = `${data.raison_sociale ? data.raison_sociale : data.nom +" " +data.prenom}`;
         return html;
     };
 
     autocompleListFormatterContact = (data: any): SafeHtml => {
-        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}</span>`;
+        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom +" " +data.prenom}</span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
