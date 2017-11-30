@@ -501,6 +501,16 @@ function getByIdNom(req, res) {
         });
 }
 
+function deleteFormation(req, res) {
+    contactService.deleteFormation(req.params.id_formationcontact)
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
 function getAllform(req, res) {
     //console.log("test3");
     contactService.getAllform()

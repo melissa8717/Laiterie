@@ -1,26 +1,26 @@
-
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, AuthenticationService} from '../_services/index';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {DevisService} from "../_services/devis.service";
-import {VentesService} from "../_services/ventes.service";
-import {ContactService} from "../_services/contact.service";
-import {ChantierService} from "../_services/chantier.service";
-import {FactureService} from "../_services/facture.service";
-import {ParamsService} from "../_services/params.service";
-import {User} from "../_models/user";
+import {FormBuilder} from '@angular/forms';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {DevisService} from '../_services/devis.service';
+import {VentesService} from '../_services/ventes.service';
+import {ContactService} from '../_services/contact.service';
+import {ChantierService} from '../_services/chantier.service';
+import {FactureService} from '../_services/facture.service';
+import {ParamsService} from '../_services/params.service';
+import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
 
 const URL = 'http://localhost:4000/ged/';
 const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLFili = 'http://'+location.hostname+':4000/filigrane/';
 
 
-import {Observable} from "rxjs/Observable";
-import {isUndefined} from "util";
+
 
 @Component({
     moduleId: module.id,
@@ -30,6 +30,13 @@ import {isUndefined} from "util";
 export class DevisComponent implements OnInit {
 
     public uploaderImg: FileUploader;
+    public uploaderFili: FileUploader;
+    public hasBaseDropZoneOver: boolean = false;
+
+    public fileOverBase(e: any): void {
+        this.hasBaseDropZoneOver = e;
+    }
+
 
 
     devis: any = {};
@@ -43,14 +50,16 @@ export class DevisComponent implements OnInit {
     model: any = {};
     address = false;
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
     loc = location.hostname;
     image: any[];
     id_agence: number;
     img: any = {};
+
+    fili: any = {};
 
 
 
@@ -67,11 +76,11 @@ export class DevisComponent implements OnInit {
     cgv: any = {};
     id: number;
     ged: any[];
-    logo: any ={};
-    Var:any;
+    logo: any = {};
+    Var: any;
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files:any;
+    base64Files: any;
 
 
     constructor(private route: ActivatedRoute,
@@ -86,7 +95,7 @@ export class DevisComponent implements OnInit {
                 private paramsService: ParamsService,
                 private builder: FormBuilder,
                 private _sanitizer: DomSanitizer,
-    ) {
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
@@ -99,8 +108,7 @@ export class DevisComponent implements OnInit {
         this.loadCat();
         this.loaddroituser();
         this.loadAllagence();
-
-
+        this.loadAllFili();
 
 
         this.sub = this.route.params.subscribe(params => {
@@ -112,7 +120,7 @@ export class DevisComponent implements OnInit {
                     this.devis = data.devis[0];
                     this.produitDevis = data.detaille;
                     this.produitDevisOptions = data.options;
-                    //console.log(this.devis);
+                    console.log(this.devis);
                     //console.log(this.produitDevis);
 
                 }
@@ -171,11 +179,11 @@ export class DevisComponent implements OnInit {
 
             }
             else {
-                this.alertService.error("Veuillez ajouter un produit existant.");
+                this.alertService.error('Veuillez ajouter un produit existant.');
             }
         }
         else {
-            this.alertService.error("Le produit " + tmp.obj.libelle + " n'a pas pu être ajouté.");
+            this.alertService.error('Le produit ' + tmp.obj.libelle + ' n\'a pas pu être ajouté.');
         }
 
 
@@ -214,7 +222,7 @@ export class DevisComponent implements OnInit {
     private loadAllChantiers() {
         this.chantierService.getAll().subscribe(chantiers => {
             this.chantiers = chantiers;
-            console.log(this.chantiers)
+
         });
     }
 
@@ -222,7 +230,7 @@ export class DevisComponent implements OnInit {
         // console.log("on envoie la requette");
         this.contactService.getAllClients().subscribe(clients => {
             this.clients = clients;
-            console.log(this.clients);
+
         });
     }
 
@@ -246,8 +254,8 @@ export class DevisComponent implements OnInit {
     countTotalVI() {
         let total = 0;
         for (let produit of this.produitDevis) {
-            if(produit.taux == 20){
-                total += produit.prix_devis * produit.qte_devis *(produit.taux/100);
+            if (produit.taux == 20) {
+                total += produit.prix_devis * produit.qte_devis * (produit.taux / 100);
             }
 
         }
@@ -264,7 +272,7 @@ export class DevisComponent implements OnInit {
     }
 
     countTotalTVA() {
-        return this.totalRemiseprod() > 0 ? this.totalRemiseprod() + this.countAllTVA() : 0 ;
+        return this.totalRemiseprod() > 0 ? this.totalRemiseprod() + this.countAllTVA() : 0;
     }
 
 
@@ -322,9 +330,9 @@ export class DevisComponent implements OnInit {
                         this.address = false
                     }
                     else {
-                        this.devis.address = "";
-                        this.devis.cp = "";
-                        this.devis.ville = "";
+                        this.devis.address = '';
+                        this.devis.cp = '';
+                        this.devis.ville = '';
                         this.address = true;
                     }
                 }
@@ -345,23 +353,23 @@ export class DevisComponent implements OnInit {
         console.log(devisparams);
         this.devisService.add(devisparams).subscribe(
             data => {
-                this.router.navigate(["/listedevis"]);
-                this.alertService.success("Le devis a été créé avec succès.");
+                this.router.navigate(['/listedevis']);
+                this.alertService.success('Le devis a été créé avec succès.');
             });
     }
 
     autocompleListFormatterProducts = (data: any): SafeHtml => {
-        let html = `<span>${data.libelle} : ${data.prix_vente ? data.prix_vente + "€" : "Prix non défini"}</span>`;
+        let html = `<span>${data.libelle} : ${data.prix_vente ? data.prix_vente + '€' : 'Prix non défini'}</span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
     autocompleListFormatterContactValue = (data: any): SafeHtml => {
-        let html = `${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}`;
+        let html = `${data.raison_sociale ? data.raison_sociale : data.nom + ' ' + data.prenom}`;
         return html;
     };
 
     autocompleListFormatterContact = (data: any): SafeHtml => {
-        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}</span>`;
+        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom + ' ' + data.prenom}</span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
@@ -392,7 +400,7 @@ export class DevisComponent implements OnInit {
         //console.log(this.recherche.seek)
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-            console.log(this.fact);
+
 
         });
     }
@@ -403,7 +411,7 @@ export class DevisComponent implements OnInit {
         this.paramsService.getAllVente().subscribe(cgv => {
 
             this.cgv = cgv[0];
-            console.log(this.cgv);
+
 
         });
     }
@@ -418,14 +426,10 @@ export class DevisComponent implements OnInit {
     }
 
 
-
-
-
-
     public onChange(event: Event) {
         let files = event.target['files'];
         if (event.target['files']) {
-            console.log(event.target['files']);
+            //console.log(event.target['files']);
             this.readFiles(event.target['files'], 0);
         }
     };
@@ -452,7 +456,7 @@ export class DevisComponent implements OnInit {
             console.log(this.img);
             //console.log(this.currentUser);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
@@ -463,14 +467,39 @@ export class DevisComponent implements OnInit {
             };*/
 
         });
+
+
+
     }
+
+    loadAllFili(){
+
+        this.paramsService.getAllFili().subscribe(fili => {
+
+            this.fili = fili[0];
+            console.log(this.fili);
+            //console.log(this.currentUser);
+
+            this.uploaderFili = new FileUploader({url: URLFili + "agence/" + this.fili.id_agence});
+            this.uploaderFili.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
+            this.uploader.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };*/
+
+        });
+    }
+
     countNTVAZ() {
         let total = 0;
 
         for (let produit of this.produitDevis) {
 
             if (produit.taux == 0) {
-                total +=  0;
+                total += 0;
 
 
             }
@@ -478,13 +507,14 @@ export class DevisComponent implements OnInit {
         return total;
 
     }
+
     countNTVA() {
         let total = 0;
 
         for (let produit of this.produitDevis) {
 
             if (produit.taux == 2.1) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
 
 
             }
@@ -492,8 +522,6 @@ export class DevisComponent implements OnInit {
         return total;
 
     }
-
-
 
 
     countNTVAC() {
@@ -502,7 +530,7 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if (produit.taux == 5.5) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
 
 
             }
@@ -518,7 +546,7 @@ export class DevisComponent implements OnInit {
 
 
             if (produit.taux == 10) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
 
 
             }
@@ -534,7 +562,7 @@ export class DevisComponent implements OnInit {
 
 
             if (produit.taux == 20) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
             }
         }
         return total;
@@ -548,7 +576,7 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if (produit.taux == 0) {
-                total +=  0;
+                total += 0;
 
 
             }
@@ -556,12 +584,13 @@ export class DevisComponent implements OnInit {
         return total;
 
     }
+
     countNTVAO() {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
             if (produit.taux == 2.1) {
-                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
 
 
             }
@@ -575,7 +604,7 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if (produit.taux == 5.5) {
-                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
 
 
             }
@@ -590,7 +619,7 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if (produit.taux == 10) {
-                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
 
 
             }
@@ -603,10 +632,9 @@ export class DevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
+
             if (produit.taux == 20) {
-                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
 
             }
         }
@@ -615,19 +643,17 @@ export class DevisComponent implements OnInit {
     }
 
 
-    countAllTVA(){
-        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 )  + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
+    countAllTVA() {
+        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 ) + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
 
 
     }
 
-    countAllTVAO(){
+    countAllTVAO() {
         return ((this.countNTVAO() ? this.countNTVAO() : 0 ) + (this.countNTVACO() ? this.countNTVACO() : 0 ) + (this.countNTVADO() ? this.countNTVADO() : 0 )) + (this.countNTVAsO() ? this.countNTVAsO() : 0 );
 
 
     }
-
-
 
 
 }

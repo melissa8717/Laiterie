@@ -1,13 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <base href="/" />
+    <base href="/"/>
     <title>WBAT</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="image/wbat.ico" />
+    <link id="icon" rel="shortcut icon"/>
 
     <!-- bootstrap css -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
 
     <link href="style/style.css" rel="stylesheet">
     <link href="style/angular-calendar.css" rel="stylesheet">
@@ -22,10 +22,8 @@
     <script src="./node_modules/dhtmlx-gantt/codebase/locale/locale_fr.js" charset="utf-8"></script>
 
 
-
-
     <!-- application css -->
-    <link href="app.css" rel="stylesheet" />
+    <link href="app.css" rel="stylesheet"/>
 
 
     <!-- polyfill(s) for older browsers -->
@@ -36,15 +34,30 @@
 
     <script src="systemjs.config.js"></script>
     <script>
-        System.import('app').catch(function (err) { console.error(err); });
+        System.import('app').catch(function (err) {
+            console.error(err);
+        });
     </script>
+
+    <!-- IMG CONFIG -->
+    <script src="./config.js"></script>
+
+    <script>
+        function loadImg() {
+            document.getElementById('logo').src = 'image/' + config.company + '.png';
+            document.getElementById('icon').href = 'image/' + config.company + '.ico';
+        }
+    </script>
+
 </head>
-<body>
+<body onload="loadImg();">
 <app>
     <div id="loadingImg">
-        <img src="/image/logo_wBAT_horizontal.png" height=120 align="center"/>
+        <img id="logo" height=120 align="center"/>
         <div class="loader"></div>
     </div>
 </app>
+
+
 </body>
 </html>

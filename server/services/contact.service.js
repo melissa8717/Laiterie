@@ -1083,7 +1083,6 @@ function getByIdequipement(id_contact) {
 }
 
 function deleteEquipement(id_equipement) {
-    console.log("DELETE FROM equipement WHERE id_equipement = ? ", [id_equipement]);
     var deferred = Q.defer();
     db.query("DELETE FROM equipement WHERE id_equipement = ? ", [id_equipement], function (error, results, fields) {
         if (error) {

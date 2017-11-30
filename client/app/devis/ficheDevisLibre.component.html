@@ -13,6 +13,7 @@
             </div>
         </div>
 
+
     </header>
     <body style="margin:0px;font-size: 18px;background-color: white;">
     <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
@@ -48,12 +49,13 @@
                 <div *ngIf="!devis.adr" class="form-group">
                     <span style="text-align: center;">{{devis.adresse}}</span>
                 </div>
-                <div class="form-group" *ngIf="devis.code_postal || devis.vil">
-                    <span style="text-align: center;">{{devis.code_postal}} - {{devis.vil}}</span>
+                <div class="form-group" >
+                    <span style="text-align: center;">{{devis.code_postal ? devis.code_postal :devis.cp}} - {{devis.vil ? devis.vil :devis.ville}}</span>
                 </div>
-                <div class="form-group" *ngIf="!devis.code_postal && !devis.vil">
-                    <span style="text-align: center;">{{devis.cp}} - {{devis.ville}}</span>
+                <div class="form-group" >
+                    <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
                 </div>
+
             </div>
 
         </div>
@@ -73,26 +75,33 @@
                 <label class="col-sm-4" style="text-decoration: underline;">Nom du chantier:</label>
                 <span >{{devis.nom_chantier}}</span>
             </div>
+            <div class="form-group" *ngIf="devis.accompte_value">
+                <label class="col-sm-4" style="text-decoration: underline;">Acompte:</label>
+                <span >{{devis.accompte_value}} €</span>
+            </div>
         </div>
 
-        <div class="form-group" style="margin-top: 20px; margin-left:45%;">
-            <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
-        </div>
+
 
     </div>
 
     <div class="table-responsive" style="margin-top: 25px;">
 
-        <table style="width: 100%;font-size:18px;z-index:1;margin-bottom:50px;height:100%;" >
+        <table style="width: 100%;font-size:18px;z-index:1;margin-bottom:50px;height:100%;border:1px solid black;" >
 
             <thead style="background-color: grey;">
 
             <tr>
-                <th colspan="10" style="border-bottom:1px solid black; border-top:1px solid black;border-left: 1px solid black;border-right: 1px solid black;text-align: center;" class="col-sm-4">Désignation</th>
+                <th colspan="10" style="text-align: center;" class="col-sm-4">Désignation</th>
 
-                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1" >Option acceptée</th>
+                <th class="col-sm-1" >Option acceptée</th>
+                <th class="col-sm-1">Unité</th>
+                <th   class="col-sm-1">Qte</th>
+                <th  class="col-sm-1">P.U. HT</th>
+                <th class="col-sm-2" colspan="2">Total HT</th>
+                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1" >Option</th>
+                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
                 <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">Qte</th>
-
                 <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;width: 150px;" class="col-sm-1">P.U. HT</th>
                 <th style="border-right: 1px solid black;border-bottom:1px solid black;border-top:1px solid black;text-align: center;" class="col-sm-2" colspan="2">Total HT</th>
 
@@ -101,21 +110,58 @@
             </thead>
 
             <tbody>
+
             <tr *ngFor="let prod of produit, let  i = index">
-                <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;">{{prod.produit}}  </td>
+                <td colspan="10"  style="text-align: center;"><span style="font-weight: bold;">{{prod.produit}}</span> <br>
+
+                <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;"><span style="font-weight: bold;">{{prod.produit}}</span> <br>
+                    <textarea  *ngIf="prod.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prod.commentaire}}</textarea></td>
                 <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
 
                     <span *ngIf="(produit[i].accepted == 0) || (produit[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produit[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produit[i])"></span></td>
-                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td style="text-align: center;">
+                    {{prod.unite}}
+                </td>
+                <td style="text-align: center;">
 
                     {{prod.qte_devis}}</td>
-                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td style="text-align: center;">
 
                     {{prod.prix_devis}}</td>
 
-                <td colspan="2" style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td colspan="2" style="text-align: center;">
                     {{prod.qte_devis * prod.prix_devis | number:'1.0-2'}}</td>
             </tr>
+
+            <tr *ngIf="produitop.length > 0">
+                <td colspan="24"
+                    class="total"
+                    style="text-align: left;
+                                background-color: #0f0f0f;
+                                color: white">
+                    Options:
+                </td>
+            <tr *ngFor="let prode of produitop, let  i = index">
+
+                <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;"><span style="font-weight: bold;">{{prode.produit}}</span> <br>
+                    <textarea  *ngIf="prode.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prode.commentaire}}</textarea></td>
+                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+
+                    <span *ngIf="(produitop[i].accepted == 0) || (produitop[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produitop[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produitop[i])"></span></td>
+                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                    {{prode.unite}}
+                </td>
+                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+
+                    {{prode.qte_devis}}</td>
+                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+
+                    {{prode.prix_devis}}</td>
+
+                <td colspan="2" style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                    {{prode.qte_devis * prode.prix_devis | number:'1.0-2'}}</td>
+            </tr>
+
 
             </tbody>
 
@@ -123,31 +169,39 @@
 
         <table class="col-sm-4 col-sm-offset-7 " style="float:right;">
 
-            <tr style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
-                <td style="border-right:1px solid black;text-align: left;">Total H.T. : </td>
-                <td colspan="3">{{countTotaldet() | number:'1.0-2'}} €</td>
+            <tr style="border-top: 1px solid black;border-left:1px;">
+                <td style="text-align: left;border-left:1px solid black;">Total H.T. : </td>
+                <td colspan="3" style="border-right: 1px solid black;">{{countTotaldet() | number:'1.0-2'}} €</td>
+            </tr>
+            <tr *ngIf="devis.remise" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
+                <td style="text-align: left;">Total H.T. après remise de {{devis.remise}}%</td>
+                <td colspan="3">{{countTotaldet() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
             </tr>
             <tr style="border-left:1px solid black; border-right:1px solid black;">
-                <td style="border-right:1px solid black;text-align: left;">TVA :</td>
-                <td colspan="3">{{countTva() | number:'1.0-2'}} €</td>
+                <td style="text-align: left;">TVA {{devis.tva}} %:</td>
+                <td colspan="3"> {{countTva()| number:'1.0-2'}} €</td>
             </tr>
             <tr style="border-left:1px solid black; border-right:1px solid black;border-bottom: 1px solid black;">
-                <td style="border-right:1px solid black;text-align: left;">TTC :</td>
+                <td style="text-align: left;">TTC :</td>
                 <td colspan="3">{{countTtc() | number:'1.0-2'}} €</td>
             </tr>
 
             <br />
 
             <tr *ngIf="countTotalopt(0)" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
-                <td style="border-right:1px solid black;text-align: left;">Total H.T. des options non acceptées </td>
+                <td style="text-align: left;border-left:1px;">Total H.T. </td>
                 <td colspan="3">{{countTotalopt() | number:'1.0-2'}} €</td>
             </tr>
+            <tr *ngIf="countTotalopt(0)" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
+                <td style="text-align: left;">Total H.T. après remise {{devis.remise}}%</td>
+                <td colspan="3">{{countTotalopt() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
+            </tr>
             <tr *ngIf="countTvaopt(0)" style="border-left:1px solid black; border-right:1px solid black;">
-                <td style="border-right:1px solid black;text-align: left;">TVA :</td>
+                <td style="text-align: left;">TVA {{devis.tva}} %:</td>
                 <td colspan="3">{{countTvaopt() | number:'1.0-2'}} €</td>
             </tr>
             <tr *ngIf="countTtcopt(0)" style="border-left:1px solid black; border-right:1px solid black;border-bottom: 1px solid black;">
-                <td style="border-right:1px solid black;text-align: left;">TTC :</td>
+                <td style="text-align: left;">TTC :</td>
                 <td colspan="3">{{countTtcopt() | number:'1.0-2'}} €</td>
             </tr>
             <br /> <br />

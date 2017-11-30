@@ -25,7 +25,7 @@
             <input type="hidden" name="identifiant de la facture"><!--variable peremettant par la suite d'éditer la facture au format PDF-->
             <fieldset class="separe">
                 <div class="row marge">
-                    <img  src="image/logo_wBAT_horizontal.png"  style="margin-left:100px;">
+                    <img  src="config.logoPath"  style="margin-left:100px;">
                 </div>
                 <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
                 <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; top:-200px; position: fixed;">
@@ -92,13 +92,14 @@
                     <table class="table table-bordered">
                         <thead style="background-color: #9d9d9d;height: 10px;">
                         <th class="col-sm-1">Référence</th>
-                        <th class="col-sm-4">Article</th>
+                        <th class="col-sm-3">Article</th>
                         <th class="col-sm-1">Unité</th>
                         <th class="col-sm-1">Qte</th>
                         <th class="col-sm-1">P.U. en €</th>
                         <th class="col-sm-1">PU H.T. en €</th>
                         <th class="col-sm-1">Total H.T. en €</th>
                         <th class="col-sm-1" style="width: 70px;">%</th>
+                        <th  class="col-sm-1" *ngIf="!version.tva">TVA</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let details of detail">
@@ -110,8 +111,19 @@
                                 <td>{{details.qte_devis * details.prix_devis | number:'1.0-2'}}</td>
                                 <td >{{totaligne(details) | number:'1.0-2'}} </td>
                                 <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="details.pourcentage" min="0" max="100"> </td>
+                                <td *ngIf="!version.tva">{{details.taux}} %</td>
                             </tr>
-                            <tr *ngIf="option.length>0"><td colspan="8">Options acceptées</td></tr>
+                            <tr *ngFor="let libres of libre">
+                                <td>{{libres.id_produit}}-{{libres.num_version}}</td>
+                                <td>{{libres.produit}}</td>
+                                <td>{{libres.unite}}</td>
+                                <td>{{libres.qte_devis}}</td>
+                                <td>{{libres.prix_devis}}</td>
+                                <td>{{libres.qte_devis * libres.prix_devis | number:'1.0-2'}}</td>
+                                <td >{{totalignelibre(libres) | number:'1.0-2'}}</td>
+                                <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="libres.pourcentage" min="0" max="100"> </td>
+                            </tr>
+                            <tr *ngIf="(option.length>0) || (libreoption.length>0)"><td colspan="8">Options acceptées</td></tr>
                             <tr *ngFor="let options of option">
                                 <td>{{options.id_produit}}-{{options.num_version}}</td>
                                 <td>{{options.libelle}}</td>
@@ -120,7 +132,18 @@
                                 <td>{{options.prix_devis}}</td>
                                 <td>{{options.qte_devis * options.prix_devis | number:'1.0-2'}}</td>
                                 <td >{{totaligneopt(options) | number:'1.0-2'}} </td>
-                                <td><input style="width: 70px;border:1px solid white;" type="number" name="pourcentage" [(ngModel)]="options.pourcentage" class="col-sm-12" min="0" max="100"> </td>
+                                <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="options.pourcentage" class="col-sm-12" min="0" max="100"> </td>
+                                <td *ngIf="!version.tva">{{options.taux}} %</td>
+                            </tr>
+                            <tr *ngFor="let libreoptions of libreoption">
+                                <td>{{libreoptions.id_produit}}</td>
+                                <td>{{libreoptions.produit}}</td>
+                                <td>{{libreoptions.unite}}</td>
+                                <td>{{libreoptions.qte_devis}}</td>
+                                <td>{{libreoptions.prix_devis}}</td>
+                                <td>{{libreoptions.qte_devis * libreoptions.prix_devis | number:'1.0-2'}}</td>
+                                <td >{{totalignelibreoption(libreoptions) | number:'1.0-2'}}</td>
+                                <td><input style="width: 70px;border:1px solid white;" type="number" name="pourcentage" [(ngModel)]="libreoptions.pourcentage" class="col-sm-12" min="0" max="100"> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -136,8 +159,8 @@
                 <table class=" separe1 table-striped">
                     <tbody >
 
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">Rappel Montant H.T. Devis :</td><td style="text-align: right;">{{totalfact.totalht + totalopt.totaloption | number:'1.0-2'}}</td></tr>
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr"><td class="gauche" style="text-align: left;">Total des travaux H.T. :</td><td style="text-align: right;">{{totalfact.totalht + totalopt.totaloption  | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">Rappel Montant H.T. Devis :</td><td style="text-align: right;">{{totalfact.totalht + totalopt.totaloption + countTotallib() + countTotalliboption() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr"><td class="gauche" style="text-align: left;">Total des travaux H.T. :</td><td style="text-align: right;">{{totalfact.totalht + totalopt.totaloption + countTotallib() + countTotalliboption() | number:'1.0-2'}}</td></tr>
 
 
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">Travaux réalisés/devis :</td><td style="text-align: right;">{{countTotal()  | number:'1.0-2'}}</td></tr>
@@ -159,8 +182,12 @@
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr gras"><td class="gauche" style="text-align: left;">Total situation H.T. :</td><td>{{countTotalsituation() | number:'1.0-2'}}</td></tr>
 
 
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">1-TVA à {{version.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td>{{countTVA() | number:'1.0-2'}}</td></tr>
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr"><td class="gauche"> </td><td></td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" *ngIf="version.tva"><td class="gauche" style="text-align: left;">1-TVA à {{version.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td>{{countTVA() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr" *ngIf="SumTvaV()"><td class="gauche">TVA 20 %</td><td>{{SumTvaV() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr" *ngIf="SumTvaD()"><td class="gauche">TVA 10 %</td><td>{{SumTvaD() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr" *ngIf="SumTvaC()"><td class="gauche">TVA 5.5 %</td><td>{{SumTvaC() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr" *ngIf="SumTvaDX()"><td class="gauche">TVA 2.1 %</td><td>{{SumTvaDX() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr" *ngIf="SumTvaZ()"><td class="gauche">TVA 0 %</td><td>{{SumTvaZ() | number:'1.0-2'}}</td></tr>
 
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr grass"><td style="text-align: left;padding-left: 10px;">Total TVA :</td><td>{{countTVA() | number:'1.0-2'}}</td></tr>
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr grass"><td class="gauche" style="text-align: left;">Sous Total :</td><td>{{countSTotal() | number:'1.0-2'}}</td></tr>

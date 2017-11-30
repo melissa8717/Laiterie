@@ -3,12 +3,18 @@
  */
 var Q = require('q');
 var mysql = require('mysql');
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'wbat2017-secret-hashing-password';
+
 var db = require('../db.js').get();
 
 var service = {};
 
 service.addagence = addagence;
 service.getAllAgence = getAllAgence;
+service.getAllFili = getAllFili;
+
 service.updateAgence = updateAgence;
 
 service.getAllTVA = getAllTVA;
@@ -36,14 +42,32 @@ service.getByIdDroit = getByIdDroit;
 service.deleteuser = deleteuser;
 service.updateuser = updateuser;
 
+service.updateTest = updateTest;
+service.getCompte = getCompte;
+service.getComlic = getComlic;
+
 service.addFormation = addFormation;
 service.getAllFormation = getAllFormation;
 
 service.getAlarmecaces = getAlarmecaces;
 service.getAlarmeformation = getAlarmeformation;
 
-
 module.exports = service;
+
+/*---------------------------------------crypto------------------------------------------------*/
+function encrypt(text) {
+    var cipher = crypto.createCipher(algorithm, password);
+    var crypted = cipher.update(text, 'utf8', 'hex');
+    crypted += cipher.final('hex');
+    return crypted;
+}
+
+function decrypt(text) {
+    var decipher = crypto.createDecipher(algorithm, password);
+    var dec = decipher.update(text, 'hex', 'utf8');
+    dec += decipher.final('utf8');
+    return dec;
+}
 
 /*---------------------------------------agence------------------------------------------------*/
 function addagence(agenceParam) {
@@ -65,14 +89,13 @@ function addagence(agenceParam) {
         agenceParam.user,
         agenceParam.autre
 
-
     ];
 
-    var query = "INSERT INTO agence (responsable_a,adresse_a,dep_a,pays_a,tel_a,fax_a,mail_a,site_a,siret_a,nom_a,meteo,user,autre) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    var query = 'INSERT INTO agence (responsable_a,adresse_a,dep_a,pays_a,tel_a,fax_a,mail_a,site_a,siret_a,nom_a,meteo,user,autre) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log("error in agence service :" + error.name + ': ' + error.message);
+            console.log('error in agence service :' + error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -95,6 +118,7 @@ function getAllAgence() {
     });
     return deferred.promise;
 }
+
 
 function updateAgence(ag_param) {
     var deferred = Q.defer();
@@ -121,12 +145,11 @@ function updateAgence(ag_param) {
         ag_param.pied_page6,
         ag_param.id_agence
 
-
     ];
 
-    var query = "UPDATE agence SET nom_a = ?, responsable_a= ?, adresse_a = ?, dep_a=?, ville_a=?, pays_a = ?, tel_a = ?, fax_a = ?, " +
-        " mail_a =? ,site_a = ?, siret_a = ?,villefact = ?, pied_page1 = ?, pied_page2 = ?, pied_page3 = ?, pied_page4 = ?, pied_page5 = ?, pied_page6 = ? " +
-        "where id_agence =?";
+    var query = 'UPDATE agence SET nom_a = ?, responsable_a= ?, adresse_a = ?, dep_a=?, ville_a=?, pays_a = ?, tel_a = ?, fax_a = ?, ' +
+        ' mail_a =? ,site_a = ?, siret_a = ?,villefact = ?, pied_page1 = ?, pied_page2 = ?, pied_page3 = ?, pied_page4 = ?, pied_page5 = ?, pied_page6 = ? ' +
+        'where id_agence =?';
     console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -140,6 +163,19 @@ function updateAgence(ag_param) {
     return deferred.promise;
 }
 
+
+
+function getAllFili() {
+    var deferred = Q.defer();
+    db.query('SELECT  * FROM agence  ', function (error, params, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        //console.log(params);
+        deferred.resolve(params);
+    });
+    return deferred.promise;
+}
 /*----------------------------------------------------- TVA ----------------------------------------------------*/
 function getAllTVA() {
     var deferred = Q.defer();
@@ -161,10 +197,9 @@ function updateTva(ag_param) {
         ag_param.taux,
         ag_param.id_tva
 
-
     ];
 
-    var query = "UPDATE tva SET taux = ? where id_tva =?";
+    var query = 'UPDATE tva SET taux = ? where id_tva =?';
     console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -199,10 +234,9 @@ function updateCat(ag_param) {
         ag_param.libelle,
         ag_param.id_cat
 
-
     ];
 
-    var query = "UPDATE produit_categorie SET libelle = ? where id_cat = ?";
+    var query = 'UPDATE produit_categorie SET libelle = ? where id_cat = ?';
     //console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -225,11 +259,11 @@ function addCat(agenceParam) {
 
     ];
 
-    var query = "INSERT INTO produit_categorie (libelle) VALUES (?)";
+    var query = 'INSERT INTO produit_categorie (libelle) VALUES (?)';
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log("error in agence service :" + error.name + ': ' + error.message);
+            console.log('error in agence service :' + error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -253,7 +287,6 @@ function getAllUnite() {
     return deferred.promise;
 }
 
-
 function updateUnite(ag_param) {
     var deferred = Q.defer();
     //console.log(ag_param);
@@ -262,10 +295,9 @@ function updateUnite(ag_param) {
         ag_param.libelle,
         ag_param.id_unite
 
-
     ];
 
-    var query = "UPDATE cat_unite SET libelle = ? where id_unite = ?";
+    var query = 'UPDATE cat_unite SET libelle = ? where id_unite = ?';
     //console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -288,11 +320,11 @@ function addUnite(agenceParam) {
 
     ];
 
-    var query = "INSERT INTO cat_unite (libelle) VALUES (?)";
+    var query = 'INSERT INTO cat_unite (libelle) VALUES (?)';
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log("error in agence service :" + error.name + ': ' + error.message);
+            console.log('error in agence service :' + error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -325,10 +357,9 @@ function updateVente(ag_param) {
         ag_param.texte,
         ag_param.id
 
-
     ];
 
-    var query = "UPDATE cgv SET texte = ? where id = ?";
+    var query = 'UPDATE cgv SET texte = ? where id = ?';
     //console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -357,11 +388,11 @@ function addfraisprev(agenceParam) {
 
     ];
 
-    var query = "INSERT INTO fraispourcentage (taux,datepour_debut,datepour_fin,autrespour,user) VALUES (?,?,?,?,?)";
+    var query = 'INSERT INTO fraispourcentage (taux,datepour_debut,datepour_fin,autrespour,user) VALUES (?,?,?,?,?)';
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log("error in agence service :" + error.name + ': ' + error.message);
+            console.log('error in agence service :' + error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -385,22 +416,20 @@ function getAllFrais() {
     return deferred.promise;
 }
 
-
 function addLicence(licenceParam) {
     var params;
     var deferred = Q.defer();
     //console.log(agenceParam);
     params = [
-        licenceParam.num_licence,
-
+        licenceParam.num_licence
 
     ];
 
-    var query = "INSERT INTO licence (num_licence) VALUES (?)";
+    var query = 'INSERT INTO licence (num_licence) VALUES (?)';
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log("error in licence service :" + error.name + ': ' + error.message);
+            console.log('error in licence service :' + error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -429,7 +458,7 @@ function getByIduser(_id) {
     //console.log('test fact')
     // console.log(error.name + ': ' + error.message);
     var deferred = Q.defer();
-    var sql = "SELECT * FROM users WHERE id  = ?";
+    var sql = 'SELECT * FROM users WHERE id  = ?';
     var inserts = [_id];
 
     sql = mysql.format(sql, inserts);//console.log(sql);
@@ -450,7 +479,7 @@ function getByIdDroit(idUser) {
     var deferred = Q.defer();
     db.query('SELECT * from usersdroits where id = ? ', [idUser], function (error, msg, fields) {
         if (error) {
-            console.log(error.name + ': ' + error.message)
+            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
         //console.log(conversation);
@@ -460,10 +489,10 @@ function getByIdDroit(idUser) {
 }
 
 function deleteuser(_id) {
-    console.log("DELETE FROM users WHERE id = ? ", [_id]);
-    console.log("DELETE FROM usersdroits WHERE id = ? ", [_id]);
+    console.log('DELETE FROM users WHERE id = ? ', [_id]);
+    console.log('DELETE FROM usersdroits WHERE id = ? ', [_id]);
     var deferred = Q.defer();
-    db.query("DELETE FROM users WHERE id = ? ", [_id], function (error, results, fields) {
+    db.query('DELETE FROM users WHERE id = ? ', [_id], function (error, results, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
@@ -472,8 +501,7 @@ function deleteuser(_id) {
         deferred.resolve();
     });
 
-
-    db.query("DELETE FROM usersdroits WHERE id = ? ", [_id], function (error, results, fields) {
+    db.query('DELETE FROM usersdroits WHERE id = ? ', [_id], function (error, results, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
@@ -481,7 +509,6 @@ function deleteuser(_id) {
         }
         deferred.resolve();
     });
-
 
     return deferred.promise;
 }
@@ -497,10 +524,9 @@ function updateuser(user_param) {
         user_param.statut,
         user_param.id
 
-
     ];
 
-    var query = "UPDATE users SET lastname = ? ,firstname = ? , username= ? ,statut = ? where id =?";
+    var query = 'UPDATE users SET lastname = ? ,firstname = ? , username= ? ,statut = ? where id =?';
     console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -514,6 +540,92 @@ function updateuser(user_param) {
     return deferred.promise;
 }
 
+/*****************************************************************test*******************************************************/
+
+
+function updateTest(ag_param) {
+    var deferred = Q.defer();
+
+    var date = new Date();
+    date.setYear(date.getFullYear() + 5);
+
+    var params = [
+        encrypt(date.toISOString()),
+        ag_param.numtest
+    ];
+
+    var query = 'UPDATE  testing SET datedeb = NOW( ), datefin = ?, validate=1 WHERE numtest = ? and validate IS NOT TRUE';
+    db.query(query, params, function (error, results, fields) {
+        if (error) {
+            console.log(error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
+        }
+        deferred.resolve();
+    });
+
+    var query2 = 'INSERT INTO accept_right (date_accept,validate) VALUES (NOW(),1)';
+    db.query(query2, function (error, results, fields) {
+        if (error) {
+            console.log('error in licence service :' + error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        deferred.resolve(results);
+    });
+
+    return deferred.promise;
+}
+
+function getCompte() {
+    var deferred = Q.defer();
+
+    db.query('SELECT * FROM testing', function (error, licences) {
+        if (error) {
+            deferred.reject(error.message);
+        }
+
+        var nbUsersMax = 0;
+
+        // Filter only validate licences
+        var licencesFiltered = licences.filter(function (e, i) {
+            return licences[i].datefin;
+        });
+
+        // Decrypt the date
+        for (var i = 0; i < licencesFiltered.length; i++) {
+            var datefin = new Date(decrypt(licencesFiltered[i].datefin)).getTime();
+            var date_now = new Date().getTime();
+            if (datefin > date_now) {
+                nbUsersMax += licencesFiltered[i].id_test;
+            }
+        }
+        deferred.resolve(nbUsersMax);
+    });
+
+    return deferred.promise;
+}
+
+function getComlic() {
+    var deferred = Q.defer();
+
+    db.query('SELECT * FROM testing', function (error, licences) {
+        if (error) {
+            deferred.reject(error.message);
+        }
+
+        // Filter only validate licences
+        var licencesFiltered = licences.filter(function (e, i) {
+            return licences[i].datefin;
+        });
+
+        // Decrypt the date
+        for (var i = 0; i < licencesFiltered.length; i++) {
+            licencesFiltered[i].datefin = decrypt(licencesFiltered[i].datefin);
+        }
+        deferred.resolve(licencesFiltered);
+    });
+
+    return deferred.promise;
+}
 
 /********************************************FORMATION ************************************************************************************/
 
@@ -526,11 +638,11 @@ function addFormation(agenceParam) {
 
     ];
 
-    var query = "INSERT INTO formation (name) VALUES (?)";
+    var query = 'INSERT INTO formation (name) VALUES (?)';
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log("error in agence service :" + error.name + ': ' + error.message);
+            console.log('error in agence service :' + error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -541,7 +653,6 @@ function addFormation(agenceParam) {
 
     return deferred.promise;
 }
-
 
 function getAllFormation() {
     var deferred = Q.defer();
@@ -554,7 +665,6 @@ function getAllFormation() {
     });
     return deferred.promise;
 }
-
 
 /*************************************************************HOME*****************************************************************************/
 

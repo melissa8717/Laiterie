@@ -105,56 +105,80 @@
 				</div>
 				<div class="form-group">
 					<label  class=" control-label col-sm-3">Tel fixe :</label>
-					<div class="col-sm-3">
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="numeroFixe" [(ngModel)]="telephoneFixe.numero">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class=" control-label col-sm-3">Mobile :</label>
-					<div class="col-sm-3">
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="numeroMobile" [(ngModel)]="telephoneMobile.numero" >
 					</div>
 				</div>
 				<div class="form-group">
 					<label class=" control-label col-sm-3">Fax :</label>
-					<div class="col-sm-3">
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="numeroFax" [(ngModel)]="telephoneFax.numero" >
 					</div>
 				</div>
 				<div class="form-group">
 					<label  class=" control-label col-sm-3">Tel pro :</label>
-					<div class="col-sm-3">
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="numeroPro" [(ngModel)]="telephonePro.numero" >
 					</div>
 				</div>
 				<div class="form-group">
-					<label class=" control-label col-sm-2">Mail :</label>
-					<div class="col-sm-4">
+					<label class=" control-label col-sm-3">Mail :</label>
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="mail" [(ngModel)]="mail.mail" >
 					</div>
 				</div>
 				<div class="form-group">
 					<label  class=" control-label col-sm-3">Mail pro :</label>
-					<div class="col-sm-3">
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="mailPro" [(ngModel)]="mailPro.mail" >
 					</div>
 				</div>
 				<div class="form-group">
 					<label  class=" control-label col-sm-3">Fonction :</label>
-					<div class="col-sm-3">
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="fonction" [(ngModel)]="contact.fonction" >
 					</div>
 				</div>
 				<div class="form-group">
 					<label  class=" control-label col-sm-3">TVA intracommunautaire :</label>
-					<div class="col-sm-3">
+					<div class="col-sm-9">
 						<input type="text" class="form-control" name="TVAintra" [(ngModel)]="contact.TVAintra" >
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 " >Date d'entrée :</label>
-					<div class="col-sm-3">
+					<label class=" control-label col-sm-4" >Date d'entrée :</label>
+					<div class="col-sm-5">
 						<input type="date" name="date_entree"  [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'" class="form-control"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Siret :</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" name="siret" [(ngModel)]="contact.siret" >
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label  class=" control-label col-sm-3">Type :</label>
+					<div class="col-sm-3">
+						<select name="energie"   [(ngModel)]="contact.type" class="input-sm col-sm-12" >
+							<option [selected]="contact.type =='Employé'">Employé</option>
+							<option [selected]="contact.type =='Fournisseur'">Fournisseur</option>
+							<option [selected]="contact.type =='Client'">Client</option>
+							<option [selected]="contact.type =='Entreprise de travaux'">Entreprise de travaux</option>
+							<option [selected]="contact.type =='Laboratoire d analyse'">Laboratoire d analyse</option>
+							<option [selected]="contact.type =='Transporteur'">Transporteur</option>
+							<option [selected]="contact.type =='Site de traitement'">Site de traitement</option>
+							<option [selected]="contact.type =='Ouvrier'">Ouvrier</option>
+							<option [selected]="contact.type =='Sous-traitant'">Sous_traitant</option>
+						</select>
 					</div>
 				</div>
 
@@ -237,7 +261,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>N° Chantier</th><th>Nom chantier</th><th>Action</th>
+							<th>N° Chantier</th><th>Nom chantier</th><th *ngIf="!print" >Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -247,7 +271,7 @@
 							<div class="input-group">
 								<input type="hidden" class="form-control" name="identifiant du devis">
 								<!--variable pour l'identifiant-->
-								<div  class="input-group-btn">
+								<div  *ngIf="!print"  class="input-group-btn">
 									<button type="button" class="btn btn-default dropdown-toggle input-sm"
 											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
 										<span class="caret"></span></button>

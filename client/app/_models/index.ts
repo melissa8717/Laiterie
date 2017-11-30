@@ -5,7 +5,6 @@ export * from './photo';
 export * from './contacts/contact';
 export * from './contacts/telephone';
 export * from './contacts/mail';
-export * from './contacts/caces';
 export * from './contacts/qualification';
 export * from './contacts/contrat';
 export * from './products/produit';

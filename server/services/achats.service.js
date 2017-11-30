@@ -43,6 +43,8 @@ service.getAllUnite = getAllUnite;
 service.getAllFournisseur = getAllFournisseur;
 service.getAllProdComp = getAllProdComp;
 
+service.getAllImg = getAllImg;
+
 module.exports = service;
 
 
@@ -277,7 +279,7 @@ function _delete(_id) {
     return deferred.promise;
 }
 
-function update(id_product, productParam) {
+function update(id_produit, productParam) {
     var deferred = Q.defer();
 
     var params = [
@@ -312,13 +314,14 @@ function update(id_product, productParam) {
             productParam.description,
             productParam.note,
             productParam.stockmini,
-            productParam.stockmaxi
+            productParam.stockmaxi,
+            productParam.image_url
         ];
 
         //console.log(productParam);
 
         var query = "INSERT INTO produit (id_produit, num_version, libelle, id_contact, reference, id_cat, tarif_du, id_user, unite, prix_achat, id_tva, " +
-            "description, note, stockmini, stockmaxi, type) VALUES (? , ? , ? , ?,  ? , ?, NOW() ,?, ? , ? , ? , ?, ?, ?, ?, 0 )";
+            "description, note, stockmini, stockmaxi, type,image_url) VALUES (? , ? , ? , ?,  ? , ?, NOW() ,?, ? , ? , ? , ?, ?, ?, ?, 0 ,?)";
 
         db.query(query, params, function (error, results, fields) {
             if (error) {
@@ -472,7 +475,7 @@ function addMat(matParam) {
         matParam.dgarant
     ];
 
-    var query = "INSERT INTO vehiculemateriel (libelle,marque,vehimate,energie,type,annee,datectrltech,immatriculation,genre,date1ctrl,carrosserie,puissance,pl_ass,nserie,poidstc,poidsvide,bruit,regmot,remarque,dateachat,datevente,visite_ampliroll,visite_grue,pneu_av,pneu_ar,gps,code_poste,largeur,surface,gr,ncartegr,date_depreciation,ntelepeage,geolocalisation,poidstr,fgarant,dgarant) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    var query = "INSERT INTO Vehiculemateriel (libelle,marque,vehimate,energie,type,annee,datectrltech,immatriculation,genre,date1ctrl,carrosserie,puissance,pl_ass,nserie,poidstc,poidsvide,bruit,regmot,remarque,dateachat,datevente,visite_ampliroll,visite_grue,pneu_av,pneu_ar,gps,code_poste,largeur,surface,gr,ncartegr,date_depreciation,ntelepeage,geolocalisation,poidstr,fgarant,dgarant) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -491,7 +494,7 @@ function addMat(matParam) {
 function getAllVehimat() {
     var deferred = Q.defer();
     db.query('SELECT  `id_vehmat`,`libelle`,`marque`,`immatriculation`,`nserie`,`type`,`vehimate`,`annee`\
-    FROM vehiculemateriel \ ORDER BY libelle \ ASC ', function (error, produits, fields) {
+    FROM Vehiculemateriel \ ORDER BY libelle \ ASC ', function (error, produits, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
@@ -503,7 +506,7 @@ function getAllVehimat() {
 
 function getByIdvehmat(_id_vehmat) {
     var deferred = Q.defer();
-    var sql = "SELECT * FROM vehiculemateriel WHERE id_vehmat = ?";
+    var sql = "SELECT * FROM Vehiculemateriel WHERE id_vehmat = ?";
     var inserts = [_id_vehmat];
     sql = mysql.format(sql, inserts);
     console.log(sql);
@@ -561,10 +564,11 @@ function updatevehmat(id_vehmat, matParam) {
         matParam.poidstr,
         matParam.fgarant,
         matParam.dgarant,
+        matParam.image_vh,
         id_vehmat
     ];
 
-    var query = "UPDATE vehiculemateriel SET libelle=?,marque=?,vehimate=?,energie=?,type=?,annee=?,datectrltech=?,immatriculation=?,genre=?,date1ctrl=?,carrosserie=?,puissance=?,pl_ass=?,nserie=?,poidstc=?,poidsvide=?,bruit=?,regmot=?,remarque=?,dateachat=?,datevente=?,visite_ampliroll=?,visite_grue=?,pneu_av=?,pneu_ar=?,gps=?,code_poste=?,largeur=?,surface=?,gr=?,ncartegr=?,date_depreciation=?,ntelepeage=?,geolocalisation=?,poidstr=?,fgarant=?,dgarant=? WHERE id_vehmat = ?";
+    var query = "UPDATE Vehiculemateriel SET libelle=?,marque=?,vehimate=?,energie=?,type=?,annee=?,datectrltech=?,immatriculation=?,genre=?,date1ctrl=?,carrosserie=?,puissance=?,pl_ass=?,nserie=?,poidstc=?,poidsvide=?,bruit=?,regmot=?,remarque=?,dateachat=?,datevente=?,visite_ampliroll=?,visite_grue=?,pneu_av=?,pneu_ar=?,gps=?,code_poste=?,largeur=?,surface=?,gr=?,ncartegr=?,date_depreciation=?,ntelepeage=?,geolocalisation=?,poidstr=?,fgarant=?,dgarant=?,image_vh=? WHERE id_vehmat = ?";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -579,7 +583,7 @@ function updatevehmat(id_vehmat, matParam) {
 function getByIdmat(_id_vehmat) {
     //console.log('test');
     var deferred = Q.defer();
-    var sql = "SELECT * FROM vehiculemateriel WHERE id_vehmat = ?";
+    var sql = "SELECT * FROM Vehiculemateriel WHERE id_vehmat = ?";
     var inserts = [_id_vehmat];
 
     sql = mysql.format(sql, inserts);
@@ -596,9 +600,9 @@ function getByIdmat(_id_vehmat) {
 }
 
 function deletemat(_id_vehmat) {
-    console.log("DELETE FROM vehiculemateriel WHERE id_vehmat = ? ", [_id_vehmat]);
+    console.log("DELETE FROM Vehiculemateriel WHERE id_vehmat = ? ", [_id_vehmat]);
     var deferred = Q.defer();
-    db.query("DELETE FROM vehiculemateriel WHERE id_vehmat = ? ", [_id_vehmat], function (error, results, fields) {
+    db.query("DELETE FROM Vehiculemateriel WHERE id_vehmat = ? ", [_id_vehmat], function (error, results, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
@@ -702,5 +706,21 @@ function deleteEntre(_id_entretien) {
         deferred.resolve();
     });
 
+    return deferred.promise;
+}
+
+
+function getAllImg() {
+    var deferred = Q.defer();
+    db.query('SELECT * from produit',
+        function (error, produit, fields) {
+
+            if (error) {
+                console.log(error.name + ': ' + error.message)
+                deferred.reject(error.name + ': ' + error.message);
+            }
+
+            deferred.resolve(produit);
+        });
     return deferred.promise;
 }

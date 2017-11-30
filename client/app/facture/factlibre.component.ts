@@ -4,16 +4,17 @@
 /**
  * Created by cédric on 17/07/2017.
  */
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../_services/index';
-import {FactureService} from "../_services/facture.service";
-import {ParamsService} from "../_services/params.service"; //
-import {User} from "../_models/user";
+import {AlertService, AuthenticationService} from '../_services/index';
+import {FactureService} from '../_services/facture.service';
+import {ParamsService} from '../_services/params.service'; //
+import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
 
-const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class FactlibreComponent {
     summe: any = {};
     files: any[] = [];
     fileReader = new FileReader();
-    base64Files:any;
+    base64Files: any;
     loc = location.hostname;
     image: any[];
     id_agence: number;
@@ -58,14 +59,15 @@ export class FactlibreComponent {
                 private authenticationService: AuthenticationService,
                 private alertService: AlertService,
                 private factureService: FactureService,
-                private paramsService: ParamsService) {
+                private paramsService: ParamsService,
+                private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
         let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
+        body.className = '';
+        body.className += 'flatclair';
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         this.loadAllFooter();
@@ -108,7 +110,7 @@ export class FactlibreComponent {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibreModif(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibreModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
                 }
@@ -120,7 +122,7 @@ export class FactlibreComponent {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibrebase(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
                 }
@@ -133,7 +135,7 @@ export class FactlibreComponent {
 
             this.id_facture = params['id_facture'];
             this.n_situation = params['n_situation'];
-            this.factureService.getByIdLibredetail(this.id_facture,this.n_situation).subscribe(
+            this.factureService.getByIdLibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detail = data;
                 }
@@ -141,7 +143,7 @@ export class FactlibreComponent {
         });
     }
 
-    loadSum(){
+    loadSum() {
         this.route.params.subscribe(params => {
 
             this.id_facture = params['id_facture'];
@@ -155,342 +157,323 @@ export class FactlibreComponent {
 
     totaligne(bases: any) {
         if (bases.pourcent)
-            return bases.qte_fact  * bases.prix_fact * (bases.pourcent/100);
+            return bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         else return 0;
     }
 
     totaligndet(details: any) {
         if (details.pourcent)
-            return details.qteprod  * details.prix_prod * (details.pourcentf/100);
+            return details.qteprod * details.prix_prod * (details.pourcentf / 100);
         else return 0;
     }
 
-    totalbase(){
+    totalbase() {
         let total = 0;
 
         for (let bases of this.base) {
-            total += bases.qte_fact  * bases.prix_fact ;
+            total += bases.qte_fact * bases.prix_fact;
         }
         return total;
     }
 
-    totaldetail(){
+    totaldetail() {
         let total = 0;
 
         for (let details of this.detail) {
-            total += details.qteprod  * details.prix_prod ;
+            total += details.qteprod * details.prix_prod;
         }
         return total;
     }
 
 
-    counttotalbase(){
+    counttotalbase() {
         let total = 0;
 
         for (let bases of this.base) {
-            total += bases.qte_fact  * bases.prix_fact * (bases.pourcent/100);
+            total += bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         }
         return total;
     }
 
-    counttotaldetail(){
+    counttotaldetail() {
         let total = 0;
 
         for (let details of this.detail) {
-            total += details.qteprod  * details.prix_prod * (details.pourcentf/100);
+            total += details.qteprod * details.prix_prod * (details.pourcentf / 100);
         }
         return total;
     }
 
-    totalfacture(){
-        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) * (1-(this.model.remise ? (this.model.remise /100 ):1) );
+    totalfacture() {
+        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) * (1 - (this.model.remise ? (this.model.remise / 100 ) : 1) );
     }
 
     countTotals() {
-        return (this.counttotalbase() + this.counttotaldetail()) * (1-(this.model.remise ? (this.model.remise/100) : 1));
+        return (this.counttotalbase() + this.counttotaldetail()) * (1 - (this.model.remise ? (this.model.remise / 100) : 1));
     }
 
     countRemise() {
-        return this. countTotals() * ((this.model.remise ? (this.model.remise / 100) : 1) );
+        return this.countTotals() * ((this.model.remise ? (this.model.remise / 100) : 1) );
     }
 
-    countTotalNet(){
+    countTotalNet() {
         return this.countTotals();
     }
 
-    CountTotalsituation(){
-         this.model.situation = this.countTotalNet() - (this.summe.somme);
-         return this.model.situation;
+    CountTotalsituation() {
+        this.model.situation = this.countTotalNet() - (this.summe.somme);
+        return this.model.situation;
     }
 
     /**********************************TVA**************************************************************************************/
 
-    TVAVO()
-    {
+    TVAVO() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 20){
-                total += ( details.prix_prod * details.qteprod *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (details.pourcentf/100)* (details.tva /100) ;
+            if (details.tva == 20) {
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
 
             }
         }
         return total;
     }
 
-    TVAV()
-    {
+    TVAV() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 20){
-                total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
+            if (bases.tva == 20) {
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
 
         }
         return total;
     }
 
-    TVATVt()
-    {
+    TVATVt() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 20){
-                total += bases.totaltva *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ;
+            if (bases.tva == 20) {
+                total += bases.totaltva * (this.model.remise ? (1 - (this.model.remise / 100)) : 1);
             }
 
         }
         return total;
     }
 
-    TVATVOt()
-    {
+    TVATVOt() {
         let total = 0;
         for (let details of this.detail) {
 
-            if (details.tva == 20){
-                total += details.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
+            if (details.tva == 20) {
+                total += details.totaltva * (this.model.remise ? (1 - (this.model.remise / 100)) : 1);
             }
         }
         return total;
     }
 
-    SumTvaV(){
-        return this.TVAV()  + this.TVAVO()  - this.TVATVOt() -this.TVATVt() ;
+    SumTvaV() {
+        return this.TVAV() + this.TVAVO() - this.TVATVOt() - this.TVATVt();
     }
 
-    TVADO()
-    {
+    TVADO() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 10){
-                total += ( details.prix_prod * details.qteprod *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (details.pourcentf/100)* (details.tva /100) ;
+            if (details.tva == 10) {
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
 
             }
         }
         return total;
     }
 
-    TVAD()
-    {
+    TVAD() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 10){
-                total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
+            if (bases.tva == 10) {
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
 
         }
         return total;
     }
 
-    TVADt()
-    {
+    TVADt() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 10){
-                total += bases.totaltva *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ;
+            if (bases.tva == 10) {
+                total += bases.totaltva * (this.model.remise ? (1 - (this.model.remise / 100)) : 1);
             }
 
         }
         return total;
     }
 
-    TVADOt()
-    {
+    TVADOt() {
         let total = 0;
         for (let details of this.detail) {
 
-            if (details.tva == 10){
-                total += details.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
+            if (details.tva == 10) {
+                total += details.totaltva * (this.model.remise ? (1 - (this.model.remise / 100)) : 1);
             }
         }
         return total;
     }
 
-    SummTvaD(){
+    SummTvaD() {
         return this.TVAD() + this.TVADO() - this.TVADt() - this.TVADOt();
     }
 
-    TVACO()
-    {
+    TVACO() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 5.5){
-                total += ( details.prix_prod * details.qteprod *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (details.pourcentf/100)* (details.tva /100) ;
+            if (details.tva == 5.5) {
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
 
             }
         }
         return total;
     }
 
-    TVAC()
-    {
+    TVAC() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 5.5){
-                total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
+            if (bases.tva == 5.5) {
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
 
         }
         return total;
     }
 
-    TVACt()
-    {
+    TVACt() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 5.5){
-                total += bases.totaltva *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ;
+            if (bases.tva == 5.5) {
+                total += bases.totaltva * (this.model.remise ? (1 - (this.model.remise / 100)) : 1);
             }
 
         }
         return total;
     }
 
-    TVACOt()
-    {
+    TVACOt() {
         let total = 0;
         for (let details of this.detail) {
 
-            if (details.tva == 5.5){
-                total += details.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
+            if (details.tva == 5.5) {
+                total += details.totaltva * (this.model.remise ? (1 - (this.model.remise / 100)) : 1);
             }
         }
         return total;
     }
 
 
-
-    SummTvaC(){
+    SummTvaC() {
         return this.TVAC() + this.TVACO() - this.TVACt() - this.TVACOt();
     }
 
-    TVADUO()
-    {
+    TVADUO() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 2.1){
-                total += ( details.prix_prod * details.qteprod *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (details.pourcentf/100)* (details.tva /100) ;
+            if (details.tva == 2.1) {
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
             }
         }
         return total;
     }
 
-    TVADU()
-    {
+    TVADU() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 2.1){
-                total += (bases.prix_fact * bases.qte_fact *  (this.model.remise ? (1-(this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1)* (bases.tva /100);
+            if (bases.tva == 2.1) {
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
         }
         return total;
     }
 
-    TvaDUOt()
-    {
+    TvaDUOt() {
         let total = 0;
 
         for (let details of this.detail) {
 
-            if (details.tva == 2.1){
-                total += details.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
+            if (details.tva == 2.1) {
+                total += details.totaltva * (this.model.remise ? (1 - (this.model.remise / 100)) : 1);
             }
         }
         return total;
     }
 
-    TvaDUt()
-    {
+    TvaDUt() {
         let total = 0;
 
         for (let bases of this.base) {
 
-            if (bases.tva == 2.1){
-                total += bases.totaltva * (this.model.remise ? (1-(this.model.remise / 100)) : 1);
+            if (bases.tva == 2.1) {
+                total += bases.totaltva * (this.model.remise ? (1 - (this.model.remise / 100)) : 1);
             }
         }
         return total;
     }
 
-    SummTvaDU(){
-        return this.TVADU() + this.TVADUO()- this.TvaDUt() -  this.TvaDUOt();
+    SummTvaDU() {
+        return this.TVADU() + this.TVADUO() - this.TvaDUt() - this.TvaDUOt();
     }
 
-    TVAZO()
-    {
+    TVAZO() {
         let total = 0;
 
         for (let details of this.detail) {
-            if (details.tva  == 0){
+            if (details.tva == 0) {
                 total += 0;
             }
         }
         return total;
     }
 
-    TVAZ()
-    {
+    TVAZ() {
         let total = 0;
 
         for (let bases of this.base) {
-            if (bases.tva == 0){
-                total +=0;
+            if (bases.tva == 0) {
+                total += 0;
             }
         }
         return total;
     }
 
-    SummTvaZ(){
+    SummTvaZ() {
         return this.TVAZ() + this.TVAZO();
     }
 
-    TotalTva(){
-        return this.SummTvaZ() +this.SummTvaDU() + this.SummTvaC() + this.SummTvaD() + this.SumTvaV();
+    TotalTva() {
+        return this.SummTvaZ() + this.SummTvaDU() + this.SummTvaC() + this.SummTvaD() + this.SumTvaV();
     }
 
-    countTotalttc(){
-        return this.TotalTva() +  this. CountTotalsituation();
+    countTotalttc() {
+        return this.TotalTva() + this.CountTotalsituation();
     }
 
 
@@ -500,21 +483,21 @@ export class FactlibreComponent {
         factureparams.detail = this.detail;
         factureparams.base = this.base;
         factureparams.model = this.model;
-        factureparams.nfact =this.nfact;
+        factureparams.nfact = this.nfact;
 
-        var test = +confirm ("Etes vous sür de vouloir enregitrer votre facture :");
+        var test = +confirm('Etes vous sür de vouloir enregitrer votre facture :');
         //console.log(factureparams);
-        if(test) {
+        if (test) {
             console.log(factureparams);
             this.factureService.createSituationlibre(factureparams, this.id_facture).subscribe(
                 data => {
-                    this.router.navigate(["/listefacture"]);
-                    this.alertService.success("La nouvelle situation de la facture a été créée avec succès.");
+                    this.router.navigate(['/listefacture']);
+                    this.alertService.success('La nouvelle situation de la facture a été créée avec succès.');
                 });
         }
     }
 
-    imprimer(){
+    imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
@@ -553,7 +536,7 @@ export class FactlibreComponent {
             console.log(this.img);
             //console.log(this.currentUser);
 
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.img.id_agence});
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };

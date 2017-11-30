@@ -33,6 +33,10 @@ export class DevisService {
         return this.http.get(this.config.apiUrl + '/devis/ffdevis/' + id_devis + "/" + num_version, this.jwt()).map((response: Response) => response.json());
     }
 
+    getByIdLibreproduitopt(id_devis: number, num_version: number) {
+        return this.http.get(this.config.apiUrl + '/devis/getByIdLibreproduitopt/' + id_devis + "/" + num_version, this.jwt()).map((response: Response) => response.json());
+    }
+
     add(devis: any) {
         console.log(devis);
         return this.http.post(this.config.apiUrl + '/devis/add', devis, this.jwt());
@@ -150,6 +154,7 @@ export class DevisService {
     getLogo() {
         return this.http.get(this.config.apiUrl + '/log/', this.jwt()).map((response: Response) => response.json());
     }
+
 
     // private helper methods
 

@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService, ContactService } from '../_services/index';
-import { Contact, Mail, Telephone, Adresse, CACES, Qualification } from '../_models/index';
+import { Contact, Mail, Telephone, Adresse, Qualification } from '../_models/index';
 import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
 
@@ -21,7 +21,6 @@ export class AddcontactComponent {
     contrats = ["CDI", "CDD", "Intérimaire",
             "Stagiaire", "Contrat de professionnalisation"];
     statuts = ["User", "Superuser", "Admin"];
-    caces : CACES[];
     qualifications : Qualification[];
     qualifChoisi : number;
 
@@ -62,7 +61,6 @@ export class AddcontactComponent {
         }
 
     ngOnInit() {
-        this.getCACES();
         this.getQualifications();
         this.loaddroituser();
 
@@ -84,18 +82,6 @@ export class AddcontactComponent {
             console.log(this.currentUser._id);
 
         });
-    }
-
-    private getCACES(){
-        this.contactService.getCACES()
-            .subscribe(
-                data => {
-                    this.caces = data;
-                },
-                error => {
-                    console.log("Couldn't load the caces infos");
-                    this.alertService.error(error._body);
-                });
     }
 
     private getQualifications(){

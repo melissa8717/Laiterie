@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 //app.use(expressJwt({ secret: config.secret }).unless({ path: ['/users/authenticate', '/users/register'] }));
 
 // routes
-app.use('/', require('./controllers/common.controller'));
 app.use('/users', require('./controllers/users.controller'));
 app.use('/contacts', require('./controllers/contacts.controller'));
 app.use('/products', require('./controllers/achats.controller'));
@@ -75,6 +74,9 @@ app.get('/image/contact/:id_contact/:nom_fichier', function (req, res) {
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
 });
 
+
+
+
 app.post('/image/contact/:id', uploadImg.any(), function (req, res, next) {
     console.log(req.files[0].filename);
     db.query ("UPDATE contact SET image_url = ? WHERE id_contact = ?", [req.files[0].filename, req.params.id]);
@@ -82,13 +84,18 @@ app.post('/image/contact/:id', uploadImg.any(), function (req, res, next) {
 });
 
 // IMAGES FICHE PRODUITS ACHAT / AJOUT PRODUIT ACHAT
-app.get('/image/produit/:id_produit/:nom_fichier', function (req, res) {
+app.get('/image/img/:id/:nom_fichier', function (req, res) {
+    console.log("get img"+req.params.nom_fichier,req.params.id_produit);
+
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
+
 });
 
-app.post('/image/produit/:id', uploadImg.any(), function (req, res, next) {
-    console.log(req.files[0].filename);
-    db.query ("UPDATE produit SET image = ? WHERE id_produit = ?", [req.files[0].filename, req.params.id]);
+app.post('/image/img/:id', uploadImg.any(), function (req, res, next) {
+
+    db.query ("UPDATE produit SET image_url = ? WHERE id_produit = ?", [req.files[0].filename, req.params.id]);
+    console.log("post img"+req.files[0].filename, req.params.id_produit);
+
     res.end('image uploaded');
 });
 
@@ -104,13 +111,15 @@ app.post('/image/produitv/:id', uploadImg.any(), function (req, res, next) {
 });
 
 // IMAGES FICHE VEHIMAT / AJOUT VEHIMAT
-app.get('/image/matvehi/:id_prc/:nom_fichier', function (req, res) {
+app.get('/image/matvehi/:id_vehmat/:nom_fichier', function (req, res) {
+   console.log("get"+req.params.nom_fichier);
+
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
 });
 
 app.post('/image/matvehi/:id', uploadImg.any(), function (req, res, next) {
-    //console.log(req.files[0].filename);
-    db.query ("UPDATE vehiculemateriel SET image = ? WHERE id_vehmat = ?", [req.files[0].filename, req.params.id]);
+    console.log(req.files[0].filename);
+    db.query ("UPDATE Vehiculemateriel SET image_vh = ? WHERE id_vehmat = ?", [req.files[0].filename, req.params.id]);
     res.end('image uploaded');
 });
 
@@ -126,6 +135,21 @@ app.post('/image/agence/:id', uploadImg.any(), function (req, res, next) {
     res.end('logo uploaded');
 });
 
+// Filigrane
+var storageFili = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, DIRimg)
+    },
+    filename: function (req, file, cb) {
+        crypto.pseudoRandomBytes(16, function (err, raw) {
+            var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
+            cb(null, url);
+        });
+    }
+});
+var uploadFili = multer({storage: storageFili});
+
+app.options('/image');
 /******************GED CONTACT***************************/
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
