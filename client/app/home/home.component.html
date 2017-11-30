@@ -228,8 +228,8 @@
                             <li><a [routerLink]="['/tva']">TVA</a></li>
                             <li><a [routerLink]="['/cat_prod']">Catégorie de produit</a></li>
                             <li><a [routerLink]="['/formation']">Type de formation</a></li>
-                            <li *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/licence']">Licence</a></li>
                             <li *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/utilisation']">Droits utilisateurs</a></li>
+                            <li *ngIf="currentUser.statutName == 'admin'"><a [routerLink]="['/licence']">Licence</a></li>
                             <li><a href="#"></a></li>
 
                         </ul>

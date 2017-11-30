@@ -1,17 +1,7 @@
 <div id="achat">
-    <header >
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-                    <img *ngIf="!print"  src="image/menu/produits_grand_gris.png" alt="produit achat">
-                    <span *ngIf="!print">Produits Achats</span>
-                </div>
-            </div><!--container-fluid-->
-        </div>
+    <my-header *ngIf="!print" [title]='"Produits Achats"' [img]="'image/menu/produits_grand_gris.png'"></my-header>
 
-
-    </header>
 
     <div class=" container-fluid">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">

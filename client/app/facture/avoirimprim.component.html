@@ -1,19 +1,7 @@
 <div id="devis">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
+    <my-header *ngIf="!print" [title]='"Facturation"' [img]="'image/menu/facturation_grand_gris.png'"></my-header>
 
-                    <img *ngIf="!print" src="image/menu/facturation_grand_gris.png">
-
-                    <span *ngIf="!print">Facturation</span>
-
-                </div>
-            </div>
-        </div>
-
-    </header>
 
     <div class=" container "  id="pageContent" style="background-color: white;">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">

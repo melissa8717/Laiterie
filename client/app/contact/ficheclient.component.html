@@ -3,21 +3,9 @@
 	<style type="text/css" media="print">
 		@page { size: landscape; }
 	</style>
-	<header>
 
-		<div class="toobar">
-			<div class="fill">
-				<div class="container-fluid">
+	<my-header *ngIf="!print" [title]='"Contact"' [img]="'image/menu/contacts_grand_gris.png'"></my-header>
 
-					<img *ngIf="!print"  src="image/menu/contacts_grand_gris.png">
-
-					<span *ngIf="!print">Contact</span>
-
-				</div>
-			</div>
-		</div>
-
-	</header>
 
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">

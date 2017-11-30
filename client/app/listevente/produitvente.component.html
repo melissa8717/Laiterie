@@ -5,16 +5,8 @@
             size: landscape;
         }
     </style>
-    <header>
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-                    <img *ngIf="!print" src="image/menu/produits_grand_gris.png" alt="produit vente">
-                    <span *ngIf="!print">Produits Vente</span>
-                </div>
-            </div>
-        </div>
-    </header>
+
+    <my-header *ngIf="!print" [title]='"Produits Vente"' [img]="'image/menu/produits_grand_gris.png'"></my-header>
 
 
     <div class=" container-fluid">

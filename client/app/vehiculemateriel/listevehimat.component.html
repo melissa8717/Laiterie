@@ -1,20 +1,6 @@
 <div id="chantier">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-
-                    <img *ngIf="!print" src="image/menu/chantiers_grand_gris.png" alt="planning">
-
-                    <span *ngIf="!print">Suivi véhicule et matériel</span>
-
-
-                </div>
-            </div>
-        </div>
-
-    </header>
+    <my-header *ngIf="!print" [title]='"Suivi véhicule et matériel"' [img]="'image/menu/chantiers_grand_gris.png'"></my-header>
 
 
     <div  class=" container-fluid ">

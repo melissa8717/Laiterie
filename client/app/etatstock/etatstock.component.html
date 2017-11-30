@@ -1,22 +1,7 @@
 <div id="achat">
-    <header >
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
+    <my-header *ngIf="!print" [title]='"Etat des stocks"' [img]="'image/menu/produits_grand_gris.png'"></my-header>
 
-                    <img  *ngIf="!print" src="image/menu/produits_grand_gris.png" alt="produit achat">
-
-                    <span  *ngIf="!print">Etat des stocks</span>
-
-
-
-                </div>
-            </div><!--container-fluid-->
-        </div>
-
-        <!--etat des stocks correspond au stock de chaque produit à l'instant T. Ceux-ci doivent être triés par fournisseur-->
-    </header>
 
     <div class=" container-fluid">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">

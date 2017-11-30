@@ -1,24 +1,7 @@
 <div id="chantier">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
+    <my-header *ngIf="!print" [title]='"Facturation"' [img]="'image/menu/facturation_grand_gris.png'"></my-header>
 
-
-                    <img src="image/menu/facturation_grand_gris.png" alt="facturation">
-
-                    <span >Balance</span>
-                    <i ><span >Montant marché: </span><span ><!--variable à calculer--></span></i>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-    </header>
 
     <nav style="margin:0; background-color: #3F3F3F; color:#B2B2B2;">
         <div class="container-fluid" >

@@ -1,19 +1,8 @@
 <div id="devis">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
+    <my-header *ngIf="!print" [title]='"Devis"' [img]='"image/menu/gestion_grand_gris.png"'></my-header>
 
-                    <img *ngIf="!print" src="image/menu/gestion_grand_gris.png">
 
-                    <span *ngIf="!print">Devis</span>
-
-                </div>
-            </div>
-        </div>
-
-    </header>
     <div class=" container ">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
             <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>

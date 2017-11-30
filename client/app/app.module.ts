@@ -58,7 +58,7 @@ import {SuivivehiculeComponent} from './vehiculemateriel/suivivehicule.component
 import {SuivimaterielComponent} from './vehiculemateriel/suivimateriel.component';
 import {RechercheVehimatComponent} from './vehiculemateriel/recherchevehimat.component';
 import {RechercheDevisComponent} from './devis/recherchedevis.component';
-import {NewDevisComponent} from './devis/newDevis.commponent';
+import {NewDevisComponent} from './devis/newDevis.component';
 import {AjoutchantierComponent} from './chantiers/ajoutchantier.component';
 import {ListefactureComponent} from './facture/listefacture.component';
 import {Balance_generaleComponent} from './facture/balance_generale.component';
@@ -159,6 +159,7 @@ import {FactlibreComponent} from './facture/factlibre.component';
 import {FactlibreimprimComponent} from './facture/factlibreimprim.component';
 import {AvoirlibreComponent} from './facture/avoirlibre.component';
 import {MenuparamComponent} from './parametre/menuparam.component';
+import {HeaderComponent} from './utils/header.component';
 
 @NgModule({
     imports: [
@@ -309,8 +310,8 @@ import {MenuparamComponent} from './parametre/menuparam.component';
         NewfactlibreComponent,
         FactlibreComponent,
         FactlibreimprimComponent,
-        AvoirlibreComponent
-
+        AvoirlibreComponent,
+        HeaderComponent
     ],
     providers: [
         AppConfig,

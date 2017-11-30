@@ -1,19 +1,6 @@
 <div id="commande">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-
-                    <img *ngIf="!print"  src="image/menu/facturation_grand_gris.png">
-
-                    <span *ngIf="!print" >Facturation</span>
-
-                </div>
-            </div>
-        </div>
-
-    </header>
+    <my-header *ngIf="!print" [title]='"Facturation"' [img]="'image/menu/facturation_grand_gris.png'"></my-header>
 
 
     <div class=" container-fluid ">

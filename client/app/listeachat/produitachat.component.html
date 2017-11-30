@@ -3,18 +3,9 @@
     <style type="text/css" media="print">
         @page { size: landscape; }
     </style>
-    <header>
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-                    <img *ngIf="!print" src="image/menu/produits_grand_gris.png" alt="produit vente">
 
-                    <span *ngIf="!print">Produits Achats</span>
 
-                </div>
-            </div>
-        </div>
-    </header>
+    <my-header *ngIf="!print" [title]='"Produits Achats"' [img]="'image/menu/produits_grand_gris.png'"></my-header>
 
 
     <div class=" container-fluid" style="size:landscape;size: 21.0cm;">

@@ -1,22 +1,7 @@
 <div id="message">
-    <header >
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid" >
+    <my-header [title]='"Messagerie"' [img]="'image/menu/messagerie_grand_gris.png'"></my-header>
 
-                    <img src="image/menu/messagerie_grand_gris.png">
-
-                    <span>Messagerie</span>
-
-
-
-                </div>
-            </div><!--container-fluid-->
-        </div>
-
-
-    </header>
 
     <div class=" container-fluid" *ngIf="message">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">

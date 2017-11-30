@@ -6,25 +6,18 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <div style="background-color: #B2B2B2; min-height: 1000px; ">
-    <header >
-
+    <header>
         <div class="toobar">
             <div class="fill">
                 <div class="container-fluid">
-
                     <img *ngIf="!print" src="image/menu/planning_grand_gris.png">
-
                     <span *ngIf="!print" class="titlespan">Planning</span>
-
-
-
                 </div>
             </div><!--container-fluid-->
         </div>
-
         <button *ngIf="!print && (droitsuser.accespb || droitsuser.accespc)" class ="col-sm-offset-10 col-sm-1 btn" type="button" (click)=" imprimer()">Imprimer</button>
-
     </header>
+
     <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
         <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
 
