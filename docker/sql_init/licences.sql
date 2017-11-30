@@ -1,1 +1,0 @@
-INSERT INTO `testing` (`numtest`, `id_test`) VALUES ('CLE_LICENCE', '1');
