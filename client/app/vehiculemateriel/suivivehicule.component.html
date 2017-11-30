@@ -4,23 +4,8 @@
             size: landscape;
         }
     </style>
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-
-                    <img *ngIf="!print" src="image/menu/chantiers_grand_gris.png" alt="planning">
-
-                    <span *ngIf="!print">Suivis véhicules</span>
-
-
-
-                </div>
-            </div>
-        </div>
-
-    </header>
+    <my-header *ngIf="!print" [title]='"Suivis véhicules"' [img]="'image/menu/chantiers_grand_gris.png'"></my-header>
 
 
     <div class=" container-fluid " style="size:landscape;size: 21.0cm;">

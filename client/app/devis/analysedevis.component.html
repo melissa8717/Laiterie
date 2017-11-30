@@ -1,19 +1,6 @@
 <div id="chantier">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-
-                    <img *ngIf="!print" src="image/menu/gestion_grand_gris.png">
-
-                    <span *ngIf="!print">Analyse Devis</span>
-
-                </div>
-            </div>
-        </div>
-
-    </header>
+    <my-header *ngIf="!print" [title]='"Analyse devis"'></my-header>
 
 
     <div class=" container-fluid ">

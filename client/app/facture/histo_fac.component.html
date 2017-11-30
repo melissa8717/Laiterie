@@ -1,19 +1,8 @@
 <div id="devis" style="border:none;" >
-    <header style="color:#B2B2B2;">
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
+    <my-header *ngIf="!print" [title]='"Historique facture"' [img]="'image/menu/facturation_grand_gris.png'"></my-header>
 
-                    <img *ngIf="!print" src="image/menu/gestion_grand_gris.png">
 
-                    <span *ngIf="!print">Historique facture</span>
-
-                </div>
-            </div>
-        </div>
-
-    </header>
     <body style="margin:0px;font-size: 18px;">
     <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
         <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>

@@ -1,21 +1,7 @@
 <div id="achat">
-    <header>
 
-        <div class="toolbar">
-            <div class="fill">
-                <div class="container-fluid">
+    <my-header *ngIf="!print" [title]='"Frais généraux annuels"' [img]="'image/menu/facturation_grand_gris.png'"></my-header>
 
-
-                    <img src="image/menu/facturation_grand_gris.png" alt="facturation" >
-
-                    <span >Frais généraux annuels</span>
-
-                </div>
-
-            </div>
-        </div>
-
-    </header>
 
     <div class="container-fluid col-sm-12">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">

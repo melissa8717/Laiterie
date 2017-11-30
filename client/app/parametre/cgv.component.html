@@ -1,18 +1,8 @@
 <div id="chantier">
-    <header>
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-                    <img src="image/menu/parametres_grand_orange.png">
-                    <span style="padding-left: 5px;">Condition de vente</span>
-                </div>
-            </div>
-        </div>
-    </header>
 
+    <my-header [title]='"Condition de vente"' [img]="'image/menu/parametres_grand_orange.png'"></my-header>
 
     <menu-param></menu-param>
-
 
     <div class="container-fluid">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">

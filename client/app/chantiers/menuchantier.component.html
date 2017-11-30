@@ -1,13 +1,5 @@
-<header>
-    <div class="toobar">
-        <div class="fill">
-            <div class="container-fluid">
-                <img *ngIf="!print" src="image/menu/chantiers_grand_gris.png">
-                <span *ngIf="!print" style="color: white;"> Chantiers </span>
-            </div>
-        </div>
-    </div>
-</header>
+<my-header *ngIf="!print" [title]='"Chantiers"' [img]="'image/menu/chantiers_grand_gris.png'"></my-header>
+
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">

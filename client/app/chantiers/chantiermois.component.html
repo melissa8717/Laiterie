@@ -1,19 +1,8 @@
 <div id="chantier">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
+    <my-header *ngIf="!print" [title]='"Chantier"' [img]="'image/menu/chantiers_grand_gris.png'"></my-header>
 
-                    <img  *ngIf="!print" src="image/menu/chantiers_grand_gris.png">
 
-                    <span  *ngIf="!print">Chantier</span>
-
-                </div>
-            </div>
-        </div>
-
-    </header>
     <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print"  (click)=" imprimer()">Imprimer le listing</button>
 
     <div class=" container-fluid ">

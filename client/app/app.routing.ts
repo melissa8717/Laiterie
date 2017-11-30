@@ -25,7 +25,7 @@ import {ListechantierComponent} from "./chantiers/listechantier.component";
 import {ListevehimatComponent} from "./vehiculemateriel/listevehimat.component";
 import {SuivivehiculeComponent} from "./vehiculemateriel/suivivehicule.component";
 import {SuivimaterielComponent} from "./vehiculemateriel/suivimateriel.component";
-import {NewDevisComponent} from "./devis/newDevis.commponent";
+import {NewDevisComponent} from "./devis/newDevis.component";
 import {AjoutchantierComponent} from "./chantiers/ajoutchantier.component";
 import {ListefactureComponent} from "./facture/listefacture.component";
 import {Balance_generaleComponent} from "./facture/balance_generale.component";

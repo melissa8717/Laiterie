@@ -1,18 +1,6 @@
 <div id="achat">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-                    <!--CHANGEMENT DU LOGO-->
-                    <img *ngIf="!print" src="image/menu/commandes_grand_gris.png">
-                    <!-- CHANGEMENT DU TITRE-->
-                    <span *ngIf="!print">Bon de commande</span>
-
-                </div>
-            </div>
-        </div>
-    </header>
+    <my-header *ngIf="!print" [title]='"Bon de commande"' [img]="'image/menu/commandes_grand_gris.png'"></my-header>
 
 
     <div class=" container-fluid">

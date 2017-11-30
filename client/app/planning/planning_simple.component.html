@@ -6,22 +6,9 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <div id="planning" style="background-color: #B2B2B2; min-height: 1000px; ">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
+    <my-header [title]='"Planning"' [img]="'image/menu/planning_grand_gris.png'"></my-header>
 
-                    <img *ngIf="!print" src="image/menu/Planning_grand_gris.png" alt="planning">
-
-                    <span *ngIf="!print">Planning</span>
-
-                </div>
-            </div>
-        </div>
-
-
-    </header>
 
     <div *ngIf="!print" class="col-sm-12 " style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
         <span class="col-sm-2 "><button *ngIf="!print && (droitsuser.accespb || droitsuser.accespc)" class ="btn" style="margin-top:7px;" type="button" (click)=" imprimer()">Imprimer</button></span>

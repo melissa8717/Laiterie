@@ -1,20 +1,7 @@
 
 <div id="contact">
-    <header>
 
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-
-                    <img *ngIf="!print" src="image/menu/contacts_grand_gris.png">
-
-                    <span *ngIf="!print">Contacts</span>
-
-                </div>
-            </div>
-        </div>
-
-    </header>
+    <my-header *ngIf="!print" [title]='"Contacts"' [img]="'image/menu/contacts_grand_gris.png'"></my-header>
 
 
         <nav class="navbar navbar-default">

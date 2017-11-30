@@ -1,22 +1,6 @@
 <div id="planning1">
 
-    <header>
-
-        <div class="toobar">
-            <div class="fill">
-                <div class="container-fluid">
-
-                    <img *ngIf="!print"src="image/menu/planning_grand_gris.png" alt="params">
-
-                    <span *ngIf="!print">Ajouter une equipe</span>
-
-
-
-                </div>
-            </div>
-        </div>
-
-    </header>
+    <my-header *ngIf="!print" [title]='"Ajouter une equipe"' [img]="'image/menu/planning_grand_gris.png'"></my-header>
 
 
     <div class=" container-fluid ">
