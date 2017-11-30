@@ -528,13 +528,13 @@ export class ModifierfactureComponent {
         return this.TVAV() + this.TVAVO() + this.TVATVOt() + this.TVATVt() - this.STVAV();
     }
 
-    /*TVADO() {
+    TVADO() {
         let total = 0;
 
-        for (let libres of this.libre) {
+        for (let situas of this.situa) {
 
-            if (libres.taux == 10) {
-                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+            if (situas.tvas == 10) {
+                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.pourcentage / 100) * (situas.tvas / 100);
 
             }
         }
@@ -544,10 +544,10 @@ export class ModifierfactureComponent {
     TVAD() {
         let total = 0;
 
-        for (let details of this.detail) {
+        for (let lsituas of this.libsitua) {
 
-            if (details.taux == 10) {
-                total += (details.prix_devis * details.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (details.pourcentage / 100) * (details.taux / 100);
+            if (lsituas.tvas == 10) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.pourcent / 100) * (lsituas.tva / 100);
             }
 
         }
@@ -559,8 +559,8 @@ export class ModifierfactureComponent {
 
         for (let options of this.option) {
 
-            if (options.taux == 10) {
-                total += (options.prix_devis * options.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.taux / 100);
+            if (options.tvao == 10) {
+                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.tvao / 100);
             }
 
         }
@@ -570,185 +570,31 @@ export class ModifierfactureComponent {
     TVATDOt() {
         let total = 0;
 
-        for (let libreoptions of this.libreoption) {
+        for (let situaop of this.libsituaop) {
 
-            if (libreoptions.taux == 10) {
-                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+            if (situaop.tva == 10) {
+                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.pourcentage / 100) * (situaop.taux / 100);
             }
 
         }
         return total;
     }
+
+    STVAD(){
+        let total = 0;
+
+        for (let tvass of this.tvas) {
+
+            if (tvass.tva == 10) {
+                total += tvass.somme *(1-(this.valeur.remise / 100));
+            }
+
+        }
+        return total;
+    }
+
 
     SumTvaD() {
-        return this.TVAD() + this.TVADO() + this.TVATDOt() + this.TVATDt();
+        return this.TVAD() + this.TVADO() + this.TVATDOt() + this.TVATDt() - this.STVAD();
     }
-
-    TVACO() {
-        let total = 0;
-
-        for (let libres of this.libre) {
-
-            if (libres.taux == 5.5) {
-                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
-
-            }
-        }
-        return total;
-    }
-
-    TVAC() {
-        let total = 0;
-
-        for (let details of this.detail) {
-
-            if (details.taux == 5.5) {
-                total += (details.prix_devis * details.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (details.pourcentage / 100) * (details.taux / 100);
-            }
-
-        }
-        return total;
-    }
-
-    TVATCt() {
-        let total = 0;
-
-        for (let options of this.option) {
-
-            if (options.taux == 5.5) {
-                total += (options.prix_devis * options.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.taux / 100);
-            }
-
-        }
-        return total;
-    }
-
-    TVATCOt() {
-        let total = 0;
-
-        for (let libreoptions of this.libreoption) {
-
-            if (libreoptions.taux == 5.5) {
-                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
-            }
-
-        }
-        return total;
-    }
-
-    SumTvaC() {
-        return this.TVAC() + this.TVACO() + this.TVATCOt() + this.TVATCt();
-    }
-
-    TVADXO() {
-        let total = 0;
-
-        for (let libres of this.libre) {
-
-            if (libres.taux == 2.1) {
-                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
-
-            }
-        }
-        return total;
-    }
-
-    TVADX() {
-        let total = 0;
-
-        for (let details of this.detail) {
-
-            if (details.taux == 2.1) {
-                total += (details.prix_devis * details.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (details.pourcentage / 100) * (details.taux / 100);
-            }
-
-        }
-        return total;
-    }
-
-    TVATDXt() {
-        let total = 0;
-
-        for (let options of this.option) {
-
-            if (options.taux == 2.1) {
-                total += (options.prix_devis * options.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.taux / 100);
-            }
-
-        }
-        return total;
-    }
-
-    TVATDXOt() {
-        let total = 0;
-
-        for (let libreoptions of this.libreoption) {
-
-            if (libreoptions.taux == 2.1) {
-                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
-            }
-
-        }
-        return total;
-    }
-
-    SumTvaDX() {
-        return this.TVADX() + this.TVADXO() + this.TVATDXOt() + this.TVATDXt();
-    }
-
-    TVAZO() {
-        let total = 0;
-
-        for (let libres of this.libre) {
-
-            if (libres.taux == 0) {
-                total +=0;
-
-            }
-        }
-        return total;
-    }
-
-    TVAZ() {
-        let total = 0;
-
-        for (let details of this.detail) {
-
-            if (details.taux == 0) {
-                total += 0;
-            }
-
-        }
-        return total;
-    }
-
-    TVATZt() {
-        let total = 0;
-
-        for (let options of this.option) {
-
-            if (options.taux == 0) {
-                total += 0;
-            }
-
-        }
-        return total;
-    }
-
-    TVATZOt() {
-        let total = 0;
-
-        for (let libreoptions of this.libreoption) {
-
-            if (libreoptions.taux == 0) {
-                total += 0;
-            }
-
-        }
-        return total;
-    }
-
-    SumTvaZ() {
-        return this.TVAZ() + this.TVAZO() - this.TVATZOt() - this.TVATZt();
-    }*/
 }

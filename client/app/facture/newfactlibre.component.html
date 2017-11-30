@@ -218,7 +218,7 @@
                         </td>
 
                         <td>
-                            <span *ngIf="(produit.qte && produit.prix)">{{produit.qte*produit.prix * (produit.pourcent ? produit.pourcent / 100 : 1) | currency:'EUR':true:'1.2-2'}}</span>
+                            <span *ngIf="(produit.qte && produit.prix)">{{produit.qte*produit.prix * (produit.pourcent ? produit.pourcent / 100 : 0) | currency:'EUR':true:'1.2-2'}}</span>
                         </td>
 
 
@@ -307,7 +307,7 @@
                             </div>
                         </td>
                         <td>
-                            <span>{{produitDevis[i].qte * produitDevis[i].prix  * (produit.pourcent ? produit.pourcent / 100 : 1)| currency:'EUR':true:'1.2-2' }}</span>
+                            <span>{{produitDevis[i].qte * produitDevis[i].prix  * (produit.pourcent ? produit.pourcent / 100 : 0)| currency:'EUR':true:'1.2-2' }}</span>
                         </td>
 
 
@@ -389,7 +389,7 @@
                         </td>
 
                         <td>
-                            <span *ngIf="produitf.qtef && produitf.prixf">{{produitf.qtef*produitf.prixf * (produitf.pourcentf ? produitf.pourcentf / 100 : 1) | currency:'EUR':true:'1.2-2'}}</span>
+                            <span *ngIf="produitf.qtef && produitf.prixf">{{produitf.qtef*produitf.prixf * (produitf.pourcentf ? produitf.pourcentf / 100 : 0) | currency:'EUR':true:'1.2-2'}}</span>
                         </td>
                         <td *ngIf="!print && droitsuser.ajoutdev">
                             <button class="btn btn-default input-sm col-sm-offset-1"
@@ -467,7 +467,7 @@
                             </div>
                         </td>
                         <td>
-                            <span>{{produitFact[i].qte_devis * produitFact[i].prix_devis * (produitf.pourcentf ? produitf.pourcentf / 100 : 1)| currency:'EUR':true:'1.2-2' }}</span>
+                            <span>{{produitFact[i].qte_devis * produitFact[i].prix_devis * (produitf.pourcentf ? produitf.pourcentf / 100 : 0)| currency:'EUR':true:'1.2-2' }}</span>
                         </td>
 
                         <td *ngIf="!print">

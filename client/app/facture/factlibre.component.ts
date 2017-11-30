@@ -156,7 +156,7 @@ export class FactlibreComponent {
     }
 
     totaligne(bases: any) {
-        if (bases.pourcent)
+        if (bases.pourcent>0)
             return bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         else return 0;
     }

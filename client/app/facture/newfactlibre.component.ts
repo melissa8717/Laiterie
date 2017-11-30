@@ -265,7 +265,7 @@ export class NewfactlibreComponent {
     countTotal() {
         let total = 0;
         for (let produit of this.produitDevis) {
-            total += produit.prix * produit.qte * (produit.pourcent ? produit.pourcent /100 : 1);
+            total += produit.prix * produit.qte * (produit.pourcent ? produit.pourcent /100 : 0);
         }
         return total;
     }
@@ -380,7 +380,7 @@ export class NewfactlibreComponent {
 
         for (let produitf of this.produitFact) {
 
-            total += produitf.prix_devis * produitf.qte_devis * (produitf.pourcentf ? produitf.pourcentf / 100 : 1);
+            total += produitf.prix_devis * produitf.qte_devis * (produitf.pourcentf ? produitf.pourcentf / 100 : 0);
         }
         return total;
     }
