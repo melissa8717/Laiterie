@@ -487,31 +487,6 @@
                             <td class="total">{{ totalTVAoption() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-                        <tr *ngIf="produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right;">TTC :</td>
-                            <td class="total">{{countTotalOptionsTVA() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
-                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
-                                color: white">Total HT :</td>
-                            <td class="total">{{total() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
-                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise">
-                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
-                                color: white">Total après remise de {{devis.remise}} %:</td>
-                            <td class="total">{{totalremise() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
-
-                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
-                                color: white">Total TVA:</td>
-                            <td class="total">{{totalTVATVA() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
-
                         <tr *ngIf="((countNTVAZO()>0) )">
                             <ng-container >
                                 <td colspan="5"></td>
@@ -568,6 +543,32 @@
 
                             </ng-container>
                         </tr>
+                        <tr *ngIf="produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right;">TTC :</td>
+                            <td class="total">{{countTotalOptionsTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                                color: white">Total HT :</td>
+                            <td class="total">{{total() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise">
+                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                                color: white">Total après remise de {{devis.remise}} %:</td>
+                            <td class="total">{{totalremise() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                                color: white">Total TVA:</td>
+                            <td class="total">{{totalTVATVA() | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+
 
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;

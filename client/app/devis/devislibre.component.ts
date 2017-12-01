@@ -202,7 +202,7 @@ export class DevislibreComponent  implements OnInit{
     }
 
     countTotalTVA() {
-        return this.countTotalRemise() > 0 ? this.countTotalRemise() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100)):this.countTotal() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100));
+        return (this.countTotalRemise() > 0 ? this.countTotalRemise() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100)):this.countTotal() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100)))+ this.countAllTVA();
     }
 
     countTotalOptions() {
@@ -213,7 +213,7 @@ export class DevislibreComponent  implements OnInit{
         return total;
     }
     countTotalOptionsTVA() {
-        return this.countTotalOptionRemise()>0 ? this.countTotalOptionRemise() * (1 +(this.devis.tva ? this.devis.tva : 0) /100) : this.countTotalOptions()* (1 + ((this.devis.tva ? this.devis.tva : 0) / 100));
+        return (this.countTotalOptionRemise()>0 ? this.countTotalOptionRemise() * (1 +(this.devis.tva ? this.devis.tva : 0) /100) : this.countTotalOptions()* (1 + ((this.devis.tva ? this.devis.tva : 0) / 100))) +this. countAllTVAO();
     }
 
     total() {
@@ -229,11 +229,11 @@ export class DevislibreComponent  implements OnInit{
     }
 
     totalTVA() {
-        return this.totalremise()>0 ? (this.totalremise()* (1 + ((this.devis.tva ? this.devis.tva : 0) /100))) : (this.countTotal() + this.countTotalOptions()) *(1 +((this.devis.tva ? this.devis.tva : 0) /100));
+        return (this.totalremise()>0 ? (this.totalremise()* (1 + ((this.devis.tva ? this.devis.tva : 0) /100))) : (this.countTotal() + this.countTotalOptions()) *(1 +((this.devis.tva ? this.devis.tva : 0) /100))) + this.countAllTVA() + +this. countAllTVAO() ;
     }
 
     totalTVATVA(){
-        return this. totalTVAoption() + this. countTVA();
+        return this. totalTVAoption() + this. countTVA()+  this.countAllTVAO()+ this.countAllTVA();
     }
 
     loadAllTVA(){
@@ -389,8 +389,7 @@ export class DevislibreComponent  implements OnInit{
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
+
             if (produit.taux == 2.1) {
                 total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
@@ -405,8 +404,7 @@ export class DevislibreComponent  implements OnInit{
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
+
             if (produit.taux == 5.5) {
                 total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
