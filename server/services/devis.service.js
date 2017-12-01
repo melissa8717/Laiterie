@@ -824,7 +824,7 @@ function getByIddupliquer(id_devis, num_version) {
                     deferred.reject(error.name + ': ' + error.message);
                     console.log(error.name + ': ' + error.message);
                 }
-                var sql = "SELECT * , devis_option_libre.num_version as num_version from devis_option_libre " +
+                var sql = "SELECT devis_option_libre.* , devis_option_libre.num_version as num_version from devis_option_libre " +
                     "left join devis_version on devis_version.id_devis = devis_option_libre.id_devis && devis_version.num_version = devis_option_libre.num_version " +
                     "WHERE devis_option_libre.id_devis = ? and devis_option_libre.num_version = ? GROUP BY devis_option_libre.id_produit";
                 var inserts = [id_devis, num_version];
@@ -894,14 +894,15 @@ function duplicatelibre(id_devis, devis_params) {
                         (function (product) {
 
 
-                            db.query("INSERT INTO devis_detaille_libre (id_devis,num_version, produit,qte_devis, prix_devis,commentaire,unite) VALUES (? , ?, ? , ? , ? , ?, ?)",
+                            db.query("INSERT INTO devis_detaille_libre (id_devis,num_version, produit,qte_devis, prix_devis,commentaire,unite,tva) VALUES (? , ?, ? , ? , ? , ?, ?, ?)",
                                 [   id_devis,
                                     num_version,
                                     devis_params.produitDevis[product].produit,
                                     devis_params.produitDevis[product].qte_devis,
                                     devis_params.produitDevis[product].prix_devis,
                                     devis_params.produitDevis[product].commentaire,
-                                    devis_params.produitDevis[product].unite
+                                    devis_params.produitDevis[product].unite,
+                                    devis_params.produitDevis[product].taux ? devis_params.produitDevis[product].taux : devis_params.produitDevis[product].tva
                                 ],
                                 function (error, result, fields) {
                                     if (error) {
@@ -919,14 +920,15 @@ function duplicatelibre(id_devis, devis_params) {
                         (function (product) {
 
 
-                            db.query("INSERT INTO devis_option_libre (id_devis, num_version,produit, qte_devis, prix_devis,commentaire, unite) VALUES (?, ? , ? , ? , ? , ?, ?)",
+                            db.query("INSERT INTO devis_option_libre (id_devis, num_version,produit, qte_devis, prix_devis,commentaire, unite,tva) VALUES (?, ? , ? , ? , ? , ?, ? , ?)",
                                 [   id_devis,
                                     num_version,
                                     devis_params.produitDevisOptions[product].produit,
                                     devis_params.produitDevisOptions[product].qte_devis,
                                     devis_params.produitDevisOptions[product].prix_devis,
                                     devis_params.produitDevisOptions[product].commentaire,
-                                    devis_params.produitDevisOptions[product].unite
+                                    devis_params.produitDevisOptions[product].unite,
+                                    devis_params.produitDevisOptions[product].taux ? devis_params.produitDevisOptions[product].taux : devis_params.produitDevisOptions[product].tva
                                 ],
                                 function (error, result, fields) {
                                     if (error) {
