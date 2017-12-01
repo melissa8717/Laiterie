@@ -352,7 +352,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 2.1) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte;
+                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -368,7 +368,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 5.5) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte;
+                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -383,7 +383,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if (produit.taux == 10) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte;
+                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -398,7 +398,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if (produit.taux == 20) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte;
+                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -430,7 +430,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 2.1) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte;
+                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -446,7 +446,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 5.5) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte;
+                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -461,7 +461,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if (produit.taux == 10) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte;
+                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -476,7 +476,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if (produit.taux == 20) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte;
+                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
