@@ -80,18 +80,15 @@
             <thead style="background-color: grey;">
 
             <tr>
+                <th class="col-sm-1" >Option acceptée</th>
+
                 <th colspan="10" style="text-align: center;" class="col-sm-4">Désignation</th>
 
-                <th class="col-sm-1" >Option acceptée</th>
                 <th class="col-sm-1">Unité</th>
                 <th   class="col-sm-1">Qte</th>
                 <th  class="col-sm-1">P.U. HT</th>
                 <th class="col-sm-2" colspan="2">Total HT</th>
-                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1" >Option</th>
-                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">Qte</th>
-                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;width: 150px;" class="col-sm-1">P.U. HT</th>
-                <th style="border-right: 1px solid black;border-bottom:1px solid black;border-top:1px solid black;text-align: center;" class="col-sm-2" colspan="2">Total HT</th>
+
 
             </tr>
 
@@ -100,14 +97,15 @@
             <tbody>
 
             <tr *ngFor="let prod of produit, let  i = index">
-                <td colspan="10"  style="text-align: center;"><span style="font-weight: bold;">{{prod.produit}}</span> <br>
-
-                <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;"><span style="font-weight: bold;">{{prod.produit}}</span> <br>
-                    <textarea  *ngIf="prod.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prod.commentaire}}</textarea></td>
-                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td >
 
                     <span *ngIf="(produit[i].accepted == 0) || (produit[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produit[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produit[i])"></span></td>
-                <td style="text-align: center;">
+
+                <td colspan="10"  style="text-align: center;"><span style="font-weight: bold;">{{prod.produit}}</span> <br>
+
+
+                    <textarea  *ngIf="prod.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prod.commentaire}}</textarea></td>
+               <td style="text-align: center;">
                     {{prod.unite}}
                 </td>
                 <td style="text-align: center;">
@@ -131,22 +129,22 @@
                 </td>
             <tr *ngFor="let prode of produitop, let  i = index">
 
-                <td colspan="10"  style="border-bottom: 1px solid black;border-left:1px solid black;text-align: center;"><span style="font-weight: bold;">{{prode.produit}}</span> <br>
+                <td colspan="10"  style="text-align: center;"><span style="font-weight: bold;">{{prode.produit}}</span> <br>
                     <textarea  *ngIf="prode.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prode.commentaire}}</textarea></td>
-                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td style="width: 30px;text-align: center;">
 
                     <span *ngIf="(produitop[i].accepted == 0) || (produitop[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produitop[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produitop[i])"></span></td>
-                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td style="width: 30px;text-align: center;">
                     {{prode.unite}}
                 </td>
-                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td style="text-align: center;margin-top:-150px;">
 
                     {{prode.qte_devis}}</td>
-                <td style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td style="width: 30px;text-align: center;">
 
                     {{prode.prix_devis}}</td>
 
-                <td colspan="2" style="border-right: 1px solid black;border-bottom: 1px solid black;border-left: 1px solid black;width: 30px;text-align: center;">
+                <td colspan="2" style="width: 30px;text-align: center;">
                     {{prode.qte_devis * prode.prix_devis | number:'1.0-2'}}</td>
             </tr>
 
