@@ -841,7 +841,6 @@ function getByIddupliquer(id_devis, num_version) {
                     tmp.devis = devis;
                     tmp.detaille = detaille;
                     tmp.options = option;
-                    //console.log(tmp);
                     deferred.resolve(tmp);
                 });
             });
@@ -855,9 +854,6 @@ function getByIddupliquer(id_devis, num_version) {
 }
 
 function duplicatelibre(id_devis, devis_params) {
-    console.log(devis_params);
-    //console.log(id_devis);
-
 
 
     var deferred = Q.defer();
@@ -868,8 +864,6 @@ function duplicatelibre(id_devis, devis_params) {
 
             var num_version = results[0].count + 1;
 
-            //console.log("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, tva) VALUES ( ? , ? , ? , ?, ?, ?, NOW(), ?, ? )",
-            //[id_devis,num_version, devis_params.devis.accompte, devis_params.devis.accompte_value, devis_params.devis.accompte_percent, false, "Dupliqué", devis_params.devis.tva, +id_devis]);
 
             db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, tva, remise)" +
                 " VALUES ( ? , ? , ? , ?, ?, ?, NOW(), ?, ?, ? )",
