@@ -18,8 +18,20 @@
                     <img src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5 ">
                 </div>
 
+
                 <div class="col-sm-5">
                     <div class="form-group">
+                    <label class="col-sm-4">TVA multiple:</label>
+                    <input type="checkbox"
+
+                           name="tvamulti"
+
+                           [(ngModel)]="devis.tvamulti">
+                    <!--<select name="taux" class="col-sm-8 input-sm" [(ngModel)]="taux"  #taux="ngModel" required>
+                        <option *ngFor="let valeurs of valeur " [value]="valeurs.taux">{{valeurs.taux}}</option>
+                    </select>-->
+                </div>
+                    <div class="form-group" *ngIf="!devis.tvamulti">
                         <label class="col-sm-4">TVA:</label>
                         <input type="number"
                                step="0.1"
@@ -144,9 +156,10 @@
                         <thead>
                         <th class="col-sm-1">Option</th>
                         <th class="col-sm-1">Référence</th>
-                        <th class="col-sm-5">Article</th>
+                        <th class="col-sm-4">Article</th>
                         <th class="col-sm-1">Unité</th>
                         <th class="col-sm-1">* Qte</th>
+                        <th class="col-sm-1" *ngIf="devis.tvamulti">* TVA</th>
                         <th class="col-sm-1">* P.U.</th>
                         <th class="col-sm-1">Total HT:</th>
                         <th class="col-sm-1">Action</th>
@@ -197,6 +210,11 @@
                                            min="0" [(ngModel)]="produit.qte"
                                            (ngModelChange)="accomptepercent()">
                                 </div>
+                            </td>
+                            <td *ngIf="devis.tvamulti">
+                                <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux" required>
+                                    <option *ngFor="let produit of fact,let i= index" selected>{{produit.taux}}</option>
+                                </select>
                             </td>
                             <td>
                                 <div class="form-group">
@@ -259,6 +277,11 @@
                                                required>
                                     </div>
                                 </td>
+                                <td *ngIf="devis.tvamulti">
+                                    <div class="form-group">
+                                        {{produitDevis[i].taux}}
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="form-group">
                                         <input type="number"
@@ -300,12 +323,68 @@
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
-                        <tr>
-                            <td colspan="6" class="total" style="text-align: right;">TVA  {{devis.tva}} %</td>
+                        <tr *ngIf="!devis.tvamulti">
+                            <td colspan="6" class="total" style="text-align: right;" >TVA  {{devis.tva}} %</td>
                             <td class="total">{{countTVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
+                        <tr *ngIf="((countNTVAZ()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 0 %</td>
+                                <td>
+                                    {{countNTVAZ() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
+
+                        <tr *ngIf="((countNTVA()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 2.1 %</td>
+                                <td>
+                                    {{countNTVA() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
+                        <tr *ngIf="((countNTVAC()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 5.5 %</td>
+                                <td>
+                                    {{countNTVAC() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
+                        <tr *ngIf="((countNTVAD()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 10 %</td>
+                                <td>
+                                    {{countNTVAD() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
+                        <tr *ngIf="((countNTVAs()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 20 %</td>
+                                <td >
+                                    {{countNTVAs() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
 
                         <tr>
                             <td colspan="6" class="total" style="text-align: right;">TTC :</td>
@@ -358,6 +437,11 @@
                                                required>
                                     </div>
                                 </td>
+                                <td *ngIf="devis.tvamulti">
+                                    <div class="form-group">
+                                        {{produitDevisOptions[i].taux}}
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="form-group">
                                         <input type="number"
@@ -398,10 +482,66 @@
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
-                        <tr *ngIf="produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right;">TVA {{devis.tva}} %:</td>
+                        <tr *ngIf="produitDevisOptions.length> 0 && !devis.tvamulti">
+                            <td colspan="6" class="total" style="text-align: right;" >TVA {{devis.tva}} %:</td>
                             <td class="total">{{ totalTVAoption() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+                        <tr *ngIf="((countNTVAZO()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 0 %</td>
+                                <td>
+                                    {{countNTVAZO() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
+
+                        <tr *ngIf="((countNTVAO()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 2.1 %</td>
+                                <td>
+                                    {{countNTVAO() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
+                        <tr *ngIf="((countNTVACO()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 5.5 %</td>
+                                <td>
+                                    {{countNTVACO() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
+                        <tr *ngIf="((countNTVADO()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 10 %</td>
+                                <td>
+                                    {{countNTVADO() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
+                        </tr>
+                        <tr *ngIf="((countNTVAsO()>0) )">
+                            <ng-container >
+                                <td colspan="5"></td>
+                                <td >TVA 20 %</td>
+                                <td >
+                                    {{countNTVAsO() | currency:'EUR':true:'1.2-2'}} €
+
+                                </td>
+
+                            </ng-container>
                         </tr>
                         <tr *ngIf="produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right;">TTC :</td>
@@ -427,6 +567,8 @@
                             <td class="total">{{totalTVATVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
+
+
 
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
