@@ -743,6 +743,7 @@ CREATE TABLE IF NOT EXISTS `devis_detaille` (
   `margedev` int(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   `tva` varchar(30) DEFAULT NULL,
+  `taux` double DEFAULT NULL,
   PRIMARY KEY (`num_version`,`id_devis`,`id_produit`,`produit_version`),
   KEY `id_devis` (`num_version`,`id_produit`),
   KEY `id_version` (`num_version`),
@@ -880,6 +881,7 @@ CREATE TABLE IF NOT EXISTS `devis_version` (
   `libre` tinyint(4) DEFAULT NULL,
   `acompte` tinyint(4) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
+  `taux` double DEFAULT NULL,
   PRIMARY KEY (`num_version`,`id_devis`),
   KEY `id_devis` (`id_devis`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
