@@ -221,10 +221,9 @@ export class FicheDevisLibreComponent {
     countNTVAZ() {
         let total = 0;
 
-        for (let produit of this.produitDevis) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
-            if (produit.taux == 0) {
+        for (let prod of this.produit) {
+
+            if (parseInt(prod.tva) == 0) {
                 total +=  0;
 
 
@@ -236,11 +235,10 @@ export class FicheDevisLibreComponent {
     countNTVA() {
         let total = 0;
 
-        for (let produit of this.produitDevis) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
-            if (produit.taux == 2.1) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+        for (let prod of this.produit) {
+
+            if (parseInt(prod.tva) == 2.1) {
+                total += (parseInt(prod.tva) /100 ) * prod.prix_devis * prod.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -252,11 +250,10 @@ export class FicheDevisLibreComponent {
     countNTVAC() {
         let total = 0;
 
-        for (let produit of this.produitDevis) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
-            if (produit.taux == 5.5) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+        for (let prod of this.produit) {
+
+            if (parseInt(prod.tva) == 5.5) {
+                total += (parseInt(prod.tva) /100 ) * prod.prix_devis * prod.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -268,10 +265,10 @@ export class FicheDevisLibreComponent {
     countNTVAD() {
         let total = 0;
 
-        for (let produit of this.produitDevis) {
+        for (let prod of this.produit) {
 
-            if (produit.taux == 10) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if (parseInt(prod.tva) == 10) {
+                total += (parseInt(prod.tva) /100 ) * prod.prix_devis * prod.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -283,10 +280,9 @@ export class FicheDevisLibreComponent {
     countNTVAs() {
         let total = 0;
 
-        for (let produit of this.produitDevis) {
-
-            if (produit.taux == 20) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+        for (let prod of this.produit) {
+            if (parseInt(prod.tva) == 20) {
+                total += (parseInt(prod.tva) /100 ) * prod.prix_devis * prod.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -299,10 +295,9 @@ export class FicheDevisLibreComponent {
     countNTVAZO() {
         let total = 0;
 
-        for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
-            if (produit.taux == 0) {
+        for (let prode of this.produitop) {
+
+            if (parseInt(prode.tva) == 0) {
                 total +=  0 ;
 
 
@@ -314,11 +309,10 @@ export class FicheDevisLibreComponent {
     countNTVAO() {
         let total = 0;
 
-        for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
-            if (produit.taux == 2.1) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+        for (let prode of this.produitop) {
+
+            if (parseInt(prode.tva) == 2.1) {
+                total += (parseInt(prode.tva) /100 ) * prode.prix_devis * prode.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -330,11 +324,10 @@ export class FicheDevisLibreComponent {
     countNTVACO() {
         let total = 0;
 
-        for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
-            if (produit.taux == 5.5) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+        for (let prode of this.produitop) {
+
+            if (parseInt(prode.tva) == 5.5) {
+                total += (parseInt(prode.tva) /100 ) * prode.prix_devis * prode.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -346,10 +339,10 @@ export class FicheDevisLibreComponent {
     countNTVADO() {
         let total = 0;
 
-        for (let produit of this.produitDevisOptions) {
+        for (let prode of this.produitop) {
 
-            if (parseInt(produit.tva) == 10) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if (parseInt(prode.tva) == 10) {
+                total += (parseInt(prode.tva) /100 ) * prode.prix_devis * prode.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -361,10 +354,10 @@ export class FicheDevisLibreComponent {
     countNTVAsO() {
         let total = 0;
 
-        for (let produit of this.produitDevisOptions) {
+        for (let prode of this.produitop) {
 
-            if (parseInt(produit.tva) == 20) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if (parseInt(prode.tva) == 20) {
+                total += (parseInt(prode.tva) /100 ) * prode.prix_devis * prode.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
