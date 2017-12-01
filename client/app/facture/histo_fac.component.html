@@ -105,7 +105,7 @@
                 </thead>
                 <tbody>
                 <tr *ngFor="let item of ged">
-                    <td><strong><a href="http://{{loc}}:4000/ged/dev/{{id_factged}}/{{item.url}}" target="_blank">{{ item.nom }}</a></strong></td>
+                    <td><strong><a href="{{URL}}/{{item.url}}" target="_blank">{{ item.nom }}</a></strong></td>
                     <td nowrap>{{item.date_ajout | date : 'dd/MM/yyyy'}}</td>
                 </tr>
                 </tbody>

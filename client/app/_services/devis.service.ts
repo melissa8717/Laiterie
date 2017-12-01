@@ -1,16 +1,17 @@
 /**
  * Created by Alexandre on 20/06/2017.
  */
-import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import { AppConfig } from '../app.config';
+import {Injectable} from '@angular/core';
+import {Headers, Http, RequestOptions, Response} from '@angular/http';
+import {AppConfig} from '../app.config';
 
 @Injectable()
 export class DevisService {
-    constructor(private http: Http, private config: AppConfig) { }
+    constructor(private http: Http, private config: AppConfig) {
+    }
 
-    getAll(month:number, year:number) {
-        return this.http.get(this.config.apiUrl + '/devis/'+month+"/"+year, this.jwt()).map((response: Response) => response.json());
+    getAll(month: number, year: number) {
+        return this.http.get(this.config.apiUrl + '/devis/' + month + "/" + year, this.jwt()).map((response: Response) => response.json());
     }
 
     getAllDate() {
@@ -47,36 +48,36 @@ export class DevisService {
         return this.http.post(this.config.apiUrl + '/devis/addLibre', devis, this.jwt());
     }
 
-    sendEnvoye(id_devis: any, num_version: any){
-        return this.http.put(this.config.apiUrl + '/devis/envoye/'+id_devis+"/"+num_version , this.jwt());
+    sendEnvoye(id_devis: any, num_version: any) {
+        return this.http.put(this.config.apiUrl + '/devis/envoye/' + id_devis + "/" + num_version, this.jwt());
     }
 
-    validate(devis: any){
+    validate(devis: any) {
         return this.http.put(this.config.apiUrl + '/devis/validate', devis, this.jwt());
     }
 
-    duplicate(devis:  any, id: number){
+    duplicate(devis: any, id: number) {
         return this.http.post(this.config.apiUrl + '/devis/duplicate/' + id, devis, this.jwt());
     }
 
-    acceptOffer(devis:  any){
-        return this.http.put(this.config.apiUrl + '/devis/acceptoffer' , devis, this.jwt());
+    acceptOffer(devis: any) {
+        return this.http.put(this.config.apiUrl + '/devis/acceptoffer', devis, this.jwt());
     }
 
-    offerlibre(devis:  any){
+    offerlibre(devis: any) {
         console.log(devis);
-        return this.http.put(this.config.apiUrl + '/devis/offer' , devis, this.jwt());
+        return this.http.put(this.config.apiUrl + '/devis/offer', devis, this.jwt());
     }
 
-    modify(devis:  any, id: number, num_version : number){
+    modify(devis: any, id: number, num_version: number) {
         return this.http.put(this.config.apiUrl + '/devis/modify/' + id + '/' + num_version, devis, this.jwt());
     }
 
-    modifylibre(devis:  any, id_devis: number, num_version : number){
+    modifylibre(devis: any, id_devis: number, num_version: number) {
         return this.http.put(this.config.apiUrl + '/devis/modifylibre/' + id_devis + '/' + num_version, devis, this.jwt());
     }
 
-    update(devis: {id_bdc: number}) {
+    update(devis: { id_bdc: number }) {
         return this.http.put(this.config.apiUrl + '/devis/' + devis.id_bdc, devis, this.jwt());
     }
 
@@ -87,46 +88,47 @@ export class DevisService {
     getAllTVA() {
         return this.http.get(this.config.apiUrl + '/devis/tva', this.jwt()).map((response: Response) => response.json());
     }
-    getByIdAnalyse(id_devis:number,num_version:number) {
-       // console.log(this.config.apiUrl + '/devis/analyse/' + id_devis+'/'+num_version);
-        return this.http.get(this.config.apiUrl + '/devis/analyse/' + id_devis+'/'+num_version, this.jwt()).map((response: Response) => response.json());
+
+    getByIdAnalyse(id_devis: number, num_version: number) {
+        return this.http.get(this.config.apiUrl + '/devis/analyse/' + id_devis + '/' + num_version, this.jwt()).map((response: Response) => response.json());
     }
-    getByIdAnalyseopt(id_devis:number,num_version:number) {
-        console.log(this.config.apiUrl + '/devis/option/' + id_devis+'/'+num_version);
-        return this.http.get(this.config.apiUrl + '/devis/option/' + id_devis+'/'+num_version, this.jwt()).map((response: Response) => response.json());
+
+    getByIdAnalyseopt(id_devis: number, num_version: number) {
+        return this.http.get(this.config.apiUrl + '/devis/option/' + id_devis + '/' + num_version, this.jwt()).map((response: Response) => response.json());
     }
-    updateDevisdetail(devisparams:any){
-        console.log(this.config.apiUrl + '/devis/detail')
-        return this.http.put(this.config.apiUrl + '/devis/detail' ,devisparams, this.jwt());
+
+    updateDevisdetail(devisparams: any) {
+        return this.http.put(this.config.apiUrl + '/devis/detail', devisparams, this.jwt());
     }
-    updateDevisoption(devisparams:any){
-        console.log(this.config.apiUrl + '/devis/opdet')
-        return this.http.put(this.config.apiUrl + '/devis/opdet' ,devisparams, this.jwt());
+
+    updateDevisoption(devisparams: any) {
+        return this.http.put(this.config.apiUrl + '/devis/opdet', devisparams, this.jwt());
     }
-    getByIdAnaldevis(id_devis:number,num_version:number) {
-        // console.log(this.config.apiUrl + '/devis/analyse/' + id_devis+'/'+num_version);
-        return this.http.get(this.config.apiUrl + '/devis/anldevis/' + id_devis+'/'+num_version, this.jwt()).map((response: Response) => response.json());
+
+    getByIdAnaldevis(id_devis: number, num_version: number) {
+        return this.http.get(this.config.apiUrl + '/devis/anldevis/' + id_devis + '/' + num_version, this.jwt()).map((response: Response) => response.json());
     }
 
     getByIddupliquer(id_devis: number, num_version: number) {
         return this.http.get(this.config.apiUrl + '/devis/duplibre/' + id_devis + "/" + num_version, this.jwt()).map((response: Response) => response.json());
     }
-    duplicatelibre(devis:  any, id_devis: number){
+
+    duplicatelibre(devis: any, id_devis: number) {
         return this.http.post(this.config.apiUrl + '/devis/libreduplicate/' + id_devis, devis, this.jwt());
     }
 
 
     /***************************************************GED*********************************************************************************/
-    getGed(id_devis: number) {
-        return this.http.get(this.config.apiUrl + '/ged/dev/'+id_devis, this.jwt()).map((response: Response) => response.json());
+    getGed() {
+        return this.http.get(this.config.apiUrl + '/ged/dev', this.jwt()).map((response: Response) => response.json());
     }
 
-    upload( url : string, file: File) {
+    upload(url: string, file: File) {
         return new Promise((resolve, reject) => {
             if (file === undefined)
                 resolve();
-            var xhr = new XMLHttpRequest();
-            var fd = new FormData();
+            let xhr = new XMLHttpRequest();
+            let fd = new FormData();
 
             //fd.append("url", filename);
             console.log(file);
@@ -137,11 +139,11 @@ export class DevisService {
             xhr.addEventListener("load", uploadComplete, false);
             xhr.addEventListener("abort", uploadFailed, false);
 
-            function uploadComplete(){
+            function uploadComplete() {
                 resolve();
             }
 
-            function uploadFailed(){
+            function uploadFailed() {
                 console.log("Upload failed or canceled");
                 reject();
             }
@@ -162,8 +164,8 @@ export class DevisService {
         // create authorization header with jwt token
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-            return new RequestOptions({ headers: headers });
+            let headers = new Headers({'Authorization': 'Bearer ' + currentUser.token});
+            return new RequestOptions({headers: headers});
         }
     }
 }
