@@ -86,7 +86,8 @@
 
                 <th class="col-sm-1">Unité</th>
                 <th   class="col-sm-1">Qte</th>
-                <th  class="col-sm-1">P.U. HT</th>
+                <th  class="col-sm-1" >P.U. HT</th>
+                <th class="col-sm-1" *ngIf="!devis.taux || !devis.tva">TVA</th>
                 <th class="col-sm-2" colspan="2">Total HT</th>
 
 
@@ -114,6 +115,9 @@
                 <td style="text-align: center;">
 
                     {{prod.prix_devis}}</td>
+                <td style="text-align: center;">
+
+                    {{prod.tva}}</td>
 
                 <td colspan="2" style="text-align: center;">
                     {{prod.qte_devis * prod.prix_devis | number:'1.0-2'}}</td>
@@ -163,7 +167,7 @@
                 <td style="text-align: left;">Total H.T. après remise de {{devis.remise}}%</td>
                 <td colspan="3">{{countTotaldet() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
             </tr>
-            <tr style="border-left:1px solid black; border-right:1px solid black;">
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="devis.tva">
                 <td style="text-align: left;">TVA {{devis.tva}} %:</td>
                 <td colspan="3"> {{countTva()| number:'1.0-2'}} €</td>
             </tr>
