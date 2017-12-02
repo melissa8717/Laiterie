@@ -53,8 +53,7 @@ export class ParamsService {
 
 
     addagence(params: any) {
-        //console.log (  this.config.apiUrl + '/params/agen')
-        return this.http.post(this.config.apiUrl + '/params/agen', params, this.jwt()).map((response: Response) => response.json());
+        return this.http.post(this.config.apiUrl + '/params/dagen', params, this.jwt()).map((response: Response) => response.json());
     }
 
     getAllAgence() {

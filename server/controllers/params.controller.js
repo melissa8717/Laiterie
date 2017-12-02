@@ -4,7 +4,7 @@ var paramsService = require('services/params.service');
 
 
 router.get('/footer', getFooter);
-router.post('/agen', addagence);
+router.post('/dagen', addagence);
 router.get('/agence', getAllAgence);
 router.get('/agence', getAllFili);
 

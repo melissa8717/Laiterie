@@ -75,6 +75,17 @@ function addagence(agenceParam) {
     var deferred = Q.defer();
     //console.log(agenceParam);
     params = [
+        agenceParam.id_contact,
+        agenceParam.logo,
+        agenceParam.villefact,
+        agenceParam.colorpied,
+        agenceParam.pied_page1,
+        agenceParam.pied_page2,
+        agenceParam.pied_page3,
+        agenceParam.pied_page4,
+        agenceParam.pied_page5,
+        agenceParam.pied_page6,
+        agenceParam.filigrane,
         agenceParam.responsable_a,
         agenceParam.adresse_a,
         agenceParam.dep_a,
@@ -87,11 +98,13 @@ function addagence(agenceParam) {
         agenceParam.nom_a,
         agenceParam.meteo,
         agenceParam.user,
-        agenceParam.autre
+        agenceParam.autre,
+        agenceParam.image,
+        agenceParam.id_entreprise
 
     ];
 
-    var query = 'INSERT INTO agence (responsable_a,adresse_a,dep_a,pays_a,tel_a,fax_a,mail_a,site_a,siret_a,nom_a,meteo,user,autre) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
+    var query = 'INSERT INTO agence (id_contact,logo,villefact,colorpied,pied_page1,pied_page2,pied_page3,pied_page4,pied_page5,pied_page6,filigrane,responsable_a,adresse_a,dep_a,pays_a,tel_a,fax_a,mail_a,site_a,siret_a,nom_a,meteo,user,autre,image,id_entreprise) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
     db.query(query, params, function (error, results, fields) {
         if (error) {

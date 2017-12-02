@@ -122,19 +122,14 @@ export class Param_genComponent {
     addagence() {
         this.paramsService.addagence(this.model).subscribe(agen => {
             this.agen = agen;
-            //console.log(this.model);
-            //console.log("compo ts" this.agence);
             this.alertService.success('Nouvelle agence ajoutée avec succès', true);
             this.router.navigate(['/parametre_gen']);
         });
     }
 
     modify(aparams: any) {
-        //console.log(aparams);
         this.paramsService.updateAgence(aparams).subscribe(
             data => {
-                //this.data = data;
-                //console.log(aparams);
                 this.alertService.success("Les données ont bien été modifiées.");
             });
     }
