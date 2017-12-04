@@ -87,17 +87,14 @@ export class FicheDevisLibreComponent {
 
             this.droitsuser = data[0];
 
-            //console.log(this.data);
-            //console.log(this.currentUser._id);
         });
     }
 
     loadAllFooter() {
-        //console.log(this.recherche.seek)
 
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-            //console.log(this.fact);
+
 
         });
     }
@@ -109,7 +106,7 @@ export class FicheDevisLibreComponent {
             this.devisService.getByIdLibre(this.id_devis, this.num_version).subscribe(
                 data=>{
                     this.devis=data[0];
-                    console.log(data)
+
                 }
             )
         });
@@ -122,7 +119,7 @@ export class FicheDevisLibreComponent {
             this.devisService.getByIdLibreproduit(this.id_devis, this.num_version).subscribe(
                 data=>{
                     this.produit=data;
-                    console.log(data)
+
                 }
             )
         });
@@ -135,7 +132,7 @@ export class FicheDevisLibreComponent {
             this.devisService.getByIdLibreproduitopt(this.id_devis, this.num_version).subscribe(
                 data=>{
                     this.produitop=data;
-                    //console.log(data)
+
                 }
             )
         });
@@ -160,7 +157,7 @@ export class FicheDevisLibreComponent {
     }
 
     countTtc(){
-        return (this.countTotaldet()*(this.devis.remise?(1-(this.devis.remise/100)):1)) +  this.countTva();
+        return (this.countTotaldet()*(this.devis.remise?(1-(this.devis.remise/100)):1)) + this.countAllTVA() +this.countTva();
     }
 
     countTotalopt() {
@@ -180,11 +177,10 @@ export class FicheDevisLibreComponent {
     }
 
     countTtcopt(){
-        return (this.countTotalopt()*(this.devis.remise?(1-(this.devis.remise/100)):1)) +  this.countTvaopt();
+        return (this.countTotalopt()*(this.devis.remise?(1-(this.devis.remise/100)):1)) +  this.countAllTVAO() + this. countTvaopt();
     }
 
     acceptOfferLibre(prod: any) {
-        //console.log(prod);
         this.devisService.offerlibre(prod).subscribe(
             data => {
 
@@ -213,7 +209,6 @@ export class FicheDevisLibreComponent {
         this.paramsService.getAllVente().subscribe(cgv => {
 
             this.cgv = cgv[0];
-            console.log(this.cgv);
 
         });
     }

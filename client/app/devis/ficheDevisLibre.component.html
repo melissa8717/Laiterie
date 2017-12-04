@@ -176,61 +176,48 @@
                 <td colspan="3"> {{countTva()| number:'1.0-2'}} €</td>
             </tr>
 
-            <tr *ngIf="((countNTVAZ()>0) )">
-                <ng-container >
-                    <td colspan="5"></td>
-                    <td >TVA 0 %</td>
-                    <td>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAZ()>0) )">
+                    <td style="text-align: left;">TVA 0 %</td>
+                    <td colspan="3" >
                         {{countNTVAZ() | currency:'EUR':true:'1.2-2'}} €
 
                     </td>
 
-                </ng-container>
             </tr>
 
-            <tr *ngIf="((countNTVA()>0) )">
-                <ng-container >
-                    <td colspan="5"></td>
-                    <td >TVA 2.1 %</td>
-                    <td>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVA()>0) )">
+                    <td style="text-align: left;">TVA 2.1 %</td>
+                    <td colspan="3"  >
                         {{countNTVA() | currency:'EUR':true:'1.2-2'}} €
 
                     </td>
 
-                </ng-container>
             </tr>
-            <tr *ngIf="((countNTVAC()>0) )">
-                <ng-container >
-                    <td colspan="5"></td>
-                    <td >TVA 5.5 %</td>
-                    <td>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAC()>0) )">
+
+                    <td  style="text-align: left;">TVA 5.5 %</td>
+                    <td colspan="3">
                         {{countNTVAC() | currency:'EUR':true:'1.2-2'}} €
 
                     </td>
 
-                </ng-container>
             </tr>
-            <tr *ngIf="((countNTVAD()>0) )">
-                <ng-container >
-                    <td colspan="5"></td>
-                    <td >TVA 10 %</td>
-                    <td>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAD()>0) )">
+
+                    <td style="text-align: left;">TVA 10 %</td>
+                    <td colspan="3">
                         {{countNTVAD() | currency:'EUR':true:'1.2-2'}} €
 
                     </td>
 
-                </ng-container>
             </tr>
-            <tr *ngIf="((countNTVAs()>0) )">
-                <ng-container >
-                    <td colspan="5"></td>
-                    <td >TVA 20 %</td>
-                    <td >
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAs()>0) )">
+
+                    <td style="text-align: left;">TVA 20 %</td>
+                    <td colspan="3">
                         {{countNTVAs() | currency:'EUR':true:'1.2-2'}} €
 
                     </td>
-
-                </ng-container>
             </tr>
             <tr style="border-left:1px solid black; border-right:1px solid black;border-bottom: 1px solid black;">
                 <td style="text-align: left;">TTC :</td>
@@ -251,7 +238,55 @@
                 <td style="text-align: left;">TVA {{devis.tva}} %:</td>
                 <td colspan="3">{{countTvaopt() | number:'1.0-2'}} €</td>
             </tr>
-            <tr *ngIf="countTtcopt(0)" style="border-left:1px solid black; border-right:1px solid black;border-bottom: 1px solid black;">
+
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAZO()>0) )">
+
+                <td style="text-align: left;">TVA 0 %</td>
+                <td colspan="3" >
+                        {{countNTVAZO() | currency:'EUR':true:'1.2-2'}} €
+
+                    </td>
+
+            </tr>
+
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAO()>0) )">
+
+                <td style="text-align: left;">TVA 2.1 %</td>
+                <td colspan="3" >
+                        {{countNTVAO() | currency:'EUR':true:'1.2-2'}} €
+
+                    </td>
+
+
+            </tr>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVACO()>0) )">
+
+                <td style="text-align: left;">TVA 5.5 %</td>
+                <td colspan="3" >
+                        {{countNTVACO() | currency:'EUR':true:'1.2-2'}} €
+
+                    </td>
+            </tr>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVADO()>0) )">
+
+                <td style="text-align: left;">TVA 10 %</td>
+                <td colspan="3" >
+                        {{countNTVADO() | currency:'EUR':true:'1.2-2'}} €
+
+                    </td>
+
+
+            </tr>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAsO()>0) )">
+
+                <td style="text-align: left;">TVA 20 %</td>
+                <td colspan="3" >
+                        {{countNTVAsO() | currency:'EUR':true:'1.2-2'}} €
+
+                    </td>
+
+            </tr>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="countTtcopt(0)" style="border-left:1px solid black; border-right:1px solid black;border-bottom: 1px solid black;">
                 <td style="text-align: left;">TTC :</td>
                 <td colspan="3">{{countTtcopt() | number:'1.0-2'}} €</td>
             </tr>

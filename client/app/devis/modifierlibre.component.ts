@@ -43,11 +43,12 @@ export class ModifierlibreComponent {
     private sub: any;
     print: boolean = false;
     cgv: any ={};
-    fact: any={};
+   fact: any={};
     currentUser: User;
     droitsuser:any={};
     _id:any;
     data:any={};
+    tvass: any[] = [];
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -74,9 +75,9 @@ export class ModifierlibreComponent {
 
         this.loadAllFooter();
         this.loaddroituser();
-        this.loadAllProduits();
         this.loadAllClients();
         this.loadCat();
+        this.loadTva();
 
         this.sub = this.route.params.subscribe(params => {
             this.id_devis = params['id_devis'];
@@ -87,8 +88,9 @@ export class ModifierlibreComponent {
                     this.devis  = data.devis[0];
                     this.produitDevis = data.detaille;
                     this.produitDevisOptions = data.options;
-                    //console.log('TS DEVIS : ');
-                    //console.log(data);
+                    console.log(this.produitDevis );
+                    console.log(this.devis );
+                    console.log(this.produitDevisOptions );
                 }
             )
         });
@@ -101,7 +103,7 @@ export class ModifierlibreComponent {
         });
     }
 
-    loadAllFooter() {
+   loadAllFooter() {
         //console.log(this.recherche.seek)
 
         this.factureService.getAllFooter().subscribe(data => {
@@ -182,21 +184,13 @@ export class ModifierlibreComponent {
     }
 
     private loadAllClients() {
-        // console.log("on envoie la requette");
         this.contactService.getAllClients().subscribe(clients => {
             this.clients = clients;
-            // console.log(this.clients);
+
         });
     }
 
-    loadAllProduits() {
-        this.venteService.getAll().subscribe(
-            data => {
-                this.produits = data;
-                //  console.log(this.produits);
-            }
-        )
-    }
+
 
     countTotal() {
         let total = 0;
@@ -211,10 +205,10 @@ export class ModifierlibreComponent {
     }
 
     countTotalprodTVA(){
-        return this.countTotalRemise()>0 ? this.countTotalRemise()* ((this.devis.tvadevis ? this.devis.tvadevis : 0) /100) : this.countTotal()* ((this.devis.tvadevis ? this.devis.tvadevis : 0) /100);
+        return this.countTotalRemise()>0 ? this.countTotalRemise()* ((this.devis.tva ? this.devis.tva : 0) /100) : this.countTotal()* ((this.devis.tva ? this.devis.tva : 0) /100);
     }
     countTotalTVA() {
-        return this.countTotalRemise()>0 ? this.countTotalRemise()* (1+((this.devis.tvadevis ? this.devis.tvadevis : 0) /100)) : this.countTotal()* (1+((this.devis.tvadevis ? this.devis.tvadevis : 0) /100));
+        return this.countTotalRemise()>0 ? this.countTotalRemise()* (1+((this.devis.tva ? this.devis.tva : 0) /100)) : this.countTotal()* (1+((this.devis.tva ? this.devis.tva : 0) /100));
     }
 
     countTotalOptions() {
@@ -229,10 +223,10 @@ export class ModifierlibreComponent {
         return this.countTotalOptions() - (this.countTotalOptions() * this.devis.remise / 100);
     }
     countTotalOptionsTVA() {
-        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((this.devis.tvadevis ? this.devis.tvadevis : 0) /100):this.countTotalOptions()* ((this.devis.tvadevis ? this.devis.tvadevis : 0) /100);
+        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((this.devis.tva ? this.devis.tva : 0) /100):this.countTotalOptions()* ((this.devis.tva ? this.devis.tva : 0) /100);
     }
     countTotalOptionstotalTVA() {
-        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((1+(this.devis.tvadevis ? this.devis.tvadevis : 0) /100)):this.countTotalOptions()* (1+((this.devis.tvadevis ? this.devis.tvadevis : 0) /100));
+        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((1+(this.devis.tva ? this.devis.tva : 0) /100)):this.countTotalOptions()* (1+((this.devis.tva ? this.devis.tva : 0) /100));
     }
 
     total() {
@@ -317,4 +311,173 @@ export class ModifierlibreComponent {
         });
     }
 
+
+    countNTVAZ() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+            if (parseInt(produit.tva) == 0) {
+                total +=  0;
+
+
+            }
+        }
+        return total;
+
+    }
+    countNTVA() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+            if (parseInt(produit.tva) == 2.1) {
+                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVAC() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+            if (parseInt(produit.tva) == 5.5) {
+                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVAD() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+
+            if (parseInt(produit.tva) == 10) {
+                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVAs() {
+        let total = 0;
+
+        for (let produit of this.produitDevis) {
+            if (parseInt(produit.tva) == 20) {
+                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+
+            }
+        }
+        return total;
+
+    }
+
+
+    countNTVAZO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+
+            if (parseInt(produit.tva) == 0) {
+                total +=  0 ;
+
+
+            }
+        }
+        return total;
+
+    }
+    countNTVAO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+
+            if (parseInt(produit.tva) == 2.1) {
+                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVACO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+
+            if (parseInt(produit.tva) == 5.5) {
+                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVADO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+
+            if (parseInt(produit.tva) == 10) {
+                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+
+            }
+        }
+        return total;
+
+    }
+
+    countNTVAsO() {
+        let total = 0;
+
+        for (let produit of this.produitDevisOptions) {
+
+            if (parseInt(produit.tva) == 20) {
+                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+
+            }
+        }
+        return total;
+
+    }
+
+
+    countAllTVA(){
+        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 )  + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
+
+
+    }
+
+    countAllTVAO(){
+        return ((this.countNTVAO() ? this.countNTVAO() : 0 ) + (this.countNTVACO() ? this.countNTVACO() : 0 ) + (this.countNTVADO() ? this.countNTVADO() : 0 )) + (this.countNTVAsO() ? this.countNTVAsO() : 0 );
+
+
+    }
+
+    loadTva(){
+        this.paramsService.getAllTVA().subscribe(tvass => {
+
+            this.tvass = tvass;
+
+        });
+    }
 }
