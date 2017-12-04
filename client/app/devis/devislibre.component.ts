@@ -462,6 +462,7 @@ export class DevislibreComponent  implements OnInit{
         this.paramsService.getAllTVA().subscribe(fact => {
 
             this.fact = fact;
+            console.log(this.fact);
 
         });
     }
