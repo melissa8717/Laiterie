@@ -5,24 +5,25 @@
 
     <div class=" container ">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
-        <h3 *ngIf="!print" >Dupliquer Devis n° {{id}} - Version : {{devis.num_version}}</h3>
+        <h3 *ngIf="!print">Dupliquer Devis n° {{id}} - Version : {{devis.num_version}}</h3>
 
 
         <form id="printSectionId" (submit)="submit()">
             <fieldset class="separe">
 
                 <div class="row marge">
-                    <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:0px; position: absolute;">
+                    <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5"
+                         style="text-align: center;margin-left:25%; top:0px; position: absolute;">
                 </div>
 
                 <div class="col-sm-5">
 
                     <div class="form-group" *ngIf="devis.id_chantier">
                         <label class="col-sm-4">Nom du chantier:</label>
-                        <input  style="border:1px solid white;"
-                                ng2-auto-complete
+                        <input style="border:1px solid white;"
+                               ng2-auto-complete
                                #prod
                                [source]="chantiers"
                                [list-formatter]="autocompleListFormatterchantier"
@@ -37,12 +38,12 @@
                     <div class="form-group">
                         <label class="col-sm-4">Remise:</label>
                         <input style="border:1px solid white;"
-                                type="number"
-                                step="0.01"
-                                name="remise"
-                                min="0"
-                                max="100"
-                                [(ngModel)]="devis.remise">
+                               type="number"
+                               step="0.01"
+                               name="remise"
+                               min="0"
+                               max="100"
+                               [(ngModel)]="devis.remise">
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4">Acompte:</label>
@@ -54,23 +55,22 @@
                     <div class="form-group" *ngIf="devis.accompte">
                         <label class="col-sm-4">en €:</label>
                         <input style="border:1px solid white;"
-                                type="number"
-                                step="0.01"
-                                name="euro"
-                                [(ngModel)]="devis.accompte_value"
-                                (ngModelChange)="accompteeuro()">
+                               type="number"
+                               step="0.01"
+                               name="euro"
+                               [(ngModel)]="devis.accompte_value"
+                               (ngModelChange)="accompteeuro()">
                     </div>
                     <div class="form-group" *ngIf="devis.accompte">
                         <label class="col-sm-4">en %:</label>
                         <input style="border:1px solid white;"
-                                type="number"
-                                step="0.01"
-                                name="pourcentage"
-                                [(ngModel)]="devis.accompte_percent"
-                                (ngModelChange)="accomptepercent()">
+                               type="number"
+                               step="0.01"
+                               name="pourcentage"
+                               [(ngModel)]="devis.accompte_percent"
+                               (ngModelChange)="accomptepercent()">
                     </div>
                 </div>
-
 
 
                 <div class="col-sm-6 col-sm-offset-1">
@@ -108,16 +108,8 @@
                         <th class="col-sm-1">Total HT:</th>
                         <th *ngIf="!print" class="col-sm-1">Action</th>
                         </thead>
+
                         <tbody>
-
-
-
-
-
-
-
-
-
                         <tr>
                             <td>
                                 <div class="checkbox ">
@@ -169,7 +161,7 @@
                             </td>
                             <td>
                                 <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux" required>
-                                    <option *ngFor="let produit of fact,let i= index" selected>{{produit.taux}}</option>
+                                    <option *ngFor="let tva of tvas" selected>{{tva.taux}}</option>
                                 </select>
                             </td>
                             <td>
@@ -227,7 +219,7 @@
                                            required>
                                 </div>
                             </td>
-                            <td  style="text-align: right;">
+                            <td style="text-align: right;">
                                 {{produitDevis[i].taux}}
                             </td>
                             <td>
@@ -269,10 +261,10 @@
                         </tr>
 
                         <tr *ngIf="((countNTVAZ()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td   style="text-align: left;" >TVA 0 %</td>
-                                <td  style="text-align: right;">
+                                <td style="text-align: left;">TVA 0 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVAZ() | currency:'EUR':true:'1.2-2'}}
 
                                 </td>
@@ -281,10 +273,10 @@
                         </tr>
 
                         <tr *ngIf="((countNTVA()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td   style="text-align: left;" >TVA 2.1 %</td>
-                                <td   style="text-align: right;" >
+                                <td style="text-align: left;">TVA 2.1 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVA() | currency:'EUR':true:'1.2-2'}}
 
                                 </td>
@@ -292,10 +284,10 @@
                             </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAC()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td    style="text-align: left;" >TVA 5.5 %</td>
-                                <td  style="text-align: right;" >
+                                <td style="text-align: left;">TVA 5.5 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVAC() | currency:'EUR':true:'1.2-2' }}
 
                                 </td>
@@ -303,10 +295,10 @@
                             </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAD()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td  style="text-align: left;" >TVA 10 %</td>
-                                <td  style="text-align: right;" >
+                                <td style="text-align: left;">TVA 10 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVAD() | currency:'EUR':true:'1.2-2' }}
 
                                 </td>
@@ -314,10 +306,10 @@
                             </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAs()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td  style="text-align: left;" >TVA 20 %</td>
-                                <td  style="text-align: right;" >
+                                <td style="text-align: left;">TVA 20 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVAs() | currency:'EUR':true:'1.2-2' }}
 
                                 </td>
@@ -326,15 +318,15 @@
                         </tr>
 
 
-                        <br />
+                        <br/>
 
-                        <tr >
+                        <tr>
                             <td colspan="5"></td>
-                            <td   style="text-align: left;">
+                            <td style="text-align: left;">
                                 Total TVA :
                             </td>
 
-                            <td style="text-align: right;" >{{countAllTVA() | currency:'EUR':true:'1.2-2' }} </td>
+                            <td style="text-align: right;">{{countAllTVA() | currency:'EUR':true:'1.2-2' }}</td>
 
                         </tr>
                         <tr>
@@ -342,16 +334,6 @@
                             <td class="total">{{countTotalTVA() + countAllTVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-
-
-
-
-
-
-
-
-
-
 
 
                         <tr *ngIf="produitDevisOptions.length > 0">
@@ -368,7 +350,7 @@
                         <tr *ngFor="let produit of produitDevisOptions, let i = index; trackBy:customTrackBy">
 
 
-                            <td>    </td>
+                            <td></td>
                             <td>
                                 <div class="form-group">
                                     <span>{{produit.id_prc}}</span>
@@ -431,15 +413,16 @@
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="produitDevisOptions.length> 0 && devis.remise">
-                            <td colspan="6" class="total" style="text-align: right;">Total après remise HT:</td><!--ce fait sur le hors-->
+                            <td colspan="6" class="total" style="text-align: right;">Total après remise HT:</td>
+                            <!--ce fait sur le hors-->
                             <td class="total">{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="((countNTVAO()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td   style="text-align: left;" >TVA 2.1 %</td>
-                                <td   style="text-align: right;" >
+                                <td style="text-align: left;">TVA 2.1 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVAO() | currency:'EUR':true:'1.2-2'}}
 
                                 </td>
@@ -447,10 +430,10 @@
                             </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVACO()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td    style="text-align: left;" >TVA 5.5 %</td>
-                                <td  style="text-align: right;" >
+                                <td style="text-align: left;">TVA 5.5 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVACO() | currency:'EUR':true:'1.2-2' }}
 
                                 </td>
@@ -458,10 +441,10 @@
                             </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVADO()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td  style="text-align: left;" >TVA 10 %</td>
-                                <td  style="text-align: right;" >
+                                <td style="text-align: left;">TVA 10 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVADO() | currency:'EUR':true:'1.2-2' }}
 
                                 </td>
@@ -469,10 +452,10 @@
                             </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAsO()>0) )">
-                            <ng-container >
+                            <ng-container>
                                 <td colspan="5"></td>
-                                <td  style="text-align: left;" >TVA 20 %</td>
-                                <td  style="text-align: right;" >
+                                <td style="text-align: left;">TVA 20 %</td>
+                                <td style="text-align: right;">
                                     {{countNTVAsO() | currency:'EUR':true:'1.2-2' }}
 
                                 </td>
@@ -481,53 +464,58 @@
                         </tr>
 
 
-                        <br />
+                        <br/>
 
-                        <tr >
+                        <tr>
                             <td colspan="5"></td>
-                            <td   style="text-align: left;">
+                            <td style="text-align: left;">
                                 Total TVA :
                             </td>
 
-                            <td style="text-align: right;" >{{countAllTVAO() | currency:'EUR':true:'1.2-2' }} </td>
+                            <td style="text-align: right;">{{countAllTVAO() | currency:'EUR':true:'1.2-2' }}</td>
 
                         </tr>
-                        <br />
+                        <br/>
                         <tr *ngIf="produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right;">TTC :</td>
-                            <td class="total">{{countTotalOptionstotalTVA() + countAllTVAO()| currency:'EUR':true:'1.2-2'}}</td>
+                            <td class="total">{{countTotalOptionstotalTVA() + countAllTVAO()|
+                                currency:'EUR':true:'1.2-2'}}
+                            </td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
 
-
-
-
-
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
-                                color: white">HT :</td>
+                                color: white">HT :
+                            </td>
                             <td class="total">{{total() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
-                                color: white">Total après remise HT:</td>
+                                color: white">Total après remise HT:
+                            </td>
                             <td class="total">{{totalRemiseTVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
-                                color: white">TVA {{devis.tva}} %:</td>
-                            <td class="total">{{totalTVA() + countAllTVAO() + countAllTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                                color: white">TVA {{devis.tva}} %:
+                            </td>
+                            <td class="total">{{totalTVA() + countAllTVAO() + countAllTVA() |
+                                currency:'EUR':true:'1.2-2'}}
+                            </td>
                         </tr>
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
-                                color: white">TTC :</td>
-                            <td class="total">{{countTotalfinal() + countAllTVAO() + countAllTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                                color: white">TTC :
+                            </td>
+                            <td class="total">{{countTotalfinal() + countAllTVAO() + countAllTVA() |
+                                currency:'EUR':true:'1.2-2'}}
+                            </td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-
 
 
                         </tbody>
@@ -541,12 +529,12 @@
                         Valider
                     </button>
 
-                    <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter" style="height: 50px;page-break-after:always;page-break-inside: avoid;">
+                    <div class="form-group col-sm-4" *ngIf="print" id="pageFooter"
+                         style="height: 50px;page-break-after:always;page-break-inside: avoid;">
 
 
-
-
-                        <article style="margin-top: 0px;bottom: 16px;left: 0; right: 0;position: fixed;text-align: center;z-index: 4;font-size: 9px;" >
+                        <article
+                                style="margin-top: 0px;bottom: 16px;left: 0; right: 0;position: fixed;text-align: center;z-index: 4;font-size: 9px;">
 
                             <p style="font-size:7px; height: 10px;" class="red">{{fact.pied_page1}}
                                 {{fact.pied_page2}}
@@ -557,16 +545,21 @@
                         </article>
 
 
-
                     </div>
 
 
-                    <div   style="font-size: 10px;position:relative;page-break-before:always;page-break-inside: avoid;text-align: justify;" *ngIf="print"  id="cgv">
+                    <div style="font-size: 10px;position:relative;page-break-before:always;page-break-inside: avoid;text-align: justify;"
+                         *ngIf="print" id="cgv">
 
-                        <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:25%; top:0px; position: absolute;">
+                        <img *ngIf="print" src="image/logo_jd.png" class="col-sm-2 col-sm-offset-5"
+                             style="text-align: center;margin-left:25%; top:0px; position: absolute;">
 
 
-                        <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
                         <p style="text-align: justify;">{{cgv.texte}}</p>
                     </div>
                 </div>
@@ -577,6 +570,8 @@
     </div>
 </div>
 
-        <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accesdev"  (click)=" imprimer()">Imprimer</button>
+<button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accesdev" (click)=" imprimer()">
+    Imprimer
+</button>
 
 
