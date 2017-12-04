@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 15 Novembre 2017 à 13:00
+-- Généré le :  Lun 04 Décembre 2017 à 10:41
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `basewbat`
+-- Base de données :  `mabase`
 --
 
 -- --------------------------------------------------------
@@ -111,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `alldevis` (
 ,`total` double
 ,`TS` tinyint(4)
 ,`factured` tinyint(4)
+,`remise` float
 );
 -- --------------------------------------------------------
 
@@ -124,14 +125,35 @@ CREATE TABLE IF NOT EXISTS `avoir` (
   `n_situation` int(255) NOT NULL,
   `date_avoir` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_contact` int(255) DEFAULT NULL,
-  `tva` int(255) NOT NULL,
+  `tva` int(255) DEFAULT NULL,
   `autres` varchar(255) DEFAULT NULL,
   `users` int(255) DEFAULT NULL,
   `remise` float DEFAULT NULL,
   `pourremise` float DEFAULT NULL,
+  `libre` tinyint(4) DEFAULT NULL,
+  `montant_ht` float DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_avoir`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `avoirlibre`
+--
+
+CREATE TABLE IF NOT EXISTS `avoirlibre` (
+  `id_avlibre` int(255) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `qte` float NOT NULL,
+  `prix` float NOT NULL,
+  `tva` float NOT NULL,
+  `id_fact` int(11) NOT NULL,
+  `n_situation` int(11) NOT NULL,
+  `id_prod` int(11) NOT NULL AUTO_INCREMENT,
+  `id_entreprise` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id_prod`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -146,6 +168,7 @@ CREATE TABLE IF NOT EXISTS `avoir_detail` (
   `pourcentage` float DEFAULT NULL,
   `prixfact` float DEFAULT NULL,
   `qtefact` float DEFAULT NULL,
+  `tvaa` float DEFAULT NULL,
   `prcrembour` float DEFAULT NULL,
   `prixrembour` float DEFAULT NULL,
   `autres` varchar(255) DEFAULT NULL,
@@ -362,10 +385,14 @@ CREATE TABLE IF NOT EXISTS `cgv` (
   `choix` varchar(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Contenu de la table `cgv`
+--
 
 INSERT INTO `cgv` (`id`, `texte`, `user`, `autre`, `choix`, `id_entreprise`) VALUES
-(1, 'texte', NULL, NULL, NULL, NULL);
+(1, 'exemple de condition générale des ventes', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -622,22 +649,9 @@ CREATE TABLE IF NOT EXISTS `demande_detail` (
   `nom_produit` varchar(255) DEFAULT NULL,
   `unite` varchar(255) DEFAULT NULL,
   `qte` float DEFAULT NULL,
-  `id_entreprise` int(11) DEFAULT NULL,
+  `id_entreprise` int(255) DEFAULT NULL,
   PRIMARY KEY (`id_produit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `dept`
---
-
-CREATE TABLE IF NOT EXISTS `dept` (
-  `DEPTNO` int(2) NOT NULL,
-  `DNAME` varchar(10) DEFAULT NULL,
-  `LOC` varchar(8) DEFAULT NULL,
-  PRIMARY KEY (`DEPTNO`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -703,6 +717,7 @@ CREATE TABLE IF NOT EXISTS `devislist` (
 ,`total` double
 ,`TS` tinyint(1)
 ,`factured` tinyint(1)
+,`remise` float
 );
 -- --------------------------------------------------------
 
@@ -720,6 +735,7 @@ CREATE TABLE IF NOT EXISTS `devislistlibre` (
 ,`total` double
 ,`TS` tinyint(1)
 ,`factured` tinyint(1)
+,`remise` float
 );
 -- --------------------------------------------------------
 
@@ -737,13 +753,14 @@ CREATE TABLE IF NOT EXISTS `devis_detaille` (
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
   `id_devis_libre` int(11) NOT NULL,
-  `commentaire` varchar(512) DEFAULT NULL,
+  `commentaire` text,
   `reference` int(11) NOT NULL,
   `reference_autre` varchar(255) DEFAULT NULL,
   `margedev` int(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   `tva` varchar(30) DEFAULT NULL,
   `taux` double DEFAULT NULL,
+  `remise` float DEFAULT NULL,
   PRIMARY KEY (`num_version`,`id_devis`,`id_produit`,`produit_version`),
   KEY `id_devis` (`num_version`,`id_produit`),
   KEY `id_version` (`num_version`),
@@ -775,6 +792,7 @@ CREATE TABLE IF NOT EXISTS `devis_detaille_libre` (
   `unite` varchar(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   `tva` varchar(30) DEFAULT NULL,
+  `remise` float DEFAULT NULL,
   PRIMARY KEY (`id_produit`),
   KEY `num_version` (`num_version`,`id_devis`),
   KEY `id_devis` (`id_devis`),
@@ -822,6 +840,8 @@ CREATE TABLE IF NOT EXISTS `devis_option` (
   `margedev` int(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   `tva` int(30) DEFAULT NULL,
+  `taux` double DEFAULT NULL,
+  `remise` float DEFAULT NULL,
   PRIMARY KEY (`id_devis`,`num_version`,`id_produit`,`produit_version`),
   KEY `id_produit` (`id_produit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -850,6 +870,7 @@ CREATE TABLE IF NOT EXISTS `devis_option_libre` (
   `unite` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   `tva` varchar(30) DEFAULT NULL,
+  `remise` float DEFAULT NULL,
   PRIMARY KEY (`id_produit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1 ;
 
@@ -861,7 +882,7 @@ CREATE TABLE IF NOT EXISTS `devis_option_libre` (
 
 CREATE TABLE IF NOT EXISTS `devis_version` (
   `num_version` int(255) NOT NULL,
-  `tva` float NOT NULL,
+  `tva` float DEFAULT NULL,
   `accepted` tinyint(1) DEFAULT NULL,
   `id_devis` int(255) NOT NULL,
   `date_version` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -884,26 +905,6 @@ CREATE TABLE IF NOT EXISTS `devis_version` (
   `taux` double DEFAULT NULL,
   PRIMARY KEY (`num_version`,`id_devis`),
   KEY `id_devis` (`id_devis`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `emp`
---
-
-CREATE TABLE IF NOT EXISTS `emp` (
-  `EMPNO` int(4) NOT NULL,
-  `ENAME` varchar(6) DEFAULT NULL,
-  `JOB` varchar(9) DEFAULT NULL,
-  `MGR` int(4) DEFAULT NULL,
-  `HIREDATE` date DEFAULT NULL,
-  `SAL` decimal(6,2) DEFAULT NULL,
-  `COMM` decimal(6,0) DEFAULT NULL,
-  `DEPTNO` int(2) NOT NULL,
-  PRIMARY KEY (`EMPNO`),
-  KEY `DEPTNO` (`DEPTNO`),
-  KEY `MGR` (`MGR`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1069,6 +1070,7 @@ CREATE TABLE IF NOT EXISTS `facture_librebase` (
   `pourcent` float DEFAULT NULL,
   `tva` float DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
+  `remise` float DEFAULT NULL,
   PRIMARY KEY (`id_fact`,`n_situation`,`id_prod`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1089,6 +1091,8 @@ CREATE TABLE IF NOT EXISTS `facture_libredetail` (
   `unite` varchar(255) DEFAULT NULL,
   `tva` float DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
+  `option` tinyint(4) DEFAULT NULL,
+  `remise` float DEFAULT NULL,
   PRIMARY KEY (`id_prod`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -1561,6 +1565,26 @@ CREATE TABLE IF NOT EXISTS `photo` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `plusmoins`
+--
+
+CREATE TABLE IF NOT EXISTS `plusmoins` (
+  `id_plusmoins` int(255) NOT NULL AUTO_INCREMENT,
+  `id_facture` int(255) NOT NULL,
+  `n_situation` int(255) NOT NULL,
+  `nom_produit` varchar(255) DEFAULT NULL,
+  `id_produit` int(255) DEFAULT NULL,
+  `num_version` int(255) DEFAULT NULL,
+  `qteprod` float DEFAULT NULL,
+  `prixprod` float DEFAULT NULL,
+  `pourcentage` float DEFAULT NULL,
+  `remise` float DEFAULT NULL,
+  PRIMARY KEY (`id_plusmoins`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `prime`
 --
 
@@ -1590,7 +1614,7 @@ CREATE TABLE IF NOT EXISTS `produit` (
   `date_ajout` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user` int(255) NOT NULL DEFAULT '3',
   `type` smallint(1) NOT NULL DEFAULT '0' COMMENT 'indique si c''est produit achat (0) ou main d''oeuvre (1)',
-  `image` varchar(256) DEFAULT NULL,
+  `image_url` varchar(256) DEFAULT NULL,
   `id_cat` int(3) DEFAULT NULL,
   `id_contact` int(10) DEFAULT NULL COMMENT 'fournisseur',
   `libelle` varchar(100) NOT NULL,
@@ -1777,9 +1801,11 @@ CREATE TABLE IF NOT EXISTS `situation_facture` (
   `option` tinyint(4) DEFAULT NULL,
   `qtefact` float DEFAULT NULL,
   `prixfact` float DEFAULT NULL,
+  `tvas` float DEFAULT NULL,
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
+  `remise` float DEFAULT NULL,
   PRIMARY KEY (`id_facture`,`n_situation`,`id_produit`),
   KEY `id_facture` (`id_facture`),
   KEY `id_produit` (`id_produit`)
@@ -1800,9 +1826,11 @@ CREATE TABLE IF NOT EXISTS `situation_option` (
   `qtefact` float NOT NULL,
   `prixfact` float NOT NULL,
   `pourcentage` float NOT NULL,
+  `tvao` float DEFAULT NULL,
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
+  `remise` float DEFAULT NULL,
   PRIMARY KEY (`id_facture`,`n_situation`,`id_produit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1874,7 +1902,6 @@ CREATE TABLE IF NOT EXISTS `telephone` (
   `type_tel` varchar(50) NOT NULL,
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
-  `id_entreprise` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_tel`),
   KEY `id_contact` (`id_contact`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -1896,7 +1923,7 @@ CREATE TABLE IF NOT EXISTS `testing` (
   PRIMARY KEY (`id_valitest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-INSERT INTO `testing` (`numtest`, `id_test`) VALUES ('CLE_LICENCE', '1');
+INSERT INTO `testing` (`numtest`, `id_test`) VALUES ('wbat1234', '5');
 
 -- --------------------------------------------------------
 
@@ -1987,8 +2014,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `firstname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `lastname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tel_bureau_user` float DEFAULT NULL,
-  `tel_mob_user` float DEFAULT NULL,
+  `tel_bureau_user` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tel_mob_user` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email_user` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -2112,7 +2139,7 @@ CREATE TABLE IF NOT EXISTS `usersdroits` (
 --
 
 INSERT INTO `usersdroits` (`id_droit`, `id`, `accescontact`, `supcontact`, `ajoutcontact`, `modifcontact`, `validcontact`, `accesproa`, `supproa`, `ajoutproa`, `modifproa`, `validproa`, `accesprov`, `supprov`, `ajoutprov`, `modifprov`, `validprov`, `accescom`, `supcom`, `ajoutcom`, `modifcom`, `validcom`, `accescha`, `supcha`, `ajoutcha`, `modifcha`, `validcha`, `accesdev`, `supdev`, `ajoutdev`, `modifdev`, `validdev`, `accesfact`, `supfact`, `ajoutfact`, `modiffact`, `validfact`, `accesfour`, `supfour`, `ajoutfour`, `modiffour`, `validfour`, `accesfrais`, `supfrais`, `ajoutfrais`, `modiffrais`, `validfrais`, `accesbg`, `supbg`, `ajoutbg`, `modifbg`, `validbg`, `accespb`, `suppb`, `ajoutpb`, `modifpb`, `validpb`, `accespc`, `suppc`, `ajoutpc`, `modifpc`, `validpc`, `accesparam`, `supparam`, `ajoutparam`, `modifparam`, `validparam`, `accesstat`, `supstat`, `ajoutstat`, `modifstat`, `validstat`, `accesam`, `supam`, `ajoutam`, `modifam`, `validam`, `accesmes`, `supmes`, `ajoutmes`, `modifmes`, `validmes`, `accesaut`, `supaut`, `ajoutaut`, `modifaut`, `validaut`, `accesauti`, `supauti`, `ajoutauti`, `modifauti`, `validauti`, `id_entreprise`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, NULL, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2161,7 +2188,7 @@ CREATE TABLE IF NOT EXISTS `vehiculemateriel` (
   `fgarant` timestamp NULL DEFAULT NULL,
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
-  `image` varchar(256) DEFAULT NULL,
+  `image_vh` varchar(256) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_vehmat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -2191,7 +2218,7 @@ CREATE TABLE IF NOT EXISTS `vehimat_ged` (
 --
 DROP TABLE IF EXISTS `alldevis`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `alldevis` AS select `devislist`.`num_version` AS `num_version`,`devislist`.`accepted` AS `accepted`,`devislist`.`id_devis` AS `id_devis`,`devislist`.`envoye` AS `envoye`,`devislist`.`date_version` AS `date_version`,`devislist`.`statut` AS `statut`,`devislist`.`accompte` AS `accompte`,`devislist`.`total` AS `total`,`devislist`.`TS` AS `TS`,`devislist`.`factured` AS `factured` from `devislist` where (`devislist`.`total` > 0) union select `devislistlibre`.`num_version` AS `num_version`,`devislistlibre`.`accepted` AS `accepted`,`devislistlibre`.`id_devis` AS `id_devis`,`devislistlibre`.`envoye` AS `envoye`,`devislistlibre`.`date_version` AS `date_version`,`devislistlibre`.`statut` AS `statut`,`devislistlibre`.`accompte` AS `accompte`,`devislistlibre`.`total` AS `total`,`devislistlibre`.`TS` AS `TS`,`devislistlibre`.`factured` AS `factured` from `devislistlibre` where (`devislistlibre`.`total` > 0);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `alldevis` AS select `devislist`.`num_version` AS `num_version`,`devislist`.`accepted` AS `accepted`,`devislist`.`id_devis` AS `id_devis`,`devislist`.`envoye` AS `envoye`,`devislist`.`date_version` AS `date_version`,`devislist`.`statut` AS `statut`,`devislist`.`accompte` AS `accompte`,`devislist`.`total` AS `total`,`devislist`.`TS` AS `TS`,`devislist`.`factured` AS `factured`,`devislist`.`remise` AS `remise` from `devislist` where (`devislist`.`total` > 0) union select `devislistlibre`.`num_version` AS `num_version`,`devislistlibre`.`accepted` AS `accepted`,`devislistlibre`.`id_devis` AS `id_devis`,`devislistlibre`.`envoye` AS `envoye`,`devislistlibre`.`date_version` AS `date_version`,`devislistlibre`.`statut` AS `statut`,`devislistlibre`.`accompte` AS `accompte`,`devislistlibre`.`total` AS `total`,`devislistlibre`.`TS` AS `TS`,`devislistlibre`.`factured` AS `factured`,`devislistlibre`.`remise` AS `remise` from `devislistlibre` where (`devislistlibre`.`total` > 0);
 
 -- --------------------------------------------------------
 
@@ -2200,7 +2227,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `alldevi
 --
 DROP TABLE IF EXISTS `bondecommandelist`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `bondecommandelist` AS select `chantier`.`nom_chantier` AS `nom_chantier`,`bon_de_commande`.`state` AS `state`,`bon_de_commande`.`Recu` AS `Recu`,`bon_de_commande`.`tarifpourlivraisonreel` AS `tarifpourlivraisonreel`,`bon_de_commande`.`tarifpourlivraison` AS `tarifpourlivraison`,`bon_de_commande`.`livre` AS `livre`,`chantier`.`id_chantier` AS `id_chantier`,`bon_de_commande`.`id_bdc` AS `id_bdc`,`bon_de_commande`.`id_devis` AS `id_devis`,`bon_de_commande`.`adresselivraison` AS `adresselivraison`,`bon_de_commande`.`id_fournisseur` AS `id_fournisseur`,`listecontacts`.`nom` AS `fournisseurNom`,`bon_de_commande`.`date_livraison` AS `date_livraison`,`bon_de_commande`.`date_livraison_reel` AS `date_livraison_reel`,`bon_de_commande`.`date_commande` AS `date_commande`,`users`.`firstname` AS `firstname`,`users`.`lastname` AS `lastname`,sum((`bdc_detaille`.`prix_prevu` * `bdc_detaille`.`qte`)) AS `total` from ((((`bon_de_commande` left join `bdc_detaille` on((`bdc_detaille`.`id_bdc` = `bon_de_commande`.`id_bdc`))) left join `users` on((`users`.`id` = `bon_de_commande`.`id_user`))) left join `listecontacts` on((`listecontacts`.`id_contact` = `bon_de_commande`.`id_fournisseur`))) left join `chantier` on((`chantier`.`id_chantier` = `bon_de_commande`.`id_chantier`))) group by `bon_de_commande`.`id_bdc` order by `bon_de_commande`.`date_livraison`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `bondecommandelist` AS select `chantier`.`nom_chantier` AS `nom_chantier`,`bon_de_commande`.`state` AS `state`,`bon_de_commande`.`Recu` AS `Recu`,`bon_de_commande`.`tarifpourlivraisonreel` AS `tarifpourlivraisonreel`,`bon_de_commande`.`tarifpourlivraison` AS `tarifpourlivraison`,`bon_de_commande`.`livre` AS `livre`,`chantier`.`id_chantier` AS `id_chantier`,`bon_de_commande`.`id_bdc` AS `id_bdc`,`bon_de_commande`.`id_devis` AS `id_devis`,`bon_de_commande`.`adresselivraison` AS `adresselivraison`,`bon_de_commande`.`id_fournisseur` AS `id_fournisseur`,`listecontacts`.`nom` AS `fournisseurNom`,`bon_de_commande`.`date_livraison` AS `date_livraison`,`bon_de_commande`.`date_livraison_reel` AS `date_livraison_reel`,`bon_de_commande`.`date_commande` AS `date_commande`,`users`.`firstname` AS `firstname`,`users`.`lastname` AS `lastname`,sum((`bdc_detaille`.`prix_prevu` * `bdc_detaille`.`qte`)) AS `total` from ((((`bon_de_commande` left join `bdc_detaille` on((`bdc_detaille`.`id_bdc` = `bon_de_commande`.`id_bdc`))) left join `users` on((`users`.`id` = `bon_de_commande`.`id_user`))) left join `listecontacts` on((`listecontacts`.`id_contact` = `bon_de_commande`.`id_fournisseur`))) left join `chantier` on((`chantier`.`id_chantier` = `bon_de_commande`.`id_chantier`))) group by `bon_de_commande`.`id_bdc` order by `bon_de_commande`.`date_livraison`;
 
 -- --------------------------------------------------------
 
@@ -2209,7 +2236,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `bondeco
 --
 DROP TABLE IF EXISTS `cacesalert`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `cacesalert` AS select `cacescontact`.`date_fin` AS `date`,`caces`.`caces` AS `caces`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom` from ((`cacescontact` left join `caces` on((`cacescontact`.`id_caces` = `caces`.`id_caces`))) left join `contact` on((`contact`.`id_contact` = `cacescontact`.`id_contact`))) where (`cacescontact`.`date_fin` between now() and (now() + interval 2 month));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `cacesalert` AS select `cacescontact`.`date_fin` AS `date`,`caces`.`caces` AS `caces`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom` from ((`cacescontact` left join `caces` on((`cacescontact`.`id_caces` = `caces`.`id_caces`))) left join `contact` on((`contact`.`id_contact` = `cacescontact`.`id_contact`))) where (`cacescontact`.`date_fin` between now() and (now() + interval 2 month));
 
 -- --------------------------------------------------------
 
@@ -2218,7 +2245,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `cacesal
 --
 DROP TABLE IF EXISTS `chantierdevisencours`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `chantierdevisencours` AS select `devislist`.`num_version` AS `num_version`,`devislist`.`accepted` AS `accepted`,`devislist`.`id_devis` AS `id_devis`,`devislist`.`envoye` AS `envoye`,`devislist`.`date_version` AS `date_version`,`devislist`.`statut` AS `statut`,`devislist`.`accompte` AS `accompte`,`devislist`.`total` AS `total`,`devislist`.`TS` AS `TS`,`devislist`.`factured` AS `factured`,`chantierdevis`.`status` AS `status`,`chantierdevis`.`id_chantier` AS `id_chantier` from (`devislist` join `chantierdevis`) where ((`chantierdevis`.`status` = 'en cours') and (`devislist`.`id_devis` = `chantierdevis`.`id_devis`) and (`devislist`.`num_version` = `chantierdevis`.`num_version`));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `chantierdevisencours` AS select `devislist`.`num_version` AS `num_version`,`devislist`.`accepted` AS `accepted`,`devislist`.`id_devis` AS `id_devis`,`devislist`.`envoye` AS `envoye`,`devislist`.`date_version` AS `date_version`,`devislist`.`statut` AS `statut`,`devislist`.`accompte` AS `accompte`,`devislist`.`total` AS `total`,`devislist`.`TS` AS `TS`,`devislist`.`factured` AS `factured`,`chantierdevis`.`status` AS `status`,`chantierdevis`.`id_chantier` AS `id_chantier` from (`devislist` join `chantierdevis`) where ((`chantierdevis`.`status` = 'en cours') and (`devislist`.`id_devis` = `chantierdevis`.`id_devis`) and (`devislist`.`num_version` = `chantierdevis`.`num_version`));
 
 -- --------------------------------------------------------
 
@@ -2227,7 +2254,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `chantie
 --
 DROP TABLE IF EXISTS `devisfrais`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `devisfrais` AS select `devis_version`.`num_version` AS `num_version`,`devis_version`.`accepted` AS `accepted`,`devis_version`.`id_devis` AS `id_devis`,`devis_version`.`envoye` AS `envoye`,`devis_version`.`date_version` AS `date_version`,`devis_version`.`statut` AS `statut`,`devis_version`.`accompte` AS `accompte`,(coalesce(sum((`devis_option`.`qte_devis` * `devis_option`.`prix_devis`)),0) + sum((`devis_detaille`.`qte_devis` * `devis_detaille`.`prix_devis`))) AS `total`,`devis`.`TS` AS `TS`,`chantierdevis`.`date_demarrage` AS `date_demarrage`,`chantierdevis`.`reception_chantier` AS `reception_chantier`,`chantierdevis`.`status` AS `status`,`chantierdevis`.`id_chantier` AS `id_chantier`,month(`chantierdevis`.`date_demarrage`) AS `devismois`,year(`chantierdevis`.`date_demarrage`) AS `devisannee` from ((((`devis_version` left join `devis_detaille` on(((`devis_detaille`.`num_version` = `devis_version`.`num_version`) and (`devis_detaille`.`id_devis` = `devis_version`.`id_devis`)))) left join `devis_option` on(((`devis_option`.`num_version` = `devis_version`.`num_version`) and (`devis_option`.`id_devis` = `devis_version`.`id_devis`) and (`devis_option`.`accepted` is true)))) left join `devis` on((`devis_version`.`id_devis` = `devis`.`id_devis`))) join `chantierdevis`) where ((`devis_version`.`accepted` is true) and (`devis_version`.`id_devis` = `chantierdevis`.`id_devis`)) group by `devis_version`.`num_version`,`devis_version`.`id_devis`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `devisfrais` AS select `devis_version`.`num_version` AS `num_version`,`devis_version`.`accepted` AS `accepted`,`devis_version`.`id_devis` AS `id_devis`,`devis_version`.`envoye` AS `envoye`,`devis_version`.`date_version` AS `date_version`,`devis_version`.`statut` AS `statut`,`devis_version`.`accompte` AS `accompte`,(coalesce(sum((`devis_option`.`qte_devis` * `devis_option`.`prix_devis`)),0) + sum((`devis_detaille`.`qte_devis` * `devis_detaille`.`prix_devis`))) AS `total`,`devis`.`TS` AS `TS`,`chantierdevis`.`date_demarrage` AS `date_demarrage`,`chantierdevis`.`reception_chantier` AS `reception_chantier`,`chantierdevis`.`status` AS `status`,`chantierdevis`.`id_chantier` AS `id_chantier`,month(`chantierdevis`.`date_demarrage`) AS `devismois`,year(`chantierdevis`.`date_demarrage`) AS `devisannee` from ((((`devis_version` left join `devis_detaille` on(((`devis_detaille`.`num_version` = `devis_version`.`num_version`) and (`devis_detaille`.`id_devis` = `devis_version`.`id_devis`)))) left join `devis_option` on(((`devis_option`.`num_version` = `devis_version`.`num_version`) and (`devis_option`.`id_devis` = `devis_version`.`id_devis`) and (`devis_option`.`accepted` is true)))) left join `devis` on((`devis_version`.`id_devis` = `devis`.`id_devis`))) join `chantierdevis`) where ((`devis_version`.`accepted` is true) and (`devis_version`.`id_devis` = `chantierdevis`.`id_devis`)) group by `devis_version`.`num_version`,`devis_version`.`id_devis`;
 
 -- --------------------------------------------------------
 
@@ -2236,7 +2263,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `devisfr
 --
 DROP TABLE IF EXISTS `devislist`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `devislist` AS select `devis_version`.`num_version` AS `num_version`,`devis_version`.`accepted` AS `accepted`,`devis_version`.`id_devis` AS `id_devis`,`devis_version`.`envoye` AS `envoye`,`devis_version`.`date_version` AS `date_version`,`devis_version`.`statut` AS `statut`,`devis_version`.`accompte` AS `accompte`,(coalesce(sum((`devis_option`.`qte_devis` * `devis_option`.`prix_devis`)),0) + sum((`devis_detaille`.`qte_devis` * `devis_detaille`.`prix_devis`))) AS `total`,`devis`.`TS` AS `TS`,`devis_version`.`factured` AS `factured` from (((`devis_version` left join `devis_detaille` on(((`devis_detaille`.`num_version` = `devis_version`.`num_version`) and (`devis_detaille`.`id_devis` = `devis_version`.`id_devis`)))) left join `devis_option` on(((`devis_option`.`num_version` = `devis_version`.`num_version`) and (`devis_option`.`id_devis` = `devis_version`.`id_devis`) and (`devis_option`.`accepted` is true)))) left join `devis` on((`devis_version`.`id_devis` = `devis`.`id_devis`))) group by `devis_version`.`num_version`,`devis_version`.`id_devis`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `devislist` AS select `devis_version`.`num_version` AS `num_version`,`devis_version`.`accepted` AS `accepted`,`devis_version`.`id_devis` AS `id_devis`,`devis_version`.`envoye` AS `envoye`,`devis_version`.`date_version` AS `date_version`,`devis_version`.`statut` AS `statut`,`devis_version`.`accompte` AS `accompte`,(coalesce(sum((`devis_option`.`qte_devis` * `devis_option`.`prix_devis`)),0) + sum((`devis_detaille`.`qte_devis` * `devis_detaille`.`prix_devis`))) AS `total`,`devis`.`TS` AS `TS`,`devis_version`.`factured` AS `factured`,`devis_version`.`remise` AS `remise` from (((`devis_version` left join `devis_detaille` on(((`devis_detaille`.`num_version` = `devis_version`.`num_version`) and (`devis_detaille`.`id_devis` = `devis_version`.`id_devis`)))) left join `devis_option` on(((`devis_option`.`num_version` = `devis_version`.`num_version`) and (`devis_option`.`id_devis` = `devis_version`.`id_devis`) and (`devis_option`.`accepted` is true)))) left join `devis` on((`devis_version`.`id_devis` = `devis`.`id_devis`))) group by `devis_version`.`num_version`,`devis_version`.`id_devis`;
 
 -- --------------------------------------------------------
 
@@ -2245,7 +2272,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `devisli
 --
 DROP TABLE IF EXISTS `devislistlibre`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `devislistlibre` AS select `devis_version`.`num_version` AS `num_version`,`devis_version`.`accepted` AS `accepted`,`devis_version`.`id_devis` AS `id_devis`,`devis_version`.`envoye` AS `envoye`,`devis_version`.`date_version` AS `date_version`,`devis_version`.`statut` AS `statut`,`devis_version`.`accompte` AS `accompte`,(coalesce(sum((`devis_option_libre`.`qte_devis` * `devis_option_libre`.`prix_devis`)),0) + sum((`devis_detaille_libre`.`qte_devis` * `devis_detaille_libre`.`prix_devis`))) AS `total`,`devis`.`TS` AS `TS`,`devis_version`.`factured` AS `factured` from (((`devis_version` left join `devis_detaille_libre` on(((`devis_detaille_libre`.`num_version` = `devis_version`.`num_version`) and (`devis_detaille_libre`.`id_devis` = `devis_version`.`id_devis`)))) left join `devis_option_libre` on(((`devis_option_libre`.`num_version` = `devis_version`.`num_version`) and (`devis_option_libre`.`id_devis` = `devis_version`.`id_devis`) and (`devis_option_libre`.`accepted` is true)))) left join `devis` on((`devis_version`.`id_devis` = `devis`.`id_devis`))) group by `devis_version`.`num_version`,`devis_version`.`id_devis`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `devislistlibre` AS select `devis_version`.`num_version` AS `num_version`,`devis_version`.`accepted` AS `accepted`,`devis_version`.`id_devis` AS `id_devis`,`devis_version`.`envoye` AS `envoye`,`devis_version`.`date_version` AS `date_version`,`devis_version`.`statut` AS `statut`,`devis_version`.`accompte` AS `accompte`,(coalesce(sum((`devis_option_libre`.`qte_devis` * `devis_option_libre`.`prix_devis`)),0) + sum((`devis_detaille_libre`.`qte_devis` * `devis_detaille_libre`.`prix_devis`))) AS `total`,`devis`.`TS` AS `TS`,`devis_version`.`factured` AS `factured`,`devis_version`.`remise` AS `remise` from (((`devis_version` left join `devis_detaille_libre` on(((`devis_detaille_libre`.`num_version` = `devis_version`.`num_version`) and (`devis_detaille_libre`.`id_devis` = `devis_version`.`id_devis`)))) left join `devis_option_libre` on(((`devis_option_libre`.`num_version` = `devis_version`.`num_version`) and (`devis_option_libre`.`id_devis` = `devis_version`.`id_devis`) and (`devis_option_libre`.`accepted` is true)))) left join `devis` on((`devis_version`.`id_devis` = `devis`.`id_devis`))) group by `devis_version`.`num_version`,`devis_version`.`id_devis`;
 
 -- --------------------------------------------------------
 
@@ -2254,7 +2281,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `devisli
 --
 DROP TABLE IF EXISTS `factureannee`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `factureannee` AS select sum(`facture`.`montant_ht`) AS `SUM( montant_ht )`,year(`facture`.`date_fact`) AS `datefact`,year(`facture`.`date_echeance`) AS `dateecheance` from `facture` group by year(`facture`.`date_fact`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `factureannee` AS select sum(`facture`.`montant_ht`) AS `SUM( montant_ht )`,year(`facture`.`date_fact`) AS `datefact`,year(`facture`.`date_echeance`) AS `dateecheance` from `facture` group by year(`facture`.`date_fact`);
 
 -- --------------------------------------------------------
 
@@ -2263,7 +2290,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `facture
 --
 DROP TABLE IF EXISTS `facturechantiercours`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `facturechantiercours` AS select sum(`facture`.`montant_ht`) AS `montantfact`,`facture`.`id_devis` AS `id_devis` from (`facture` join `chantierdevis`) where ((`chantierdevis`.`status` = 'en cours') and (`facture`.`id_devis` = `chantierdevis`.`id_devis`) and (`facture`.`id_version` = `chantierdevis`.`num_version`)) group by `facture`.`id_devis`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `facturechantiercours` AS select sum(`facture`.`montant_ht`) AS `montantfact`,`facture`.`id_devis` AS `id_devis` from (`facture` join `chantierdevis`) where ((`chantierdevis`.`status` = 'en cours') and (`facture`.`id_devis` = `chantierdevis`.`id_devis`) and (`facture`.`id_version` = `chantierdevis`.`num_version`)) group by `facture`.`id_devis`;
 
 -- --------------------------------------------------------
 
@@ -2272,7 +2299,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `facture
 --
 DROP TABLE IF EXISTS `formationalert`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `formationalert` AS select `formationcontact`.`datefor` AS `DATE`,`formation`.`designation` AS `designation`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom` from ((`formationcontact` left join `formation` on((`formationcontact`.`id_formation` = `formation`.`id_formation`))) left join `contact` on((`contact`.`id_contact` = `formationcontact`.`id_contact`))) where (`formationcontact`.`datefor` between now() and (now() + interval 2 month));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `formationalert` AS select `formationcontact`.`datefor` AS `DATE`,`formation`.`designation` AS `designation`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom` from ((`formationcontact` left join `formation` on((`formationcontact`.`id_formation` = `formation`.`id_formation`))) left join `contact` on((`contact`.`id_contact` = `formationcontact`.`id_contact`))) where (`formationcontact`.`datefor` between now() and (now() + interval 2 month));
 
 -- --------------------------------------------------------
 
@@ -2281,7 +2308,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `formati
 --
 DROP TABLE IF EXISTS `fraismoisannee`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `fraismoisannee` AS select month(`fraisgeneraux`.`date_debut`) AS `mois`,year(`fraisgeneraux`.`date_debut`) AS `annee`,sum(`fraisgeneraux`.`valeur`) AS `somme` from `fraisgeneraux` group by month(`fraisgeneraux`.`date_debut`),year(`fraisgeneraux`.`date_debut`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `fraismoisannee` AS select month(`fraisgeneraux`.`date_debut`) AS `mois`,year(`fraisgeneraux`.`date_debut`) AS `annee`,sum(`fraisgeneraux`.`valeur`) AS `somme` from `fraisgeneraux` group by month(`fraisgeneraux`.`date_debut`),year(`fraisgeneraux`.`date_debut`);
 
 -- --------------------------------------------------------
 
@@ -2290,7 +2317,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `fraismo
 --
 DROP TABLE IF EXISTS `heuremois`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `heuremois` AS select `travail`.`id_travail` AS `id_travail`,`travail`.`nb_heure` AS `nb_heure`,`travail`.`date` AS `date`,`travail`.`id_employé` AS `id_employé`,`travail`.`id_chantier` AS `id_chantier`,`travail`.`valid` AS `valid`,`travail`.`type` AS `type`,`travail`.`user` AS `user`,`travail`.`autres` AS `autres`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom`,sec_to_time(sum(time_to_sec(`travail`.`nb_heure`))) AS `temps`,month(`travail`.`date`) AS `mois`,year(`travail`.`date`) AS `annee` from (`travail` left join `contact` on((`travail`.`id_employé` = `contact`.`id_contact`))) where (`travail`.`valid` is true) group by `travail`.`id_employé`,month(`travail`.`date`),year(`travail`.`date`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `heuremois` AS select `travail`.`id_travail` AS `id_travail`,`travail`.`nb_heure` AS `nb_heure`,`travail`.`date` AS `date`,`travail`.`id_employé` AS `id_employé`,`travail`.`id_chantier` AS `id_chantier`,`travail`.`valid` AS `valid`,`travail`.`type` AS `type`,`travail`.`user` AS `user`,`travail`.`autres` AS `autres`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom`,sec_to_time(sum(time_to_sec(`travail`.`nb_heure`))) AS `temps`,month(`travail`.`date`) AS `mois`,year(`travail`.`date`) AS `annee` from (`travail` left join `contact` on((`travail`.`id_employé` = `contact`.`id_contact`))) where (`travail`.`valid` is true) group by `travail`.`id_employé`,month(`travail`.`date`),year(`travail`.`date`);
 
 -- --------------------------------------------------------
 
@@ -2299,7 +2326,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `heuremo
 --
 DROP TABLE IF EXISTS `heuresemaine`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `heuresemaine` AS select `travail`.`id_employé` AS `id_employé`,sec_to_time(sum(time_to_sec(`travail`.`nb_heure`))) AS `temps`,week(`travail`.`date`,0) AS `semaine`,year(`travail`.`date`) AS `annee`,month(`travail`.`date`) AS `mois`,`travail`.`id_chantier` AS `id_chantier`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom`,sum(time_to_sec(`travail`.`nb_heure`)) AS `sumse`,count(`travail`.`date`) AS `somme`,`contrat_histo`.`type_contrat` AS `type_contrat`,`contrat_histo`.`tauxhorairesbrute` AS `tauxhorairesbrute`,`contrat_histo`.`tauxsurcharge` AS `tauxsurcharge`,`contrat_histo`.`panier` AS `panier`,`contrat_histo`.`heure_mois` AS `heure_mois`,`chantier`.`nom_chantier` AS `nom_chantier` from (((`travail` join `contact`) left join `contrat_histo` on(((`travail`.`id_employé` = `contrat_histo`.`id_contact`) and (`contrat_histo`.`date_debut` <= `travail`.`date`) and (`contrat_histo`.`date_fin` >= `travail`.`date`)))) left join `chantier` on((`chantier`.`id_chantier` = `travail`.`id_chantier`))) where ((`travail`.`valid` is true) and (`travail`.`id_employé` = `contact`.`id_contact`)) group by `travail`.`id_employé`,`travail`.`id_chantier`,week(`travail`.`date`,0),year(`travail`.`date`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `heuresemaine` AS select `travail`.`id_employé` AS `id_employé`,sec_to_time(sum(time_to_sec(`travail`.`nb_heure`))) AS `temps`,week(`travail`.`date`,0) AS `semaine`,year(`travail`.`date`) AS `annee`,month(`travail`.`date`) AS `mois`,`travail`.`id_chantier` AS `id_chantier`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom`,sum(time_to_sec(`travail`.`nb_heure`)) AS `sumse`,count(`travail`.`date`) AS `somme`,`contrat_histo`.`type_contrat` AS `type_contrat`,`contrat_histo`.`tauxhorairesbrute` AS `tauxhorairesbrute`,`contrat_histo`.`tauxsurcharge` AS `tauxsurcharge`,`contrat_histo`.`panier` AS `panier`,`contrat_histo`.`heure_mois` AS `heure_mois`,`chantier`.`nom_chantier` AS `nom_chantier` from (((`travail` join `contact`) left join `contrat_histo` on(((`travail`.`id_employé` = `contrat_histo`.`id_contact`) and (`contrat_histo`.`date_debut` <= `travail`.`date`) and (`contrat_histo`.`date_fin` >= `travail`.`date`)))) left join `chantier` on((`chantier`.`id_chantier` = `travail`.`id_chantier`))) where ((`travail`.`valid` is true) and (`travail`.`id_employé` = `contact`.`id_contact`)) group by `travail`.`id_employé`,`travail`.`id_chantier`,week(`travail`.`date`,0),year(`travail`.`date`);
 
 -- --------------------------------------------------------
 
@@ -2308,7 +2335,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `heurese
 --
 DROP TABLE IF EXISTS `listbdc`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listbdc` AS select `bdc_detaille`.`id_bdc` AS `id_bdc`,year(`bon_de_commande`.`date_livraison_reel`) AS `annee`,sum((`bdc_detaille`.`Qtelivre` * `bdc_detaille`.`Prixreel`)) AS `somme` from (`bon_de_commande` join `bdc_detaille`) where ((`bon_de_commande`.`Recu` is true) and (`bon_de_commande`.`id_bdc` = `bdc_detaille`.`id_bdc`)) group by year(`bon_de_commande`.`date_livraison_reel`),`bdc_detaille`.`id_bdc`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `listbdc` AS select `bdc_detaille`.`id_bdc` AS `id_bdc`,year(`bon_de_commande`.`date_livraison_reel`) AS `annee`,sum((`bdc_detaille`.`Qtelivre` * `bdc_detaille`.`Prixreel`)) AS `somme` from (`bon_de_commande` join `bdc_detaille`) where ((`bon_de_commande`.`Recu` is true) and (`bon_de_commande`.`id_bdc` = `bdc_detaille`.`id_bdc`)) group by year(`bon_de_commande`.`date_livraison_reel`),`bdc_detaille`.`id_bdc`;
 
 -- --------------------------------------------------------
 
@@ -2317,7 +2344,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listbdc
 --
 DROP TABLE IF EXISTS `listchantierdevismois`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listchantierdevismois` AS select `chantierdevis`.`id_devis` AS `id_devis`,`chantierdevis`.`num_version` AS `num_version`,`chantierdevis`.`id_chantier` AS `id_chantier`,`chantier`.`nom_chantier` AS `nom_chantier`,`chantier`.`responsable` AS `responsable`,round(sum((`devis_detaille`.`qte_devis` * `devis_detaille`.`prix_devis`)),2) AS `sumdet` from (((`chantier` join `chantierdevis`) join `devis_version`) join `devis_detaille`) where ((`chantier`.`id_chantier` = `chantierdevis`.`id_chantier`) and (`chantierdevis`.`id_devis` = `devis_version`.`id_devis`) and (`chantierdevis`.`num_version` = `devis_version`.`num_version`) and (`devis_detaille`.`id_devis` = `devis_version`.`id_devis`) and (`devis_detaille`.`num_version` = `devis_version`.`num_version`)) group by `chantierdevis`.`id_devis`,`chantierdevis`.`num_version`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `listchantierdevismois` AS select `chantierdevis`.`id_devis` AS `id_devis`,`chantierdevis`.`num_version` AS `num_version`,`chantierdevis`.`id_chantier` AS `id_chantier`,`chantier`.`nom_chantier` AS `nom_chantier`,`chantier`.`responsable` AS `responsable`,round(sum((`devis_detaille`.`qte_devis` * `devis_detaille`.`prix_devis`)),2) AS `sumdet` from (((`chantier` join `chantierdevis`) join `devis_version`) join `devis_detaille`) where ((`chantier`.`id_chantier` = `chantierdevis`.`id_chantier`) and (`chantierdevis`.`id_devis` = `devis_version`.`id_devis`) and (`chantierdevis`.`num_version` = `devis_version`.`num_version`) and (`devis_detaille`.`id_devis` = `devis_version`.`id_devis`) and (`devis_detaille`.`num_version` = `devis_version`.`num_version`)) group by `chantierdevis`.`id_devis`,`chantierdevis`.`num_version`;
 
 -- --------------------------------------------------------
 
@@ -2326,7 +2353,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listcha
 --
 DROP TABLE IF EXISTS `listchantierdevisoption`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listchantierdevisoption` AS select `chantierdevis`.`num_version` AS `num_version`,`chantierdevis`.`id_chantier` AS `id_chantier`,`chantier`.`nom_chantier` AS `nom_chantier`,round(sum((`devis_option`.`qte_devis` * `devis_option`.`prix_devis`)),2) AS `sumopt` from (((`chantier` join `chantierdevis`) join `devis_version`) join `devis_option`) where ((`chantier`.`id_chantier` = `chantierdevis`.`id_chantier`) and (`chantierdevis`.`id_devis` = `devis_version`.`id_devis`) and (`chantierdevis`.`num_version` = `devis_version`.`num_version`) and (`devis_option`.`id_devis` = `devis_version`.`id_devis`) and (`devis_option`.`num_version` = `devis_version`.`num_version`)) group by `chantierdevis`.`id_devis`,`chantierdevis`.`num_version`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `listchantierdevisoption` AS select `chantierdevis`.`num_version` AS `num_version`,`chantierdevis`.`id_chantier` AS `id_chantier`,`chantier`.`nom_chantier` AS `nom_chantier`,round(sum((`devis_option`.`qte_devis` * `devis_option`.`prix_devis`)),2) AS `sumopt` from (((`chantier` join `chantierdevis`) join `devis_version`) join `devis_option`) where ((`chantier`.`id_chantier` = `chantierdevis`.`id_chantier`) and (`chantierdevis`.`id_devis` = `devis_version`.`id_devis`) and (`chantierdevis`.`num_version` = `devis_version`.`num_version`) and (`devis_option`.`id_devis` = `devis_version`.`id_devis`) and (`devis_option`.`num_version` = `devis_version`.`num_version`)) group by `chantierdevis`.`id_devis`,`chantierdevis`.`num_version`;
 
 -- --------------------------------------------------------
 
@@ -2335,7 +2362,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listcha
 --
 DROP TABLE IF EXISTS `listchantierfacturemois`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listchantierfacturemois` AS select `chantierdevis`.`id_chantier` AS `id_chantier`,round(sum(`facture`.`montant_ht`),2) AS `montantht`,`chantierdevis`.`id_devis` AS `id_devis`,`chantierdevis`.`num_version` AS `num_version` from (((`chantier` join `chantierdevis`) join `devis_version`) join `facture`) where ((`chantier`.`id_chantier` = `chantierdevis`.`id_chantier`) and (`devis_version`.`id_devis` = `chantierdevis`.`id_devis`) and (`devis_version`.`num_version` = `chantierdevis`.`num_version`) and (`facture`.`id_devis` = `devis_version`.`id_devis`)) group by `facture`.`id_facture`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `listchantierfacturemois` AS select `chantierdevis`.`id_chantier` AS `id_chantier`,round(sum(`facture`.`montant_ht`),2) AS `montantht`,`chantierdevis`.`id_devis` AS `id_devis`,`chantierdevis`.`num_version` AS `num_version` from (((`chantier` join `chantierdevis`) join `devis_version`) join `facture`) where ((`chantier`.`id_chantier` = `chantierdevis`.`id_chantier`) and (`devis_version`.`id_devis` = `chantierdevis`.`id_devis`) and (`devis_version`.`num_version` = `chantierdevis`.`num_version`) and (`facture`.`id_devis` = `devis_version`.`id_devis`)) group by `facture`.`id_facture`;
 
 -- --------------------------------------------------------
 
@@ -2344,7 +2371,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listcha
 --
 DROP TABLE IF EXISTS `listecontacts`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listecontacts` AS select `contact`.`id_contact` AS `id_contact`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom`,`contact`.`type` AS `type`,`m1`.`mail` AS `mailPerso`,`m2`.`mail` AS `mailPro`,`t1`.`numero` AS `telFixe`,`t2`.`numero` AS `telMobile`,`t3`.`numero` AS `telPro`,`a1`.`adresse` AS `adresse`,`a1`.`code_postal` AS `code_postal`,`a1`.`ville` AS `ville`,`contact`.`raison_sociale` AS `raison_sociale`,`contact`.`adresse` AS `cadresse`,`contact`.`code_postal` AS `ccp`,`contact`.`ville` AS `cville` from ((((((`contact` left join `mail` `m1` on(((`contact`.`id_contact` = `m1`.`id_contact`) and (`m1`.`type_mail` = 'perso')))) left join `mail` `m2` on(((`contact`.`id_contact` = `m2`.`id_contact`) and (`m2`.`type_mail` = 'pro')))) left join `telephone` `t1` on(((`contact`.`id_contact` = `t1`.`id_contact`) and (`t1`.`type_tel` = 'fixe')))) left join `telephone` `t2` on(((`contact`.`id_contact` = `t2`.`id_contact`) and (`t2`.`type_tel` = 'mobile')))) left join `telephone` `t3` on(((`contact`.`id_contact` = `t3`.`id_contact`) and (`t3`.`type_tel` = 'pro')))) left join `adresse` `a1` on((`contact`.`id_contact` = `a1`.`id_contact`))) order by `contact`.`nom`,`contact`.`prenom`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `listecontacts` AS select `contact`.`id_contact` AS `id_contact`,`contact`.`nom` AS `nom`,`contact`.`prenom` AS `prenom`,`contact`.`type` AS `type`,`m1`.`mail` AS `mailPerso`,`m2`.`mail` AS `mailPro`,`t1`.`numero` AS `telFixe`,`t2`.`numero` AS `telMobile`,`t3`.`numero` AS `telPro`,`a1`.`adresse` AS `adresse`,`a1`.`code_postal` AS `code_postal`,`a1`.`ville` AS `ville`,`contact`.`raison_sociale` AS `raison_sociale`,`contact`.`adresse` AS `cadresse`,`contact`.`code_postal` AS `ccp`,`contact`.`ville` AS `cville` from ((((((`contact` left join `mail` `m1` on(((`contact`.`id_contact` = `m1`.`id_contact`) and (`m1`.`type_mail` = 'perso')))) left join `mail` `m2` on(((`contact`.`id_contact` = `m2`.`id_contact`) and (`m2`.`type_mail` = 'pro')))) left join `telephone` `t1` on(((`contact`.`id_contact` = `t1`.`id_contact`) and (`t1`.`type_tel` = 'fixe')))) left join `telephone` `t2` on(((`contact`.`id_contact` = `t2`.`id_contact`) and (`t2`.`type_tel` = 'mobile')))) left join `telephone` `t3` on(((`contact`.`id_contact` = `t3`.`id_contact`) and (`t3`.`type_tel` = 'pro')))) left join `adresse` `a1` on((`contact`.`id_contact` = `a1`.`id_contact`))) order by `contact`.`nom`,`contact`.`prenom`;
 
 -- --------------------------------------------------------
 
@@ -2353,7 +2380,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listeco
 --
 DROP TABLE IF EXISTS `listgenerauxmois`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listgenerauxmois` AS select `fraisgeneraux`.`categorie` AS `categorie`,`fraisgeneraux`.`date_debut` AS `date_debut`,round(sum(`fraisgeneraux`.`valeur`),2) AS `sum`,month(`fraisgeneraux`.`date_debut`) AS `mois` from `fraisgeneraux` group by month(`fraisgeneraux`.`date_debut`),year(`fraisgeneraux`.`date_debut`),`fraisgeneraux`.`categorie`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `listgenerauxmois` AS select `fraisgeneraux`.`categorie` AS `categorie`,`fraisgeneraux`.`date_debut` AS `date_debut`,round(sum(`fraisgeneraux`.`valeur`),2) AS `sum`,month(`fraisgeneraux`.`date_debut`) AS `mois` from `fraisgeneraux` group by month(`fraisgeneraux`.`date_debut`),year(`fraisgeneraux`.`date_debut`),`fraisgeneraux`.`categorie`;
 
 -- --------------------------------------------------------
 
@@ -2362,7 +2389,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `listgen
 --
 DROP TABLE IF EXISTS `sumbdc`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `sumbdc` AS select sum((`bdc_detaille`.`Prixreel` * `bdc_detaille`.`Qtelivre`)) AS `SUM( bdc_detaille.Prixreel * bdc_detaille.Qtelivre )`,`bon_de_commande`.`tarifpourlivraisonreel` AS `tarifpourlivraisonreel`,`chantierdevis`.`id_chantier` AS `id_chantier` from ((`bon_de_commande` join `chantierdevis`) join `bdc_detaille`) where ((`chantierdevis`.`id_chantier` = `bon_de_commande`.`id_chantier`) and (`bon_de_commande`.`Recu` is true) and (`bon_de_commande`.`id_bdc` = `bdc_detaille`.`id_bdc`));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `sumbdc` AS select sum((`bdc_detaille`.`Prixreel` * `bdc_detaille`.`Qtelivre`)) AS `SUM( bdc_detaille.Prixreel * bdc_detaille.Qtelivre )`,`bon_de_commande`.`tarifpourlivraisonreel` AS `tarifpourlivraisonreel`,`chantierdevis`.`id_chantier` AS `id_chantier` from ((`bon_de_commande` join `chantierdevis`) join `bdc_detaille`) where ((`chantierdevis`.`id_chantier` = `bon_de_commande`.`id_chantier`) and (`bon_de_commande`.`Recu` is true) and (`bon_de_commande`.`id_bdc` = `bdc_detaille`.`id_bdc`));
 
 -- --------------------------------------------------------
 
@@ -2371,7 +2398,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `sumbdc`
 --
 DROP TABLE IF EXISTS `sumdevis`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `sumdevis` AS select `devislist`.`date_version` AS `date_version`,sum(`devislist`.`total`) AS `totaldevis`,year(`devislist`.`date_version`) AS `annee` from `devislist` where (`devislist`.`accepted` is true) group by year(`devislist`.`date_version`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `sumdevis` AS select `devislist`.`date_version` AS `date_version`,sum(`devislist`.`total`) AS `totaldevis`,year(`devislist`.`date_version`) AS `annee` from `devislist` where (`devislist`.`accepted` is true) group by year(`devislist`.`date_version`);
 
 -- --------------------------------------------------------
 
@@ -2380,7 +2407,165 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `sumdevi
 --
 DROP TABLE IF EXISTS `unread_msg`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `unread_msg` AS select `message`.`destinataire` AS `destinataire`,sum((case when isnull(`message`.`traite`) then 1 else 0 end)) AS `nbUnread` from `message` group by `message`.`destinataire`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `unread_msg` AS select `message`.`destinataire` AS `destinataire`,sum((case when isnull(`message`.`traite`) then 1 else 0 end)) AS `nbUnread` from `message` group by `message`.`destinataire`;
+
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `adresse`
+--
+ALTER TABLE `adresse`
+  ADD CONSTRAINT `adresse_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`),
+  ADD CONSTRAINT `adresse_ibfk_2` FOREIGN KEY (`id_chantier`) REFERENCES `chantier` (`id_chantier`);
+
+--
+-- Contraintes pour la table `agence`
+--
+ALTER TABLE `agence`
+  ADD CONSTRAINT `agence_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`);
+
+--
+-- Contraintes pour la table `bdc_detaille`
+--
+ALTER TABLE `bdc_detaille`
+  ADD CONSTRAINT `bdc_detaille_ibfk_1` FOREIGN KEY (`id_bdc`) REFERENCES `bon_de_commande` (`id_bdc`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bdc_detaille_ibfk_2` FOREIGN KEY (`id_produit`) REFERENCES `produit` (`id_produit`);
+
+--
+-- Contraintes pour la table `bon_de_commande`
+--
+ALTER TABLE `bon_de_commande`
+  ADD CONSTRAINT `bon_de_commande_ibfk_1` FOREIGN KEY (`id_version`) REFERENCES `devis_version` (`num_version`),
+  ADD CONSTRAINT `bon_de_commande_ibfk_2` FOREIGN KEY (`id_devis`) REFERENCES `devis_version` (`id_devis`);
+
+--
+-- Contraintes pour la table `chantier`
+--
+ALTER TABLE `chantier`
+  ADD CONSTRAINT `chantier_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  ADD CONSTRAINT `chantier_ibfk_2` FOREIGN KEY (`id_responsable`) REFERENCES `contact` (`id_contact`) ON DELETE SET NULL ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `commentaire`
+--
+ALTER TABLE `commentaire`
+  ADD CONSTRAINT `commentaire_ibfk_1` FOREIGN KEY (`id_message`) REFERENCES `message` (`id_message`);
+
+--
+-- Contraintes pour la table `contrat_histo`
+--
+ALTER TABLE `contrat_histo`
+  ADD CONSTRAINT `contrat_histo_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`);
+
+--
+-- Contraintes pour la table `devis`
+--
+ALTER TABLE `devis`
+  ADD CONSTRAINT `devis_ibfk_1` FOREIGN KEY (`id_chantier`) REFERENCES `chantier` (`id_chantier`);
+
+--
+-- Contraintes pour la table `devis_option`
+--
+ALTER TABLE `devis_option`
+  ADD CONSTRAINT `devis_option_ibfk_1` FOREIGN KEY (`id_devis`) REFERENCES `devis` (`id_devis`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `devis_version`
+--
+ALTER TABLE `devis_version`
+  ADD CONSTRAINT `devis_version_ibfk_1` FOREIGN KEY (`id_devis`) REFERENCES `devis` (`id_devis`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `entretien`
+--
+ALTER TABLE `entretien`
+  ADD CONSTRAINT `entretien_ibfk_1` FOREIGN KEY (`id_vehmat`) REFERENCES `vehiculemateriel` (`id_vehmat`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `ged`
+--
+ALTER TABLE `ged`
+  ADD CONSTRAINT `ged_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`),
+  ADD CONSTRAINT `ged_ibfk_2` FOREIGN KEY (`id_produit`) REFERENCES `produit` (`id_produit`),
+  ADD CONSTRAINT `ged_ibfk_3` FOREIGN KEY (`id_rapport`) REFERENCES `rapport_chantier` (`id_rapport`);
+
+--
+-- Contraintes pour la table `geolocalisation`
+--
+ALTER TABLE `geolocalisation`
+  ADD CONSTRAINT `geolocalisation_ibfk_1` FOREIGN KEY (`id_vehmat`) REFERENCES `vehiculemateriel` (`id_vehmat`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `histo_tauxhoraire`
+--
+ALTER TABLE `histo_tauxhoraire`
+  ADD CONSTRAINT `histo_tauxhoraire_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`);
+
+--
+-- Contraintes pour la table `mail`
+--
+ALTER TABLE `mail`
+  ADD CONSTRAINT `mail_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`);
+
+--
+-- Contraintes pour la table `ouvrier_equipe`
+--
+ALTER TABLE `ouvrier_equipe`
+  ADD CONSTRAINT `ouvrier_equipe_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `phase`
+--
+ALTER TABLE `phase`
+  ADD CONSTRAINT `phase_ibfk_1` FOREIGN KEY (`id_chantier`) REFERENCES `chantier` (`id_chantier`);
+
+--
+-- Contraintes pour la table `photo`
+--
+ALTER TABLE `photo`
+  ADD CONSTRAINT `photo_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`),
+  ADD CONSTRAINT `photo_ibfk_2` FOREIGN KEY (`id_produit`) REFERENCES `produit` (`id_produit`);
+
+--
+-- Contraintes pour la table `produit`
+--
+ALTER TABLE `produit`
+  ADD CONSTRAINT `produit_ibfk_1` FOREIGN KEY (`id_tva`) REFERENCES `tva` (`id_tva`),
+  ADD CONSTRAINT `produit_ibfk_2` FOREIGN KEY (`id_cat`) REFERENCES `produit_categorie` (`id_cat`);
+
+--
+-- Contraintes pour la table `rapport_chantier`
+--
+ALTER TABLE `rapport_chantier`
+  ADD CONSTRAINT `rapport_chantier_ibfk_1` FOREIGN KEY (`id_chantier`) REFERENCES `chantier` (`id_chantier`);
+
+--
+-- Contraintes pour la table `selection_caces`
+--
+ALTER TABLE `selection_caces`
+  ADD CONSTRAINT `selection_caces_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`),
+  ADD CONSTRAINT `selection_caces_ibfk_2` FOREIGN KEY (`id_caces`) REFERENCES `caces` (`id_caces`);
+
+--
+-- Contraintes pour la table `situation_facture`
+--
+ALTER TABLE `situation_facture`
+  ADD CONSTRAINT `situation_facture_ibfk_1` FOREIGN KEY (`id_facture`) REFERENCES `facture` (`id_facture`);
+
+--
+-- Contraintes pour la table `statut_employe`
+--
+ALTER TABLE `statut_employe`
+  ADD CONSTRAINT `statut_employe_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`),
+  ADD CONSTRAINT `statut_employe_ibfk_2` FOREIGN KEY (`id_qualification`) REFERENCES `qualification` (`id_qualification`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `telephone`
+--
+ALTER TABLE `telephone`
+  ADD CONSTRAINT `telephone_ibfk_1` FOREIGN KEY (`id_contact`) REFERENCES `contact` (`id_contact`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
