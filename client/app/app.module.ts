@@ -1,7 +1,9 @@
-import {NgModule} from '@angular/core';
+import {enableProdMode, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
+
+enableProdMode();
 
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
@@ -160,6 +162,7 @@ import {FactlibreimprimComponent} from './facture/factlibreimprim.component';
 import {AvoirlibreComponent} from './facture/avoirlibre.component';
 import {MenuparamComponent} from './parametre/menuparam.component';
 import {HeaderComponent} from './utils/header.component';
+import {GedComponent} from "./utils/ged.component";
 
 @NgModule({
     imports: [
@@ -311,7 +314,8 @@ import {HeaderComponent} from './utils/header.component';
         FactlibreComponent,
         FactlibreimprimComponent,
         AvoirlibreComponent,
-        HeaderComponent
+        HeaderComponent,
+        GedComponent
     ],
     providers: [
         AppConfig,
