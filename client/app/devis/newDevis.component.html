@@ -34,7 +34,7 @@
                         <div class="form-group" *ngIf="devis.chantier && devis.chantier.id_chantier">
                             <span class=" glyphicon glyphicon-alert red"></span><span class="col-sm-9">Votre devis va être lié à ce chantier</span>
                         </div>
-                        <label class="col-sm-4">Nom du chantier:</label>
+                        <label class="col-sm-4">* Nom du chantier:</label>
                         <input ng2-auto-complete
                                #prod
                                [source]="chantiers"
@@ -121,7 +121,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4">* Adresse chantier </label>
+                        <label class="col-sm-4">* Adresse  </label>
                         <input type="text" name="Adresse1" value="" class="col-sm-5" [(ngModel)]="devis.address" required>
                     </div>
                     <div class="form-group">
@@ -632,7 +632,7 @@
                 </div>
 
             </fieldset>
-            <button *ngIf="droitsuser.ajoutdev" class="btn btn-default input-sm col-sm-offset-11"
+            <button *ngIf="droitsuser.ajoutdev && devis.chantier && (produitDevis.length >0) &&(devis.nomclient)" class="btn btn-default input-sm col-sm-offset-11"
                     type="submit"
                     [disabled]="produitDevis.length < 1 ">
                 Valider
