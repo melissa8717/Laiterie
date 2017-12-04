@@ -533,5 +533,21 @@ export class DupliquerlibreComponent {
 
     }
 
+    totalvi(){
+        return this.countNTVAs()  + this.countNTVAsO();
+    }
+
+    totaldi(){
+        return this.countNTVADO()  + this.countNTVAD();
+    }
+
+    totalci(){
+        return this.countNTVAC()  + this.countNTVACO();
+    }
+
+    totaldei(){
+        return this.countNTVA()  + this.countNTVAO();
+    }
+
 
 }

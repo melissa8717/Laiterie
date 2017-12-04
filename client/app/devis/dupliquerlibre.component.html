@@ -514,6 +514,51 @@
                             <td class="total">{{totalRemiseTVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
+
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((  totaldei()>0))">
+                            <td colspan="14"></td>
+                            <td class="total" style="text-align: center; background-color: #0f0f0f;
+                                color: white;border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA 2.1 %</td>
+                            <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
+                                {{ totaldei() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((  totalci()>0))">
+                            <td colspan="14"></td>
+                            <td class="total" style="text-align: center; background-color: #0f0f0f;
+                                color: white;border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA 5.5 %</td>
+                            <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
+                                {{ totalci() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((  totaldi()>0))">
+                            <td colspan="14"></td>
+                            <td class="total" style="text-align: center; background-color: #0f0f0f;
+                                color: white;border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA 10 %</td>
+                            <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
+                                {{ totaldi() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="(( totalvi()>0))">
+                            <td colspan="14"></td>
+                            <td class="total" style="text-align: center; background-color: #0f0f0f;
+                                color: white;border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA 20 %</td>
+                            <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
+                                {{totalvi() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
                             <td colspan="14"></td>
 

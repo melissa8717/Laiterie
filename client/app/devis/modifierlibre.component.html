@@ -163,7 +163,7 @@
                                 </div>
                             </td>
 
-                            <td *ngIf="!devis.tva">
+                            <td *ngIf="!devis.tva" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux" required>
                                     <option *ngFor="let produit of tvass,let i= index" selected>{{produit.taux}}</option>
                                 </select>
@@ -182,7 +182,7 @@
 
                                 <span *ngIf="produit.qte && produit.prix">{{produit.qte*produit.prix | currency:'EUR':true:'1.2-2'}}</span>
                             </td>
-                            <td *ngIf="!print && droitsuser.ajoutdev">
+                            <td *ngIf="!print && droitsuser.ajoutdev" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <button class="btn btn-default input-sm col-sm-offset-1"
                                         (click)="ajouter()"
                                         [disabled]="!produit.obj"> Ajouter
@@ -227,9 +227,9 @@
                                 </div>
                             </td>
 
-                            <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;" *ngIf="produit.tva">
+                            <td style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;" *ngIf="produitDevis[i].tva || produitDevis[i].taux">
                                 <div class="form-group">
-                                    <span>{{produit.tva}}</span>
+                                    <span>{{produitDevis[i].tva ? produitDevis[i].tva :produitDevis[i].taux}}</span>
                                 </div>
                             </td>
 
@@ -252,7 +252,7 @@
                                 <span>{{produitDevis[i].qte_devis * produitDevis[i].prix_devis| currency:'EUR':true:'1.2-2' }}</span>
                             </td>
 
-                            <td *ngIf="!print">
+                            <td *ngIf="!print" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <a class=" col-sm-offset-1"
                                    (click)="supprimer(produitDevis[i])">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"
@@ -261,48 +261,37 @@
                             </td>
 
                         </tr>
-                        <br /><br/>
-                        <tr>
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;"><!--{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}-->Total HT :</td>
-                            <td  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;"class="total">{{countTotal() | currency:'EUR':true:'1.2-2'}}</td><!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
-                        <tr *ngIf="devis.remise">
-                            <td class="total" style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;"><!--{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}-->Total après remise :</td>
-                            <td  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;" class="total">{{countTotalRemise() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+
+                        <tr *ngIf="produitDevisOptions.length > 0" style="border-bottom: 1px solid black;">
+                            <td colspan="24"
+                                class="total"
+                                style="text-align: left;
+                                background-color: #0f0f0f;
+                                color: white;">
+                                Options:
+                            </td>
                         </tr>
 
-                        <tr>
-                            <td  class="total" style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;"><!--{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}-->TVA {{devis.tvadevis}} %:</td>
-                            <td  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;" class="total">{{countTotalprodTVA()  | currency:'EUR':true:'1.2-2'}}</td>
-                        </tr>
-                        <tr>
-                            <td  class="total" style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;"><!--{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}-->TTC :</td>
-                            <td  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;" class="total">{{countTotalTVA()  | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
 
-                        <tr *ngIf="produitDevisOptions.length > 0">
-
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
 
                         <tr *ngFor="let produit of produitDevisOptions, let i = index; trackBy:customTrackBy">
 
-                            <td class="">Options:</td>
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
 
-                            <td>
+                            </td>
+
+                            <td colspan="15" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <div class="form-group">
                                     <span>{{produit.produit}}</span><br>
                                     <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
                                 </div>
                             </td>
-                            <td>
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <div class="form-group">
                                     <span>{{produit.unite}}</span>
                                 </div>
                             </td>
-                            <td>
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <div class="form-group">
                                     <input type="number" class="form-control input-sm" name="quantiteOption{{i}}"
 
@@ -314,7 +303,14 @@
                                            required>
                                 </div>
                             </td>
-                            <td>
+
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;" *ngIf="produitDevisOptions[i].tva || produitDevisOptions[i].taux">
+                                <div class="form-group">
+                                    <span>{{produit.tva ? produit.tva : produit.taux}}</span>
+                                </div>
+                            </td>
+
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <div class="form-group">
                                     <input type="number"
                                            class="form-control input-sm"
@@ -327,11 +323,11 @@
                                            required>
                                 </div>
                             </td>
-                            <td>
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <span>{{produitDevisOptions[i].qte_devis * produitDevisOptions[i].prix_devis  | currency:'EUR':true:'1.2-2'}}</span>
                             </td>
 
-                            <td *ngIf="!print">
+                            <td *ngIf="!print" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <a class=" col-sm-offset-1"
                                    (click)="supprimeroption(produitDevisOptions[i])" >
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"
@@ -340,47 +336,207 @@
                             </td>
 
                         </tr>
-                        <br />
-                        <tr style="float: right;border:1px solid black;margin-left:75%;" *ngIf="produitDevisOptions.length> 0">
-                            <td  colspan="6" class="total" style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">HT:</td>
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        <br /><br/>
+
+                        </tbody>
+                    </table>
+
+                    <table class="col-sm-4 col-sm-offset-7 " style="float:right;">
+                        <tr  style="border-top: 1px solid black;border-left:1px;">
+                            <td style="text-align: left;border-left:1px solid black;"><!--{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}-->Total HT :</td>
+                            <td  colspan="3" style="border-right: 1px solid black;">{{countTotal() | currency:'EUR':true:'1.2-2'}}</td><!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-                        <tr *ngIf="produitDevisOptions.length> 0 && devis.remise">
-                            <td  class="total" style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">Total après remise HT:</td><!--ce fait sur le hors-->
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
-                        <tr *ngIf="produitDevisOptions.length> 0 ">
-                            <td  class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">TVA {{devis.tvadevis}} %:</td>
-                            <td   style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;" class="total">{{countTotalOptionsTVA()  | currency:'EUR':true:'1.2-2'}}</td>
-                        </tr>
-                        <tr *ngIf="produitDevisOptions.length> 0">
-                            <td  class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">TTC :</td>
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">{{countTotalOptionstotalTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                        <tr *ngIf="devis.remise" style="border-top: 1px solid black;border-left:1px;">
+                            <td style="text-align: left;border-left:1px solid black;"><!--{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}-->Total après remise de {{devis.remise}} % :</td>
+                            <td  colspan="3" style="border-right: 1px solid black;">{{countTotalRemise() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
-                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
-                            <td  class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">HT :</td>
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">{{total() | currency:'EUR':true:'1.2-2'}}</td>
+                        <tr *ngIf="devis.tvadevis" style="border-top: 1px solid black;border-left:1px;">
+                            <td  style="text-align: left;border-left:1px solid black;"><!--{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}-->TVA {{devis.tvadevis}} %:</td>
+                            <td  colspan="3" style="border-right: 1px solid black;">{{countTotalprodTVA()  | currency:'EUR':true:'1.2-2'}}</td>
+                        </tr>
+
+                        <tr  *ngIf="((countNTVAZ()>0) )" style="border-top: 1px solid black;border-left:1px;">
+                            <td style="text-align: left;border-left:1px solid black;">TVA 0 %</td>
+                            <td  colspan="3" style="border-right: 1px solid black;" >
+                                {{countNTVAZ() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVA()>0) )" style="border-top: 1px solid black;border-left:1px;">
+                            <td style="text-align: left;border-left:1px solid black;">TVA 2.1 %</td>
+                            <td  colspan="3" style="border-right: 1px solid black;" >
+                                {{countNTVA() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAC()>0) )" style="border-top: 1px solid black;border-left:1px;">
+
+                            <td  style="text-align: left;border-left:1px solid black;">TVA 5.5 %</td>
+                            <td  colspan="3" style="border-right: 1px solid black;">
+                                {{countNTVAC() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+                        <tr  *ngIf="((countNTVAD()>0) )" style="border-top: 1px solid black;border-left:1px;">
+
+                            <td style="text-align: left;border-left:1px solid black;">TVA 10 %</td>
+                            <td  colspan="3" style="border-right: 1px solid black;">
+                                {{countNTVAD() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+                        <tr style="border-top: 1px solid black;border-left:1px;" *ngIf="((countNTVAs()>0) )">
+
+                            <td style="text-align: left;border-left:1px solid black;">TVA 20 %</td>
+                            <td  colspan="3" style="border-right: 1px solid black;" >
+                                {{countNTVAs() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+                        </tr>
+                        <tr style="border-top: 1px solid black;border-left:1px;">
+                            <td  style="text-align: left;border-left:1px solid black;border-bottom:1px solid black;">TTC :</td>
+                            <td  colspan="3" style="border-right: 1px solid black;border-bottom:1px solid black;">{{countTotalTVA()  | currency:'EUR':true:'1.2-2'}}</td>
+
+                        </tr>
+
+                        <br />
+
+                        <tr  *ngIf="produitDevisOptions.length> 0" style="border-top: 1px solid black;border-left:1px;">
+                            <td style="text-align: left;border-left:1px solid black;">Total HT:</td>
+                            <td colspan="3" style="border-right: 1px solid black;">{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}</td>
+
+                        </tr>
+                        <tr *ngIf="produitDevisOptions.length> 0 && devis.remise" style="border-top: 1px solid black;border-left:1px;">
+                            <td  style="text-align: left;border-left:1px solid black;">Total après remise de {{devis.remise}} %</td>
+                            <td colspan="3" style="border-right: 1px solid black;">{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
+
+                        </tr>
+                        <tr *ngIf="produitDevisOptions.length> 0 && devis.tvadevis" style="border-top: 1px solid black;border-left:1px;">
+                            <td  style="text-align: left;border-left:1px solid black;">TVA {{devis.tvadevis}} %:</td>
+                            <td   colspan="3" style="border-right: 1px solid black;">{{countTotalOptionsTVA()  | currency:'EUR':true:'1.2-2'}}</td>
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAZO()>0) )">
+
+                            <td style="text-align: left;">TVA 0 %</td>
+                            <td colspan="3" >
+                                {{countNTVAZO() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAO()>0) )">
+
+                            <td style="text-align: left;">TVA 2.1 %</td>
+                            <td colspan="3" >
+                                {{countNTVAO() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+
+                        </tr>
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVACO()>0) )">
+
+                            <td style="text-align: left;">TVA 5.5 %</td>
+                            <td colspan="3" >
+                                {{countNTVACO() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+                        </tr>
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVADO()>0) )">
+
+                            <td style="text-align: left;">TVA 10 %</td>
+                            <td colspan="3" >
+                                {{countNTVADO() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+
+                        </tr>
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAsO()>0) )">
+
+                            <td style="text-align: left;">TVA 20 %</td>
+                            <td colspan="3" >
+                                {{countNTVAsO() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+                        <tr *ngIf="produitDevisOptions.length> 0" style="border-top: 1px solid black;border-left:1px;">
+                            <td style="text-align: left;border-left:1px solid black;border-bottom:1px solid black;">TTC :</td>
+                            <td colspan="3" style="border-right: 1px solid black;border-bottom:1px solid black;">{{countTotalOptionstotalTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                        </tr>
+
+                        <br>
+
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0" style="border-left:1px solid black; border-right:1px solid black;">
+                            <td  style="text-align: left;">Total HT :</td>
+                            <td colspan="3">{{total() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise">
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">Total après remise HT:</td>
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">{{totalRemiseTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise" style="border-left:1px solid black; border-right:1px solid black;">
+                            <td style="text-align: left;">Total après remise de {{devis.remise}} %</td>
+                            <td colspan="3">{{totalRemiseTVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
-                            <td  class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">TVA {{devis.tva}} %:</td>
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">{{totalTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.tvadevis" style="border-left:1px solid black; border-right:1px solid black;">
+                            <td  style="text-align: left;">TVA {{devis.tvadevis}} %:</td>
+                            <td colspan="3">{{totalTVA() | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
-                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
-                            <td  class="total" style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">TTC :</td>
-                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;">{{countTotalfinal() | currency:'EUR':true:'1.2-2'}}</td>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((produitDevis.length > 0 && produitDevisOptions.length> 0 &&  (totaldei()>0)))">
+
+                            <td style="text-align: left;">TVA 2.1 %</td>
+                            <td colspan="3" >
+                                {{ totaldei() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((produitDevis.length > 0 && produitDevisOptions.length> 0 &&  (totalci()>0)))">
+
+                            <td style="text-align: left;">TVA 5.5 %</td>
+                            <td colspan="3" >
+                                {{ totalci() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((produitDevis.length > 0 && produitDevisOptions.length> 0 &&  (totaldi()>0) ))">
+
+                            <td style="text-align: left;">TVA 10 %</td>
+                            <td colspan="3" >
+                                {{ totaldi() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 &&(totalvi()> 0)">
+
+                            <td style="text-align: left;">TVA 20 %</td>
+                            <td colspan="3" >
+                                {{totalvi() | currency:'EUR':true:'1.2-2'}} €
+
+                            </td>
+
+                        </tr>
+                        <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0" style="border-left:1px solid black; border-right:1px solid black;">
+                            <td  style="text-align: left;border-left:1px solid black;border-bottom:1px solid black;">TTC :</td>
+                            <td class="total"  style="text-align: right;margin-left:70%;border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;border-bottom:1px solid black;" colspan="3" style="border-right: 1px solid black;border-bottom:1px solid black;">{{countTotalfinal() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-                        </tbody>
+
 
                     </table>
 

@@ -230,7 +230,7 @@
                 <td style="text-align: left;border-left:1px;">Total H.T. </td>
                 <td colspan="3">{{countTotalopt() | number:'1.0-2'}} €</td>
             </tr>
-            <tr *ngIf="countTotalopt(0)" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
+            <tr *ngIf="countTotalopt(0) && devis.remise" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
                 <td style="text-align: left;">Total H.T. après remise {{devis.remise}}%</td>
                 <td colspan="3">{{countTotalopt() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
             </tr>
@@ -290,7 +290,77 @@
                 <td style="text-align: left;">TTC :</td>
                 <td colspan="3">{{countTtcopt() | number:'1.0-2'}} €</td>
             </tr>
+
+
             <br /> <br />
+
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((produit.length > 0 && produitop.length> 0 ))">
+
+                <td style="text-align: left;">Total HT :</td>
+                <td colspan="3" >
+                    {{ totalHT() | currency:'EUR':true:'1.2-2'}} €
+
+                </td>
+
+            </tr>
+
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((produit.length > 0 && produitop.length> 0  &&  devis.remise))">
+
+                <td style="text-align: left;">Après remise de {{devis.remise}} %</td>
+                <td colspan="3" >
+                    {{ totalremiseoptet() | currency:'EUR':true:'1.2-2'}} €
+
+                </td>
+
+            </tr>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((produit.length > 0 && produitop.length> 0  &&  (totaldei()>0)))">
+
+                <td style="text-align: left;">TVA 2.1 %</td>
+                <td colspan="3" >
+                    {{ totaldei() | currency:'EUR':true:'1.2-2'}} €
+
+                </td>
+
+            </tr>
+
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((produit.length > 0 && produitop.length> 0 &&  (totalci()>0)))">
+
+                <td style="text-align: left;">TVA 5.5 %</td>
+                <td colspan="3" >
+                    {{ totalci() | currency:'EUR':true:'1.2-2'}} €
+
+                </td>
+
+            </tr>
+
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="(( produit.length > 0 && produitop.length> 0  && (totaldi()>0)))">
+
+                <td style="text-align: left;">TVA 10 %</td>
+                <td colspan="3" >
+                    {{ totaldi() | currency:'EUR':true:'1.2-2'}} €
+
+                </td>
+
+            </tr>
+
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((produit.length > 0 && produitop.length> 0  && (totalvi()>0)))">
+
+                <td style="text-align: left;">TVA 20 %</td>
+                <td colspan="3" >
+                    {{totalvi() | currency:'EUR':true:'1.2-2'}} €
+
+                </td>
+
+            </tr>
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="produit.length > 0 && produitop.length> 0 ">
+
+                <td style="text-align: left;">TTC</td>
+                <td colspan="3" >
+                    {{totalcountTTC() | currency:'EUR':true:'1.2-2'}} €
+
+                </td>
+
+            </tr>
         </table>
 
     </div>

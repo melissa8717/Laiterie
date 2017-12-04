@@ -373,6 +373,32 @@ export class FicheDevisLibreComponent {
 
 
     }
+    totalvi(){
+        return this.countNTVAs()  + this.countNTVAsO();
+    }
 
+    totaldi(){
+        return this.countNTVADO()  + this.countNTVAD();
+    }
+
+    totalci(){
+        return this.countNTVAC()  + this.countNTVACO();
+    }
+
+    totaldei(){
+        return this.countNTVA()  + this.countNTVAO();
+    }
+
+    totalcountTTC(){
+        return this.countTtcopt() + this.countTtc();
+    }
+
+    totalremiseoptet(){
+        return this.countTotalopt() *(1-(this.devis.remise ? this.devis.remise/100 :0)) + this.countTotaldet() *(1-(this.devis.remise ? this.devis.remise/100 : 0));
+    }
+
+    totalHT(){
+        return this.countTotalopt() + this.countTotaldet();
+    }
 
 }

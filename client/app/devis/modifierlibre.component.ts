@@ -121,6 +121,7 @@ export class ModifierlibreComponent {
         tmp.unite = this.produit.unite;
         tmp.option = this.produit.option;
         tmp.commentaire = this.produit.commentaire;
+        tmp.taux = this.produit.taux;
 
         var check = this.produitDevis.filter(obj => obj.ref == this.produit.obj);
 
@@ -208,7 +209,7 @@ export class ModifierlibreComponent {
         return this.countTotalRemise()>0 ? this.countTotalRemise()* ((this.devis.tva ? this.devis.tva : 0) /100) : this.countTotal()* ((this.devis.tva ? this.devis.tva : 0) /100);
     }
     countTotalTVA() {
-        return this.countTotalRemise()>0 ? this.countTotalRemise()* (1+((this.devis.tva ? this.devis.tva : 0) /100)) : this.countTotal()* (1+((this.devis.tva ? this.devis.tva : 0) /100));
+        return (this.countTotalRemise()>0 ? this.countTotalRemise()* (1+((this.devis.tva ? this.devis.tva : 0) /100)) : this.countTotal()* (1+((this.devis.tva ? this.devis.tva : 0) /100))) + this.countAllTVA();
     }
 
     countTotalOptions() {
@@ -226,7 +227,7 @@ export class ModifierlibreComponent {
         return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((this.devis.tva ? this.devis.tva : 0) /100):this.countTotalOptions()* ((this.devis.tva ? this.devis.tva : 0) /100);
     }
     countTotalOptionstotalTVA() {
-        return this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((1+(this.devis.tva ? this.devis.tva : 0) /100)):this.countTotalOptions()* (1+((this.devis.tva ? this.devis.tva : 0) /100));
+        return (this.countTotalOptionRemise()>0?this.countTotalOptionRemise() * ((1+(this.devis.tva ? this.devis.tva : 0) /100)):this.countTotalOptions()* (1+((this.devis.tva ? this.devis.tva : 0) /100))) + this.countAllTVAO();
     }
 
     total() {
@@ -331,8 +332,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevis) {
 
-            if (parseInt(produit.tva) == 2.1) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseInt(produit.tva) == 2.1) || (produit.taux == 2.1)) {
+                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -346,8 +347,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevis) {
 
-            if (parseInt(produit.tva) == 5.5) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseInt(produit.tva) == 5.5) || (produit.taux == 5.5)) {
+                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -361,8 +362,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevis) {
 
-            if (parseInt(produit.tva) == 10) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseInt(produit.tva) == 10) || (produit.taux == 10)) {
+                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -375,8 +376,8 @@ export class ModifierlibreComponent {
         let total = 0;
 
         for (let produit of this.produitDevis) {
-            if (parseInt(produit.tva) == 20) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseInt(produit.tva) == 20) || (produit.taux == 20)) {
+                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -405,8 +406,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (parseInt(produit.tva) == 2.1) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseInt(produit.tva) == 2.1) || (produit.taux == 2.1)) {
+                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -420,8 +421,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (parseInt(produit.tva) == 5.5) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseInt(produit.tva) == 5.5) || (produit.taux == 5.5)) {
+                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -435,8 +436,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (parseInt(produit.tva) == 10) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseInt(produit.tva) == 10) || (produit.taux == 10)) {
+                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -450,8 +451,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (parseInt(produit.tva) == 20) {
-                total += (parseInt(produit.tva) /100 ) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseInt(produit.tva) == 20) || (produit.taux == 20)) {
+                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -473,6 +474,22 @@ export class ModifierlibreComponent {
 
     }
 
+    totalvi(){
+        return this.countNTVAs()  + this.countNTVAsO();
+    }
+
+    totaldi(){
+        return this.countNTVADO()  + this.countNTVAD();
+    }
+
+    totalci(){
+        return this.countNTVAC()  + this.countNTVACO();
+    }
+
+    totaldei(){
+        return this.countNTVA()  + this.countNTVAO();
+    }
+
     loadTva(){
         this.paramsService.getAllTVA().subscribe(tvass => {
 
@@ -480,4 +497,5 @@ export class ModifierlibreComponent {
 
         });
     }
+
 }
