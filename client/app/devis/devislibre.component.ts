@@ -225,7 +225,7 @@ export class DevislibreComponent  implements OnInit{
     }
 
     totalTVAoption() {
-        return this.countTotalOptionRemise()>0 ? (this.countTotalOptionRemise()* ((this.devis.tva ? this.devis.tva : 0) /100)) : (this.countTotalOptions() + this.countTotalOptions()) *((this.devis.tva ? this.devis.tva : 0) /100);
+        return this.countTotalOptionRemise()>0 ? (this.countTotalOptionRemise()* ((this.devis.tva ? this.devis.tva : 0) /100)) : ( this.countTotalOptions()) *((this.devis.tva ? this.devis.tva : 0) /100);
     }
 
     totalTVA() {
