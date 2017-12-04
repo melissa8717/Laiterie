@@ -93,6 +93,7 @@ export class DupliquerDevisComponent implements OnInit {
         tmp.prix_devis = this.produit.prix;
         tmp.unite = this.produit.unite;
         tmp.option = this.produit.option;
+        tmp.taux = this.produit.taux;
 
         let check = this.produitDevis.filter(obj => obj.id_prc == this.produit.obj.id_prc);
 
@@ -141,19 +142,20 @@ export class DupliquerDevisComponent implements OnInit {
         this.produit.prix = this.produit.obj.prix_vente;
         this.produit.unite = this.produit.obj.unite;
         this.produit.ref = this.produit.obj.id_prc;
+
     }
 
     private loadAllChantiers() {
         this.chantierService.getAll().subscribe(chantiers => {
             this.chantiers = chantiers;
-            console.log(this.chantiers);
+
         });
     }
 
     loadAllProduits() {
         this.venteService.getAll().subscribe(data => {
             this.produits = data;
-            console.log(this.produits);
+
         });
     }
 
@@ -291,14 +293,14 @@ export class DupliquerDevisComponent implements OnInit {
     loadAllFooter() {
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-            console.log(this.fact);
+
         });
     }
 
     loadCat() {
         this.paramsService.getAllVente().subscribe(cgv => {
             this.cgv = cgv[0];
-            console.log(this.cgv);
+
         });
     }
 
