@@ -157,7 +157,7 @@
                                                                               [(ngModel)]="model.pied_page6">
 
                 </div>
-                <button type="button" *ngIf="uploaderImg && droitsuser.modifparam == 1 && model.length != 0"
+                <button type="button" *ngIf="uploaderImg && droitsuser.modifparam == 1 && model"
                         class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  "
                         (click)="modify(model); uploaderImg.queue[0].upload();">Valider
                 </button>
@@ -166,7 +166,7 @@
         <button type="button"
                 class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  "
                 (click)="addagence()"
-        *ngIf="model.length < 0">Ajouter
+        *ngIf="!model">Ajouter
 
         </button>
             </form>
