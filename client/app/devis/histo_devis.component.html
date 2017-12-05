@@ -1,113 +1,18 @@
 <div id="devis" style="border:none;">
 
-    <my-header *ngIf="!print" [title]='"Historique devis"' [img]='"image/menu/gestion_grand_gris.png"'></my-header>
+    <my-header [title]='"Historique devis"' [img]='"image/menu/gestion_grand_gris.png"'></my-header>
 
 
     <body style="margin:0px;font-size: 18px;">
-    <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+    <div class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
         <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span
             class="blan1">Retour accueil</span>
 
     </div>
     <h3>Historique devis</h3>
 
-    <div class="col-sm-12">
-        <h3>GED</h3>
+    <ged [gedName]="'dev'"></ged>
 
-        <div class="col-md-3">
-
-            <h3>Choisir Fichier</h3>
-
-            <div ng2FileDrop
-                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                 (fileOver)="fileOverBase($event)"
-                 [uploader]="uploader"
-                 class="well my-drop-zone">
-                Base drop zone
-            </div>
-            <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br/>
-        </div>
-
-        <div class="col-md-5" style="margin-bottom: 40px">
-            <h3>File d'attente</h3>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Etat</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of uploader.queue">
-                    <td><strong>{{ item?.file?.name }}</strong></td>
-                    <td class="text-center">
-                        <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                        <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                        <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                    </td>
-                    <td nowrap>
-                        <button *ngIf="droitsuser.ajoutdev" type="button" class="btn btn-success btn-xs"
-                                (click)="item.upload(); getGed(id_devis)"
-                                [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                            <span class="glyphicon glyphicon-upload"></span> Mettre en ligne
-                        </button>
-                        <button *ngIf="droitsuser.supdev" type="button" class="btn btn-warning btn-xs"
-                                (click)="item.cancel()" [disabled]="!item.isUploading">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Annuler
-                        </button>
-                        <button *ngIf="droitsuser.supdev" type="button" class="btn btn-danger btn-xs"
-                                (click)="item.remove()">
-                            <span class="glyphicon glyphicon-trash"></span> Retirer de la liste
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div>
-                <div>
-                    Avancement:
-                    <div class="progress" style="">
-                        <div class="progress-bar" role="progressbar"
-                             [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                    </div>
-                </div>
-                <button *ngIf="droitsuser.ajoutdev" type="button" class="btn btn-success btn-s"
-                        (click)="uploader.uploadAll(); getGed(id_devis);"
-                        [disabled]="!uploader.getNotUploadedItems().length">
-                    <span class="glyphicon glyphicon-upload"></span> Tout mettre en ligne
-                </button>
-                <button *ngIf="droitsuser.supdev" type="button" class="btn btn-warning btn-s"
-                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Tout annuler
-                </button>
-                <button *ngIf="droitsuser.supdev" type="button" class="btn btn-danger btn-s"
-                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                    <span class="glyphicon glyphicon-trash"></span> Tout retirer de la liste
-                </button>
-            </div>
-        </div>
-
-        <div class="col-md-4" style="margin-bottom: 40px">
-            <h3>GED</h3>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Date d'ajout</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of ged">
-                    <td><strong><a href="{{URL}}/{{item.url}}" target="_blank">{{ item.nom }}</a></strong></td>
-                    <td nowrap>{{item.date_ajout | date : 'dd/MM/yyyy'}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
     </body>
+
 </div>
