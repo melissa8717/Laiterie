@@ -174,7 +174,7 @@
 
                             <td *ngIf="!devis.tva" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux" required>
-                                    <option *ngFor="let produit of tvass,let i= index" selected>{{produit.taux}}</option>
+                                    <option *ngFor="let produit of tvass,let i= index"  [value]="produit.taux">{{produit.taux}}</option>
                                 </select>
                             </td>
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
@@ -217,8 +217,8 @@
                             <td  colspan="15" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
 
                                 <div class="form-group">
-                                    <span *ngIf="produit.produit ? produit.produit : produit.obj">{{produit.produit}}{{produit.obj}}</span><br>
-                                    <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
+                                    <span *ngIf="produit.produit ? produit.produit : produit.obj" style="font-weight: bold;">{{produit.produit}}{{produit.obj}}</span><br>
+                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;" >{{produit.commentaire}}</textarea>
                                 </div>
                             </td>
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
@@ -294,10 +294,17 @@
 
                             </td>
 
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
+
+                                <div class="form-group">
+                                    <span>{{produit.reference}}</span>
+                                </div>
+                            </td>
+
                             <td colspan="15" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <div class="form-group">
-                                    <span>{{produit.produit}}</span><br>
-                                    <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
+                                    <span style="font-weight: bold;">{{produit.produit}}</span><br>
+                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;">{{produit.commentaire}}</textarea>
                                 </div>
                             </td>
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
@@ -371,7 +378,7 @@
                             <td  colspan="3" style="border-right: 1px solid black;">{{countTotalprodTVA()  | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
 
-                        <tr  *ngIf="((countNTVAZ()>0) )" style="border-top: 1px solid black;border-left:1px;">
+                        <tr  *ngIf="((countNTVAZ()==0) )" style="border-top: 1px solid black;border-left:1px;">
                             <td style="text-align: left;border-left:1px solid black;">TVA 0 %</td>
                             <td  colspan="3" style="border-right: 1px solid black;" >
                                 {{countNTVAZ() | currency:'EUR':true:'1.2-2'}} €

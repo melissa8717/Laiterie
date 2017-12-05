@@ -212,7 +212,7 @@
                             </td>
                             <td *ngIf="devis.tvamulti">
                                 <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux" required>
-                                    <option *ngFor="let produit of fact,let i= index" selected>{{produit.taux}}</option>
+                                    <option *ngFor="let produit of fact,let i= index" [value]="produit.taux">{{produit.taux}}</option>
                                 </select>
                             </td>
                             <td>

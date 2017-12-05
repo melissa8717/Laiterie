@@ -144,7 +144,7 @@
                     <span *ngIf="(produitop[i].accepted == 0) || (produitop[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produitop[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produitop[i])"></span>
                 </td>
                 <td style="text-align: center;">
-                    {{prod.reference}}
+                    {{prode.reference}}
                 </td>
                 <td colspan="10"  style="text-align: center;"><span style="font-weight: bold;">{{prode.produit}}</span> <br>
                     <textarea  *ngIf="prode.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prode.commentaire}}</textarea></td>
@@ -186,7 +186,7 @@
                 <td colspan="3"> {{countTva()| number:'1.0-2'}} €</td>
             </tr>
 
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAZ()>0) )">
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAZ()==0) )">
                     <td style="text-align: left;">TVA 0 %</td>
                     <td colspan="3" >
                         {{countNTVAZ() | currency:'EUR':true:'1.2-2'}} €
