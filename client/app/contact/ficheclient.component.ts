@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService, ContactService } from '../_services/index';
 import { Contact, Mail, Telephone, Adresse, Qualification, Contrat } from '../_models/index';
-import {ParamsService} from "../_services/params.service"; //
+import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
 
 @Component({
@@ -12,8 +12,8 @@ import {User} from "../_models/user";
 })
 export class FicheclientComponent implements OnInit {
 
-    contact = new Contact();
-    returnUrl: string;
+    private contact = new Contact();
+    private returnUrl: string;
 
     mail = new Mail();
     mailPro = new Mail();
@@ -29,9 +29,9 @@ export class FicheclientComponent implements OnInit {
     chantier: any = [] = [];
     id_contact: number;
 
-    currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
+    currentUser: User;
+    droitsuser:any={};
+    _id:any;
     data:any={};
 
 
@@ -53,16 +53,17 @@ export class FicheclientComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loaddroituser();
+
+        this.route.params.subscribe(params => {
+            this.id_contact = params['id_contact']
+            this.loaddroituser();
+        });
 
 
         this.route.params.subscribe(params => {
             this.getContact(params['id_contact']);
         });
 
-        let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -75,8 +76,6 @@ export class FicheclientComponent implements OnInit {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
 
         });
     }
@@ -84,41 +83,30 @@ export class FicheclientComponent implements OnInit {
 
 
     loadAllchantier() {
-        this.route.params.subscribe(params => {
-            this.id_contact = params['id_contact']
-            console.log(this.id_contact);
             this.contactService.getByIdchantier(this.id_contact).subscribe(
                 data => {
                     this.chantier = data;
 
-                    console.log(data);
                 }
             )
-        });
     }
 
     loadAllencours() {
-        this.route.params.subscribe(params => {
-            this.id_contact = params['id_contact']
-            console.log(this.id_contact);
+
             this.contactService.getByIdencours(this.id_contact).subscribe(
                 data => {
                     this.cours = data;
 
-                    console.log(data);
                 }
             )
-        });
     }
 
 
 
 
     private getContact(id_contact: string){
-        console.log(id_contact);
         this.contactService.getByIdAllInfos(id_contact).subscribe(
             data => {
-                console.log(data);
                 this.contact = data.contact;
                 for(var i in data.mails){
                     switch(data.mails[i].type_mail){
@@ -151,7 +139,6 @@ export class FicheclientComponent implements OnInit {
     }
 
     updateClient() {
-        console.log("UpdateClient");
         var contactInfos = {
             "contact": this.contact,
             "mail": this.mail,
@@ -162,7 +149,6 @@ export class FicheclientComponent implements OnInit {
             "telephonePro": this.telephonePro,
             "adresse": this.adresse
         };
-        console.log(contactInfos);
         this.contactService.update(contactInfos, this.contact.id_contact)
             .subscribe(
                 data => {

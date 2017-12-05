@@ -46,7 +46,6 @@
 
 			<div class="col-sm-6">
 				<h5>Informations</h5>
-				<!--tous les value qui suive sont des variables de la base de données-->
 
 				<div class="form-group">
 					<label  class=" control-label col-sm-3">Statut :</label>
@@ -144,19 +143,17 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class=" control-label col-sm-4" >Date d'entrée :</label>
-					<div class="col-sm-5">
-						<input type="date" name="date_entree"  [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'" class="form-control"/>
-					</div>
-				</div>
-
-				<div class="form-group">
 					<label  class=" control-label col-sm-3">Siret :</label>
 					<div class="col-sm-9">
 						<input type="text" class="form-control" name="siret" [(ngModel)]="contact.siret" >
 					</div>
 				</div>
-
+				<div class="form-group">
+					<label class=" control-label col-sm-3" >Date d'entrée :</label>
+					<div class="col-sm-3">
+						<input type="date" name="date_entree"  [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'" class="form-control"/>
+					</div>
+				</div>
 				<div class="form-group">
 					<label  class=" control-label col-sm-3">Type :</label>
 					<div class="col-sm-3">
@@ -174,45 +171,18 @@
 					</div>
 				</div>
 
+
+
+
+
 				<h5 class="col-sm-12">Informations complémentaires</h5>
-				<!--retenue de garantie est valable un an prévoir une alerte-->
+
 
 				<div class="form-group">
 					<input type="text" name="note" placeholder="note" class="form-control " [(ngModel)]="contact.note"/>
 				</div>
 
-				<div class="form-group">
-					<label class=" control-label col-sm-3">Retenue garantie:</label>
-					<div class="col-sm-3">
-						<input type="text" class="form-control" name="garantie" value="non" disabled>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class=" control-label col-sm-3">Caution bancaire :</label>
-					<div class="col-sm-3">
-						<input type="text" class="form-control" name="caution" value="" disabled>
-					</div>
-				</div>
-				<!-- si la caution à pour valeur oui alors faire apparaitre N° et Banque-->
-				<div class="form-group">
-					<label class=" control-label col-sm-3">N° :</label>
-					<div class="col-sm-3">
-						<input type="text" class="form-control" name="numero" value="" disabled>
-					</div>
-				</div>
-				<div class="form-group">
-					<label  class=" control-label col-sm-3">Banque :</label>
-					<div class="col-sm-3">
-						<input type="text" class="form-control" name="banque" value="" disabled>
-					</div>
-				</div>
 
-				<div class="form-group">
-					<label  class=" control-label col-sm-3">Droit :</label>
-					<div class="col-sm-3">
-						<input type="text" class="form-control" name="droit" value="user" disabled>
-					</div>
-				</div>
 				<button *ngIf="!print" class="btn btn-default input-sm col-sm-offset-9" (click)="updateClient()">Modifier</button>
 
 			</div>
@@ -220,7 +190,6 @@
 
 			<div class="col-sm-6 ">
 
-				<!--les variable du tableau sont à récupérer dans la BDD-->
 				<h5>Historique :</h5>
 				<div class=" table-responsive" >
 					<table class="table table-striped " >
@@ -284,13 +253,13 @@
 		</form>
 
 		<form method="POST" action="#">
-			<input *ngIf="!print" type="hidden" name="id client"><!--variable correspondant à l'id client-->
+			<input *ngIf="!print" type="hidden" name="id client">
 
 			<button class="col-sm-offset-11 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accescontact" (click)=" imprimer()">Imprimer</button>
 
 		</form>
 
-	</div><!--fin container fluid-->
+	</div>
 
 
-</div><!--fin id contact-->
+</div>
