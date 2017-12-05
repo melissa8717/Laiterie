@@ -608,7 +608,7 @@ function getCompte() {
             var datefin = new Date(decrypt(licencesFiltered[i].datefin)).getTime();
             var date_now = new Date().getTime();
             if (datefin > date_now) {
-                nbUsersMax += licencesFiltered[i].id_test;
+                nbUsersMax += licencesFiltered[i].nbi_user;
             }
         }
         deferred.resolve(nbUsersMax);
