@@ -232,8 +232,8 @@ export class FicheDevisLibreComponent {
 
         for (let prod of this.produit) {
 
-            if (parseInt(prod.tva) == 2.1) {
-                total += (parseInt(prod.tva) /100 ) * prod.prix_devis * prod.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if (parseFloat(prod.tva) == 2.1) {
+                total += (parseFloat(prod.tva) /100 ) * prod.prix_devis * prod.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -247,8 +247,8 @@ export class FicheDevisLibreComponent {
 
         for (let prod of this.produit) {
 
-            if (parseInt(prod.tva) == 5.5) {
-                total += (parseInt(prod.tva) /100 ) * prod.prix_devis * prod.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if (parseFloat(prod.tva) == 5.5) {
+                total += (parseFloat(prod.tva) /100 ) * prod.prix_devis * prod.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -306,8 +306,8 @@ export class FicheDevisLibreComponent {
 
         for (let prode of this.produitop) {
 
-            if (parseInt(prode.tva) == 2.1) {
-                total += (parseInt(prode.tva) /100 ) * prode.prix_devis * prode.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if (parseFloat(prode.tva) == 2.1) {
+                total += (parseFloat(prode.tva) /100 ) * prode.prix_devis * prode.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -321,8 +321,8 @@ export class FicheDevisLibreComponent {
 
         for (let prode of this.produitop) {
 
-            if (parseInt(prode.tva) == 5.5) {
-                total += (parseInt(prode.tva) /100 ) * prode.prix_devis * prode.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if (parseFloat(prode.tva) == 5.5) {
+                total += (parseFloat(prode.tva) /100 ) * prode.prix_devis * prode.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }

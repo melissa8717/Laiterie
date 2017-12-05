@@ -443,8 +443,7 @@ export class NewDevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
+
             if (produit.taux == 5.5) {
                 total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 

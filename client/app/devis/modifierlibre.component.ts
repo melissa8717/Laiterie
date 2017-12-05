@@ -82,7 +82,6 @@ export class ModifierlibreComponent {
         this.sub = this.route.params.subscribe(params => {
             this.id_devis = params['id_devis'];
             this.num_version = params['num_version'];
-            //console.log(this.num_version)
             this.devisService.getByIddupliquer(this.id_devis, this.num_version).subscribe(
                 (data : any) =>{
                     this.devis  = data.devis[0];
@@ -104,11 +103,8 @@ export class ModifierlibreComponent {
     }
 
    loadAllFooter() {
-        //console.log(this.recherche.seek)
-
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-            //console.log(this.fact);
 
         });
     }
@@ -116,6 +112,7 @@ export class ModifierlibreComponent {
     ajouter() {
         let tmp: any = {};
         tmp.produit = this.produit.obj;
+        tmp.reference = this.produit.reference;
         tmp.qte_devis = this.produit.qte;
         tmp.prix_devis = this.produit.prix;
         tmp.unite = this.produit.unite;
@@ -169,8 +166,6 @@ export class ModifierlibreComponent {
     }
 
     test() {
-        //console.log(this.devis)
-        //console.log(this.produit)
         this.produit.qte = 1;
         this.produit.prix = this.produit.obj.prix_vente;
         this.produit.unite = this.produit.obj.unite;
@@ -180,7 +175,6 @@ export class ModifierlibreComponent {
     private loadAllChantiers() {
         this.chantierService.getAll().subscribe(chantiers => {
             this.chantiers = chantiers;
-            // console.log(this.chantiers)
         });
     }
 
@@ -303,12 +297,10 @@ export class ModifierlibreComponent {
     }
 
     loadCat() {
-        //console.log(this.cgv)
 
         this.paramsService.getAllVente().subscribe(cgv => {
 
             this.cgv = cgv[0];
-            //console.log(this.cgv);
         });
     }
 
@@ -332,8 +324,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevis) {
 
-            if ((parseInt(produit.tva) == 2.1) || (produit.taux == 2.1)) {
-                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseFloat(produit.tva) == 2.1) || (produit.taux == 2.1)) {
+                total += (produit.tva ? parseFloat(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -347,8 +339,9 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevis) {
 
-            if ((parseInt(produit.tva) == 5.5) || (produit.taux == 5.5)) {
-                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+
+            if ((parseFloat(produit.tva) == 5.5) || (produit.taux == 5.5)) {
+                total += (produit.tva ? parseFloat(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -406,8 +399,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevisOptions) {
 
-            if ((parseInt(produit.tva) == 2.1) || (produit.taux == 2.1)) {
-                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseFloat(produit.tva) == 2.1) || (produit.taux == 2.1)) {
+                total += (produit.tva ?parseFloat(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
@@ -421,8 +414,8 @@ export class ModifierlibreComponent {
 
         for (let produit of this.produitDevisOptions) {
 
-            if ((parseInt(produit.tva) == 5.5) || (produit.taux == 5.5)) {
-                total += (produit.tva ? parseInt(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+            if ((parseFloat(produit.tva) == 5.5) || (produit.taux == 5.5)) {
+                total += (produit.tva ? parseFloat(produit.tva) /100 : produit.taux/100) * produit.prix_devis * produit.qte_devis *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
 
 
             }
