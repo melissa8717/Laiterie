@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder} from "@angular/forms";
+import {ActivatedRoute} from '@angular/router';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
-import {AlertService, AuthenticationService, ContactService, ParamsService} from '../_services/index';
+import {AlertService, ContactService, ParamsService} from '../_services/index';
 import {User} from "../_models";
 
 @Component({
@@ -13,35 +12,25 @@ import {User} from "../_models";
 export class FormationcontactComponent {
 
 
-    returnUrl: string;
-    print: boolean = false;
+    private currentUser: User;
+    private droitsuser: any = {};
 
-    currentUser: User;
-    droitsuser: any = {};
-    data: any = {};
+    private id_contact: number;
 
-    id_contact: number;
+    private testing: any[] = [];
+    private fact: any[] = [];
+    private form: any[] = [];
 
-    testing: any[] = [];
-    fact: any[] = [];
+    private nom: any = {};
 
-    form: any[] = [];
-
-    mat: any = {};
-    entre: any = {};
-    nom: any = {};
-
-    caces: any[] = [];
-    test: any = {};
-    facting: any = {};
+    private caces: any[] = [];
+    private test: any = {};
+    private facting: any = {};
 
 
     constructor(private route: ActivatedRoute,
-                private router: Router,
                 private contactService: ContactService,
-                private authenticationService: AuthenticationService,
                 private alertService: AlertService,
-                private builder: FormBuilder,
                 private _sanitizer: DomSanitizer,
                 private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -49,14 +38,16 @@ export class FormationcontactComponent {
 
 
     ngOnInit() {
+        this.route.params.subscribe(params => {
+            this.id_contact = params['id_contact'];
+        });
+
+
         this.loadAllStock();
         this.loadAllCaces();
         this.loadNom();
         this.loadform();
         this.loadCaces();
-        let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
     }
 
     loaddroituser() {
@@ -67,14 +58,10 @@ export class FormationcontactComponent {
 
 
     loadNom() {
-        this.route.params.subscribe(params => {
-            this.id_contact = params['id_contact'];
-            this.contactService.getByIdNom(this.id_contact).subscribe(user => {
-                    console.log(user);
-                    this.nom = user[0];
-                }
-            )
-        });
+        this.contactService.getByIdNom(this.id_contact).subscribe(user => {
+                this.nom = user[0];
+            }
+        )
     }
 
     loadAllStock() {
@@ -105,41 +92,36 @@ export class FormationcontactComponent {
         eparams.test = this.test;
         eparams.nom = this.nom;
 
-        this.contactService.addForm(eparams).subscribe(mat => {
-            this.mat = mat;
+        this.form.push(eparams.test);
+
+        this.contactService.addForm(eparams).subscribe(() => {
         });
     }
 
     loadform() {
-        this.route.params.subscribe(params => {
-            this.id_contact = params['id_contact'];
-            console.log(this.id_contact);
-            this.contactService.getByIdFormation(this.id_contact).subscribe(form => {
-                    this.form = form;
-                }
-            )
-        });
+        this.contactService.getByIdFormation(this.id_contact).subscribe(form => {
+                this.form = form;
+            }
+        )
     }
 
     addCac() {
         let eparams: any = {};
         eparams.facting = this.facting;
         eparams.nom = this.nom;
+;
+        console.log(this.facting)
+        this.caces.push(eparams.facting);
 
-        this.contactService.addCaces(eparams).subscribe(
-            mat => {
-                this.mat = mat;
-            });
+        this.contactService.addCaces(eparams).subscribe(() => {
+        });
     }
 
     loadCaces() {
-        this.route.params.subscribe(params => {
-            this.id_contact = params['id_contact'];
-            this.contactService.getByIdCaces(this.id_contact).subscribe(caces => {
-                    this.caces = caces;
-                }
-            )
-        });
+        this.contactService.getByIdCaces(this.id_contact).subscribe(caces => {
+                this.caces = caces;
+            }
+        )
     }
 
 

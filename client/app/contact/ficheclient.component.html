@@ -55,9 +55,13 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class=" control-label col-sm-3">Date de création :</label>
+					<label  class=" control-label col-sm-3">Civilité :</label>
 					<div class="col-sm-3">
-						<input type="date" class="form-control" name="date_entree" [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'">
+						<select name="titre"   [(ngModel)]="contact.titre"  class="form-control "  style="height: 34px;">
+							<option [selected]="contact.titre =='Mr'">Mr</option>
+							<option [selected]="contact.titre =='Mme'">Mme</option>
+							<option [selected]="contact.titre =='Mlle'">Mlle</option>
+						</select>
 					</div>
 				</div>
 

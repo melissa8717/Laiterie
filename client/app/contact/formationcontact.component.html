@@ -6,8 +6,8 @@
         <div class="toobar">
             <div class="fill">
                 <div class="container-fluid">
-                    <img *ngIf="!print"  src="image/menu/contacts_grand_gris.png">
-                    <span *ngIf="!print">Contact</span>
+                    <img src="image/menu/contacts_grand_gris.png">
+                    <span>Contact</span>
                     <span class="col-sm-offset-5">{{nom.nom}} {{nom.prenom}}</span>
                 </div>
             </div>
@@ -42,7 +42,7 @@
 
 
     <div class=" container-fluid " >
-        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+        <div class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
             <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
 
@@ -98,7 +98,7 @@
                                    [(ngModel)]="test.nom_formation" class="col-sm-12">
                         </td>
                         <td class="col-sm-3"><input type="date" name="datefor" value="" class="col-sm-12" [(ngModel)]="test.datefor"/></td>
-                        <td class="col-sm-2"><button  [disabled]="loading">Ajouter</button></td>
+                        <td class="col-sm-2"><button  [disabled]="!test.datefor">Ajouter</button></td>
 
 
                     </tr>
@@ -165,7 +165,7 @@
                                    [(ngModel)]="facting.cacess" class="col-sm-12">
                         </td>
                         <td class="col-sm-3"><input type="date" name="date_fin" value="" class="col-sm-12" [(ngModel)]="facting.date_fin"/></td>
-                        <td class="col-sm-2"><button type="submit" [disabled]="loading">Ajouter</button></td>
+                        <td class="col-sm-2"><button type="submit" [disabled]="!facting.date_fin">Ajouter</button></td>
 
 
                     </tr>
