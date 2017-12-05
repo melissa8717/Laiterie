@@ -87,6 +87,7 @@
                     <span class="col-sm-3">Civilité :</span>
 
 						<select name="titre"   [(ngModel)]="contact.titre"  class="col-sm-11"  style="height: 34px;">
+							<option [selected]="contact.titre ==' '"> </option>
 							<option [selected]="contact.titre =='Mr'">Mr</option>
 							<option [selected]="contact.titre =='Mme'">Mme</option>
 							<option [selected]="contact.titre =='Mlle'">Mlle</option>
