@@ -63,10 +63,9 @@ function getFooter(req, res) {
 
 /*------------------agence----------------------------------------*/
 function addagence(req, res) {
-    console.log("test");
     paramsService.addagence(req.body)
-        .then(function (agen) {
-            res.send(agen);
+        .then(function (result) {
+            res.status(200).send("" + result.insertId);
         })
         .catch(function (err) {
             res.status(400).send(err);

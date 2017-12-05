@@ -1,18 +1,13 @@
 /**
  * Created by Wbat on 13/07/2017.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AlertService, AuthenticationService} from '../_services/index';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {AlertService} from '../_services/index';
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
-import {FileUploader} from 'ng2-file-upload';
-import {Http, Headers, RequestOptions, Response} from '@angular/http';
-import {AppConfig} from "../app.config";
-import any = jasmine.any;
-// const URL = '/api/';
-const URL = 'http://'+ location.hostname +':4000/ged/';
-const URLimg = 'http://'+location.hostname+':4000/image/';
+import {FileUploader} from "ng2-file-upload";
+
 
 @Component({
     moduleId: module.id,
@@ -21,122 +16,76 @@ const URLimg = 'http://'+location.hostname+':4000/image/';
 
 export class Param_genComponent {
 
-    //ged
-    public uploader: FileUploader;
-    public uploaderImg: FileUploader;
-    public hasBaseDropZoneOver: boolean = false;
+    private loc = location.hostname;
+    private model: any = {};
+    private print: boolean = false;
+    private currentUser: User;
+    private droitsuser: any = {};
+    // visualisation de l'image avant envoi
+    private url: any;
+    private uploaderImg: FileUploader;
+    private urlImg: string = 'http://' + location.hostname + ':4000/image/';
 
-    public fileOverBase(e: any): void {
-        this.hasBaseDropZoneOver = e;
-    }
-
-    //fin ged
-    loc = location.hostname;
-    model: any = {};
-    print: boolean = false;
-    agen: any;
-    agence: any = {};
-    currentUser: User;
-    droitsuser: any = {};
-    _id: any;
-    data: any = {};
-    ged: any[];
-    id_param_ged: number;
-    id_agence: number;
-    image: any[];
-
-    constructor(private http: Http,
-                private config: AppConfig,
-                private route: ActivatedRoute,
-                private router: Router,
-                private authenticationService: AuthenticationService,
+    constructor(private router: Router,
                 private alertService: AlertService,
                 private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
-        let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
         this.loadAllagence();
         this.loaddroituser();
-        this.getGed();
-
-        //console.log(id_agence);
-
-        /*this.route.params.subscribe(params => {
-            this.id_agence = params['id_agence'];
-            console.log(params);
-            //ged
-            this.getGed();
-
-            this.uploaderImg = new FileUploader({url: URLimg + "agence/" + params['id_agence']});
-            this.uploaderImg.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-
-            this.uploader = new FileUploader({url: URL + "param/" + params['id_agence']});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-            //ged
-        });*/
     }
 
-    // visualisation de l'image avant envoi
-    url: any;
     readUrl(event: any) {
         if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
+            let reader = new FileReader();
             reader.onload = (event: any) => {
                 this.url = event.target.result;
-            }
+            };
             reader.readAsDataURL(event.target.files[0]);
         }
     }
 
     loadAllagence() {
-        this.paramsService.getAllAgence().subscribe(model => {
-            if (model && model[0]) {
-                this.model = model[0];
-
-                this.uploaderImg = new FileUploader({url: URLimg + "agence/" + this.model.id_agence});
-                this.uploaderImg.onAfterAddingFile = (file) => {
-                    file.withCredentials = false;
-                };
+        this.paramsService.getAllAgence().subscribe(agences => {
+            if (agences && agences[0]) {
+                this.model = agences[0];
+                this.setUploaderImg();
             }
         });
+    }
+
+    setUploaderImg() {
+        this.uploaderImg = new FileUploader({url: this.urlImg + "agence/" + this.model.id_agence});
+        this.uploaderImg.onAfterAddingFile = (file) => {
+            file.withCredentials = false;
+        };
     }
 
     loaddroituser() {
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
             this.droitsuser = data[0];
-            //console.log(this.data);
-            //console.log(this.currentUser._id);
         });
     }
 
     addagence() {
-        this.paramsService.addagence(this.model).subscribe(agen => {
-            this.agen = agen;
+        this.paramsService.addagence(this.model).subscribe(id => {
+            this.model.id_agence = id;
+            this.setUploaderImg();
             this.alertService.success('Nouvelle agence ajoutée avec succès', true);
-            this.router.navigate(['/parametre_gen']);
         });
     }
 
     modify(aparams: any) {
-        this.paramsService.updateAgence(aparams).subscribe(
-            data => {
-                this.alertService.success("Les données ont bien été modifiées.");
-            });
+        this.paramsService.updateAgence(aparams).subscribe(() => {
+            this.alertService.success("Les données ont bien été modifiées.");
+        });
     }
 
     imprimer() {
         this.alertService.clear();
-        var css = '@page',
+        let css = '@page',
             head = document.head || document.getElementsByTagName('head')[0],
             style = document.createElement('style');
         style.type = 'text/css';
@@ -150,27 +99,5 @@ export class Param_genComponent {
             window.print();
             this.print = false;
         }, 1000);
-    }
-
-    /*************************** GED ***************************/
-    //ged
-    private getGed() {
-        this.paramsService.getGed(this.id_param_ged)
-            .subscribe(
-                data => {
-                    this.ged = data;
-
-                    console.log(this.model.id_agence);
-                    this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
-                    this.uploader.onAfterAddingFile = (file) => {
-                        file.withCredentials = false;
-                    };
-
-                },
-                error => {
-                    console.log("Couldn't load the ged infos");
-                    console.log(error);
-                    this.alertService.error(error._body);
-                });
     }
 }

@@ -4,287 +4,146 @@
 
     <menu-param></menu-param>
 
-
     <div class="container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
 
-        <div class="container-fluid">
-            <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-                <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        <h3 class="col-sm-12">Agence</h3>
+
+        <div *ngIf="uploaderImg" class="col-sm-2">
+            <h4>Logo</h4>
+
+            <div style="height: 15%; width: 100%;">
+                <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+                <img *ngIf="!url && model.image"
+                     src="http://{{loc}}:4000/image/agence/{{model.id_agence}}/{{model.image}}" alt="..."
+                     class="img-thumbnail col-sm-12"/>
+                <img *ngIf="!url && !model.image" src="image/test.ico" alt="..."
+                     class="img-thumbnail images"/>
+                <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
             </div>
-            <h3 class="col-sm-12">Agence</h3>
+        </div>
 
-            <div *ngIf="uploaderImg" class="col-sm-2">
-                <h4>Logo</h4>
-
-                <div style="height: 15%; width: 100%;">
-                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && model.image"
-                         src="http://{{loc}}:4000/image/agence/{{model.id_agence}}/{{model.image}}" alt="..."
-                         class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && !model.image" src="image/test.ico" alt="..."
-                         class="img-thumbnail images"/>
-                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
-                </div>
-            </div>
-
-            <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam"
-                    class="btn btn-default  col-sm-offset-11 col-sm-1"
-                    (click)="modify(model); uploaderImg.queue[0].upload();"> Modifier
-            </button>
+        <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam"
+                class="btn btn-default  col-sm-offset-11 col-sm-1"
+                (click)="modify(model); uploaderImg.queue[0].upload();"> Modifier
+        </button>
 
 
-            <form *ngIf="droitsuser.accesparam == 1">
-                <div class="col-sm-12">
-                    <div class="form-group" style="margin-top: 10px;">
-                        <label class="col-sm-1">Nom :</label>
-                        <input type="text" class=" col-sm-3" name="nom_a" [(ngModel)]="model.nom_a">
-                    </div>
-
-            <div  *ngIf="uploaderFili" class="col-sm-offset-2">
-                <h4>Filigrane</h4>
-
-                <div style="height: 15%; width: 100%;">
-                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && fili.image"
-                         src="http://{{loc}}:4000/image/agence/{{fili.id_agence}}/{{fili.image}}" alt="..."
-                         class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && !fili.image" src="image/test.ico" alt="..."
-                         class="img-thumbnail images"/>
-                    <input type="file" ng2FileSelect [uploader]="uploaderFili" (change)="readUrl($event)"/>
-                </div>
-            </div>
-
-            <button *ngIf="uploaderFili && uploaderFili.queue[0] && droitsuser.modifparam" class="btn btn-default  col-sm-offset-11 col-sm-1"
-                    (click)="modify(fili); uploaderFili.queue[0].upload();"> Modifier
-            </button>
-            <h3 class="col-sm-12">Agence</h3>
-
-
-    <form *ngIf="droitsuser.accesparam == 1">
+        <form *ngIf="droitsuser.accesparam == 1">
             <div class="col-sm-12">
                 <div class="form-group" style="margin-top: 10px;">
-                    <label class="col-sm-1" >Nom :</label>
+                    <label class="col-sm-1">Nom :</label>
                     <input type="text" class=" col-sm-3" name="nom_a" [(ngModel)]="model.nom_a">
                 </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-2">Responsable :</label>
-                        <input type="text" class=" col-sm-3" name="responsable_a" [(ngModel)]="model.responsable_a">
-                    </div>
+                <div class="form-group">
+                    <label class="col-sm-2">Responsable :</label>
+                    <input type="text" class=" col-sm-3" name="responsable_a"
+                           [(ngModel)]="model.responsable_a">
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-1">Adresse :</label>
+                    <input type="text" class=" col-sm-11" name="adresse_a" [(ngModel)]="model.adresse_a">
                 </div>
 
-                <div class="col-sm-12">
-
-                    <div class="form-group">
-                        <label class="col-sm-1">Adresse :</label>
-                        <input type="text" class=" col-sm-11" name="adresse_a" [(ngModel)]="model.adresse_a">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2">Département :</label>
-                        <input type="text" class=" col-sm-2" name="dep_a" [(ngModel)]="model.dep_a">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-1">Ville :</label>
-                        <input type="text" class=" col-sm-2" name="ville_a" [(ngModel)]="model.ville_a">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-1">Pays :</label>
-                        <input type="text" class=" col-sm-2" name="pays_a" [(ngModel)]="model.pays_a">
-                    </div>
-                </div>
-                <div class="col-sm-12">
-
-                    <div class="form-group" style="margin-top: 10px;">
-                        <label class="col-sm-2">Téléphone :</label>
-                        <input type="text" class=" col-sm-2" name="tel_a" [(ngModel)]="model.tel_a">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-1">Fax : </label>
-                        <input type="text" class=" col-sm-2" name="fax_a" [(ngModel)]="model.fax_a">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-1">E-mail :</label>
-                        <input type="text" class=" col-sm-2" name="mail_a" [(ngModel)]="model.mail_a">
-                    </div>
+                <div class="form-group">
+                    <label class="col-sm-2">Département :</label>
+                    <input type="text" class=" col-sm-2" name="dep_a" [(ngModel)]="model.dep_a">
                 </div>
 
-                <div class="col-sm-12">
-
-                    <div class="form-group">
-                        <label class="col-sm-1">Site :</label>
-                        <input type="text" class=" col-sm-3" name="site_a" [(ngModel)]="model.site_a">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-1">Siret :</label>
-                        <input type="text" class=" col-sm-3" name="siret_a" [(ngModel)]="model.siret_a">
-                    </div>
+                <div class="form-group">
+                    <label class="col-sm-1">Ville :</label>
+                    <input type="text" class=" col-sm-2" name="ville_a" [(ngModel)]="model.ville_a">
                 </div>
 
-
-                <h4 class="col-sm-12">Information pour la facturation et les devis</h4>
-
-                <div class="col-sm-12">
-
-                    <span class="col-sm-2">Ville de facturation ::</span> <input type="text" name="villefact"
-                                                                                 [(ngModel)]="model.villefact">
+                <div class="form-group">
+                    <label class="col-sm-1">Pays :</label>
+                    <input type="text" class=" col-sm-2" name="pays_a" [(ngModel)]="model.pays_a">
                 </div>
-                <div class="col-sm-12">
+            </div>
 
-
-                    <span class="col-sm-2">Pied de page ligne1 :</span><input type="text" name="pied_page1"
-                                                                              class="col-sm-10"
-                                                                              [(ngModel)]="model.pied_page1">
-                    <span class="col-sm-2">Pied de page ligne2 :</span><input type="text" name="pied_page2"
-                                                                              class="col-sm-10"
-                                                                              [(ngModel)]="model.pied_page2">
-                    <span class="col-sm-2">Pied de page ligne3 :</span><input type="text" name="pied_page3"
-                                                                              class="col-sm-10"
-                                                                              [(ngModel)]="model.pied_page3">
-                    <span class="col-sm-2">Pied de page ligne4 :</span><input type="text" name="pied_page4"
-                                                                              class="col-sm-10"
-                                                                              [(ngModel)]="model.pied_page4">
-                    <span class="col-sm-2">Pied de page ligne5 :</span><input type="text" name="pied_page5"
-                                                                              class="col-sm-10"
-                                                                              [(ngModel)]="model.pied_page5">
-                    <span class="col-sm-2">Pied de page ligne6 :</span><input type="text" name="pied_page6"
-                                                                              class="col-sm-10"
-                                                                              [(ngModel)]="model.pied_page6">
-
+            <div class="col-sm-12">
+                <div class="form-group" style="margin-top: 10px;">
+                    <label class="col-sm-2">Téléphone :</label>
+                    <input type="text" class=" col-sm-2" name="tel_a" [(ngModel)]="model.tel_a">
                 </div>
-                <button type="button" *ngIf="uploaderImg && droitsuser.modifparam == 1 && model"
-                        class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  "
-                        (click)="modify(model); uploaderImg.queue[0].upload();">Valider
-                </button>
+
+                <div class="form-group">
+                    <label class="col-sm-1">Fax : </label>
+                    <input type="text" class=" col-sm-2" name="fax_a" [(ngModel)]="model.fax_a">
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1">E-mail :</label>
+                    <input type="text" class=" col-sm-2" name="mail_a" [(ngModel)]="model.mail_a">
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-1">Site :</label>
+                    <input type="text" class=" col-sm-3" name="site_a" [(ngModel)]="model.site_a">
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1">Siret :</label>
+                    <input type="text" class=" col-sm-3" name="siret_a" [(ngModel)]="model.siret_a">
+                </div>
+            </div>
+
+            <h4 class="col-sm-12">Information pour la facturation et les devis</h4>
+
+            <div class="col-sm-12">
+                <span class="col-sm-2">Ville de facturation ::</span> <input type="text" name="villefact" [(ngModel)]="model.villefact">
+            </div>
+
+            <div class="col-sm-12">
 
 
-        <button type="button"
-                class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  "
-                (click)="addagence()"
-        *ngIf="!model">Ajouter
+                <span class="col-sm-2">Pied de page ligne1 :</span><input type="text" name="pied_page1"
+                                                                          class="col-sm-10"
+                                                                          [(ngModel)]="model.pied_page1">
+                <span class="col-sm-2">Pied de page ligne2 :</span><input type="text" name="pied_page2"
+                                                                          class="col-sm-10"
+                                                                          [(ngModel)]="model.pied_page2">
+                <span class="col-sm-2">Pied de page ligne3 :</span><input type="text" name="pied_page3"
+                                                                          class="col-sm-10"
+                                                                          [(ngModel)]="model.pied_page3">
+                <span class="col-sm-2">Pied de page ligne4 :</span><input type="text" name="pied_page4"
+                                                                          class="col-sm-10"
+                                                                          [(ngModel)]="model.pied_page4">
+                <span class="col-sm-2">Pied de page ligne5 :</span><input type="text" name="pied_page5"
+                                                                          class="col-sm-10"
+                                                                          [(ngModel)]="model.pied_page5">
+                <span class="col-sm-2">Pied de page ligne6 :</span><input type="text" name="pied_page6"
+                                                                          class="col-sm-10"
+                                                                          [(ngModel)]="model.pied_page6">
+            </div>
 
-        </button>
-            </form>
-
-            <button type="button" class="btn btn-default input-sm col-sm-offset-5 col-sm-1"
-                    style="margin-bottom: 5px;  ">Imprimer
+            <button type="button" *ngIf="uploaderImg && droitsuser.modifparam == 1"
+                    class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  "
+                    (click)="modify(model)">Valider
             </button>
 
-        </div>
+            <button type="button"
+                    class="btn btn-default input-sm col-sm-offset-5 col-sm-1" style="margin-bottom: 5px;  "
+                    (click)="addagence()"
+                    *ngIf="!model.id_agence">Ajouter
 
-            </form>
-        </div>
-    </div>
+            </button>
+        </form>
 
+        <button type="button" class="btn btn-default input-sm col-sm-offset-5 col-sm-1"
+                style="margin-bottom: 5px;  ">Imprimer
+        </button>
 
-    <div *ngIf="uploader" class="row">
-        <h3>GED</h3>
-
-        <div class="col-md-3">
-
-            <h3>Choisir Fichier</h3>
-
-            <div ng2FileDrop
-                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                 (fileOver)="fileOverBase($event)"
-                 [uploader]="uploader"
-                 class="well my-drop-zone">
-                Base drop zone
-            </div>
-
-            <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br/>
-
-        </div>
-
-        <div class="col-md-5" style="margin-bottom: 40px">
-
-            <h3>File d'attente</h3>
-
-            <table class="table" *ngIf="uploader">
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Etat</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of uploader.queue">
-                    <td><strong>{{ item?.file?.name }}</strong></td>
-                    <td class="text-center">
-                        <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                        <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                        <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                    </td>
-                    <td nowrap>
-                        <button type="button" class="btn btn-success btn-xs"
-                                (click)="item.upload(); getGed(id)"
-                                [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                            <span class="glyphicon glyphicon-upload"></span> Mettre en ligne
-                        </button>
-                        <button type="button" class="btn btn-warning btn-xs"
-                                (click)="item.cancel()" [disabled]="!item.isUploading">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Annuler
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs"
-                                (click)="item.remove()">
-                            <span class="glyphicon glyphicon-trash"></span> Retirer de la liste
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div *ngIf="uploader">
-                <div>
-                    Avancement:
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar"
-                             [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-success btn-s"
-                        (click)="uploader.uploadAll(); getGed(id);" [disabled]="!uploader.getNotUploadedItems().length">
-                    <span class="glyphicon glyphicon-upload"></span> Tout mettre en ligne
-                </button>
-                <button type="button" class="btn btn-warning btn-s"
-                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Tout annuler
-                </button>
-                <button type="button" class="btn btn-danger btn-s"
-                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                    <span class="glyphicon glyphicon-trash"></span> Tout retirer de la liste
-                </button>
-            </div>
-
-        </div>
-
-        <div class="col-md-4" style="margin-bottom: 40px">
-
-            <h3>GED</h3>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Date d'ajout</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of ged">
-                    <td *ngIf="!print"><strong><a href="http://{{loc}}:4000/ged/param/{{model.id_agence}}/{{item.url}}"
-                                                  target="_blank">{{ item.nom }}</a></strong></td>
-                    <td nowrap>{{item.date_ajout | date : 'dd/MM/yyyy'}}</td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
+        <ged *ngIf="model.id_agence" [gedName]="'param'" [id]="model.id_agence"></ged>
 
     </div>
+
 </div>
