@@ -173,7 +173,7 @@
 
                             <td *ngIf="!devis.tvadevis">
                                 <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux" required style="border:none;" >
-                                    <option *ngFor="let produit of facts,let i= index" selected>{{produit.taux}}</option>
+                                    <option *ngFor="let produit of facts,let i= index" [value]="produit.taux">{{produit.taux}}</option>
                                 </select>
                             </td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
@@ -212,8 +212,8 @@
 
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" colspan="10">
                                 <div class="form-group">
-                                    <span *ngIf="produit.produit ? produit.produit : produit.obj">{{produit.produit}}{{produit.obj}}</span><br>
-                                    <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
+                                    <span *ngIf="produit.produit ? produit.produit : produit.obj" style="font-weight: bold;">{{produit.produit}}{{produit.obj}}</span><br>
+                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;" >{{produit.commentaire}}</textarea>
                                 </div>
                             </td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
@@ -353,6 +353,8 @@
                             </td>
                         </tr>
 
+
+
                         <tr *ngFor="let produit of produitDevisOptions, let i = index; trackBy:customTrackBy">
 
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" class="total">
@@ -362,8 +364,8 @@
 
                             <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" colspan="10">
                                 <div class="form-group">
-                                    <span>{{produit.produit}}</span><br>
-                                    <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
+                                    <span style="font-weight: bold;">{{produit.produit}}</span><br>
+                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;" >{{produit.commentaire}}</textarea>
                                 </div>
                             </td>
                             <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">

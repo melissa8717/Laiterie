@@ -161,7 +161,7 @@
                             </td>
                             <td>
                                 <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux" required>
-                                    <option *ngFor="let tva of tvas" selected>{{tva.taux}}</option>
+                                    <option *ngFor="let tva of tvas"[value]="tva.taux">{{tva.taux}}</option>
                                 </select>
                             </td>
                             <td>
