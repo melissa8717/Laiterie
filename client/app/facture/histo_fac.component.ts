@@ -12,6 +12,3 @@ export class Histo_facComponent {
     }
 
 }
-
-
-

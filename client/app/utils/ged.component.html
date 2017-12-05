@@ -52,13 +52,6 @@
         </table>
 
         <div>
-            <div>
-                Avancement:
-                <div class="progress" style="">
-                    <div class="progress-bar" role="progressbar"
-                         [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                </div>
-            </div>
             <button *ngIf="droitsuser.ajoutdev" type="button" class="btn btn-success btn-s"
                     (click)="uploader.uploadAll();"
                     [disabled]="!uploader.getNotUploadedItems().length">

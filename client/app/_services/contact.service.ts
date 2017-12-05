@@ -57,7 +57,7 @@ export class ContactService {
         return this.http.get(this.config.apiUrl + '/contacts/' + _id, this.jwt()).map((response: Response) => response.json());
     }
 
-    getByIdAllInfos(_id: string) {
+    getByIdAllInfos(_id: number) {
         return this.http.get(this.config.apiUrl + '/contacts/allinfos/' + _id, this.jwt()).map((response: Response) => response.json());
     }
 

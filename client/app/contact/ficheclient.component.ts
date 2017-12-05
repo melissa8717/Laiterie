@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, ContactService } from '../_services/index';
-import { Contact, Mail, Telephone, Adresse, Qualification, Contrat } from '../_models/index';
+import {AlertService, ContactService} from '../_services/index';
+import {Contact, Mail, Telephone, Adresse, Qualification, Contrat} from '../_models/index';
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
 
@@ -20,7 +20,7 @@ export class FicheclientComponent implements OnInit {
     telephoneFixe = new Telephone();
     telephoneMobile = new Telephone();
     telephonePro = new Telephone();
-    telephoneFax  = new Telephone();
+    telephoneFax = new Telephone();
     adresse = new Adresse();
 
     print: boolean = false;
@@ -30,17 +30,16 @@ export class FicheclientComponent implements OnInit {
     id_contact: number;
 
     currentUser: User;
-    droitsuser:any={};
-    _id:any;
-    data:any={};
+    droitsuser: any = {};
+    _id: any;
+    data: any = {};
 
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private contactService: ContactService,
-        private alertService: AlertService,
-        private paramsService:ParamsService) {
+    constructor(private route: ActivatedRoute,
+                private router: Router,
+                private contactService: ContactService,
+                private alertService: AlertService,
+                private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.mail.type_mail = "perso";
         this.mailPro.type_mail = "pro";
@@ -53,15 +52,11 @@ export class FicheclientComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loaddroituser();
 
         this.route.params.subscribe(params => {
-            this.id_contact = params['id_contact']
-            this.loaddroituser();
-        });
-
-
-        this.route.params.subscribe(params => {
-            this.getContact(params['id_contact']);
+            this.id_contact = params['id_contact'];
+            this.getContact(this.id_contact);
         });
 
 
@@ -71,58 +66,57 @@ export class FicheclientComponent implements OnInit {
         this.loadAllencours();
 
     }
-    loaddroituser() {                                 //
+
+    loaddroituser() {
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-
             this.droitsuser = data[0];
-
-
         });
     }
 
 
-
     loadAllchantier() {
-            this.contactService.getByIdchantier(this.id_contact).subscribe(
-                data => {
-                    this.chantier = data;
-
-                }
-            )
+        this.contactService.getByIdchantier(this.id_contact).subscribe(data => {
+            this.chantier = data;
+        })
     }
 
     loadAllencours() {
-
-            this.contactService.getByIdencours(this.id_contact).subscribe(
-                data => {
-                    this.cours = data;
-
-                }
-            )
+        this.contactService.getByIdencours(this.id_contact).subscribe(data => {
+            this.cours = data;
+        })
     }
 
 
-
-
-    private getContact(id_contact: string){
-        this.contactService.getByIdAllInfos(id_contact).subscribe(
-            data => {
+    private getContact(id_contact: number) {
+        this.contactService.getByIdAllInfos(id_contact).subscribe(data => {
                 this.contact = data.contact;
-                for(var i in data.mails){
-                    switch(data.mails[i].type_mail){
-                        case "perso": this.mail = data.mails[i]; break;
-                        case "pro": this.mailPro = data.mails[i]; break;
+                for (var i in data.mails) {
+                    switch (data.mails[i].type_mail) {
+                        case "perso":
+                            this.mail = data.mails[i];
+                            break;
+                        case "pro":
+                            this.mailPro = data.mails[i];
+                            break;
                     }
                 }
-                for(var i in data.telephones){
-                    switch(data.telephones[i].type_tel){
-                        case "fixe": this.telephoneFixe = data.telephones[i]; break;
-                        case "mobile": this.telephoneMobile = data.telephones[i]; break;
-                        case "fax":this.telephoneFax = data.telephones[i]; break;
-                        case "pro": this.telephonePro = data.telephones[i]; break;
+                for (var i in data.telephones) {
+                    switch (data.telephones[i].type_tel) {
+                        case "fixe":
+                            this.telephoneFixe = data.telephones[i];
+                            break;
+                        case "mobile":
+                            this.telephoneMobile = data.telephones[i];
+                            break;
+                        case "fax":
+                            this.telephoneFax = data.telephones[i];
+                            break;
+                        case "pro":
+                            this.telephonePro = data.telephones[i];
+                            break;
                     }
                 }
-                if(data.adresse != null) this.adresse = data.adresse;
+                if (data.adresse != null) this.adresse = data.adresse;
 
                 var id_c = +id_contact;
                 this.mail.id_contact = id_c;
@@ -145,7 +139,7 @@ export class FicheclientComponent implements OnInit {
             "mailPro": this.mailPro,
             "telephoneFixe": this.telephoneFixe,
             "telephoneMobile": this.telephoneMobile,
-            "telephoneFax":this.telephoneFax,
+            "telephoneFax": this.telephoneFax,
             "telephonePro": this.telephonePro,
             "adresse": this.adresse
         };
@@ -163,7 +157,7 @@ export class FicheclientComponent implements OnInit {
     }
 
 
-    imprimer(){
+    imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
@@ -174,7 +168,7 @@ export class FicheclientComponent implements OnInit {
             style.type = 'text/css';
             style.media = 'print';
 
-            if (style.sheet){
+            if (style.sheet) {
             } else {
                 style.appendChild(document.createTextNode(css));
             }
@@ -185,7 +179,6 @@ export class FicheclientComponent implements OnInit {
             this.print = false;
         }, 1000);
     }
-
 
 
 }

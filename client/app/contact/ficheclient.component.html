@@ -1,51 +1,52 @@
-
 <div id="contact">
-	<style type="text/css" media="print">
-		@page { size: landscape; }
-	</style>
+    <style type="text/css" media="print">
+        @page {
+            size: landscape;
+        }
+    </style>
 
-	<my-header *ngIf="!print" [title]='"Contact"' [img]="'image/menu/contacts_grand_gris.png'"></my-header>
-
-
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-
-			</div>
+    <my-header *ngIf="!print" [title]='"Contact"' [img]="'image/menu/contacts_grand_gris.png'"></my-header>
 
 
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li *ngIf="droitsuser.accescontact" class="active"><a [routerLink]="['/ficheclient' , id_contact]">Fiche client</a></li>
-					<li *ngIf="droitsuser.accescontact" role="presentation" ><a [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
-				</ul>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
 
-			</div>
-		</div>
-	</nav>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
 
 
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li *ngIf="droitsuser.accescontact" class="active"><a [routerLink]="['/ficheclient' , id_contact]">Fiche
+                        client</a></li>
+                    <li *ngIf="droitsuser.accescontact" role="presentation"><a
+                            [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 
-	<div class=" container-fluid " >
-		<div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-			<a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
-		</div>
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
 
-		<form method="POST" action="#" >
+        <form method="POST" action="#">
 
-			<h3 >Fiche client</h3>
+            <h3>Fiche client</h3>
 
 
 			<div class="col-sm-6">
 				<h5>Informations</h5>
+
 
 				<div class="form-group">
 					<label  class=" control-label col-sm-3">Statut :</label>
@@ -172,24 +173,19 @@
 					</div>
 				</div>
 
-
-
-
-
 				<h5 class="col-sm-12">Informations complémentaires</h5>
 
-
-				<div class="form-group">
-					<input type="text" name="note" placeholder="note" class="form-control " [(ngModel)]="contact.note"/>
-				</div>
+                <div class="form-group">
+                    <input type="text" name="note" placeholder="note" class="form-control " [(ngModel)]="contact.note"/>
+                </div>
 
 
 				<button *ngIf="!print" class="btn btn-default input-sm col-sm-offset-9" (click)="updateClient()">Modifier</button>
 
-			</div>
+            </div>
 
 
-			<div class="col-sm-6 ">
+            <div class="col-sm-6 ">
 
 				<h5>Historique :</h5>
 				<div class=" table-responsive" >
@@ -210,48 +206,50 @@
 							<td><!--variable --></td>
 						</tr>
 
-						</tbody>
-					</table>
-				</div>
+                        </tbody>
+                    </table>
+                </div>
 
 
+                <h5>Chantier en cours</h5>
+                <div class="table_responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>N° Chantier</th>
+                            <th>Nom chantier</th>
+                            <th *ngIf="!print">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let pro of cours">
+                            <td class="col-sm-3" style="font-weight: bold;">{{pro.id_chantier}}</td>
+                            <td>{{pro.nom_chantier}}</td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="hidden" class="form-control" name="identifiant du devis">
+                                    <!--variable pour l'identifiant-->
+                                    <div *ngIf="!print" class="input-group-btn">
+                                        <button type="button" class="btn btn-default dropdown-toggle input-sm"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+                                            <span class="caret"></span></button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li>
+                                                <a [routerLink]="['/devis/'+pro.id_devis+'/'+ pro.num_version]">Ouvrir</a>
+                                            </li>
+                                        </ul>
+                                    </div><!-- /btn-group -->
+                                </div><!-- /input-group -->
+                            </td>
 
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--variable à mettre à la place de l'identifiant chantier-->
 
-
-				<h5>Chantier en cours</h5>
-				<div class="table_responsive">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>N° Chantier</th><th>Nom chantier</th><th *ngIf="!print" >Action</th>
-						</tr>
-					</thead>
-					<tbody>
-					<tr *ngFor="let pro of cours">
-						<td class="col-sm-3" style="font-weight: bold;">{{pro.id_chantier}}</td><td>{{pro.nom_chantier}}</td>
-						<td>
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="identifiant du devis">
-								<!--variable pour l'identifiant-->
-								<div  *ngIf="!print"  class="input-group-btn">
-									<button type="button" class="btn btn-default dropdown-toggle input-sm"
-											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
-										<span class="caret"></span></button>
-									<ul  class="dropdown-menu dropdown-menu-right">
-										<li ><a [routerLink]="['/devis/'+pro.id_devis+'/'+ pro.num_version]">Ouvrir</a></li>
-									</ul>
-								</div><!-- /btn-group -->
-							</div><!-- /input-group -->
-						</td>
-
-					</tr>
-					</tbody>
-				</table>
-				</div>
-				<!--variable à mettre à la place de l'identifiant chantier-->
-
-			</div>
-		</form>
+            </div>
+        </form>
 
 		<form method="POST" action="#">
 			<input *ngIf="!print" type="hidden" name="id client">
@@ -262,5 +260,8 @@
 
 	</div>
 
+    <div *ngIf="!print" class="row">
+        <ged [gedName]="'contact'" [id_contact]="id_contact"></ged>
+    </div>
 
 </div>
