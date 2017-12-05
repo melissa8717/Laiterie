@@ -1859,9 +1859,9 @@ CREATE TABLE IF NOT EXISTS `statut_employe` (
 
 CREATE TABLE IF NOT EXISTS `stock` (
   `id_produit` int(255) NOT NULL,
-  `stock` int(255) NOT NULL,
-  `stockmini` int(255) NOT NULL,
-  `stockmaxi` int(255) NOT NULL,
+  `stock` int(255) DEFAULT 0,
+  `stockmini` int(255) DEFAULT NULL,
+  `stockmaxi` int(255) DEFAULT NULL,
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
