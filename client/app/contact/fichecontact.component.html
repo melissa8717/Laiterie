@@ -41,9 +41,10 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li  class="active"><a [routerLink]="['/fichecontact' , id_contact]">Fiche contact</a></li>
-                        <li role="presentation" ><a [routerLink]="['/formationcontact' , id_contact]">Ses formations</a></li>
-                        <li  ><a [routerLink]="['/equipement' , id_contact]">Equipement</a></li>
+                        <li class="active"><a [routerLink]="['/fichecontact' , id_contact]">Fiche contact</a></li>
+                        <li role="presentation"><a [routerLink]="['/formationcontact' , id_contact]">Ses formations</a>
+                        </li>
+                        <li><a [routerLink]="['/equipement' , id_contact]">Equipement</a></li>
                     </ul>
 
                 </div>
@@ -51,8 +52,9 @@
         </nav>
 
         <div *ngIf="!print" class=" col-sm-offset-2" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-            <a  [routerLink]="['/contact']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Liste contact</span>
-            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1 col-sm-offset-6"></a><span class="blan1 ">Retour accueil</span>
+            <a [routerLink]="['/contact']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Liste contact</span>
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1 col-sm-offset-6"></a><span
+                class="blan1 ">Retour accueil</span>
         </div>
 
         <h3>Fiche contact</h3>
@@ -63,29 +65,30 @@
 
         <form method="POST" action="#">
 
-            <div >
+            <div>
 
                 <div style="height: 200px; width: 150px;">
                     <img *ngIf="url" [src]="url" alt="..." style="height: 200px; width: 150px;">
                     <img *ngIf="!url && contact.image_url"
                          src="http://{{loc}}:4000/image/contact/{{contact.id_contact}}/{{contact.image_url}}" alt="..."
                          style="height: 200px; width: 150px;"/>
-                   <img *ngIf="!url && !contact.image_url" src="image/test.ico" alt="..."
+                    <img *ngIf="!url && !contact.image_url" src="image/test.ico" alt="..."
                          class="img-thumbnail images"/>
-                    <input *ngIf="!print" type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
+                    <input *ngIf="!print" type="file" ng2FileSelect [uploader]="uploaderImg"
+                           (change)="readUrl($event)"/>
                 </div>
-                <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default  col-sm-offset-2 col-sm-1"
+                <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam"
+                        class="btn btn-default  col-sm-offset-2 col-sm-1"
                         (click)="updateContact(); uploaderImg.queue[0].upload();"> Modifier
                 </button>
 
             </div>
 
 
-
             <div class="col-sm-6" style="margin-top: 100px;">
 
 
-                <div class="form-group" >
+                <div class="form-group">
                     <span class="col-sm-3">Nom:</span><input type="text" name="nom" [(ngModel)]="contact.nom"
                                                              class="col-sm-11"/>
                 </div>
@@ -107,12 +110,13 @@
                                                                  [(ngModel)]="contact.adresse" class="col-sm-11"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-2">Code postal:</span><br />
+                    <span class="col-sm-2">Code postal:</span><br/>
                     <input type="text" name="code_postal"
-                                                                     [(ngModel)]="contact.code_postal"
-                                                                     class="col-sm-2"/>
-                </div><br />
-                <div class="form-group"><br />
+                           [(ngModel)]="contact.code_postal"
+                           class="col-sm-2"/>
+                </div>
+                <br/>
+                <div class="form-group"><br/>
                     <span class="col-sm-2 ">Ville:</span><input type="text" name="ville" [(ngModel)]="contact.ville"
                                                                 class="col-sm-5"/>
                 </div>
@@ -137,21 +141,28 @@
                 </div>
 
                 <div class="form-group">
-                    <span class="col-sm-3 ">Date de naissance:</span><input type="date" name="Date_naissance" [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'" (ngModelChange)="contact.Date_naissance = $event" [value]="contact.Date_naissance | date:'yyyy-MM-dd'" class="col-sm-11"/>
+                    <span class="col-sm-3 ">Date de naissance:</span><input type="date" name="Date_naissance"
+                                                                            [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'"
+                                                                            (ngModelChange)="contact.Date_naissance = $event"
+                                                                            [value]="contact.Date_naissance | date:'yyyy-MM-dd'"
+                                                                            class="col-sm-11"/>
                 </div>
 
 
                 <div class="form-group">
-                    <span class="col-sm-3 ">Lieu :</span><input type="text" name="lieu_naissance" [ngModel]="contact.lieu_naissance " class="col-sm-8 "/>
+                    <span class="col-sm-3 ">Lieu :</span><input type="text" name="lieu_naissance"
+                                                                [ngModel]="contact.lieu_naissance " class="col-sm-8 "/>
                 </div>
 
                 <div class="form-group">
-                    <span class="col-sm-4" >Date d'entrée :</span>
-                    <input type="date" name="date_entree"  [ngModel]="contact.date_entree | date:'yyyy-MM-dd'" (ngModelChange)="contact.date_entree = $event" [value]="contact.date_entree | date:'yyyy-MM-dd'" class="col-sm-6"/>
+                    <span class="col-sm-4">Date d'entrée :</span>
+                    <input type="date" name="date_entree" [ngModel]="contact.date_entree | date:'yyyy-MM-dd'"
+                           (ngModelChange)="contact.date_entree = $event"
+                           [value]="contact.date_entree | date:'yyyy-MM-dd'" class="col-sm-6"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-4" >Type :</span>
-                    <select name="energie"   [(ngModel)]="contact.type" class="col-sm-4" >
+                    <span class="col-sm-4">Type :</span>
+                    <select name="energie" [(ngModel)]="contact.type" class="col-sm-4">
                         <option [selected]="contact.type =='Employé'">Employé</option>
                         <option [selected]="contact.type =='Fournisseur'">Fournisseur</option>
                         <option [selected]="contact.type =='Client'">Client</option>
@@ -185,7 +196,9 @@
                                                                         class="col-sm-10 col-sm-offset-1"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-4" >Fax : </span><input type="text" name="numeroFax" [(ngModel)]="telephoneFax.numero" class="col-sm-10 col-sm-offset-1" />
+                    <span class="col-sm-4">Fax : </span><input type="text" name="numeroFax"
+                                                               [(ngModel)]="telephoneFax.numero"
+                                                               class="col-sm-10 col-sm-offset-1"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-4">Mail: </span><input type="text" name="mail" [(ngModel)]="mail.mail"
@@ -254,10 +267,10 @@
                     </div>
                     <div class="form-group">
                         <span class="col-sm-3">Secourisme :</span><input type="date" name="secourisme"
-                                                                          [ngModel]="contact.secourisme | date:'yyyy-MM-dd'"
-                                                                          (ngModelChange)="contact.secourisme = $event"
-                                                                          [value]="contact.secourisme | date:'yyyy-MM-dd'"
-                                                                          class="col-sm-3 "/>
+                                                                         [ngModel]="contact.secourisme | date:'yyyy-MM-dd'"
+                                                                         (ngModelChange)="contact.secourisme = $event"
+                                                                         [value]="contact.secourisme | date:'yyyy-MM-dd'"
+                                                                         class="col-sm-3 "/>
                     </div>
                     <div class="form-group">
                         <span class="col-sm-3 ">Validité amiante :</span><input type="date" name="amiante"
@@ -268,10 +281,10 @@
                     </div>
                     <div class="form-group">
                         <span class="col-sm-3">Travail en hauteur :</span><input type="date" name="travail_hauteur"
-                                                                                  [ngModel]="contact.travail_hauteur | date:'yyyy-MM-dd'"
-                                                                                  (ngModelChange)="contact.travail_hauteur = $event"
-                                                                                  [value]="contact.travail_hauteur | date:'yyyy-MM-dd'"
-                                                                                  class="col-sm-3"/>
+                                                                                 [ngModel]="contact.travail_hauteur | date:'yyyy-MM-dd'"
+                                                                                 (ngModelChange)="contact.travail_hauteur = $event"
+                                                                                 [value]="contact.travail_hauteur | date:'yyyy-MM-dd'"
+                                                                                 class="col-sm-3"/>
                     </div>
                     <div class="form-group">
                         <span class="col-sm-3 ">Visite médicale :</span><input type="date" name="visite_medicale"
@@ -282,9 +295,9 @@
                     </div>
                     <div class="form-group">
                         <span class="col-sm-3">Autorisation conduite :</span><input type="text"
-                                                                                     name="autorisation_conduite"
-                                                                                     [(ngModel)]="contact.autorisation_conduite"
-                                                                                     class="col-sm-3"/>
+                                                                                    name="autorisation_conduite"
+                                                                                    [(ngModel)]="contact.autorisation_conduite"
+                                                                                    class="col-sm-3"/>
                     </div>
                     <div class="form-group">
                         <span class="col-sm-3">Qualification :</span>
@@ -385,7 +398,8 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <button *ngIf="droitsuser.modifcontact && !print" class="col-sm-offset-11 col-sm-1 btn" type="button"
+                    <button *ngIf="droitsuser.modifcontact && !print" class="col-sm-offset-11 col-sm-1 btn"
+                            type="button"
                             (click)="loadAdd()">Modifier
                     </button>
 
@@ -495,124 +509,15 @@
             </ng-container>
 
             <div class="col-sm-12">
-                <button  class="col-sm-offset-11 col-sm-1 btn"
+                <button class="col-sm-offset-11 col-sm-1 btn"
                         type="button" *ngIf="!print && droitsuser.accescontact" (click)=" imprimer()">Imprimer
                 </button>
-
             </div>
-
         </form>
-
-
     </div><!--fin container-->
 
-
     <div *ngIf="!print" class="row">
-        <h3>GED</h3>
-
-        <div class="col-md-3">
-
-            <h3>Choisir Fichier</h3>
-
-            <div ng2FileDrop
-                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                 (fileOver)="fileOverBase($event)"
-                 [uploader]="uploader"
-                 class="well my-drop-zone">
-                Base drop zone
-            </div>
-
-            <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br/>
-
-        </div>
-
-        <div class="col-md-5" style="margin-bottom: 40px">
-
-            <h3>File d'attente</h3>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Etat</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of uploader.queue">
-                    <td><strong>{{ item?.file?.name }}</strong></td>
-                    <td class="text-center">
-                        <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                        <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                        <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                    </td>
-                    <td nowrap>
-                        <button type="button" class="btn btn-success btn-xs"
-                                (click)="item.upload(); getGed(id_contact)"
-                                [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                            <span class="glyphicon glyphicon-upload"></span> Mettre en ligne
-                        </button>
-                        <button type="button" class="btn btn-warning btn-xs"
-                                (click)="item.cancel()" [disabled]="!item.isUploading">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Annuler
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs"
-                                (click)="item.remove()">
-                            <span class="glyphicon glyphicon-trash"></span> Retirer de la liste
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div>
-                <div>
-                    Avancement:
-                    <div class="progress" style="">
-                        <div class="progress-bar" role="progressbar"
-                             [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-success btn-s"
-                        (click)="uploader.uploadAll(); getGed(id_contact);"
-                        [disabled]="!uploader.getNotUploadedItems().length">
-                    <span class="glyphicon glyphicon-upload"></span> Tout mettre en ligne
-                </button>
-                <button type="button" class="btn btn-warning btn-s"
-                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Tout annuler
-                </button>
-                <button type="button" class="btn btn-danger btn-s"
-                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                    <span class="glyphicon glyphicon-trash"></span> Tout retirer de la liste
-                </button>
-            </div>
-
-        </div>
-
-        <div class="col-md-4" style="margin-bottom: 40px">
-
-            <h3>GED</h3>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Date d'ajout</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of ged">
-                    <td *ngIf="!print"><strong><a href="http://{{loc}}:4000/ged/contact/{{id_contact}}/{{item.url}}"
-                                                  target="_blank">{{ item.nom }}</a></strong></td>
-                    <td nowrap>{{item.date_ajout | date : 'dd/MM/yyyy'}}</td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
-
+        <ged [gedName]="'contact'" [id_contact]="id_contact"></ged>
     </div>
-
 
 </div>

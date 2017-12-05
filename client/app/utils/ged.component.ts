@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {User} from "../_models/user";
 import {FileItem, FileUploader} from "ng2-file-upload";
-import {AlertService, DevisService, FactureService, ParamsService} from "../_services/index";
+import {AlertService, ContactService, DevisService, FactureService, ParamsService} from "../_services/index";
 
 @Component({
     moduleId: module.id,
@@ -12,6 +12,7 @@ import {AlertService, DevisService, FactureService, ParamsService} from "../_ser
 export class GedComponent {
 
     @Input() gedName: string;
+    @Input() id_contact: number;
 
     private uploader: FileUploader;
     private hasBaseDropZoneOver: boolean = false;
@@ -23,16 +24,21 @@ export class GedComponent {
     constructor(private alertService: AlertService,
                 private devisService: DevisService,
                 private factureService: FactureService,
+                private contactService: ContactService,
                 private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.loaddroituser();
         this.getGed();
 
         this.gedUrl = 'http://' + location.hostname + ':4000/ged/' + this.gedName;
+
+        if (this.id_contact) {
+            this.gedUrl += "/" + this.id_contact;
+        }
 
         this.uploader = new FileUploader({url: this.gedUrl});
 
@@ -44,10 +50,6 @@ export class GedComponent {
             if (response) {
                 this.getGed();
                 item.remove();
-                let __this = this;
-                setTimeout(function () {
-                    __this.uploader.progress = 0;
-                }, 1000);
             }
         }
     }
@@ -59,31 +61,34 @@ export class GedComponent {
     }
 
     getGed() {
-        let serviceToUse;
+        let __this = this;
 
         switch (this.gedName) {
             case 'dev':
-                serviceToUse = this.devisService;
+                this.devisService.getGed().subscribe(ged => success(ged), err => error(err));
                 break;
             case 'fac':
-                serviceToUse = this.factureService;
+                this.factureService.getGed().subscribe(ged => success(ged), err => error(err));
+                break;
+            case 'contact':
+                this.contactService.getGed(this.id_contact).subscribe(ged => success(ged), err => error(err));
                 break;
             default:
-                console.log("Error : GED NOT FOUND");
+                console.error("GED NOT FOUND");
                 return;
         }
 
-        serviceToUse.getGed()
-            .subscribe(ged => {
-                this.ged = ged;
-            }, error => {
-                console.log("Couldn't load the ged infos");
-                console.log(error);
-                this.alertService.error(error._body);
-            });
+        function success(ged: any[]) {
+            __this.ged = ged;
+        }
+
+        function error(err: any) {
+            console.error(err);
+            __this.alertService.error("La GED n'est pas disponible");
+        }
     }
 
-    fileOverBase(e: any): void {
+    fileOverBase(e: any) {
         this.hasBaseDropZoneOver = e;
     }
 }

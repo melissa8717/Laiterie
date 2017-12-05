@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, ContactService } from '../_services/index';
-import { Contact, Mail, Telephone, Adresse, Qualification, Contrat } from '../_models/index';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
-
-import {FileUploader} from 'ng2-file-upload';
+import {AlertService, ContactService} from '../_services/index';
+import {Adresse, Contact, Contrat, Mail, Qualification, Telephone} from '../_models/index';
+import {Http} from '@angular/http';
 import {AppConfig} from "../app.config";
 import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
@@ -21,9 +19,9 @@ import {User} from "../_models/user";
 export class FichecontactpdfComponent implements OnInit {
 
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
     contact = new Contact();
     returnUrl: string;
@@ -35,28 +33,27 @@ export class FichecontactpdfComponent implements OnInit {
     telephonePro = new Telephone();
     adresse = new Adresse();
 
-    qualifications : Qualification[];
-    qualifChoisi : number;
-    id_contact : number;
-    contrats : Contrat[];
+    qualifications: Qualification[];
+    qualifChoisi: number;
+    id_contact: number;
+    contrats: Contrat[];
     print: boolean = false;
-    id_contrat:number;
+    id_contrat: number;
 
     contrat: any = [] = [];
-    lastcontrat: any ={};
+    lastcontrat: any = {};
 
-    tauxhoraire:number;
-    newcontrat:any={};
+    tauxhoraire: number;
+    newcontrat: any = {};
 
 
-    constructor(
-        private http: Http,
-        private config: AppConfig,
-        private route: ActivatedRoute,
-        private router: Router,
-        private contactService: ContactService,
-        private alertService: AlertService,
-        private paramsService:ParamsService) {
+    constructor(private http: Http,
+                private config: AppConfig,
+                private route: ActivatedRoute,
+                private router: Router,
+                private contactService: ContactService,
+                private alertService: AlertService,
+                private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.mail.type_mail = "perso";
         this.mailPro.type_mail = "pro";
@@ -64,8 +61,6 @@ export class FichecontactpdfComponent implements OnInit {
         this.telephoneMobile.type_tel = "mobile";
         this.telephonePro.type_tel = "pro";
         this.adresse.type_adr = "defaut";
-
-
 
 
     }
@@ -115,25 +110,35 @@ export class FichecontactpdfComponent implements OnInit {
                 });
     }
 
-    private getContact(id_contact: string){
+    private getContact(id_contact: number) {
         this.contactService.getByIdAllInfos(id_contact).subscribe(
             data => {
                 console.log(data);
                 this.contact = data.contact;
-                for(var i in data.mails){
-                    switch(data.mails[i].type_mail){
-                        case "perso": this.mail = data.mails[i]; break;
-                        case "pro": this.mailPro = data.mails[i]; break;
+                for (var i in data.mails) {
+                    switch (data.mails[i].type_mail) {
+                        case "perso":
+                            this.mail = data.mails[i];
+                            break;
+                        case "pro":
+                            this.mailPro = data.mails[i];
+                            break;
                     }
                 }
-                for(var i in data.telephones){
-                    switch(data.telephones[i].type_tel){
-                        case "fixe": this.telephoneFixe = data.telephones[i]; break;
-                        case "mobile": this.telephoneMobile = data.telephones[i]; break;
-                        case "pro": this.telephonePro = data.telephones[i]; break;
+                for (var i in data.telephones) {
+                    switch (data.telephones[i].type_tel) {
+                        case "fixe":
+                            this.telephoneFixe = data.telephones[i];
+                            break;
+                        case "mobile":
+                            this.telephoneMobile = data.telephones[i];
+                            break;
+                        case "pro":
+                            this.telephonePro = data.telephones[i];
+                            break;
                     }
                 }
-                if(data.adresse != null) this.adresse = data.adresse;
+                if (data.adresse != null) this.adresse = data.adresse;
                 this.qualifChoisi = data.qualification;
                 this.contrats = data.contrats;
 
@@ -167,9 +172,9 @@ export class FichecontactpdfComponent implements OnInit {
             .subscribe(
                 data => {
                     this.alertService.success('Contact mis à jour', true);
-                    if((this.contact.contrat || this.contact.contrat != "") &&
+                    if ((this.contact.contrat || this.contact.contrat != "") &&
                         this.contact.date_sortie &&
-                        this.contact.date_entree){
+                        this.contact.date_entree) {
                         var newContrat = new Contrat();
                         newContrat.date_debut = this.contact.date_entree;
                         newContrat.date_fin = this.contact.date_sortie;
@@ -211,7 +216,7 @@ export class FichecontactpdfComponent implements OnInit {
         });
     }
 
-    loadAdd(){
+    loadAdd() {
         this.contactService.addcontrat(this.lastcontrat).subscribe(
             mat => {
                 //console.log(this.mat);
@@ -221,8 +226,8 @@ export class FichecontactpdfComponent implements OnInit {
             });
     }
 
-    loadNewcontrat(){
-        this.contactService.newcontrat(this.id_contact,this.newcontrat).subscribe(
+    loadNewcontrat() {
+        this.contactService.newcontrat(this.id_contact, this.newcontrat).subscribe(
             mat => {
 
 
@@ -232,7 +237,7 @@ export class FichecontactpdfComponent implements OnInit {
     }
 
 
-    imprimer(){
+    imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
