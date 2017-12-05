@@ -814,7 +814,7 @@ function getByIddupliquer(id_devis, num_version) {
             console.log("Error in first select : " +error.name + ': ' + error.message);
         }
         else {
-            var sql = "SELECT *,devis_detaille_libre.qte_devis as qte, devis_detaille_libre.prix_devis as qte from devis_detaille_libre " +
+            var sql = "SELECT devis_detaille_libre.* from devis_detaille_libre " +
                 "left join devis_version on devis_detaille_libre.id_devis && devis_version.num_version = devis_detaille_libre.num_version " +
                 "WHERE devis_detaille_libre.id_devis = ? and devis_detaille_libre.num_version = ? GROUP BY devis_detaille_libre.id_produit";
             var inserts = [id_devis, num_version];
@@ -945,6 +945,7 @@ function duplicatelibre(id_devis, devis_params) {
 
 function modifylibre(devis_params, id_devis, num_version) {
     var deferred = Q.defer();
+    console.log(devis_params)
     //set devis, supprimer devis_detaille et option et rajouter derrière
     db.query( "UPDATE devis_version SET tva = ?, remise = ?, accompte = ?, accompte_value = ?, accompte_percent = ?, statut = 'Modifié' WHERE id_devis = ? && num_version = ?",
         [devis_params.devis.tvadevis, devis_params.devis.remise, devis_params.devis.accompte, devis_params.devis.accompte_value, devis_params.devis.accompte_percent, id_devis, num_version], function (error, results, fields) {

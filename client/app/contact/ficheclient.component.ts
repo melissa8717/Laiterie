@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, ContactService} from '../_services/index';
-import {Adresse, Contact, Mail, Telephone} from '../_models/index';
-import {ParamsService} from "../_services/params.service"; //
+import {Contact, Mail, Telephone, Adresse, Qualification, Contrat} from '../_models/index';
+import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
 
 @Component({
@@ -12,8 +12,8 @@ import {User} from "../_models/user";
 })
 export class FicheclientComponent implements OnInit {
 
-    contact = new Contact();
-    returnUrl: string;
+    private contact = new Contact();
+    private returnUrl: string;
 
     mail = new Mail();
     mailPro = new Mail();
@@ -59,9 +59,6 @@ export class FicheclientComponent implements OnInit {
             this.getContact(this.id_contact);
         });
 
-        let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -79,16 +76,14 @@ export class FicheclientComponent implements OnInit {
 
     loadAllchantier() {
         this.contactService.getByIdchantier(this.id_contact).subscribe(data => {
-                this.chantier = data;
-            }
-        )
+            this.chantier = data;
+        })
     }
 
     loadAllencours() {
         this.contactService.getByIdencours(this.id_contact).subscribe(data => {
-                this.cours = data;
-            }
-        )
+            this.cours = data;
+        })
     }
 
 
@@ -138,7 +133,6 @@ export class FicheclientComponent implements OnInit {
     }
 
     updateClient() {
-        console.log("UpdateClient");
         var contactInfos = {
             "contact": this.contact,
             "mail": this.mail,
@@ -149,7 +143,6 @@ export class FicheclientComponent implements OnInit {
             "telephonePro": this.telephonePro,
             "adresse": this.adresse
         };
-        console.log(contactInfos);
         this.contactService.update(contactInfos, this.contact.id_contact)
             .subscribe(
                 data => {
