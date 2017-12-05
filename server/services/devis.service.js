@@ -888,7 +888,7 @@ function duplicatelibre(id_devis, devis_params) {
                         (function (product) {
 
 
-                            db.query("INSERT INTO devis_detaille_libre (id_devis,num_version, produit,qte_devis, prix_devis,commentaire,unite,tva) VALUES (? , ?, ? , ? , ? , ?, ?, ?)",
+                            db.query("INSERT INTO devis_detaille_libre (id_devis,num_version, produit,qte_devis, prix_devis,commentaire,unite,tva,reference) VALUES (? , ?, ? , ? , ? , ?, ?, ?,?)",
                                 [   id_devis,
                                     num_version,
                                     devis_params.produitDevis[product].produit,
@@ -896,7 +896,8 @@ function duplicatelibre(id_devis, devis_params) {
                                     devis_params.produitDevis[product].prix_devis,
                                     devis_params.produitDevis[product].commentaire,
                                     devis_params.produitDevis[product].unite,
-                                    devis_params.produitDevis[product].taux ? devis_params.produitDevis[product].taux : devis_params.produitDevis[product].tva
+                                    devis_params.produitDevis[product].taux ? devis_params.produitDevis[product].taux : devis_params.produitDevis[product].tva,
+                                    devis_params.produitDevis[product].reference
                                 ],
                                 function (error, result, fields) {
                                     if (error) {
@@ -914,7 +915,7 @@ function duplicatelibre(id_devis, devis_params) {
                         (function (product) {
 
 
-                            db.query("INSERT INTO devis_option_libre (id_devis, num_version,produit, qte_devis, prix_devis,commentaire, unite,tva) VALUES (?, ? , ? , ? , ? , ?, ? , ?)",
+                            db.query("INSERT INTO devis_option_libre (id_devis, num_version,produit, qte_devis, prix_devis,commentaire, unite,tva,reference) VALUES (?, ? , ? , ? , ? , ?, ? , ?,?)",
                                 [   id_devis,
                                     num_version,
                                     devis_params.produitDevisOptions[product].produit,
@@ -922,7 +923,8 @@ function duplicatelibre(id_devis, devis_params) {
                                     devis_params.produitDevisOptions[product].prix_devis,
                                     devis_params.produitDevisOptions[product].commentaire,
                                     devis_params.produitDevisOptions[product].unite,
-                                    devis_params.produitDevisOptions[product].taux ? devis_params.produitDevisOptions[product].taux : devis_params.produitDevisOptions[product].tva
+                                    devis_params.produitDevisOptions[product].taux ? devis_params.produitDevisOptions[product].taux : devis_params.produitDevisOptions[product].tva,
+                                    devis_params.produitDevisOptions[product].reference
                                 ],
                                 function (error, result, fields) {
                                     if (error) {

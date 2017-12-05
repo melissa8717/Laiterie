@@ -119,6 +119,7 @@ export class FicheDevisLibreComponent {
             this.devisService.getByIdLibreproduit(this.id_devis, this.num_version).subscribe(
                 data=>{
                     this.produit=data;
+                    console.log(this.produit);
 
                 }
             )
@@ -204,7 +205,6 @@ export class FicheDevisLibreComponent {
     }
 
     loadCat() {
-        console.log(this.cgv)
 
         this.paramsService.getAllVente().subscribe(cgv => {
 

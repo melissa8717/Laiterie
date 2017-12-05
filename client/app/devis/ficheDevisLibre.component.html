@@ -237,7 +237,7 @@
             <br />
 
             <tr *ngIf="countTotalopt(0)" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
-                <td style="text-align: left;border-left:1px;">Total H.T. </td>
+                <td style="text-align: left;border-left:1px;">Total H.T. option : </td>
                 <td colspan="3">{{countTotalopt() | number:'1.0-2'}} €</td>
             </tr>
             <tr *ngIf="countTotalopt(0) && devis.remise" style="border-top: 1px solid black;border-left:1px solid black; border-right:1px solid black;">
