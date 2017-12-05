@@ -154,7 +154,6 @@
 
                                     <input class="form-control input-sm"  type="text" name="commentaire"
                                            [(ngModel)]="produit.commentaire"  placeholder="commentaire">
-                                    <!--écriture qui peut être defini par rapport aux article déjà dans la base de donnée-->
                                 </div>
                             </td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
@@ -266,13 +265,11 @@
                             <td colspan="14"></td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" class="total" >Total HT :</td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" class="total">{{countTotal() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="devis.remise">
                             <td colspan="14"></td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" class="total" >Total après remise :</td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" class="total">{{countTotalRemise() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
                         <tr *ngIf="devis.tvadevis">
@@ -340,15 +337,7 @@
                             <td colspan="14"></td>
                             <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TTC :</td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" class="total">{{countTotalTVA()  | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
-
-
-
-
-
-
-
 
 
 
@@ -362,7 +351,6 @@
                                 color: white;border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
                                 Options:
                             </td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
                         <tr *ngFor="let produit of produitDevisOptions, let i = index; trackBy:customTrackBy">
@@ -425,14 +413,12 @@
 
                             <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">HT:</td>
                             <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="produitDevisOptions.length> 0 && devis.remise">
                             <td colspan="14"></td>
 
-                            <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">Total après remise HT:</td><!--ce fait sur le hors-->
+                            <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">Total après remise HT:</td>
                             <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="devis.tvadevis">
                             <td colspan="14"></td>
@@ -502,10 +488,6 @@
                             <td  class="total"style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TTC :</td>
                             <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">{{countTotalOptionstotalTVA() | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
-
-
-
-
 
                         <p>&nbsp;</p>
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
