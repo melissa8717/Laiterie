@@ -12,10 +12,9 @@ import {AlertService, ContactService, DevisService, FactureService, ParamsServic
 export class GedComponent {
 
     @Input() gedName: string;
-    @Input() id_contact: number;
+    @Input() id: number;
 
     private uploader: FileUploader;
-    private hasBaseDropZoneOver: boolean = false;
     private currentUser: User;
     private droitsuser: any = {};
     private gedUrl: string;
@@ -36,8 +35,8 @@ export class GedComponent {
 
         this.gedUrl = 'http://' + location.hostname + ':4000/ged/' + this.gedName;
 
-        if (this.id_contact) {
-            this.gedUrl += "/" + this.id_contact;
+        if (this.id) {
+            this.gedUrl += "/" + this.id;
         }
 
         this.uploader = new FileUploader({url: this.gedUrl});
@@ -71,7 +70,10 @@ export class GedComponent {
                 this.factureService.getGed().subscribe(ged => success(ged), err => error(err));
                 break;
             case 'contact':
-                this.contactService.getGed(this.id_contact).subscribe(ged => success(ged), err => error(err));
+                this.contactService.getGed(this.id).subscribe(ged => success(ged), err => error(err));
+                break;
+            case 'param':
+                this.paramsService.getGed(this.id).subscribe(ged => success(ged), err => error(err));
                 break;
             default:
                 console.error("GED NOT FOUND");
@@ -88,7 +90,4 @@ export class GedComponent {
         }
     }
 
-    fileOverBase(e: any) {
-        this.hasBaseDropZoneOver = e;
-    }
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 04 Décembre 2017 à 10:41
+-- Généré le :  Mar 05 Décembre 2017 à 15:18
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `mabase`
+-- Base de données :  `_schema`
 --
 
 -- --------------------------------------------------------
@@ -385,14 +385,7 @@ CREATE TABLE IF NOT EXISTS `cgv` (
   `choix` varchar(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `cgv`
---
-
-INSERT INTO `cgv` (`id`, `texte`, `user`, `autre`, `choix`, `id_entreprise`) VALUES
-(1, 'exemple de condition générale des ventes', NULL, NULL, NULL, NULL);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -785,7 +778,7 @@ CREATE TABLE IF NOT EXISTS `devis_detaille_libre` (
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
   `id_devis_libre` int(11) DEFAULT NULL,
-  `commentaire` varchar(255) DEFAULT NULL,
+  `commentaire` text CHARACTER SET utf8,
   `reference` int(255) DEFAULT NULL,
   `reference_autre` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `margedev` int(255) DEFAULT NULL,
@@ -834,7 +827,7 @@ CREATE TABLE IF NOT EXISTS `devis_option` (
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
   `id_devis_libre` int(11) NOT NULL,
-  `commentaire` varchar(512) DEFAULT NULL,
+  `commentaire` text,
   `reference` int(255) NOT NULL,
   `reference_autre` varchar(255) DEFAULT NULL,
   `margedev` int(255) DEFAULT NULL,
@@ -863,7 +856,7 @@ CREATE TABLE IF NOT EXISTS `devis_option_libre` (
   `user` int(255) DEFAULT NULL,
   `autre` varchar(255) DEFAULT NULL,
   `id_devis_libre` int(255) NOT NULL,
-  `commentaire` varchar(255) DEFAULT NULL,
+  `commentaire` text,
   `reference` int(255) DEFAULT NULL,
   `reference_autre` varchar(255) DEFAULT NULL,
   `margedev` int(255) DEFAULT NULL,
@@ -1071,6 +1064,7 @@ CREATE TABLE IF NOT EXISTS `facture_librebase` (
   `tva` float DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   `remise` float DEFAULT NULL,
+  `commentaire` text,
   PRIMARY KEY (`id_fact`,`n_situation`,`id_prod`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1093,6 +1087,7 @@ CREATE TABLE IF NOT EXISTS `facture_libredetail` (
   `id_entreprise` int(11) DEFAULT NULL,
   `option` tinyint(4) DEFAULT NULL,
   `remise` float DEFAULT NULL,
+  `commentaire` text,
   PRIMARY KEY (`id_prod`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -1746,7 +1741,7 @@ CREATE TABLE IF NOT EXISTS `qualification` (
   `id_entreprise` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_qualification`),
   KEY `id_qualification` (`id_qualification`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -1806,6 +1801,7 @@ CREATE TABLE IF NOT EXISTS `situation_facture` (
   `autre` varchar(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   `remise` float DEFAULT NULL,
+  `commentaire` text,
   PRIMARY KEY (`id_facture`,`n_situation`,`id_produit`),
   KEY `id_facture` (`id_facture`),
   KEY `id_produit` (`id_produit`)
@@ -1831,6 +1827,7 @@ CREATE TABLE IF NOT EXISTS `situation_option` (
   `autre` varchar(255) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   `remise` float DEFAULT NULL,
+  `commentaire` text,
   PRIMARY KEY (`id_facture`,`n_situation`,`id_produit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1859,7 +1856,7 @@ CREATE TABLE IF NOT EXISTS `statut_employe` (
 
 CREATE TABLE IF NOT EXISTS `stock` (
   `id_produit` int(255) NOT NULL,
-  `stock` int(255) DEFAULT 0,
+  `stock` int(255) NOT NULL DEFAULT '0',
   `stockmini` int(255) DEFAULT NULL,
   `stockmaxi` int(255) DEFAULT NULL,
   `user` int(255) DEFAULT NULL,
@@ -1918,12 +1915,17 @@ CREATE TABLE IF NOT EXISTS `testing` (
   `datedeb` timestamp NULL DEFAULT NULL,
   `datefin` varchar(255) DEFAULT NULL,
   `validate` tinyint(2) DEFAULT NULL,
-  `id_test` int(11) DEFAULT NULL,
+  `nbi_user` int(11) DEFAULT NULL,
   `id_entreprise` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_valitest`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
-INSERT INTO `testing` (`numtest`, `id_test`) VALUES ('wbat1234', '5');
+--
+-- Contenu de la table `testing`
+--
+
+INSERT INTO `testing` (`id_valitest`, `numtest`, `datedeb`, `datefin`, `validate`, `nbi_user`, `id_entreprise`) VALUES
+(1, 'feab819fd1e0fb156f7b39bfea7409b6', NULL, NULL, NULL, 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -2139,7 +2141,7 @@ CREATE TABLE IF NOT EXISTS `usersdroits` (
 --
 
 INSERT INTO `usersdroits` (`id_droit`, `id`, `accescontact`, `supcontact`, `ajoutcontact`, `modifcontact`, `validcontact`, `accesproa`, `supproa`, `ajoutproa`, `modifproa`, `validproa`, `accesprov`, `supprov`, `ajoutprov`, `modifprov`, `validprov`, `accescom`, `supcom`, `ajoutcom`, `modifcom`, `validcom`, `accescha`, `supcha`, `ajoutcha`, `modifcha`, `validcha`, `accesdev`, `supdev`, `ajoutdev`, `modifdev`, `validdev`, `accesfact`, `supfact`, `ajoutfact`, `modiffact`, `validfact`, `accesfour`, `supfour`, `ajoutfour`, `modiffour`, `validfour`, `accesfrais`, `supfrais`, `ajoutfrais`, `modiffrais`, `validfrais`, `accesbg`, `supbg`, `ajoutbg`, `modifbg`, `validbg`, `accespb`, `suppb`, `ajoutpb`, `modifpb`, `validpb`, `accespc`, `suppc`, `ajoutpc`, `modifpc`, `validpc`, `accesparam`, `supparam`, `ajoutparam`, `modifparam`, `validparam`, `accesstat`, `supstat`, `ajoutstat`, `modifstat`, `validstat`, `accesam`, `supam`, `ajoutam`, `modifam`, `validam`, `accesmes`, `supmes`, `ajoutmes`, `modifmes`, `validmes`, `accesaut`, `supaut`, `ajoutaut`, `modifaut`, `validaut`, `accesauti`, `supauti`, `ajoutauti`, `modifauti`, `validauti`, `id_entreprise`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
