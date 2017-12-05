@@ -958,7 +958,7 @@ function modifylibre(devis_params, id_devis, num_version) {
                 for (var p in devis_params.produitDevis) {
                     (function (product) {
 
-                        db.query("INSERT INTO devis_detaille_libre (id_devis, num_version, produit, qte_devis, prix_devis, commentaire, unite,tva) VALUES (?, ? , ? , ? , ? , ?, ?,?)",
+                        db.query("INSERT INTO devis_detaille_libre (id_devis, num_version, produit, qte_devis, prix_devis, commentaire, unite,tva,reference) VALUES (?, ? , ? , ? , ? , ?, ?,?,?)",
                             [id_devis,
                                 num_version,
                                 devis_params.produitDevis[product].produit,
@@ -966,7 +966,8 @@ function modifylibre(devis_params, id_devis, num_version) {
                                 devis_params.produitDevis[product].prix_devis,
                                 devis_params.produitDevis[product].commentaire,
                                 devis_params.produitDevis[product].unite,
-                                devis_params.produitDevis[product].tva ?  devis_params.produitDevis[product].tva :  devis_params.produitDevis[product].taux
+                                devis_params.produitDevis[product].tva ?  devis_params.produitDevis[product].tva :  devis_params.produitDevis[product].taux,
+                                devis_params.produitDevis[product].reference
                             ],
                             function (error, result, fields) {
                                 if (error) {
@@ -986,7 +987,7 @@ function modifylibre(devis_params, id_devis, num_version) {
                 for (var p in devis_params.produitDevisOptions) {
                     (function (product) {
 
-                        db.query("INSERT INTO devis_option_libre (id_devis, num_version, produit, qte_devis, prix_devis, commentaire, unite,tva) VALUES (?, ? , ? , ? , ? , ?, ?,?)",
+                        db.query("INSERT INTO devis_option_libre (id_devis, num_version, produit, qte_devis, prix_devis, commentaire, unite,tva,reference) VALUES (?, ? , ? , ? , ? , ?, ?,?,?)",
                             [id_devis,
                                 num_version,
                                 devis_params.produitDevisOptions[product].produit,
@@ -994,7 +995,8 @@ function modifylibre(devis_params, id_devis, num_version) {
                                 devis_params.produitDevisOptions[product].prix_devis,
                                 devis_params.produitDevisOptions[product].commentaire,
                                 devis_params.produitDevisOptions[product].unite,
-                                devis_params.produitDevisOptions[product].tva ? devis_params.produitDevisOptions[product].tva : devis_params.produitDevisOptions[product].taux
+                                devis_params.produitDevisOptions[product].tva ? devis_params.produitDevisOptions[product].tva : devis_params.produitDevisOptions[product].taux,
+                                devis_params.produitDevisOptions[product].reference
                             ],
                             function (error, result, fields) {
                                 if (error) {

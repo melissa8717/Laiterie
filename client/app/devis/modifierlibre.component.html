@@ -210,7 +210,7 @@
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
 
                                 <div class="form-group">
-                                    <span>{{produit.reference}}</span>
+                                    <input name="reference{{i}}" type="number" [(ngModel)]="produitDevis[i].reference">
                                 </div>
                             </td>
 
@@ -297,7 +297,8 @@
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
 
                                 <div class="form-group">
-                                    <span>{{produit.reference}}</span>
+                                    <span>
+                                    <input name="reference{{i}}" [(ngModel)]="produitDevisOptions[i].reference" type="number"></span>
                                 </div>
                             </td>
 
