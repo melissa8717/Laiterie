@@ -80,9 +80,9 @@
             <thead style="background-color: grey;">
 
             <tr>
-                <th class="col-sm-1" >Option acceptée</th>
-
-                <th colspan="10" style="text-align: center;" class="col-sm-4">Désignation</th>
+                <th class="col-sm-1" *ngIf="produitop.length > 0">Option acceptée</th>
+                <th class="col-sm-1" >Référence</th>
+                <th colspan="10" style="text-align: center;" class="col-sm-3">Désignation</th>
 
                 <th class="col-sm-1">Unité</th>
                 <th   class="col-sm-1">Qte</th>
@@ -100,7 +100,12 @@
             <tr *ngFor="let prod of produit, let  i = index">
                 <td >
 
-                    <span *ngIf="(produit[i].accepted == 0) || (produit[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produit[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produit[i])"></span></td>
+                    <span *ngIf="(produit[i].accepted == 0) || (produit[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produit[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produit[i])"></span>
+                </td>
+
+                <td style="text-align: center;">
+                    {{prod.reference}}
+                </td>
 
                 <td colspan="10"  style="text-align: center;"><span style="font-weight: bold;">{{prod.produit}}</span> <br>
 
@@ -133,11 +138,16 @@
                 </td>
             <tr *ngFor="let prode of produitop, let  i = index">
 
-                <td colspan="10"  style="text-align: center;"><span style="font-weight: bold;">{{prode.produit}}</span> <br>
-                    <textarea  *ngIf="prode.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prode.commentaire}}</textarea></td>
+
                 <td style="width: 30px;text-align: center;">
 
-                    <span *ngIf="(produitop[i].accepted == 0) || (produitop[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produitop[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produitop[i])"></span></td>
+                    <span *ngIf="(produitop[i].accepted == 0) || (produitop[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produitop[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produitop[i])"></span>
+                </td>
+                <td style="text-align: center;">
+                    {{prod.reference}}
+                </td>
+                <td colspan="10"  style="text-align: center;"><span style="font-weight: bold;">{{prode.produit}}</span> <br>
+                    <textarea  *ngIf="prode.commentaire" rows="6" class="col-sm-12" style="border:none;"  >{{prode.commentaire}}</textarea></td>
                 <td style="width: 30px;text-align: center;">
                     {{prode.unite}}
                 </td>
