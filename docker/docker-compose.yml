@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - "./config.js:/usr/src/app/config.js"
+      - "./config/config.js:/usr/src/app/config/config.js"
     restart: always
     depends_on:
       - "server"

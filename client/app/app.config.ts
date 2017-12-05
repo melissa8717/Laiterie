@@ -1,4 +1,4 @@
-﻿let config = require('../config.js');
+﻿let config = require('../config/config.js');
 
 export class AppConfig {
     public readonly apiUrl = 'http://' + location.hostname + ':4000';
