@@ -171,10 +171,12 @@
                                 </div>
                             </td>
 
-                            <td *ngIf="!devis.tvasdevis" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
-                                <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux"  style="border:none;" >
-                                    <option *ngFor="let produit of facts,let i= index" [value]="produit.taux">{{produit.taux}}</option>
-                                </select>
+                            <td *ngIf="!devis.tvadevis">
+                                <div class="form-group">
+                                    <select name="taux" class="col-sm-12" [(ngModel)]="produit.taux"  style="border:none;" >
+                                        <option *ngFor="let produit of facts,let i= index" [value]="produit.taux">{{produit.taux}}</option>
+                                    </select>
+                                </div>
                             </td>
 
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
@@ -234,7 +236,7 @@
                                            required>
                                 </div>
                             </td>
-                            <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">{{produitDevis[i].taux ? produitDevis[i].taux : produitDevis[i].tva}}</td>
+                            <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" *ngIf="!devis.tvadevis">{{produitDevis[i].taux ? produitDevis[i].taux : produitDevis[i].tva}}</td>
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
                                 <div class="form-group">
                                     <input style="border:none;" type="number"
@@ -279,7 +281,6 @@
                             <td style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" class="total">{{countTotalprodTVA()  | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
                         <tr *ngIf="((countNTVAZ()>0) )">
-                            <ng-container >
                                 <td colspan="14"></td>
                                 <td >TVA 0 %</td>
                                 <td>
@@ -287,19 +288,16 @@
 
                                 </td>
 
-                            </ng-container>
                         </tr>
 
                         <tr *ngIf="((countNTVA()>0) )">
-                            <ng-container >
+
                                 <td colspan="14"></td>
                                 <td >TVA 2.1 %</td>
                                 <td>
                                     {{countNTVA() | currency:'EUR':true:'1.2-2'}} €
 
                                 </td>
-
-                            </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAC()>0) )">
                             <ng-container >
@@ -313,7 +311,7 @@
                             </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAD()>0) )">
-                            <ng-container >
+
                                 <td colspan="14"></td>
                                 <td >TVA 10 %</td>
                                 <td>
@@ -321,10 +319,10 @@
 
                                 </td>
 
-                            </ng-container>
+
                         </tr>
                         <tr *ngIf="((countNTVAs()>0) )">
-                            <ng-container >
+
                                 <td colspan="14"></td>
                                 <td >TVA 20 %</td>
                                 <td >
@@ -332,7 +330,6 @@
 
                                 </td>
 
-                            </ng-container>
                         </tr>
                         <tr>
                             <td colspan="14"></td>
@@ -387,7 +384,7 @@
                                            required>
                                 </div>
                             </td>
-                            <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">{{produitDevisOptions[i].taux ? produitDevisOptions[i].taux : produitDevisOptions[i].tva}}</td>
+                            <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" *ngIf="!devis.tvadevis">{{produitDevisOptions[i].taux ? produitDevisOptions[i].taux : produitDevisOptions[i].tva}}</td>
                             <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">
                                 <div class="form-group">
                                     <input style="border:none;" type="number"
@@ -427,10 +424,10 @@
                             <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">Total après remise HT:</td>
                             <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
-                        <tr *ngIf="devis.tvadevis">
+                        <tr *ngIf="devis.tvadevis && produitDevisOptions.length> 0">
                             <td colspan="14"></td>
 
-                            <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">TVA {{devis.tvadevis}} %:</td>
+                            <td  class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;" >TVA {{devis.tvadevis}} %:</td>
                             <td class="total" style="border-left:1px solid black;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;">{{countTotalOptionsTVA()  | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
                         <tr *ngIf="((countNTVAZO()>0) )">

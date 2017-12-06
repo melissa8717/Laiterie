@@ -379,7 +379,7 @@
                             <td  colspan="3" style="border-right: 1px solid black;">{{countTotalprodTVA()  | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
 
-                        <tr  *ngIf="((countNTVAZ()==0) )" style="border-top: 1px solid black;border-left:1px;">
+                        <tr  *ngIf="((countNTVAZ()>0) )" style="border-top: 1px solid black;border-left:1px;">
                             <td style="text-align: left;border-left:1px solid black;">TVA 0 %</td>
                             <td  colspan="3" style="border-right: 1px solid black;" >
                                 {{countNTVAZ() | currency:'EUR':true:'1.2-2'}} €
@@ -388,7 +388,7 @@
 
                         </tr>
 
-                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVA()==0) && !devis.tvadevis)" style="border-top: 1px solid black;border-left:1px;">
+                        <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVA()>0) )" style="border-top: 1px solid black;border-left:1px;">
                             <td style="text-align: left;border-left:1px solid black;">TVA 2.1 %</td>
                             <td  colspan="3" style="border-right: 1px solid black;" >
                                 {{countNTVA() | currency:'EUR':true:'1.2-2'}} €
