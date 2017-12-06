@@ -87,7 +87,7 @@
                 <th class="col-sm-1">Unité</th>
                 <th   class="col-sm-1">Qte</th>
                 <th  class="col-sm-1" >P.U. HT</th>
-                <th class="col-sm-1" *ngIf="!devis.taux || !devis.tva">TVA</th>
+                <th class="col-sm-1" *ngIf="!devis.tva">TVA</th>
                 <th class="col-sm-2" colspan="2">Total HT</th>
 
 
@@ -98,7 +98,7 @@
             <tbody>
 
             <tr *ngFor="let prod of produit, let  i = index">
-                <td >
+                <td *ngIf="produitop.length> 0">
 
                     <span *ngIf="(produit[i].accepted == 0) || (produit[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produit[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produit[i])"></span>
                 </td>
@@ -186,7 +186,7 @@
                 <td colspan="3"> {{countTva()| number:'1.0-2'}} €</td>
             </tr>
 
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAZ()==0) )">
+            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAZ()==0) && !devis.tva)">
                     <td style="text-align: left;">TVA 0 %</td>
                     <td colspan="3" >
                         {{countNTVAZ() | currency:'EUR':true:'1.2-2'}} €

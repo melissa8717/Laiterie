@@ -15,7 +15,7 @@ const URLimg = 'http://'+location.hostname+':4000/image/';
 })
 
 export class AjoutProduitAchatComponent {
-    unites = ["m", "m²", "m3", "litre", "tonne", "kilogramme", "heure", "unité", "metre linéaire", "lot"];
+    unites = ["m", "m²", "m3", "litre","cL","hL", "tonne", "kilogramme","gramme", "heure","minutes", "unité", "metre linéaire","cm", "lot","ens","Km"];
 
     public uploaderImg: FileUploader;
 
