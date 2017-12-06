@@ -293,7 +293,7 @@ function getById(_id, num_version) {
                 var inserts = [_id, num_version];
 
                 sql = mysql.format(sql, inserts);
-                console.log(sql)
+                //console.log(sql)
                 db.query(sql, function (error, option, fields) {
                     if (error) {
                         deferred.reject(error.name + ': ' + error.message);

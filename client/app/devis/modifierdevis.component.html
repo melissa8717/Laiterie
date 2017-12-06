@@ -228,7 +228,7 @@
                             </td>
 
                             <td  style="text-align: right;">
-                                {{produitDevis[i].taux}}
+                                {{produitDevis[i].taux ?produitDevis[i].taux : produitDevis[i].tva }}
                             </td>
 
                             <td>
@@ -396,7 +396,7 @@
                             </td>
                             <td >
                                 <div class="form-group">
-                                    {{produitDevisOptions[i].taux}}
+                                    {{produitDevisOptions[i].taux ? produitDevisOptions[i].taux : produitDevisOptions[i].tva}}
                                 </div>
                             </td>
                             <td>

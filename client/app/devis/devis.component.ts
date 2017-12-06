@@ -498,7 +498,7 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevis) {
 
-            if (produit.taux == 0) {
+            if ((produit.taux == 0) || (parseInt(produit.tva) == 0)) {
                 total += 0;
 
 
@@ -513,8 +513,8 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevis) {
 
-            if (produit.taux == 2.1) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
+            if ((produit.taux == 2.1) || (parseInt(produit.tva) == 2.1)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
 
             }
@@ -529,8 +529,8 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevis) {
 
-            if (produit.taux == 5.5) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
+            if ((produit.taux == 5.5) || (parseInt(produit.tva) == 5.5)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
 
             }
@@ -545,8 +545,8 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
 
-            if (produit.taux == 10) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
+            if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
 
             }
@@ -561,8 +561,8 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
 
-            if (produit.taux == 20) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
+            if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
             }
         }
         return total;
@@ -575,7 +575,7 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (produit.taux == 0) {
+            if ((produit.taux == 0) || (parseInt(produit.tva) == 0)) {
                 total += 0;
 
 
@@ -589,8 +589,8 @@ export class DevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            if (produit.taux == 2.1) {
-                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 2.1) || (parseInt(produit.tva) == 2.1)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
 
             }
@@ -603,8 +603,8 @@ export class DevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            if (produit.taux == 5.5) {
-                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 5.5) || (parseInt(produit.tva) == 5.5)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
 
             }
@@ -618,8 +618,8 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (produit.taux == 10) {
-                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
 
             }
@@ -633,8 +633,8 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (produit.taux == 20) {
-                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
             }
         }
