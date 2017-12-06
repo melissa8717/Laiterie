@@ -25,7 +25,7 @@
 
                 </div>
                 <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default"
-                        (click)="modifyProduct(id); uploaderImg.queue[0].upload();"> Modifier
+                        (click)="modifyProduct(); uploaderImg.queue[0].upload();"> Modifier
                 </button>
 
 
@@ -160,7 +160,7 @@
                 </div>
             </div>
 
-            <button *ngIf="!print && droitsuser.modifproa" type="submit" [disabled]="loading" class="input-sm col-sm-offset-10 col-sm-1" (click)="uploaderImg.queue[0].upload();">Modifier</button>
+            <button *ngIf="!print && droitsuser.modifproa" type="submit" [disabled]="loading" class="input-sm col-sm-offset-10 col-sm-1" (click)="modifyProduct();">Modifier</button>
         </form>
 
         <!--une fois modifier créer un pdf à mettre dans la GED-->
