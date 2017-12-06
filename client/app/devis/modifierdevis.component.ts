@@ -345,8 +345,8 @@ export class ModifierDevisComponent implements OnInit {
 
         for (let produit of this.produitDevis) {
 
-            if (produit.taux == 0) {
-                total +=  0;
+            if ((produit.taux == 0) || (parseInt(produit.tva) == 0)) {
+                total += 0;
 
 
             }
@@ -354,13 +354,14 @@ export class ModifierDevisComponent implements OnInit {
         return total;
 
     }
+
     countNTVA() {
         let total = 0;
 
         for (let produit of this.produitDevis) {
 
-            if (produit.taux == 2.1) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+            if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
 
 
             }
@@ -368,8 +369,6 @@ export class ModifierDevisComponent implements OnInit {
         return total;
 
     }
-
-
 
 
     countNTVAC() {
@@ -377,8 +376,8 @@ export class ModifierDevisComponent implements OnInit {
 
         for (let produit of this.produitDevis) {
 
-            if (produit.taux == 5.5) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+            if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
 
 
             }
@@ -393,8 +392,8 @@ export class ModifierDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
 
-            if (produit.taux == 10) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+            if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
 
             }
@@ -409,8 +408,8 @@ export class ModifierDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
 
-            if (produit.taux == 20) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux)/100);
+            if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
             }
         }
         return total;
@@ -423,8 +422,8 @@ export class ModifierDevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (produit.taux == 0) {
-                total +=  0;
+            if ((produit.taux == 0) || (parseInt(produit.tva) == 0)) {
+                total += 0;
 
 
             }
@@ -432,12 +431,13 @@ export class ModifierDevisComponent implements OnInit {
         return total;
 
     }
+
     countNTVAO() {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            if (produit.taux == 2.1) {
-                total += (parseFloat(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
 
 
             }
@@ -450,8 +450,8 @@ export class ModifierDevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            if (produit.taux == 5.5) {
-                total += (parseFloat(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
 
 
             }
@@ -465,8 +465,8 @@ export class ModifierDevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
 
-            if (produit.taux == 10) {
-                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
 
             }
@@ -479,10 +479,9 @@ export class ModifierDevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            console.log(produit.prix);
-            console.log(parseInt(produit.taux));
-            if (produit.taux == 20) {
-                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+
+            if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
 
             }
         }
@@ -491,13 +490,13 @@ export class ModifierDevisComponent implements OnInit {
     }
 
 
-    countAllTVA(){
-        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 )  + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
+    countAllTVA() {
+        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 ) + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
 
 
     }
 
-    countAllTVAO(){
+    countAllTVAO() {
         return ((this.countNTVAO() ? this.countNTVAO() : 0 ) + (this.countNTVACO() ? this.countNTVACO() : 0 ) + (this.countNTVADO() ? this.countNTVADO() : 0 )) + (this.countNTVAsO() ? this.countNTVAsO() : 0 );
 
 

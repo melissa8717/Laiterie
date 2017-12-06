@@ -461,11 +461,6 @@ export class DevisComponent implements OnInit {
                 file.withCredentials = false;
             };
 
-            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };*/
-
         });
 
 
@@ -485,10 +480,6 @@ export class DevisComponent implements OnInit {
                 file.withCredentials = false;
             };
 
-            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };*/
 
         });
     }
@@ -513,8 +504,8 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevis) {
 
-            if ((produit.taux == 2.1) || (parseInt(produit.tva) == 2.1)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+            if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
 
 
             }
@@ -529,8 +520,8 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevis) {
 
-            if ((produit.taux == 5.5) || (parseInt(produit.tva) == 5.5)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+            if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
 
 
             }
@@ -589,8 +580,8 @@ export class DevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            if ((produit.taux == 2.1) || (parseInt(produit.tva) == 2.1)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+            if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
 
 
             }
@@ -603,8 +594,8 @@ export class DevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevisOptions) {
-            if ((produit.taux == 5.5) || (parseInt(produit.tva) == 5.5)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+            if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
 
 
             }

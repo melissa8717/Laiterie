@@ -111,7 +111,7 @@ function modify(devis_params, id, num_version) {
                                 devis_params.produitDevis[product].qte_devis,
                                 devis_params.produitDevis[product].prix_devis,
                                 devis_params.produitDevis[product].commentaire,
-                                devis_params.produitDevis[product].taux
+                                devis_params.produitDevis[product].taux ? devis_params.produitDevis[product].taux :devis_params.produitDevis[product].tva
                             ],
                             function (error, result, fields) {
                                 if (error) {
@@ -144,7 +144,7 @@ function modify(devis_params, id, num_version) {
                                 devis_params.produitDevisOptions[product].qte_devis,
                                 devis_params.produitDevisOptions[product].prix_devis,
                                 devis_params.produitDevisOptions[product].commentaire,
-                                devis_params.produitDevisOptions[product].taux
+                                devis_params.produitDevisOptions[product].taux ? devis_params.produitDevisOptions[product].taux : devis_params.produitDevisOptions[product].tva
                             ],
                             function (error, result, fields) {
                                 if (error) {
