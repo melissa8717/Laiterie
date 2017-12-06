@@ -114,7 +114,7 @@
                     <td colspan="10"  style="text-align: left;">
                         <div  class="form-group">
                             <span style="font-weight: bold;text-align: center;">{{produit.libelle}}</span><br>
-                            <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
+                            <textarea rows="6" *ngIf="produit.commentaire" disabled>{{produit.commentaire}}</textarea>
                         </div>
                     </td>
 
@@ -275,7 +275,7 @@
                         <input *ngIf="!print" style="width: 10px;margin-left:0px;" type="checkbox" [(ngModel)]="produitDevisOptions[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOffer(produitDevisOptions[i])">
 
                         <span>{{produit.libelle}}</span><br>
-                        <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
+                        <textarea  rows="6"  *ngIf="produit.commentaire" disabled>{{produit.commentaire}}</textarea>
                     </div>
                 </td>
 

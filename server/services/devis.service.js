@@ -86,8 +86,8 @@ function validate(devisParam) {
 function modify(devis_params, id, num_version) {
     var deferred = Q.defer();
     console.log(devis_params);
-    console.log(id);
-    console.log(num_version);
+    //console.log(id);
+    //console.log(num_version);
     //set devis, supprimer devis_detaille et option et rajouter derrière
     db.query("UPDATE devis_version SET taux = ?, remise = ?, accompte = ?, accompte_value = ?, accompte_percent = ?, statut = 'Modifié' WHERE id_devis = ? && num_version = ?",
         [devis_params.devis.taux, devis_params.devis.remise, devis_params.devis.accompte, devis_params.devis.accompte_value, devis_params.devis.accompte_percent, id, num_version], function (error, results, fields) {
@@ -100,19 +100,19 @@ function modify(devis_params, id, num_version) {
                 for (var p in devis_params.produitDevis) {
                     (function (product) {
 
-                        console.log("slt");
-
-                        //console.log("INSERT INTO devis_detaille (id_devis, num_version, id_produit, qte_devis, prix_devis) VALUES (? , ? , ? , ?, ?)",
-                        //   [id_devis,num_version , devis_params.produitDevis[product].id_prc , devis_params.produitDevis[product].qte_devis , devis_params.produitDevis[product].prix_devis ]);
 
 
-                        db.query("INSERT INTO devis_detaille (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis) VALUES (? , ? , ? , ? , ?, ?)",
+
+                        db.query("INSERT INTO devis_detaille (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis,commentaire,tva) VALUES (? , ? , ? , ? , ?, ?,?,?)",
                             [id,
                                 num_version,
                                 devis_params.produitDevis[product].id_prc,
                                 devis_params.produitDevis[product].num_version,
                                 devis_params.produitDevis[product].qte_devis,
-                                devis_params.produitDevis[product].prix_devis],
+                                devis_params.produitDevis[product].prix_devis,
+                                devis_params.produitDevis[product].commentaire,
+                                devis_params.produitDevis[product].taux
+                            ],
                             function (error, result, fields) {
                                 if (error) {
                                     deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
@@ -136,13 +136,15 @@ function modify(devis_params, id, num_version) {
                 for (var p in devis_params.produitDevisOptions) {
                     (function (product) {
 
-                        db.query("INSERT INTO devis_option (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis) VALUES (? , ? , ? , ? , ?, ?)",
+                        db.query("INSERT INTO devis_option (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis,commentaire,tva) VALUES (? , ? , ? , ? , ?, ?,?,?)",
                             [id,
                                 num_version,
                                 devis_params.produitDevisOptions[product].id_prc,
                                 devis_params.produitDevisOptions[product].num_version,
                                 devis_params.produitDevisOptions[product].qte_devis,
-                                devis_params.produitDevisOptions[product].prix_devis
+                                devis_params.produitDevisOptions[product].prix_devis,
+                                devis_params.produitDevisOptions[product].commentaire,
+                                devis_params.produitDevisOptions[product].taux
                             ],
                             function (error, result, fields) {
                                 if (error) {

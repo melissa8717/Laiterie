@@ -195,9 +195,6 @@ export class NewDevisComponent implements OnInit {
         return this.countTotal() - (this.countTotal() * this.devis.remise / 100);
     }
 
-    countTotalOptionRemise() {
-        return this.countTotalOptions() - (this.countTotalOptions() * (this.devis.remise / 100));
-    }
 
     totalRemiseTVA() {
         return this.totalTVA() - (this.totalTVA() * this.devis.remise / 100);
@@ -212,7 +209,7 @@ export class NewDevisComponent implements OnInit {
 
     countTotalTVA() {
 
-        return this.countTotalRemise() > 0 ? this.countTotalRemise() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100)) : this.countTotal() + this.countAllTVA();
+        return (this.countTotalRemise() > 0 ? this.countTotalRemise() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100)) : this.countTotal()) + this.countAllTVA();
 
     }
 
@@ -223,6 +220,11 @@ export class NewDevisComponent implements OnInit {
         }
         return total;
     }
+
+    countTotalOptionRemise() {
+        return this.countTotalOptions() - (this.countTotalOptions() * (this.devis.remise / 100));
+    }
+
 
     countTotalOptionsTVA() {
         return this.countTotalOptionRemise() > 0 ? this.countTotalOptionRemise() + this.countAllTVAO() : this.countTotalOptions() + this.countAllTVAO();
@@ -247,6 +249,10 @@ export class NewDevisComponent implements OnInit {
 
     totalTVATVA() {
         return this.totalTVAoption() + this.countTVA();
+    }
+
+    totaltotal(){
+        return (this.totalTVA() ? this.totalTVA() : this.total()) + this.countAllTVAO()  + this.countAllTVA();
     }
 
     loadAllTVA() {

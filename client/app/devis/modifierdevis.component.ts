@@ -82,7 +82,7 @@ export class ModifierDevisComponent implements OnInit {
                     this.devis  = data.devis[0];
                     this.produitDevis = data.detaille;
                     this.produitDevisOptions = data.options;
-                    console.log(this.devis);
+                    console.log(this.produitDevis);
                 }
             )
         });
@@ -90,7 +90,7 @@ export class ModifierDevisComponent implements OnInit {
 
 
         //getdevis
-        //getalldevisprod
+
         //getalldevisoptions
 
     }
@@ -437,7 +437,7 @@ export class ModifierDevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if (produit.taux == 2.1) {
-                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+                total += (parseFloat(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
 
 
             }
@@ -451,7 +451,7 @@ export class ModifierDevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if (produit.taux == 5.5) {
-                total += (parseInt(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
+                total += (parseFloat(produit.taux)/100) * produit.prix_devis * produit.qte_devis;
 
 
             }

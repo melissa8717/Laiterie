@@ -150,7 +150,6 @@
                                            [(ngModel)]="produit.obj"
                                            (ngModelChange)="test()"
                                     >
-                                    <!--écriture qui peut être defini par rapport aux article déjà dans la base de donnée-->
                                 </div>
                             </td>
                             <td>
@@ -201,13 +200,13 @@
 
                             <td>
                                 <div class="form-group">
-                                    <span>{{produit.id_prc}}</span>
+                                    <span>{{produitDevis[i].id_prc}}</span>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <span>{{produit.libelle}}</span><br>
-                                    <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
+                                    <span>{{produitDevis[i].libelle}}</span><br>
+                                    <textarea rows="6" *ngIf="produit.commentaire" [(ngModel)]="produitDevis[i].commentaire" name="commentaire{{i}}">{{produitDevis[i].commentaire}}</textarea>
                                 </div>
                             </td>
                             <td>
@@ -262,13 +261,11 @@
                         <tr>
                             <td colspan="6" class="total" style="text-align: right;">HT :</td>
                             <td class="total">{{countTotal() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
                         <tr *ngIf="devis.remise">
                             <td colspan="6" class="total" style="text-align: right;">Total après remise :</td>
                             <td class="total">{{countTotalRemise() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="((countNTVAZ()>0) )">
                             <ng-container >
@@ -344,7 +341,6 @@
                         <tr>
                             <td colspan="6" class="total" style="text-align: right;">TTC :</td>
                             <td class="total">{{countTotalprodTVA() + countAllTVA()  | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
 
@@ -367,7 +363,6 @@
                                 color: white">
                                 Options:
                             </td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
                         <tr *ngFor="let produit of produitDevisOptions, let i = index; trackBy:customTrackBy">
@@ -376,18 +371,18 @@
                             <td>    </td>
                             <td>
                                 <div class="form-group">
-                                    <span>{{produit.id_prc}}</span>
+                                    <span>{{produitDevisOptions[i].id_prc}}</span>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <span>{{produit.libelle}}</span><br>
-                                    <span *ngIf="produit.commentaire">{{produit.commentaire}}</span>
+                                    <span>{{produitDevisOptions[i].libelle}}</span><br>
+                                    <textarea rows="6"  *ngIf="produit.commentaire"  name="commentaire{{i}}" [(ngModel)]="produitDevisOptions[i].commentaire">{{produitDevisOptions[i].commentaire}}</textarea>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <span>{{produit.unite}}</span>
+                                    <span>{{produitDevisOptions[i].unite}}</span>
                                 </div>
                             </td>
                             <td>

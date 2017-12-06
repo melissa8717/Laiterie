@@ -265,7 +265,8 @@
                                 </td>
                                 <td>
                                     <div class="form-group">
-                                        <span><a *ngIf="produit.obj" [routerLink]="['/produitvente/' + produit.obj.id_prc + '/' + produit.obj.num_version]" target="_blank">{{produit.obj.libelle}}</a></span>
+                                        <span><a *ngIf="produit.obj" [routerLink]="['/produitvente/' + produit.obj.id_prc + '/' + produit.obj.num_version]" target="_blank">{{produit.obj.libelle}}</a></span><br>
+                                <textarea rows="6" class="col-sm-12" placeholder="Commentaire" name="commentaire{{i}}" [(ngModel)]="produitDevis[i].commentaire" *ngIf="produit.commentaire"></textarea>
                                     </div>
 
                                 </td>
@@ -316,11 +317,6 @@
                                 </td>
                             </tr>
 
-                            <tr *ngIf="produit.commentaire">
-                                <td colspan="2"></td>
-                                <td colspan="4"><textarea rows="2" class="col-sm-12" placeholder="Commentaire" name="commentaire{{i}}" [(ngModel)]="produitDevis[i].commentaire"></textarea></td>
-                                <td></td>
-                            </tr>
 
 
                         </ng-container>
@@ -328,39 +324,30 @@
                         <tr>
                             <td colspan="6" class="total" style="text-align: right;">Total HT :</td>
                             <td class="total">{{countTotal() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="devis.remise">
                             <td colspan="6" class="total" style="text-align: right;">Total après remise :</td>
                             <td class="total">{{countTotalRemise() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
                         <tr *ngIf="((countNTVAZ()>0) )">
-                            <ng-container >
                                 <td colspan="5"></td>
                                 <td >TVA 0 %</td>
                                 <td>
                                     {{countNTVAZ() | currency:'EUR':true:'1.2-2'}} €
 
                                 </td>
-
-                            </ng-container>
                         </tr>
 
                         <tr *ngIf="((countNTVA()>0) )">
-                            <ng-container >
                                 <td colspan="5"></td>
                                 <td >TVA 2.1 %</td>
                                 <td>
                                     {{countNTVA() | currency:'EUR':true:'1.2-2'}} €
 
                                 </td>
-
-                            </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAC()>0) )">
-                            <ng-container >
                                 <td colspan="5"></td>
                                 <td >TVA 5.5 %</td>
                                 <td>
@@ -368,10 +355,8 @@
 
                                 </td>
 
-                            </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAD()>0) )">
-                            <ng-container >
                                 <td colspan="5"></td>
                                 <td >TVA 10 %</td>
                                 <td>
@@ -379,10 +364,8 @@
 
                                 </td>
 
-                            </ng-container>
                         </tr>
                         <tr *ngIf="((countNTVAs()>0) )">
-                            <ng-container >
                                 <td colspan="5"></td>
                                 <td >TVA 20 %</td>
                                 <td >
@@ -390,13 +373,9 @@
 
                                 </td>
 
-                            </ng-container>
                         </tr>
 
 
-                        <!-- <td colspan="6" class="total" style="text-align: right;">TVA {{valeur.taux}} %:</td>
-                         <td class="total">{{countTVA() | currency:'EUR':true:'1.2-2'}}</td>
-                         <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         <br />
                         <tr>
                             <td colspan="5"></td>
@@ -407,7 +386,6 @@
                         <tr>
                             <td colspan="6" class="total" style="text-align: right;">TTC :</td>
                             <td class="total">{{countTotalTVA()  | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
 
@@ -433,7 +411,7 @@
                                 color: white">
                                 Options:
                             </td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+
                         </tr>
 
 
@@ -450,7 +428,8 @@
                                 </td>
                                 <td>
                                     <div class="form-group">
-                                        <span><a *ngIf="produit.obj" [routerLink]="['/produitvente/' + produit.obj.id_prc + '/' + produit.obj.num_version]" target="_blank">{{produit.obj.libelle}}</a></span>
+                                        <span><a *ngIf="produit.obj" [routerLink]="['/produitvente/' + produit.obj.id_prc + '/' + produit.obj.num_version]" target="_blank">{{produit.obj.libelle}}</a></span><br>
+                                        <textarea rows="6" class="col-sm-12" placeholder="Commentaire" name="commentaire{{i}}" [(ngModel)]="produitDevisOptions[i].commentaire" *ngIf="produit.commentaire"></textarea>
 
                                     </div>
                                 </td>
@@ -469,16 +448,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="form-group">
-                                        <input type="number"
-                                               class="form-control input-sm"
-                                               name="ntva{{i}}"
-                                               placeholder=""
-                                               min="0"
-                                               [(ngModel)]="produitDevisOptions[i].taux"
-                                               (ngModelChange)="accomptepercent()"
-                                               required>
-                                    </div>
+                                    {{produitDevisOptions[i].taux}}
+
                                 </td>
                                 <td>
                                     <div class="form-group">
@@ -505,11 +476,7 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td colspan="2"></td>
-                                <td colspan="4"><textarea rows="2" class="col-sm-12" placeholder="Commentaire" name="commentaire{{i}}" [(ngModel)]="produitDevisOptions[i].commentaire"></textarea></td>
-                                <td></td>
-                            </tr>
+
                         </ng-container>
 
 
@@ -595,6 +562,13 @@
                             <td>{{countAllTVAO() | currency:'EUR':true:'1.2-2'}} </td>
                         </tr>
 
+                        <tr *ngIf="produitDevisOptions.length> 0">
+                            <td colspan="6" class="total" style="text-align: right;">TTC Options :</td>
+                            <td class="total">{{countTotalOptionsTVA()  | currency:'EUR':true:'1.2-2'}}</td>
+                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                        </tr>
+
+
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
                                 color: white">Total HT :</td>
@@ -602,16 +576,12 @@
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
-                        <tr *ngIf="produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right;">TTC Options :</td>
-                            <td class="total">{{countTotalOptionsTVA() + countAllTVAO() | currency:'EUR':true:'1.2-2'}}</td>
-                            <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-                        </tr>
+
 
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
                                 color: white">Total après remise :</td>
-                            <td class="total">{{totalremise() + countAllTVAO() | currency:'EUR':true:'1.2-2'}}</td>
+                            <td class="total">{{totalTVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
@@ -619,7 +589,7 @@
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
                             <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
                                 color: white">TTC Total :</td>
-                            <td class="total">{{totalTVA() | currency:'EUR':true:'1.2-2'}}</td>
+                            <td class="total">{{totaltotal() | currency:'EUR':true:'1.2-2' }}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
