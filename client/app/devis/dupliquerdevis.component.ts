@@ -94,6 +94,7 @@ export class DupliquerDevisComponent implements OnInit {
         tmp.unite = this.produit.unite;
         tmp.option = this.produit.option;
         tmp.taux = this.produit.taux;
+        tmp.commentaire = this.produit.commentaire;
 
         let check = this.produitDevis.filter(obj => obj.id_prc == this.produit.obj.id_prc);
 
