@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AlertService, AuthenticationService, AchatsService} from '../_services/index';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AchatsService, AlertService, AuthenticationService} from '../_services/index';
 import {Product} from "../_models/products/produit";
-import {Histo} from "../_models/histo";
 import {FileUploader} from 'ng2-file-upload';
-import {AppConfig} from "../app.config";
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
 
@@ -17,44 +15,43 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 })
 
 export class ProduitachatComponent implements OnInit {
-    unites = ["m", "m²", "m3", "litre", "tonne", "kilogramme", "heure", "unité", "mètre linéaire"];
 
     //ged
     public uploader: FileUploader;
     public uploaderImg: FileUploader;
     public hasBaseDropZoneOver: boolean = false;
+
     public fileOverBase(e: any): void {
         this.hasBaseDropZoneOver = e;
     }
+
     //fin ged
 
-    loc = location.hostname;
-    id: string;
-    num_version: string
-    private sub: any;
-    product = new Product();
-    productDate: Date;
-    formattedDate: string;
-    updateProduct: any = {};
-    modif = new Histo();
-    loading = false;
-    historique: any[];
-    print: boolean = false;
-    currentUser: User;
-    droitsuser: any = {};
-    _id: any;
-    data: any = {};
-    returnUrl: string;
-    ged: any[];
-    id_produit: number;
-    cat: any [] = [];
-    image: any[];
-    production: any ={};
+    private unites: any[] = [];
+    private categories: any [] = [];
+    private historique: any[];
+
+    private loc = location.hostname;
+    private id_produit: string;
+    private num_version: string;
+
+    private product = new Product();
+    private updateProduct: any = {};
+
+    private formattedDate: string; // useless ?
+    private loading: boolean = false;
+    private print: boolean = false;
+    private currentUser: User;
+    private droitsuser: any = {};
+    private ged: any[];
+    private production: any = {};
+    // visualisation de l'image avant envoi
+    private url: any;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private authenticationService: AuthenticationService,
-                private achatService: AchatsService,
+                private achatsService: AchatsService,
                 private alertService: AlertService,
                 private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -62,41 +59,31 @@ export class ProduitachatComponent implements OnInit {
 
     ngOnInit() {
         this.loaddroituser();
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
-        this.sub = this.route.params.subscribe(params => {
+        this.route.params.subscribe(params => {
+            this.id_produit = params['id'];
+            this.num_version = params['num_version'];
 
-            this.id = params['id']; // (+) converts string 'id' to a number
-            this.num_version = params['num_version']; // (+) converts string 'id' to a number
-
-            // In a real app: dispatch action to load the details here.
-            this.achatService.getById(this.id, this.num_version).subscribe(val => {
-                this.product = val[0]; // val c'est l'array d'un seul element
-               //
-                // console.log(this.product);
+            this.achatsService.getById(this.id_produit, this.num_version).subscribe(val => {
+                this.product = val[0];
 
                 this.updateProduct = Object.assign({}, this.product);
                 this.updateProduct.tarif_du = this.formattedDate;
 
                 // la date a afficher sur la page
-                this.productDate = new Date(this.product.tarif_du);
-                this.formattedDate = this.formatDate(this.productDate);
-                this.loadHistorique(this.id);
+                let productDate = new Date(this.product.tarif_du);
+                this.formattedDate = this.formatDate(productDate);
+                this.loadHistorique(this.id_produit);
                 this.loadCat();
                 this.loadAllImg();
-
+                this.loadUnites();
             });
 
-            console.log("this id_produit: " + this.id);
-
             this.route.params.subscribe(params => {
-                this.id = params['id'];
-                console.log("id"+params['id']);
-               // this.id = params['id_produit'];
+                this.id_produit = params['id'];
                 //ged
                 this.getGed(params['id']);
                 this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id_produit});
-                console.log("id uploader"+  URLimg + "img/" + this.id_produit);
                 this.uploaderImg.onAfterAddingFile = (file) => {
                     file.withCredentials = false;
                 };
@@ -110,68 +97,56 @@ export class ProduitachatComponent implements OnInit {
         });
     }
 
-    loaddroituser() {                                 //
+    private loaddroituser() {
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
             this.droitsuser = data[0];
-            //console.log(this.data);
-            //console.log(this.currentUser._id);
         });
     }
 
-    getHost(){
-        var h = location.hostname;
-        return h;
-    }
-
-    // visualisation de l'image avant envoi
-    url: any;
-
-    readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            }
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    }
-
     private loadHistorique(id: string) {
-        this.achatService.getAllHisto(id).subscribe(
-            modifs => {
-                // charge la date de modif et le prenom de contact qui a fait la modif
-                this.historique = modifs;
-               // console.log(this.historique);
-                //console.log("loaded histo : " + JSON.stringify(this.historique));
-            }
-        );
+        this.achatsService.getAllHisto(id).subscribe(modifs => {
+            // charge la date de modif et le prenom de contact qui a fait la modif
+            this.historique = modifs;
+        });
     }
 
     private loadCat() {
-        this.achatService.getAllCategories().subscribe(
-            cat => {
-                this.cat = cat;
-               // console.log(this.cat);
+        this.achatsService.getAllCategories().subscribe(categories => {
+            this.categories = categories;
+            this.updateProduct.id_cat = this.categories.find((cat) => cat.id_cat == this.updateProduct.id_cat).libelle;
+        });
+    }
 
-            }
-        );
+    private loadUnites() {
+        this.achatsService.getAllUnite().subscribe(unites => {
+            this.unites = unites;
+            this.updateProduct.unite = this.unites.find((u) => u.id_unite == this.updateProduct.unite).libelle;
+        });
     }
 
     private modifyProduct() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.updateProduct.id_user = currentUser._id;
-        console.log("update prd"+this.updateProduct+this.id);
+        this.updateProduct.id_cat = this.categories.find(cat => cat.libelle == this.updateProduct.id_cat).id_cat;
+        this.updateProduct.unite = this.unites.find(u => u.libelle == this.updateProduct.unite).id_unite;
+
         this.loading = true;
-        this.achatService.update(this.updateProduct).subscribe(
-            data => {
-                console.log("data update prod: " + data);
-                this.loading = false;
-                this.router.navigate(['/listeachat']);
-                this.alertService.success("Le produit a bien été modifié. ")
-            }
-        );
+        this.achatsService.update(this.updateProduct).subscribe(() => {
+            this.loading = false;
+            this.router.navigate(['/listeachat']);
+            this.alertService.success("Le produit a bien été modifié. ")
+        });
     }
 
+    private readUrl(event: any) {
+        if (event.target.files && event.target.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (event: any) => {
+                this.url = event.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
 
 
     private formatDate(date: Date) {
@@ -182,37 +157,27 @@ export class ProduitachatComponent implements OnInit {
     }
 
     private formatStringToDate(date: any) {
-        var d = new Date(date);
-        // console.log("formatted date: " + this.formatDate(d));
+        let d = new Date(date);
         return this.formatDate(d);
-    }
-
-
-    private debug() {
-        console.log("historique avec les noms: " + JSON.stringify(this.historique));
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //  console.log(currentUser._id);
-        //console.log(currentUser.firstName);
     }
 
 
     /*************************** GED ***************************/
     private getGed(id_produit: number) {
-        this.sub = this.route.params.subscribe(params => {
-            this.id = params['id'];
-            this.achatService.getGed(id_produit)
+        this.route.params.subscribe(params => {
+            this.id_produit = params['id'];
+            this.achatsService.getGed(id_produit)
                 .subscribe(
                     data => {
                         this.ged = data;
-                       // console.log(this.ged);
                     },
                     error => {
-                      //  console.log("Couldn't load the ged infos");
-                        //console.log(error);
+
                         this.alertService.error(error._body);
                     });
         });
     }
+
     /***************************fin GED************************************/
 
     imprimer() {
@@ -238,24 +203,13 @@ export class ProduitachatComponent implements OnInit {
 
 
     loadAllImg() {
-
-        this.achatService.getAllImg().subscribe(production => {
-
+        this.achatsService.getAllImg().subscribe(production => {
             this.production = production[0];
-            console.log("prod"+this.production);
-            //console.log(this.currentUser);
 
             this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.production.id_produit});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
-
-            /*this.uploader = new FileUploader({url: URL + "param/" + this.model.id_agence});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };*/
-
         });
-
     }
 }

@@ -42,20 +42,23 @@
 
                     <input type="text"  name="reference"
                            [(ngModel)]="updateProduct.reference" class="col-sm-7"/>
-
-                </div>
-                <div class="form-group col-sm-12" >
-                    <span class="gras col-sm-5">Catégorie : </span>
-
-                    <input type="text"  name="libcat"
-                           [(ngModel)]="updateProduct.libcat" class="col-sm-7"/>
                 </div>
 
-                <div class="form-group col-sm-12" >
-                    <span class="gras col-sm-5">Unité : </span>
-                    <input type="text"  name="unite"
-                           [(ngModel)]="updateProduct.unite" class="col-sm-7"/>
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">Catégorie : </label>
+                    <select name="categorie" class="col-sm-7" [(ngModel)]="updateProduct.id_cat" #categorie="ngModel" required>
+                        <option *ngFor="let cat of categories" [value]="cat.libelle">{{cat.libelle}}</option>
+                    </select>
                 </div>
+
+
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">Unité :</label>
+                    <select name="unitee" class="col-sm-7" [(ngModel)]="updateProduct.unite" #unite="ngModel" required>
+                        <option *ngFor="let unis of unites" [value]="unis.libelle">{{unis.libelle}}</option>
+                    </select>
+                </div>
+
                 <div class="form-group col-sm-12" >
                     <span class="gras col-sm-5">Fournisseur : </span>
                     <span class="col-sm-7">{{product.raison_sociale? product.raison_sociale : product.nom}}</span>

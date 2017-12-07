@@ -303,7 +303,7 @@ function update(id_produit, productParam) {
             productParam.libelle,
             productParam.id_contact,
             productParam.reference,
-            productParam.categorie,
+            productParam.id_cat,
 
             productParam.id_user,
 

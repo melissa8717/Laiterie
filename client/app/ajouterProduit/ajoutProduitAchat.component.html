@@ -57,9 +57,9 @@
 
                 <!-- unite -->
                 <div class="form-group col-sm-12">
-                    <label class="col-sm-5" style="padding-left: 0;">* Unité :</label>
-                    <select name="unite" class="col-sm-3" [(ngModel)]="produit.unite" #type="ngModel" required>
-                        <option *ngFor="let unite of unites" [value]="unite">{{unite}}</option>
+                    <label class="col-sm-5 control-label">* Unité :</label>
+                    <select name="unitee" class="col-sm-7" [(ngModel)]="produit.unite" #unite="ngModel" required>
+                        <option *ngFor="let unis of unites" [value]="unis.libelle">{{unis.libelle}}</option>
                     </select>
                 </div>
 
