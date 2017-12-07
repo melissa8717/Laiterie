@@ -930,9 +930,7 @@ function getAlltotalfact(year) {
 function getAlltotaldevis(year) {
     var deferred = Q.defer();
     //console.log('test6');
-    db.query('SELECT *  ' +
-        'FROM sumdevis ' +
-        'WHERE  annee =? ', [year], function (error, chantier, fields) {
+    db.query('SELECT SUM( total ) as Somdevis FROM alldevis WHERE accepted IS TRUE AND YEAR( date_version ) =? ', [year], function (error, chantier, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
