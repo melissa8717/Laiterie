@@ -485,7 +485,7 @@ export class FactlibreComponent {
         factureparams.model = this.model;
         factureparams.nfact = this.nfact;
 
-        var test = +confirm('Etes vous sür de vouloir enregitrer votre facture :');
+        var test = +confirm('Etes vous sûr de vouloir enregistrer votre facture :');
         //console.log(factureparams);
         if (test) {
             console.log(factureparams);
