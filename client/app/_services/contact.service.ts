@@ -116,10 +116,12 @@ export class ContactService {
     }
 
     getByIdContrat(id_contact: number) {
+        console.log(this.config.apiUrl + '/contacts/contrat/' + id_contact);
         return this.http.get(this.config.apiUrl + '/contacts/contrat/' + id_contact, this.jwt()).map((response: Response) => response.json());
     }
 
     getByIdLastContrat(id_contact: number) {
+        console.log(this.config.apiUrl + '/contacts/lastcontrat/' + id_contact);
         return this.http.get(this.config.apiUrl + '/contacts/lastcontrat/' + id_contact, this.jwt()).map((response: Response) => response.json());
     }
 
