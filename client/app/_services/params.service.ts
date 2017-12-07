@@ -123,6 +123,10 @@ export class ParamsService {
         return this.http.put(this.config.apiUrl + '/params/addcondition', a_params, this.jwt());
     }
 
+    addVente(params: any) {
+        return this.http.post(this.config.apiUrl + '/params/addVente', params, this.jwt()).map((response: Response) => response.json());
+    }
+
     addfraisprev(params: any) {
         console.log(this.config.apiUrl + '/params/addfrais')
         return this.http.post(this.config.apiUrl + '/params/addfrais', params, this.jwt()).map((response: Response) => response.json());

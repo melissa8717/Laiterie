@@ -29,6 +29,7 @@ service.addUnite = addUnite;
 
 service.getAllVente = getAllVente;
 service.updateVente = updateVente;
+service.addVente = addVente;
 
 service.addfraisprev = addfraisprev;
 service.getAllFrais = getAllFrais;
@@ -373,6 +374,30 @@ function updateVente(ag_param) {
     ];
 
     var query = 'UPDATE cgv SET texte = ? where id = ?';
+    //console.log(query, params);
+    db.query(query, params, function (error, results, fields) {
+        if (error) {
+            console.log(+error.message);
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
+        }
+        //console.log(results)
+
+        deferred.resolve();
+    });
+    return deferred.promise;
+}
+
+function addVente(ag_param) {
+    var deferred = Q.defer();
+    console.log(ag_param);
+
+    var params = [
+        ag_param.texte,
+        ag_param.id
+
+    ];
+
+    var query = 'INSERT INTO  cgv (texte) VALUES (?)';
     //console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
