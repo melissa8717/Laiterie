@@ -226,8 +226,9 @@ function getAllProducts(_id) {
 
 function getAllDate() {
     var deferred = Q.defer();
-    db.query('SELECT * FROM alldevis ' +
+    db.query('SELECT  devis. * , alldevis. * , contact. * , devis_version.acompte, devis_version.accompte_value FROM alldevis ' +
         'LEFT JOIN devis on devis.id_devis = alldevis.id_devis ' +
+        'LEFT JOIN devis_version ON devis_version.id_devis = alldevis.id_devis AND devis_version.num_version = alldevis.num_version '+
         'LEFT JOIN contact on devis.id_contact = contact.id_contact',
         function (error, chantiers, fields) {
 
@@ -246,8 +247,9 @@ function getAll(month, year) {
     var deferred = Q.defer();
     db.query('SELECT * FROM alldevis ' +
         'LEFT JOIN devis on devis.id_devis = alldevis.id_devis ' +
+        'LEFT JOIN devis_version ON devis_version.id_devis = alldevis.id_devis AND devis_version.num_version = alldevis.num_version '+
         'LEFT JOIN contact on devis.id_contact = contact.id_contact' +
-        ' WHERE MONTH(date_version) = ? && YEAR(date_version)= ? ' +
+        ' WHERE MONTH(alldevis.date_version) = ? && YEAR(alldevis.date_version)= ? ' +
         'ORDER BY  `alldevis`.`id_devis` DESC',
         [month, year], function (error, chantiers, fields) {
 
