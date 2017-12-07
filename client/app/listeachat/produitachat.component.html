@@ -61,9 +61,13 @@
                     </select>
                 </div>
 
+
                 <div class="form-group col-sm-12">
-                    <span class="gras col-sm-5">Fournisseur : </span>
-                    <span class="col-sm-7">{{product.raison_sociale? product.raison_sociale : product.nom}}</span>
+                    <label class="col-sm-5 control-label">Fournisseur :</label>
+                    <select name="fournisseur" class="col-sm-7" [(ngModel)]="updateProduct.id_contact" #fournisseur="ngModel"
+                            required>
+                        <option *ngFor="let f of fournisseurs" [value]="f.nom">{{f.nom}}</option>
+                    </select>
                 </div>
 
 

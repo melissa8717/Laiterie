@@ -5,6 +5,7 @@ import {Product} from "../_models/products/produit";
 import {FileUploader} from 'ng2-file-upload';
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
+import {Contact} from "../_models/contacts/contact";
 
 const URL = 'http://' + location.hostname + ':4000/ged/';
 const URLimg = 'http://' + location.hostname + ':4000/image/';
@@ -30,6 +31,8 @@ export class ProduitachatComponent implements OnInit {
     private unites: any[] = [];
     private categories: any [] = [];
     private historique: any[];
+    private fournisseurs: Contact[] = [];
+
 
     private loc = location.hostname;
     private id_produit: number;
@@ -67,8 +70,6 @@ export class ProduitachatComponent implements OnInit {
             this.achatsService.getById(this.id_produit, this.num_version).subscribe(val => {
                 this.product = val[0];
 
-                console.log(this.product);
-
                 this.updateProduct = Object.assign({}, this.product);
                 this.updateProduct.tarif_du = this.formattedDate;
 
@@ -79,6 +80,7 @@ export class ProduitachatComponent implements OnInit {
                 this.loadCat();
                 this.loadAllImg();
                 this.loadUnites();
+                this.loadFournisseurs();
             });
 
             //ged
@@ -112,14 +114,21 @@ export class ProduitachatComponent implements OnInit {
     private loadCat() {
         this.achatsService.getAllCategories().subscribe(categories => {
             this.categories = categories;
-            this.updateProduct.id_cat = this.categories.find((cat) => cat.id_cat == this.updateProduct.id_cat).libelle;
+            this.updateProduct.id_cat = this.categories.find(cat => cat.id_cat == this.updateProduct.id_cat).libelle;
         });
     }
 
     private loadUnites() {
         this.achatsService.getAllUnite().subscribe(unites => {
             this.unites = unites;
-            this.updateProduct.unite = this.unites.find((u) => u.id_unite == this.updateProduct.unite).libelle;
+            this.updateProduct.unite = this.unites.find(u => u.id_unite == this.updateProduct.unite).libelle;
+        });
+    }
+
+    private loadFournisseurs() {
+        this.achatsService.getAllFournisseur().subscribe(fournisseurs => {
+            this.fournisseurs = fournisseurs;
+            this.updateProduct.id_contact = this.fournisseurs.find(f => f.id_contact == this.updateProduct.id_contact).nom;
         });
     }
 
@@ -129,8 +138,7 @@ export class ProduitachatComponent implements OnInit {
         this.updateProduct.id_user = this.currentUser._id;
         this.updateProduct.id_cat = this.categories.find(cat => cat.libelle == this.updateProduct.id_cat).id_cat;
         this.updateProduct.unite = this.unites.find(u => u.libelle == this.updateProduct.unite).id_unite;
-
-        console.log(this.updateProduct);
+        this.updateProduct.id_contact = this.fournisseurs.find(f => f.nom == this.updateProduct.id_contact).id_contact;
 
         this.achatsService.update(this.updateProduct).subscribe(() => {
             this.loading = false;
