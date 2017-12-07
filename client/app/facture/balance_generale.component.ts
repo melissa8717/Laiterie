@@ -67,8 +67,7 @@ export class Balance_generaleComponent implements OnInit{
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
+
 
         });
     }
@@ -119,7 +118,7 @@ export class Balance_generaleComponent implements OnInit{
             data => {
                 this.fact = data;
                 this.loading= false;
-                console.log(this.fact)
+                //console.log(this.fact)
             },
             err =>{
                 this.alertService.error("Impossible de charger la balance générale, veuillez réessayer ultérieurement");
@@ -162,7 +161,7 @@ export class Balance_generaleComponent implements OnInit{
             data => {
                 this.achat = data;
                 this.loading= false;
-                console.log(this.achat)
+                //console.log(this.achat)
             },
             err =>{
                 this.alertService.error("Impossible de charger la balance générale, veuillez réessayer ultérieurement");

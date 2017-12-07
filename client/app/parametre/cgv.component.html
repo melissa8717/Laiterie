@@ -11,7 +11,7 @@
         <h3 class="col-sm-12">Conditions générales de vente</h3>
 
         <textarea name="texte" [(ngModel)]="cgv.texte" class="col-sm-12" rows="40"></textarea>
-        <button type="button" (click)="modify(cgv)" class="col-sm-offset-11 col-sm-1 ">Modifier</button>
-
+        <button type="button" (click)="modify(cgv)" class="col-sm-offset-11 col-sm-1 " *ngIf="cgv">Modifier</button>
+        <button type="button" class="col-sm-offset-11 col-sm-1 " (click)="addcgv()" *ngIf="!cgv">Ajouter</button>
     </div>
 </div>

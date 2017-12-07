@@ -61,4 +61,13 @@ export class CgvComponent implements OnInit {
             });
     }
 
+    addcgv() {
+
+
+        this.paramsService.addVente(this.cgv).subscribe(mat => {
+
+
+            });
+    }
+
 }

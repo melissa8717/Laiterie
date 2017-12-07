@@ -22,6 +22,7 @@ router.post('/addunite', addUnite);
 
 router.get('/condition', getAllVente);
 router.put('/addcondition', updateVente);
+router.post('/addVente',addVente);
 
 router.post('/addfrais', addfraisprev);
 router.get('/frais', getAllFrais);
@@ -214,6 +215,16 @@ function updateVente(req, res) {
     paramsService.updateVente(req.body)
         .then(function () {
             res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function addVente(req, res) {
+    paramsService.addVente(req.body)
+        .then(function (agen) {
+            res.send(agen);
         })
         .catch(function (err) {
             res.status(400).send(err);
