@@ -32,7 +32,7 @@ export class ProduitachatComponent implements OnInit {
     private historique: any[];
 
     private loc = location.hostname;
-    private id_produit: string;
+    private id_produit: number;
     private num_version: string;
 
     private product = new Product();
@@ -67,6 +67,8 @@ export class ProduitachatComponent implements OnInit {
             this.achatsService.getById(this.id_produit, this.num_version).subscribe(val => {
                 this.product = val[0];
 
+                console.log(this.product);
+
                 this.updateProduct = Object.assign({}, this.product);
                 this.updateProduct.tarif_du = this.formattedDate;
 
@@ -79,20 +81,17 @@ export class ProduitachatComponent implements OnInit {
                 this.loadUnites();
             });
 
-            this.route.params.subscribe(params => {
-                this.id_produit = params['id'];
-                //ged
-                this.getGed(params['id']);
-                this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id_produit});
-                this.uploaderImg.onAfterAddingFile = (file) => {
-                    file.withCredentials = false;
-                };
-                this.uploader = new FileUploader({url: URL + "produits/" + params['id']});
-                this.uploader.onAfterAddingFile = (file) => {
-                    file.withCredentials = false;
-                };
-                //ged
-            });
+            //ged
+            this.getGed(params['id']);
+            this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id_produit});
+            this.uploaderImg.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+            this.uploader = new FileUploader({url: URL + "produits/" + params['id']});
+            this.uploader.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+            //ged
 
         });
     }
@@ -103,7 +102,7 @@ export class ProduitachatComponent implements OnInit {
         });
     }
 
-    private loadHistorique(id: string) {
+    private loadHistorique(id: number) {
         this.achatsService.getAllHisto(id).subscribe(modifs => {
             // charge la date de modif et le prenom de contact qui a fait la modif
             this.historique = modifs;
@@ -125,12 +124,14 @@ export class ProduitachatComponent implements OnInit {
     }
 
     private modifyProduct() {
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.updateProduct.id_user = currentUser._id;
+        this.loading = true;
+
+        this.updateProduct.id_user = this.currentUser._id;
         this.updateProduct.id_cat = this.categories.find(cat => cat.libelle == this.updateProduct.id_cat).id_cat;
         this.updateProduct.unite = this.unites.find(u => u.libelle == this.updateProduct.unite).id_unite;
 
-        this.loading = true;
+        console.log(this.updateProduct);
+
         this.achatsService.update(this.updateProduct).subscribe(() => {
             this.loading = false;
             this.router.navigate(['/listeachat']);
