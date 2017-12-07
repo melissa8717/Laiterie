@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http, Headers, RequestOptions, Response} from '@angular/http';
 
-import { AppConfig } from '../app.config';
-import { Product } from '../_models/index';
+import {AppConfig} from '../app.config';
+import {Product} from '../_models/index';
 import {Histo} from "../_models/histo";
 import {Mainoeuvre} from "../_models/products/mainoeuvre";
 
 @Injectable()
 export class AchatsService {
-    constructor(private http: Http, private config: AppConfig) { }
+    constructor(private http: Http, private config: AppConfig) {
+    }
 
     getAll() {
         return this.http.get(this.config.apiUrl + '/products', this.jwt()).map((response: Response) => response.json());
@@ -18,7 +19,7 @@ export class AchatsService {
         return this.http.get(this.config.apiUrl + '/products/achat/all', this.jwt()).map((response: Response) => response.json());
     }
 
-    getById(_id: string, num_version: string) {
+    getById(_id: number, num_version: string) {
         return this.http.get(this.config.apiUrl + '/products/' + _id + '/' + num_version, this.jwt()).map((response: Response) => response.json());
     }
 
@@ -27,12 +28,10 @@ export class AchatsService {
     }
 
     update(product: Product) {
-        //console.log("update service client");
         return this.http.put(this.config.apiUrl + '/products/' + product.id_produit, product, this.jwt());
     }
 
     updateModif(histo: Histo) {
-        //console.log("update modif service client");
         return this.http.post(this.config.apiUrl + '/products/modifs', histo, this.jwt());
     }
 
@@ -41,7 +40,6 @@ export class AchatsService {
     }
 
     getAllMainOeuvre() {
-        console.log("achat service main oeuvre");
         return this.http.get(this.config.apiUrl + '/products/mainoeuvre/all', this.jwt()).map((response: Response) => response.json());
     }
 
@@ -49,8 +47,7 @@ export class AchatsService {
         return this.http.post(this.config.apiUrl + '/products/mainoeuvre/new', mo, this.jwt()).map((response: Response) => response.json());
     }
 
-    updateMainOeuvre(mo: Mainoeuvre){
-        console.log("/products/mainoeuvre/" + mo.id_produit);
+    updateMainOeuvre(mo: Mainoeuvre) {
         return this.http.put(this.config.apiUrl + '/products/mainoeuvre/' + mo.id_produit, mo, this.jwt());
     }
 
@@ -67,91 +64,83 @@ export class AchatsService {
     }
 
     getAllFournisseur() {
-        console.log("get four client service");
         return this.http.get(this.config.apiUrl + '/products/fournisseurs/all', this.jwt()).map((response: Response) => response.json());
     }
 
-    getAllHisto(_id: string) {
-        console.log("getting histo");
+    getAllHisto(_id: number) {
         return this.http.get(this.config.apiUrl + '/products/histo/' + _id, this.jwt()).map((response: Response) => response.json());
     }
 
     getAllProdComp() {
         return this.http.get(this.config.apiUrl + '/products/composes/prdc', this.jwt()).map((response: Response) => response.json());
     }
+
     getAllStock() {
-        console.log(this.config.apiUrl + '/products/stock')
         return this.http.get(this.config.apiUrl + '/products/stock', this.jwt()).map((response: Response) => response.json());
     }
-    getStockclick(id_produit:number,stock:number) {
-        //console.log(this.config.apiUrl + '/products/stock/'+id_produit+"/"+stock)
-        return this.http.put(this.config.apiUrl + '/products/stock/'+id_produit+"/"+stock, this.jwt());
+
+    getStockclick(id_produit: number, stock: number) {
+        return this.http.put(this.config.apiUrl + '/products/stock/' + id_produit + "/" + stock, this.jwt());
     }
 
-    addMat(matParam:any) {
-        console.log(this.config.apiUrl + '/products/mat')
-        return this.http.post(this.config.apiUrl + '/products/mat',matParam, this.jwt());
+    addMat(matParam: any) {
+        return this.http.post(this.config.apiUrl + '/products/mat', matParam, this.jwt());
     }
 
     getAllVehimat() {
-        //console.log(this.config.apiUrl + '/products/vehi')
         return this.http.get(this.config.apiUrl + '/products/vehi', this.jwt()).map((response: Response) => response.json());
     }
 
-    getByIdIdvehmat(id_vehmat:number) {
+    getByIdIdvehmat(id_vehmat: number) {
         return this.http.get(this.config.apiUrl + '/products/suivimateriel/' + id_vehmat, this.jwt()).map((response: Response) => response.json());
     }
-    getByIdmat(id_vehmat:number) {
+
+    getByIdmat(id_vehmat: number) {
         return this.http.get(this.config.apiUrl + '/products/suivivehicule/' + id_vehmat, this.jwt()).map((response: Response) => response.json());
     }
-    updatevehmat(vehmat:any){
-        //console.log("/products/suivivehicule/" + vehmat.id_vehmat);
-        return this.http.put(this.config.apiUrl + '/products/suivivehicule/' +vehmat.id_vehmat,vehmat, this.jwt());
+
+    updatevehmat(vehmat: any) {
+        return this.http.put(this.config.apiUrl + '/products/suivivehicule/' + vehmat.id_vehmat, vehmat, this.jwt());
     }
-    deletemat(id_vehmat:number) {
-        //console.log(this.config.apiUrl + '/products/' + id_vehmat);
+
+    deletemat(id_vehmat: number) {
         return this.http.delete(this.config.apiUrl + '/products/vehimat/' + id_vehmat, this.jwt());
     }
-    getByIdEntretien(id_vehmat:number) {
-    return this.http.get(this.config.apiUrl + '/products/suivimateriel/entretien/' + id_vehmat, this.jwt()).map((response: Response) => response.json());
+
+    getByIdEntretien(id_vehmat: number) {
+        return this.http.get(this.config.apiUrl + '/products/suivimateriel/entretien/' + id_vehmat, this.jwt()).map((response: Response) => response.json());
     }
-    getByIdEntretien1(id_vehmat:number) {
-        //console.log("/products/suivivehicule/entre/" + id_vehmat)
+
+    getByIdEntretien1(id_vehmat: number) {
         return this.http.get(this.config.apiUrl + '/products/suivivehicule/entre/' + id_vehmat, this.jwt()).map((response: Response) => response.json());
     }
 
-    getAllRef(reference:string) {
-        //console.log(this.config.apiUrl + '/products/reference/'+ reference)
-        return this.http.get(this.config.apiUrl + '/products/reference/'+ reference, this.jwt()).map((response: Response) => response.json());
+    getAllRef(reference: string) {
+        return this.http.get(this.config.apiUrl + '/products/reference/' + reference, this.jwt()).map((response: Response) => response.json());
     }
 
-    addEntretien(id_vehmat:any,EParam:any) {
-        //console.log(this.config.apiUrl + '/products/entretien/'+id_vehmat)
-        return this.http.post(this.config.apiUrl + '/products/entretien/'+id_vehmat,EParam, this.jwt());
+    addEntretien(id_vehmat: any, EParam: any) {
+        return this.http.post(this.config.apiUrl + '/products/entretien/' + id_vehmat, EParam, this.jwt());
     }
-    deleteEntre(id_entretien:number) {
-        console.log(this.config.apiUrl + '/products/' + id_entretien);
+
+    deleteEntre(id_entretien: number) {
         return this.http.delete(this.config.apiUrl + '/products/entre/' + id_entretien, this.jwt());
     }
 
 
-
     /***************************************************GED*********************************************************************************/
     getGed(id: number) {
-        console.log('GEDservice1'+this.config.apiUrl + '/ged/produits/'+id)
-        return this.http.get(this.config.apiUrl + '/ged/produits/'+id, this.jwt()).map((response: Response) => response.json());
+        return this.http.get(this.config.apiUrl + '/ged/produits/' + id, this.jwt()).map((response: Response) => response.json());
     }
 
 
-    upload( url : string, file: File) {
+    upload(url: string, file: File) {
         return new Promise((resolve, reject) => {
             if (file === undefined)
                 resolve();
             var xhr = new XMLHttpRequest();
             var fd = new FormData();
 
-            //fd.append("url", filename);
-            console.log(file);
             fd.append("file", file);
 
             /* event listeners */
@@ -159,12 +148,11 @@ export class AchatsService {
             xhr.addEventListener("load", uploadComplete, false);
             xhr.addEventListener("abort", uploadFailed, false);
 
-            function uploadComplete(){
+            function uploadComplete() {
                 resolve();
             }
 
-            function uploadFailed(){
-                console.log("Upload failed or canceled");
+            function uploadFailed() {
                 reject();
             }
 
@@ -174,7 +162,6 @@ export class AchatsService {
     }
 
     getAllImg() {
-        console.log("get"+this.config.apiUrl + '/products/img')
         return this.http.get(this.config.apiUrl + '/products/img/', this.jwt()).map((response: Response) => response.json());
     }
 
@@ -184,8 +171,8 @@ export class AchatsService {
         // create authorization header with jwt token
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-            return new RequestOptions({ headers: headers });
+            let headers = new Headers({'Authorization': 'Bearer ' + currentUser.token});
+            return new RequestOptions({headers: headers});
         }
     }
 

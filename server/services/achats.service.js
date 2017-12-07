@@ -57,16 +57,13 @@ function getAllStock() {
       GROUP BY produit.id_produit\ ORDER BY libelle \ ASC ', function (error, produits, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
-            console.log(error.name + ': ' + error.message);
         }
-        //console.log(produits);
         deferred.resolve(produits);
     });
     return deferred.promise;
 }
 
 function getStockclick(id_product, stock) {
-    console.log("update prod service server");
     var deferred = Q.defer();
 
     var params = [
@@ -76,15 +73,10 @@ function getStockclick(id_product, stock) {
 
     var query = "UPDATE stock SET  stock = ? WHERE id_produit = ?";
 
-
-    console.log(query, params);
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log('MySql ERROR trying to update user informations (3) | ' + error.message);
             deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
-
-
         deferred.resolve();
     });
     return deferred.promise;
@@ -100,9 +92,7 @@ function getAll() {
         'ORDER BY produit.libelle ', function (error, produits, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
-            console.log(error.name + ': ' + error.message);
         }
-        //console.log(produits);
         deferred.resolve(produits);
     });
     return deferred.promise;
@@ -119,7 +109,6 @@ function getAllProduitsAchat() {
         'ORDER BY produit.libelle ', function (error, produits, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
-            console.log(error.name + ': ' + error.message);
         }
         deferred.resolve(produits);
     });
@@ -133,7 +122,7 @@ function createMainOeuvre(moParams) {
         moParams.libelle,
         moParams.taux_horaire,
         moParams.heure_brute,
-        moParams.salaire_charge,
+        moParams.salaire_charge
     ];
 
     // type = 1 pour indiquer que c'est un main d'oeuvre
@@ -142,13 +131,9 @@ function createMainOeuvre(moParams) {
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
-
-        //console.log(results);
         deferred.resolve(results);
-
     });
 
     return deferred.promise;
@@ -158,18 +143,14 @@ function getAllMainOeuvre() {
     var deferred = Q.defer();
     db.query('SELECT * FROM produit WHERE type = 1 order by libelle ASC', function (error, mainoeuvres, fields) {
         if (error) {
-
             deferred.reject(error.name + ': ' + error.message);
-            console.log(error.name + ': ' + error.message);
         }
-        //console.log(mainoeuvres);
         deferred.resolve(mainoeuvres);
     });
     return deferred.promise;
 }
 
 function updateMainOeuvre(id_mo, moParam) {
-    //console.log("updating mo service");
     var deferred = Q.defer();
 
     var params = [
@@ -177,16 +158,12 @@ function updateMainOeuvre(id_mo, moParam) {
         moParam.taux_horaire,
         moParam.heure_brute,
         moParam.salaire_charge,
-
-
         id_mo
     ];
 
-    //console.log("id prod: " + id_mo);
-
     var query = "UPDATE produit SET libelle = ?, taux_horaire = ?, heure_brute = ?, salaire_charge = ? WHERE id_produit = ?";
 
-    db.query(query, params, function (error, results, fields) {
+    db.query(query, params, function (error) {
         if (error) {
             deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
@@ -198,20 +175,21 @@ function updateMainOeuvre(id_mo, moParam) {
 
 function getById(_id, num_version) {
     var deferred = Q.defer();
+
     var sql = "SELECT produit.*,contact.*,stock.*,produit_categorie.libelle AS libcat FROM produit " +
         "LEFT JOIN contact on contact.id_contact = produit.id_contact " +
         "LEFT JOIN stock on stock.id_produit = produit.id_produit " +
         "LEFT JOIN produit_categorie ON produit_categorie.id_cat = produit.id_cat " +
         "WHERE produit.id_produit = ? && num_version = ? " +
         "&& stock.id_produit = produit.id_produit";
+
     var inserts = [_id, num_version];
     sql = mysql.format(sql, inserts);
-    db.query(sql, [_id], function (error, product, fields) {
+
+    db.query(sql, inserts, function (error, product) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
-            console.log(error.name + ': ' + error.message);
         }
-
         deferred.resolve(product);
     });
     return deferred.promise;
@@ -227,7 +205,6 @@ function create(productParam) {
         productParam.categorie,
 
         productParam.id_user,
-
         productParam.unite,
         productParam.prix_achat,
         productParam.id_tva,
@@ -241,9 +218,8 @@ function create(productParam) {
     var query = "INSERT INTO produit (libelle, id_contact, reference, id_cat, tarif_du, id_user, unite, prix_achat, id_tva, " +
         "description, note, stockmini, stockmaxi, type) VALUES (? , ? , ? , ?, NOW() ,?, ? , ? , ? , ?, ?, ?, ?, 0 )";
 
-    db.query(query, params, function (error, results, fields) {
+    db.query(query, params, function (error, results) {
         if (error) {
-            //console.log("error in create service");
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -255,12 +231,10 @@ function create(productParam) {
 
         var query = "INSERT INTO stock (id_produit, stock, stockmini, stockmaxi ) VALUES (? , ? , ? , ? )";
 
-        db.query(query, params, function (error, results, fields) {
+        db.query(query, params, function (error, results) {
             if (error) {
-                //console.log("error in create service");
                 deferred.reject(error.name + ': ' + error.message);
             }
-            //console.log(results);
             deferred.resolve(results);
         });
 
@@ -288,9 +262,8 @@ function update(id_produit, productParam) {
 
     var query = "SELECT MAX(num_version) as max FROM produit WHERE id_produit = ? ";
 
-    db.query(query, params, function (error, results, fields) {
+    db.query(query, params, function (error, results) {
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -299,39 +272,44 @@ function update(id_produit, productParam) {
         var params = [
             productParam.id_produit,
             num_version,
-
             productParam.libelle,
             productParam.id_contact,
             productParam.reference,
-            productParam.categorie,
+            productParam.id_cat,
 
             productParam.id_user,
-
             productParam.unite,
             productParam.prix_achat,
             productParam.id_tva,
 
             productParam.description,
             productParam.note,
-            productParam.stockmini,
-            productParam.stockmaxi,
+
             productParam.image_url
         ];
 
-        //console.log(productParam);
-
         var query = "INSERT INTO produit (id_produit, num_version, libelle, id_contact, reference, id_cat, tarif_du, id_user, unite, prix_achat, id_tva, " +
-            "description, note, stockmini, stockmaxi, type,image_url) VALUES (? , ? , ? , ?,  ? , ?, NOW() ,?, ? , ? , ? , ?, ?, ?, ?, 0 ,?)";
+            "description, note, type, image_url) VALUES (? , ? , ? , ?,  ? , ?, NOW() ,?, ? , ? , ?, ?, ?, 0 ,?)";
 
-        db.query(query, params, function (error, results, fields) {
+        db.query(query, params, function (error, results) {
             if (error) {
-                //console.log("error in create service");
                 deferred.reject(error.name + ': ' + error.message);
             }
 
-            //console.log(results);
-            deferred.resolve(results);
+            var params = [
+                productParam.stock,
+                productParam.stockmini,
+                productParam.stockmaxi,
+                results.insertId];
 
+            var query = "UPDATE stock SET stock = ?, stockmini = ?, stockmaxi = ? WHERE id_produit = ?";
+
+            db.query(query, params, function (error, results) {
+                if (error) {
+                    deferred.reject(error.name + ': ' + error.message);
+                }
+                deferred.resolve(results);
+            });
         });
     });
 
@@ -353,7 +331,6 @@ function getAllFournisseur() {
     db.query("SELECT * FROM contact WHERE type = 'Fournisseur' OR type =  'Sous-traitant'", function (error, fournisseurs, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
-        //console.log(fournisseurs);
         deferred.resolve(fournisseurs);
     });
     return deferred.promise;
@@ -364,7 +341,6 @@ function getAllCategories() {
     db.query("SELECT * FROM produit_categorie", function (error, categories, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
-        //console.log(fournisseurs);
         deferred.resolve(categories);
     });
     return deferred.promise;
@@ -375,7 +351,6 @@ function getAllUnite() {
     db.query("SELECT * FROM cat_unite", function (error, unites, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
-        //console.log(fournisseurs);
         deferred.resolve(unites);
     });
     return deferred.promise;
@@ -393,7 +368,6 @@ function getAllProdComp() {
 
 function updateModif(modifParams) {
 
-    //console.log("updatemdif service");
     var deferred = Q.defer();
     var params = [
         modifParams.id_produit,
@@ -404,17 +378,14 @@ function updateModif(modifParams) {
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            // console.log("error in create modif service");
             deferred.reject(error.name + ': ' + error.message);
         }
-        //console.log(results);
         deferred.resolve(results);
     });
     return deferred.promise;
 }
 
 function getAllHisto(_id) {
-    // console.log("histo service " + _id);
     var deferred = Q.defer();
     db.query('SELECT * FROM produit\
     JOIN users ON produit.id_user = users.id\
@@ -424,7 +395,6 @@ function getAllHisto(_id) {
             if (error) deferred.reject(error.name + ': ' + error.message);
 
             deferred.resolve(histo);
-            //console.log("histos: " + JSON.stringify(histo));
         });
     return deferred.promise;
 
@@ -434,7 +404,6 @@ function getAllHisto(_id) {
 function addMat(matParam) {
     var params;
     var deferred = Q.defer();
-    console.log(matParam);
     params = [
         matParam.libelle,
         matParam.marque,
@@ -477,15 +446,11 @@ function addMat(matParam) {
 
     var query = "INSERT INTO Vehiculemateriel (libelle,marque,vehimate,energie,type,annee,datectrltech,immatriculation,genre,date1ctrl,carrosserie,puissance,pl_ass,nserie,poidstc,poidsvide,bruit,regmot,remarque,dateachat,datevente,visite_ampliroll,visite_grue,pneu_av,pneu_ar,gps,code_poste,largeur,surface,gr,ncartegr,date_depreciation,ntelepeage,geolocalisation,poidstr,fgarant,dgarant) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    db.query(query, params, function (error, results, fields) {
+    db.query(query, params, function (error, results) {
         if (error) {
-            console.log("error in addMat service :" + error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
-
-        console.log(results);
         deferred.resolve(results);
-
     });
 
     return deferred.promise;
@@ -498,7 +463,6 @@ function getAllVehimat() {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
-        //console.log(produits);
         deferred.resolve(produits);
     });
     return deferred.promise;
@@ -509,10 +473,8 @@ function getByIdvehmat(_id_vehmat) {
     var sql = "SELECT * FROM Vehiculemateriel WHERE id_vehmat = ?";
     var inserts = [_id_vehmat];
     sql = mysql.format(sql, inserts);
-    console.log(sql);
     db.query(sql, function (error, product, fields) {
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -522,8 +484,6 @@ function getByIdvehmat(_id_vehmat) {
 }
 
 function updatevehmat(id_vehmat, matParam) {
-    console.log("updating mat service");
-    console.log(matParam);
     var deferred = Q.defer();
 
     var params = [
@@ -572,7 +532,6 @@ function updatevehmat(id_vehmat, matParam) {
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log('MySql ERROR trying to update user informations (3) | ' + error.message);
             deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         deferred.resolve();
@@ -581,16 +540,13 @@ function updatevehmat(id_vehmat, matParam) {
 }
 
 function getByIdmat(_id_vehmat) {
-    //console.log('test');
     var deferred = Q.defer();
     var sql = "SELECT * FROM Vehiculemateriel WHERE id_vehmat = ?";
     var inserts = [_id_vehmat];
 
     sql = mysql.format(sql, inserts);
-    console.log(sql);
     db.query(sql, function (error, product, fields) {
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -600,11 +556,9 @@ function getByIdmat(_id_vehmat) {
 }
 
 function deletemat(_id_vehmat) {
-    console.log("DELETE FROM Vehiculemateriel WHERE id_vehmat = ? ", [_id_vehmat]);
     var deferred = Q.defer();
     db.query("DELETE FROM Vehiculemateriel WHERE id_vehmat = ? ", [_id_vehmat], function (error, results, fields) {
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
 
         }
@@ -619,10 +573,8 @@ function getByIdEntretien(_id_vehmat) {
     var sql = "SELECT  * FROM entretien WHERE id_vehmat = ?";
     var inserts = [_id_vehmat];
     sql = mysql.format(sql, inserts);
-    console.log(sql);
     db.query(sql, function (error, product, fields) {
         if (error) {
-            //console.log(error.name + ': ' + error.message)
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -636,10 +588,8 @@ function getByIdEntretien1(_id_vehmat) {
     var sql = "SELECT  * FROM entretien WHERE id_vehmat = ?";
     var inserts = [_id_vehmat];
     sql = mysql.format(sql, inserts);
-    console.log(sql);
     db.query(sql, function (error, product, fields) {
         if (error) {
-            //console.log(error.name + ': ' + error.message)
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -649,16 +599,13 @@ function getByIdEntretien1(_id_vehmat) {
 }
 
 function getAllRef(reference) {
-    //console.log('test');
     var deferred = Q.defer();
     var sql = "SELECT reference FROM produit WHERE reference = ?";
     var inserts = [reference];
 
     sql = mysql.format(sql, inserts);
-    console.log(sql);
     db.query(sql, function (error, product, fields) {
         if (error) {
-            //console.log(error.name + ': ' + error.message)
             deferred.reject(error.name + ': ' + error.message);
         }
 
@@ -669,7 +616,6 @@ function getAllRef(reference) {
 
 function addEntretien(EParams, id_vehmat) {
     var deferred = Q.defer();
-    console.log("test1");
 
     var params = [
         EParams.date,
@@ -682,26 +628,19 @@ function addEntretien(EParams, id_vehmat) {
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            //console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
-
-        console.log(results);
         deferred.resolve(results);
-
     });
 
     return deferred.promise;
 }
 
 function deleteEntre(_id_entretien) {
-    console.log("DELETE FROM entretien WHERE id_entretien = ? ", [_id_entretien]);
     var deferred = Q.defer();
     db.query("DELETE FROM entretien WHERE id_entretien = ? ", [_id_entretien], function (error, results, fields) {
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
-
         }
         deferred.resolve();
     });
@@ -714,12 +653,9 @@ function getAllImg() {
     var deferred = Q.defer();
     db.query('SELECT * from produit',
         function (error, produit, fields) {
-
             if (error) {
-                console.log(error.name + ': ' + error.message)
                 deferred.reject(error.name + ': ' + error.message);
             }
-
             deferred.resolve(produit);
         });
     return deferred.promise;
