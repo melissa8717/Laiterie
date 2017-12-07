@@ -360,13 +360,15 @@ function duplicate(id_devis, devis_params) {
                             //    [id_devis,num_version , devis_params.produitDevis[product].id_prc , devis_params.produitDevis[product].qte_devis , devis_params.produitDevis[product].prix_devis ]);
 
 
-                            db.query("INSERT INTO devis_detaille (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis, taux) VALUES (? , ? , ? , ? , ?, ?, ?)",
+                            db.query("INSERT INTO devis_detaille (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis, tva) VALUES (? , ? , ? , ? , ?, ?, ?)",
                                 [id_devis,
                                     num_version,
                                     devis_params.produitDevis[product].id_prc,
                                     devis_params.produitDevis[product].num_version,
                                     devis_params.produitDevis[product].qte_devis,
-                                    devis_params.produitDevis[product].prix_devis],
+                                    devis_params.produitDevis[product].prix_devis,
+                                    devis_params.produitDevis[product].tva ?  devis_params.produitDevis[product].tva :  devis_params.produitDevis[product].taux
+                                ],
                                 function (error, result, fields) {
                                     if (error) {
                                         deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
@@ -385,13 +387,14 @@ function duplicate(id_devis, devis_params) {
                             //console.log("INSERT INTO devis_option (id_devis, num_version, id_produit, qte_devis, prix_devis) VALUES (? , ? , ? , ?, ?)",
                             // [id_devis, num_version, devis_params.produitDevisOptions[product].id_prc , devis_params.produitDevisOptions[product].qte_devis , devis_params.produitDevisOptions[product].prix_devis ]);
 
-                            db.query("INSERT INTO devis_option (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis, taux) VALUES (? , ? , ? , ? , ?, ?,?)",
+                            db.query("INSERT INTO devis_option (id_devis, num_version, id_produit, produit_version, qte_devis, prix_devis, tva) VALUES (? , ? , ? , ? , ?, ?,?)",
                                 [id_devis,
                                     num_version,
                                     devis_params.produitDevisOptions[product].id_prc,
                                     devis_params.produitDevisOptions[product].num_version,
                                     devis_params.produitDevisOptions[product].qte_devis,
-                                    devis_params.produitDevisOptions[product].prix_devis
+                                    devis_params.produitDevisOptions[product].prix_devis,
+                                    devis_params.produitDevisOptions[product].tva ? devis_params.produitDevisOptions[product].tva : devis_params.produitDevisOptions[product].taux
                                 ],
                                 function (error, result, fields) {
                                     if (error) {

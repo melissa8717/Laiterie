@@ -245,6 +245,7 @@ export class DupliquerDevisComponent implements OnInit {
 
     submit() {
         let devisparams: any = {};
+        console.log(devisparams)
         devisparams.devis = this.devis;
         devisparams.produitDevis = this.produitDevis;
         devisparams.produitDevisOptions = this.produitDevisOptions;
@@ -308,8 +309,11 @@ export class DupliquerDevisComponent implements OnInit {
         let total = 0;
 
         for (let produit of this.produitDevis) {
-            if (produit.taux == 0) {
+
+            if ((produit.taux == 0) || (parseInt(produit.tva) == 0)) {
                 total += 0;
+
+
             }
         }
         return total;
@@ -318,98 +322,137 @@ export class DupliquerDevisComponent implements OnInit {
 
     countNTVA() {
         let total = 0;
+
         for (let produit of this.produitDevis) {
-            if (produit.taux == 2.1) {
-                total += produit.qte_devis * produit.prix_devis * (parseFloat(produit.taux) / 100);
+
+            if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+
+
             }
         }
         return total;
+
     }
 
 
     countNTVAC() {
         let total = 0;
+
         for (let produit of this.produitDevis) {
-            if (produit.taux == 5.5) {
-                total += produit.qte_devis * produit.prix_devis * (parseFloat(produit.taux) / 100);
+
+            if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+
+
             }
         }
         return total;
+
     }
 
     countNTVAD() {
         let total = 0;
+
         for (let produit of this.produitDevis) {
-            if (produit.taux == 10) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
+
+
+            if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+
+
             }
         }
         return total;
+
     }
 
     countNTVAs() {
         let total = 0;
+
         for (let produit of this.produitDevis) {
-            if (produit.taux == 20) {
-                total += produit.qte_devis * produit.prix_devis * (parseInt(produit.taux) / 100);
+
+
+            if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
             }
         }
         return total;
+
     }
 
 
     countNTVAZO() {
         let total = 0;
+
         for (let produit of this.produitDevisOptions) {
 
-            if (produit.taux == 0) {
+            if ((produit.taux == 0) || (parseInt(produit.tva) == 0)) {
                 total += 0;
+
+
             }
         }
         return total;
+
     }
 
     countNTVAO() {
         let total = 0;
+
         for (let produit of this.produitDevisOptions) {
-            if (produit.taux == 2.1) {
-                total += (parseFloat(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+
+
             }
         }
         return total;
+
     }
 
     countNTVACO() {
         let total = 0;
+
         for (let produit of this.produitDevisOptions) {
-            if (produit.taux == 5.5) {
-                total += (parseFloat(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+
+
             }
         }
         return total;
+
     }
 
     countNTVADO() {
         let total = 0;
+
         for (let produit of this.produitDevisOptions) {
 
-            if (produit.taux == 10) {
-                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
+            if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+
+
             }
         }
         return total;
+
     }
 
     countNTVAsO() {
         let total = 0;
+
         for (let produit of this.produitDevisOptions) {
-            if (produit.taux == 20) {
-                total += (parseInt(produit.taux) / 100) * produit.prix_devis * produit.qte_devis;
+
+            if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+
             }
         }
         return total;
-    }
 
+    }
 
     countAllTVA() {
         return ((this.countNTVA() ? this.countNTVA() : 0) + (this.countNTVAC() ? this.countNTVAC() : 0) + (this.countNTVAD() ? this.countNTVAD() : 0)) + (this.countNTVAs() ? this.countNTVAs() : 0);
