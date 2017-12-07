@@ -97,12 +97,11 @@ export class EquipementComponent {
     loadAllequipe() {
         this.route.params.subscribe(params => {
             this.id_contact = params['id_contact']
-            console.log(this.id_contact);
+
             this.contactService.getByIdequipement(this.id_contact).subscribe(
                 data => {
                     this.allequip = data;
 
-                    console.log(data);
                 }
             )
         });

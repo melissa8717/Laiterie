@@ -200,10 +200,10 @@
 						</thead>
 						<tbody>
 						<tr *ngFor="let chant of chantier">
-							<td>{{chant.date_demarrage}}<!--variable--></td>
+							<td>{{chant.reception_chantier | date:'yyyy-MM-dd'}}<!--variable--></td>
 							<td>{{chant.nom_chantier}}<!--variable--></td>
 							<td>{{chant.id_chantier}}</td><!--variable-->
-							<td><!--variable --></td>
+							<td>{{chant.montantht }}</td>
 						</tr>
 
                         </tbody>

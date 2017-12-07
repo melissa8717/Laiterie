@@ -801,7 +801,7 @@ function getByIdLastContrat(_id_contact) {
         "ORDER BY id_contrat DESC ";
     var inserts = [_id_contact];
     sql = mysql.format(sql, inserts);
-    //console.log(sql);
+    console.log(sql);
     db.query(sql, function (error, results, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message)
