@@ -176,12 +176,9 @@ function updateMainOeuvre(id_mo, moParam) {
 function getById(_id, num_version) {
     var deferred = Q.defer();
 
-    var sql = "SELECT produit.*,contact.*,stock.*,produit_categorie.libelle AS libcat FROM produit " +
-        "LEFT JOIN contact on contact.id_contact = produit.id_contact " +
+    var sql = "SELECT produit.*,stock.* FROM produit " +
         "LEFT JOIN stock on stock.id_produit = produit.id_produit " +
-        "LEFT JOIN produit_categorie ON produit_categorie.id_cat = produit.id_cat " +
-        "WHERE produit.id_produit = ? && num_version = ? " +
-        "&& stock.id_produit = produit.id_produit";
+        "WHERE produit.id_produit = ? && num_version = ? ";
 
     var inserts = [_id, num_version];
     sql = mysql.format(sql, inserts);
