@@ -185,15 +185,12 @@
                 <td  colspan="2"  style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >Total HT :</td>
 
                 <td  style="text-align: right;border-top:1px solid black;border-bottom:1px solid black;border-right:1px solid black;"  >{{countTotal() | currency:'EUR':true:'1.2-2'}}</td>
-                <!--calcul la somme de toutes quantités ajouté au bon de commande-->
             </tr>
 
             <tr *ngIf="produitDevis.length > 0  && devis.remise"  style="height: 30px;margin-left:90%;">
                 <td colspan="13"></td>
                 <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">Remise {{devis.remise}} %:</td>
                 <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">{{totalRemiseprod() | currency:'EUR':true:'1.2-2'}}</td>
-                <!--calcul la somme de toutes quantités ajouté au bon de commande-->
-            </tr>
 
             <tr *ngIf="((countNTVAZ()>0) )">
                 <ng-container >
@@ -253,7 +250,6 @@
             </tr>
 
 
-            <br />
 
             <tr >
                 <td colspan="13"></td>
@@ -270,7 +266,7 @@
             <tr >
                 <td colspan="13"></td>
                 <td  colspan="2" style="text-align: left;border-left:1px solid black;border-top: 1px solid black;border-bottom:1px solid black;">
-                    TTC:
+                    TTC :
                 </td>
 
                 <td style="border-right:1px solid black;border-top: 1px solid black;border-bottom:1px solid black;text-align: right;" >{{countTotalTVA()  | currency:'EUR':true:'1.2-2'}}</td>
@@ -360,7 +356,7 @@
             </tr>
             <tr *ngIf="produitDevisOptions.length> 0 && devis.remise" style="height: 30px;margin-left:90%;">
                 <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">Remise {{devis.remise}} %:</td>
+                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">Total H.T. après remise {{devis.remise}} %:</td>
                 <td style="text-align: right;border-right:1px solid black;border-top: 1px solid black;border-bottom:1px solid black;text-align: right;" >{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
                 <!--calcul la somme de toutes quantités ajouté au bon de commande-->
             </tr>
@@ -431,7 +427,7 @@
                 <td style="border-right:1px solid black;border-top: 1px solid black;border-bottom:1px solid black;text-align: right;" >{{countAllTVAO() | currency:'EUR':true:'1.2-2' }} </td>
 
             </tr>
-            <br />
+
 
             <tr *ngIf="produitDevisOptions.length> 0"  style="height: 30px;margin-left:90%;">
                 <td colspan="13"></td>
@@ -448,7 +444,7 @@
 
 
                 <td colspan="13"></td>
-                <td colspan="2" style="text-align: left;border-top:1px solid black;border-left: 1px solid black;">HT :</td>
+                <td colspan="2" style="text-align: left;border-top:1px solid black;border-left: 1px solid black;">Total HT :</td>
                 <td style="border-top:1px solid black;border-right: 1px solid black;text-align: right;">{{total() | currency:'EUR':true:'1.2-2'}}</td>
                 <!--calcul la somme de toutes quantités ajouté au bon de commande-->
             </tr>
