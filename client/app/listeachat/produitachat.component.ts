@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AchatsService, AlertService, AuthenticationService} from '../_services/index';
+import {AchatsService, AlertService} from '../_services/index';
 import {Product} from "../_models/products/produit";
 import {FileUploader} from 'ng2-file-upload';
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
 import {Contact} from "../_models/contacts/contact";
 
-const URL = 'http://' + location.hostname + ':4000/ged/';
 const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
@@ -17,16 +16,7 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 export class ProduitachatComponent implements OnInit {
 
-    //ged
-    public uploader: FileUploader;
     public uploaderImg: FileUploader;
-    public hasBaseDropZoneOver: boolean = false;
-
-    public fileOverBase(e: any): void {
-        this.hasBaseDropZoneOver = e;
-    }
-
-    //fin ged
 
     private unites: any[] = [];
     private categories: any [] = [];
@@ -46,14 +36,12 @@ export class ProduitachatComponent implements OnInit {
     private print: boolean = false;
     private currentUser: User;
     private droitsuser: any = {};
-    private ged: any[];
     private production: any = {};
     // visualisation de l'image avant envoi
     private url: any;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
-                private authenticationService: AuthenticationService,
                 private achatsService: AchatsService,
                 private alertService: AlertService,
                 private paramsService: ParamsService) {
@@ -83,18 +71,10 @@ export class ProduitachatComponent implements OnInit {
                 this.loadFournisseurs();
             });
 
-            //ged
-            this.getGed(params['id']);
             this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id_produit});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
-            this.uploader = new FileUploader({url: URL + "produits/" + params['id']});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-            //ged
-
         });
     }
 
@@ -159,35 +139,12 @@ export class ProduitachatComponent implements OnInit {
 
 
     private formatDate(date: Date) {
-        var day = ("0" + date.getDate()).slice(-2);
-        var month = ("0" + (date.getMonth() + 1)).slice(-2)
-        var year = date.getFullYear();
+        let day = ("0" + date.getDate()).slice(-2);
+        let month = ("0" + (date.getMonth() + 1)).slice(-2);
+        let year = date.getFullYear();
         return year + '-' + month + '-' + day; // format pour chrome, not tested in other browsers
     }
 
-    private formatStringToDate(date: any) {
-        let d = new Date(date);
-        return this.formatDate(d);
-    }
-
-
-    /*************************** GED ***************************/
-    private getGed(id_produit: number) {
-        this.route.params.subscribe(params => {
-            this.id_produit = params['id'];
-            this.achatsService.getGed(id_produit)
-                .subscribe(
-                    data => {
-                        this.ged = data;
-                    },
-                    error => {
-
-                        this.alertService.error(error._body);
-                    });
-        });
-    }
-
-    /***************************fin GED************************************/
 
     imprimer() {
         this.alertService.clear();
