@@ -116,6 +116,7 @@ export class ModifierDevisComponent implements OnInit {
         tmp.unite = this.produit.unite;
         tmp.taux = this.produit.taux;
         tmp.option = this.produit.option;
+        tmp.commentaire = this.produit.commentaire;
 
 
         var check = this.produitDevis.filter(obj => obj.id_prc == this.produit.obj.id_prc);

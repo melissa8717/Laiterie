@@ -135,7 +135,9 @@
                         </div>
                     </td>
                     <td  style="text-align: center;">
-                        {{produitDevis[i].taux ? produitDevis[i].taux : produitDevis[i].tva }}
+                        <div class="form-group">
+                            {{produitDevis[i].taux ? produitDevis[i].taux : produitDevis[i].tva }}
+                        </div>
                     </td>
                     <td  style="text-align: center;">
                         <div class="form-group">
@@ -147,8 +149,24 @@
                     </td>
 
                 </tr>
+
+                <script type="text/javascript">
+                    function haut(idt) {
+                        if (document.getElementById(idt).scrollTop > 0) aug(idt);
+                    }
+                    function aug(idt) {
+                        var h = parseInt(document.getElementById(idt).style.height);
+                        document.getElementById(idt).style.height = h + 10 +"px";
+                        haut(idt);
+                    }
+                    function top(idt) {
+                        document.getElementById(idt).scrollTop = 100000;
+                        haut(idt);
+                    }
+                </script>
+
                 <tr [ngClass]="(produit.commentaire)?'comments':'commentes'">
-                    <td colspan="10"  style="text-align: left;"><textarea rows="6" *ngIf="produit.commentaire" disabled class="commentaire">{{produit.commentaire}}</textarea></td>
+                    <td colspan="10"  style="text-align: left;"><textarea name="commentaire"  *ngIf="produit.commentaire" style="width: 500px; height: 250px;border:none;" id="commentaire" onkeyup="javascript: haut(this.id)" onfocus="javascript: top(this.id)">{{produit.commentaire}}</textarea></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -320,7 +338,7 @@
             </tr>
 
                 <tr [ngClass]="(produit.commentaire)?'comments':'commentes'">
-                    <td colspan="10"  style="text-align: left;"><textarea rows="6" *ngIf="produit.commentaire" disabled class="commentaire">{{produit.commentaire}}</textarea></td>
+                    <td colspan="10"  style="text-align: left;"><textarea name="commentaire"  *ngIf="produit.commentaire" style="width: 500px; height: 250px;border:none;" id="commentaire" onkeyup="javascript: haut(this.id)" onfocus="javascript: top(this.id)">{{produit.commentaire}}</textarea></td>
                     <td></td>
                     <td></td>
                     <td></td>
