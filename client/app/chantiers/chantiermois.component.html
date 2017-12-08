@@ -56,7 +56,7 @@
 
                         <td>{{chantiers.ville}}</td>
                         <td>{{chantiers.status}}</td>
-                        <td>{{chantiers.total| number:'1.0-2'}}</td>
+                        <td>{{(chantiers.total? chantiers.total : chantiers.montantht)| number:'1.0-2'}}</td>
                         <td>{{chantiers.montantfact | number:'1.0-2'}}</td>
                         <td  *ngIf="!print"><div class="input-group">
                             <input type="hidden" class="form-control">
