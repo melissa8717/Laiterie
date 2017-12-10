@@ -17,12 +17,12 @@
 
 
         <div class="row marge">
-            <img *ngIf="!print" [src]="config.logoPath"  style="margin-left:-1000px;">
+            <img *ngIf="!print" [src]="config.logoPath"  style="width: 200px;">
         </div>
         <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; top:30px; position: fixed;">
             <div *ngIf="print">
-                <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
-                <img *ngIf="!url && img.image" style="height: 150px; width: 300px;"
+                <img *ngIf="url" [src]="url" alt="..." class="col-sm-4"/>
+                <img *ngIf="!url && img.image" style="height: 300px; width: 200px;"
                      src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="..."
                      class="img-responsive col-sm-12"/>
 

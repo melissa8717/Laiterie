@@ -80,12 +80,12 @@
             <thead style="height: 50px; -webkit-print-color-adjust: exact;border:4px solid grey;">
 
             <tr>
-                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;" class="col-sm-1">Réf</th>
                 <th colspan="10" style="border-bottom:1px solid black; border-top:1px solid black;border-left: 1px solid black;text-align: center;" class="col-sm-4">Désignation</th>
+                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;" class="col-sm-1">Réf</th>
                 <th style="border-bottom:1px solid black;border-left: 1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
                 <th   style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">Qte</th>
                 <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">P.U. HT</th>
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1" *ngIf="!devis.tva">TVA</th>
+                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1" >TVA</th>
                 <th style="border-right: 1px solid black;border-bottom:1px solid black;border-top:1px solid black;text-align: center;" class="col-sm-1">Total HT :</th>
 
 
@@ -99,14 +99,16 @@
 
             <tr [ngClass]="(prod.commentaire)?'commentes':'comments'">
 
-                <td style="text-align: center;">
-                    {{prod.reference}}
-                </td>
 
-                <td colspan="10"  style="text-align: center;">
+
+                <td colspan="10"  style="text-align: left;">
                     <div  class="form-group">
                         <span style="font-weight: bold;">{{prod.produit}}</span>
                     </div>
+                </td>
+
+                <td style="text-align: center;">
+                    {{prod.reference}}
                 </td>
 
                 <td style="text-align: center;">
@@ -127,9 +129,9 @@
                     </div>
                 </td>
 
-                <td style="text-align: center;">
+                <td style="text-align: center;" >
                     <div class="form-group" >
-                    {{prod.tva}}
+                    {{prod.tva ? prod.tva : prod.taux  }} {{devis.tva}}
                     </div>
                 </td>
 
@@ -152,8 +154,9 @@
                 </script>
 
                 <tr [ngClass]="(prod.commentaire)?'comments':'commentes'">
-                    <td></td>
+
                     <td colspan="10"  style="text-align: left;"><textarea name="commentaire"  *ngIf="prod.commentaire" style="width: 500px; height: 250px;border:none;" id="commentaire" onkeyup="javascript: haut(this.id)" onfocus="javascript: top(this.id)">{{prod.commentaire}}</textarea></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -237,9 +240,13 @@
             </tr>
 
             <p>&nbsp;</p>
-            <tr >
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;" class="col-sm-1">Réf</th>
+            </tbody>
+
+            <thead style="height: 50px; -webkit-print-color-adjust: exact;border:4px solid grey;">
+
+            <tr *ngIf="produitop.length>0">
                 <th colspan="10" style="border-bottom:1px solid black; border-top:1px solid black;border-left: 1px solid black;text-align: center;" class="col-sm-4">Options: Désignation</th>
+                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;" class="col-sm-1">Réf</th>
                 <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
                 <th   style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">Qte</th>
                 <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">P.U. HT</th>
@@ -248,16 +255,15 @@
 
 
             </tr>
+            </thead>
 
 
 
 
+            <tbody>
             <ng-container *ngFor="let prode of produitop, let  i = index">
             <tr [ngClass]="(prode.commentaire)?'commentes':'comments'">
 
-                <td style="text-align: center;">
-                    {{prode.reference}}
-                </td>
 
                 <td  colspan="10" style="text-align: left;">
 
@@ -267,6 +273,10 @@
                     <span *ngIf="(produitop[i].accepted == 0) || (produitop[i].accepted == 1)"><input  type="checkbox" [(ngModel)]="produitop[i].accepted" name="accepted{{i}}" (ngModelChange)="acceptOfferLibre(produitop[i])"></span>
               <span>{{prode.produit}}</span>
                     </div>
+                </td>
+
+                <td style="text-align: center;">
+                    {{prode.reference}}
                 </td>
                 <td style="text-align: center;">
                     <div class="form-group">
@@ -300,8 +310,9 @@
                 </td>
             </tr>
                 <tr [ngClass]="(prode.commentaire)?'comments':'commentes'">
-                    <td></td>
+
                     <td colspan="10"  style="text-align: left;"><textarea name="commentaire"  *ngIf="prode.commentaire" style="width: 500px; height: 250px;border:none;" id="commentaire" onkeyup="javascript: haut(this.id)" onfocus="javascript: top(this.id)">{{prode.commentaire}}</textarea></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -464,6 +475,7 @@
             </tr>
             </ng-container>
 
+            </tbody>
 
         <ng-container>
             <tr style="height: 10px;">
