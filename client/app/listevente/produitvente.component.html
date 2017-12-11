@@ -1,4 +1,4 @@
-<div id="vente" class="vente" >
+<div id="vente" class="vente">
 
     <style type="text/css" media="print">
         @page {
@@ -11,7 +11,7 @@
 
     <div class=" container-fluid">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
         <h3>Fiche produit vente</h3>
 
@@ -21,42 +21,51 @@
 
                 <div style="height: 10%; width: 100%;">
                     <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && product.image" src="http://{{loc}}:4000/image/produit/{{product.id_prc}}/{{product.image}}" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && !product.image" src="image/test.ico" alt="..." class="img-thumbnail images" />
+                    <img *ngIf="!url && product.image"
+                         src="http://{{loc}}:4000/image/produit/{{product.id_prc}}/{{product.image}}" alt="..."
+                         class="img-thumbnail col-sm-12"/>
+                    <img *ngIf="!url && !product.image" src="image/test.ico" alt="..." class="img-thumbnail images"/>
                     <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
                 </div>
 
-                <div class="form-group col-sm-12">
-                    <span class="gras col-sm-5" style="padding-left: 0;">Libellé : </span><span class="col-sm-7">{{product.libelle}}</span>
-                </div>
-                <div class="form-group col-sm-12">
-                    <span class="gras col-sm-5" style="padding-left: 0;">Référence : </span><span class="col-sm-7">{{product.id_prc}}</span>
-                </div>
-                <div class="form-group col-sm-12">
-                    <span class="gras col-sm-5" style="padding-left: 0;">Catégorie : </span><span class="col-sm-7">{{product.categorie}}
-                    <!--variable--></span>
-                </div>
-                <div class="form-group col-sm-12">
-                    <span class="gras col-sm-5" style="padding-left: 0;">Unité : </span><span class="col-sm-7">{{product.unite}}</span>
-                </div>
 
-
-                <!--<div class="form-group">
-                    <label class="col-sm-5 control-label" >Tarif : </label>
-                    <div >
-                        <input tymonthyeardate" name="tarif_du" value="{{formattedDate}}"
-                               [(ngModel)]="updateProduct.tarif_du" class="col-sm-7"/>&lt;!&ndash;variable pour value&ndash;&gt;
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Libellé : </label>
+                    <div>
+                        <textarea name="libelle" [(ngModel)]="updateProduct.libelle" class="col-sm-7"
+                                  rows="3"></textarea>
                     </div>
-                </div>-->
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <label class="gras col-sm-5" style="padding-left: 0;">Référence : </label><span class="col-sm-7">{{updateProduct.id_prc}}</span>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">Catégorie : </label>
+                    <select name="categorie" class="col-sm-7" [(ngModel)]="updateProduct.categorie" #categorie="ngModel"
+                            required>
+                        <option *ngFor="let cat of categories" [value]="cat.libelle">{{cat.libelle}}</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group col-sm-12">
+                    <label class="col-sm-5 control-label">* Unité :</label>
+                    <select name="unitee" class="col-sm-7" [(ngModel)]="updateProduct.unite" #unite="ngModel" required>
+                        <option *ngFor="let unis of unites" [value]="unis.libelle">{{unis.libelle}}</option>
+                    </select>
+                </div>
+
 
                 <div class="form-group">
                     <label class="col-sm-5 control-label">Prix achat : </label>
                     <div>
                         <input type="number" step="0.01"
 
-                               [(ngModel)]="product.prix_achat"
+                               [(ngModel)]="updateProduct.prix_achat"
                                value="{{getTotalPrixAchat()}}"
-                               (ngModelChange)="calcpercent(product)"
+                               (ngModelChange)="calcpercent(updateProduct)"
                                name="prix_achatht"
                                class="col-sm-7"
                                disabled/><!--variable pour value-->
@@ -67,8 +76,8 @@
                     <div>
                         <input type="number" step="0.01"
                                name="marge"
-                               [(ngModel)]="product.marge"
-                               (ngModelChange)="calcpercent(product)"
+                               [(ngModel)]="updateProduct.marge"
+                               (ngModelChange)="calcpercent(updateProduct)"
                                class="col-sm-7"
                                required/>
                     </div>
@@ -78,9 +87,9 @@
                     <div>
                         <input type="number" step="0.01"
                                name="margepc"
-                               [(ngModel)]="product.margepc"
-                               (change)="verifymarge(product)"
-                               (ngModelChange)="calcvalue(product)"
+                               [(ngModel)]="updateProduct.margepc"
+                               (change)="verifymarge(updateProduct)"
+                               (ngModelChange)="calcvalue(updateProduct)"
                                class="col-sm-7"
                                required/><!--variable pour value-->
                     </div>
@@ -91,8 +100,8 @@
                     <div>
                         <input type="number" step="0.01"
                                name="margemin"
-                               [(ngModel)]="product.margemin"
-                               (change)="verifymarge(product)"
+                               [(ngModel)]="updateProduct.margemin"
+                               (change)="verifymarge(updateProduct)"
                                class="col-sm-7"
                                disabled
                                required/><!--variable pour value-->
@@ -105,13 +114,10 @@
                         <input type="number" step="0.01" name="prixht"
                                value="{{getTotalPrixVente()}}"
                                class="col-sm-7"
-                               [(ngModel)]="product.prix_vente"
+                               [(ngModel)]="updateProduct.prix_vente"
                                disabled/><!--variable pour value-->
                     </div>
                 </div>
-
-                <label *ngIf="!print"  class="col-sm-5">Ajouter dans GED:</label>
-                <input *ngIf="!print" type="file" name="GED" class="col-sm-7">
 
             </article>
 
@@ -122,7 +128,7 @@
                     <span style="font-weight: bold;">Description:</span>
                 </div>
                 <div class="form-group" style="margin-top: 10px;">
-                    <textarea *ngIf="!print"  name="description" class="form-control" rows="3"
+                    <textarea *ngIf="!print" name="description" class="form-control" rows="3"
                               [(ngModel)]="updateProduct.description">
 
                     </textarea>
@@ -138,7 +144,8 @@
                     <!--variable à l'intérieur du second span-->
                 </div>
                 <div class="form-group" style="margin-top: 10px;">
-                    <textarea *ngIf="!print" type="text" name="note" class="form-control" rows="3" [(ngModel)]="updateProduct.note"></textarea>
+                    <textarea *ngIf="!print" type="text" name="note" class="form-control" rows="3"
+                              [(ngModel)]="updateProduct.note"></textarea>
                 </div>
 
             </article>
@@ -155,14 +162,14 @@
                             <th>Date :</th>
                             <th>Auteur</th>
                             <th>Prix de vente :</th>
-                            <th>Voir : </th>
+                            <th>Voir :</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let h of historique">
 
                             <td>{{h.num_version}}</td>
-                            <td>{{h.date_ajout |  date: 'dd/MM/yyyy'}}</td>
+                            <td>{{h.date_ajout | date: 'dd/MM/yyyy'}}</td>
                             <td>{{h.firstname +" "+ h.lastname}}</td>
                             <td>{{h.prix_vente | currency:'EUR':true:'1.2-2' }}</td>
                             <td *ngIf="h.num_version != num_version">
@@ -200,85 +207,63 @@
 
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr *ngIf="allProducts">
                             <td><input ng2-auto-complete
                                        #prod
                                        name="produit"
                                        [source]="allProducts"
-                                       [(ngModel)]="produitadd.libelle"
+                                       [(ngModel)]="newProduct.libelle"
                                        [list-formatter]="autocompleListFormatterProducts"
                                        value-property-name="libelle"
                                        display-property-name="libelle"
                                        placeholder="Produit"
                                        class="col-sm-12"
-                                       (ngModelChange)="chooseProductByLibelle( 0)"
-                                       autocomplete="off"
-                            >
-                                <a *ngIf="produitadd.libelle"
-                                   [routerLink]="['/produitachat/' + produitadd.id_produit + '/' + produitadd.num_version]"
+                                       (ngModelChange)="chooseProductByLibelle()"
+                                       autocomplete="off">
+                                <a *ngIf="newProduct.libelle"
+                                   [routerLink]="['/produitachat/' + newProduct.id_produit + '/' + newProduct.num_version]"
                                    target="_blank">Voir</a>
                             </td>
-                            <td>
-                                <span>{{produitadd.raison_sociale}}</span>
-                            </td>
 
-                            <td>
-                                <span>{{produitadd.unite}}</span>
+                            <td><span>{{newProduct.raison_sociale ? newProduct.raison_sociale : newProduct.nom}}</span>
                             </td>
-                            <td><span>{{produitadd.prix_achat}}</span></td>
-                            <td><input type="number" step="0.01" name="quantite"
-                                       [(ngModel)]="produitadd.quantite"
-                                       (ngModelChange)="calcvalue(product)"
-                            /></td>
+                            <td><span>{{newProduct.unite}}</span></td>
+                            <td><span>{{newProduct.prix_achat}}</span></td>
 
-                            <td><span> {{calctotalprod(produitadd) | currency:'EUR':true:'1.2-2'}}</span>
-                            </td>
+                            <td><input type="number" step="0.01" name="qte" [(ngModel)]="newProduct.quantite"
+                                       (ngModelChange)="calcvalue(updateProduct)"/></td>
+
+                            <td><span>{{calctotalprod(newProduct) | currency:'EUR':true:'1.2-2'}}</span></td>
+
                             <td>
                                 <button type="button" class="btn right" (click)="addProduct()"
-                                        [disabled]="!produitadd.quantite || !produitadd.libelle">Ajouter
+                                        [disabled]="!newProduct.quantite || !newProduct.libelle">Ajouter
                                 </button>
                             </td>
-
                         </tr>
-                        <tr >
+                        <tr>
                             <td colspan="7"></td>
                         </tr>
 
 
-                        <tr *ngFor="let produits of produitsComposes, let i = index; trackBy:customTrackBy">
+                        <tr *ngFor="let product of products">
 
                             <td>
                                 <span class="col-sm-12">
-                                    <a *ngIf="produitsComposes[i].libelle"
-                                       [routerLink]="['/produitachat/' + produitsComposes[i].id_produit + '/' + produitsComposes[i].num_version]"
-                                       target="_blank">{{produitsComposes[i].libelle}}</a>
+                                    <a *ngIf="product.libelle"
+                                       [routerLink]="['/produitachat/' + product.id_produit + '/' + product.num_version]"
+                                       target="_blank">{{product.libelle}}</a>
                                 </span>
                             </td>
 
-                            <td>
-                                <span>{{produitsComposes[i].raison_sociale}}</span>
-                            </td>
-
-                            <td>
-                                <span>{{produitsComposes[i].unite}}</span>
-                            </td>
-
-                            <td>
-                                <span>{{produitsComposes[i].prix_achat}}</span></td>
-
-                            <td><input type="number"
-                                       step="0.01"
-                                       name="quantite{{i}}"
-                                       [(ngModel)]="produitsComposes[i].quantite"
-                                       (ngModelChange)="calcvalue(product)"
-                            /></td>
-
-
-                            <td><span>{{calctotalprod(produitsComposes[i]) | currency:'EUR':true:'1.2-2'}}
-                            </span></td>
+                            <td><span>{{product.raison_sociale ? product.raison_sociale : product.nom}}</span></td>
+                            <td><span>{{product.unite}}</span></td>
+                            <td><span>{{product.prix_achat}}</span></td>
+                            <td><span>{{product.quantite}}</span></td>
+                            <td><span>{{calctotalprod(product) | currency:'EUR':true:'1.2-2'}}</span></td>
                             <td>
                                 <a class=" col-sm-offset-1"
-                                   (click)="supprimer(produitsComposes[i])">
+                                   (click)="supprimer(product)">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"
                                           style="color: #0f0f0f"></span>
                                 </a>
@@ -312,61 +297,37 @@
                             <td><input ng2-auto-complete
                                        #mo
                                        name="mo"
-                                       [source]="mainOeuvre"
-                                       [(ngModel)]="mainOeuvreAdd.libelle"
-                                       (ngModelChange)="mainOeuvreAdd.libelle"
+                                       [source]="allMainOeuvres"
+                                       [(ngModel)]="newMainOeuvre.libelle"
                                        [list-formatter]="autocompleListFormatterMo"
                                        value-property-name="libelle"
                                        display-property-name="libelle"
                                        placeholder="Main d'oeuvre"
                                        class="col-sm-12"
-                                       (ngModelChange)="chooseMainOeuvreLibelle( 0)"
-                                       autocomplete="off"
-                            ></td>
+                                       (ngModelChange)="chooseMainOeuvreLibelle()"
+                                       autocomplete="off"></td>
 
-                            <!-- TODO : make it nice to type and search -->
-                            <!--<td><input type="text" list="produits" name="designation"
-                                       (change)="chooseProductByLibelle($event.target.value, 0)"
-                                       [(ngModel)]="produitsComposes[0].libelle" required>
-                                <datalist id="produits" >
-                                    <option *ngFor="let pr of allProducts" [value]="pr.libelle">{{pr.libelle}}</option>
-                                </datalist>
-                            </td>-->
-
-                            <td>
-                                <span>{{mainOeuvreAdd.salaire_charge}}</span>
-                            </td>
-                            <td><input type="time" name="qte" [(ngModel)]="mainOeuvreAdd.quantite"/></td>
-
-                            <td><span>
-                                {{calctotal(mainOeuvreAdd)| currency:'EUR':true:'1.2-2'}}
-                            </span></td>
+                            <td><span>{{newMainOeuvre.salaire_charge}}</span></td>
+                            <td><input type="time" name="qte" [(ngModel)]="newMainOeuvre.quantite"/></td>
+                            <td><span>{{calctotal(newMainOeuvre)| currency:'EUR':true:'1.2-2'}}</span></td>
                             <td>
                                 <button type="button" class="btn right" (click)="addMO()"
-                                        [disabled]="!mainOeuvreAdd.quantite || !mainOeuvreAdd.libelle">Ajouter
+                                        [disabled]="!newMainOeuvre.quantite || !newMainOeuvre.libelle">Ajouter
                                 </button>
                             </td>
-
                         </tr>
 
 
-                        <tr *ngFor="let produits of mainOeuvreList, let i = index; trackBy:customTrackBy">
-                            <td><span class="col-sm-12">
-                                {{mainOeuvreList[i].libelle}}
-                            </span></td>
+                        <tr *ngFor="let mainOeuvre of mainOeuvres">
 
-                            <td>
-                                <span>{{mainOeuvreList[i].salaire_charge}}</span>
-                            </td>
-                            <td><input type="time" name="qte{{i}}" [(ngModel)]="mainOeuvreList[i].quantite"
-                                       (ngModelChange)="calcvalue(product)"/></td>
+                            <td><span class="col-sm-12">{{mainOeuvre.libelle}}</span></td>
+                            <td><span>{{mainOeuvre.salaire_charge}}</span></td>
+                            <td><span>{{mainOeuvre.quantite}}</span></td>
+                            <td><span>{{calctotal(mainOeuvre)| currency:'EUR':true:'1.2-2'}}</span></td>
 
-                            <td><span>
-                                {{calctotal(mainOeuvreList[i])| currency:'EUR':true:'1.2-2'}}
-                                </span></td>
                             <td>
                                 <a class=" col-sm-offset-1"
-                                   (click)="supprimermainoeuvre(mainOeuvreList[i])">
+                                   (click)="supprimermainoeuvre(mainOeuvre)">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"
                                           style="color: #0f0f0f"></span>
                                 </a>
@@ -375,42 +336,18 @@
 
                         </tbody>
                     </table>
-
                 </div>
             </div>
 
-
-
-            <button *ngIf="!print" type="submit" [disabled]="loading" class="col-sm-offset-11" (click)="uploaderImg.queue[0].upload();">Modifier</button>
+            <button *ngIf="!print" type="submit" [disabled]="loading" class="col-sm-offset-11 btn btn-default"
+                    (click)="modifyProduct()">Modifier
+            </button>
 
         </form>
 
-        <!--une fois modifier créer un pdf à mettre dans la GED-->
-
-        <div class="col-sm-12 bas">
-
-            <form method="POST" action="#" class="col-sm-2 col-sm-offset-4">
-
-                <input *ngIf="!print" type="hidden" name="identifiant du produit">
-                <!--variable correspondant à l'id produit permettant d'ouvrir en suppression du document coorespondant dans la GED-->
-                <button class="col-sm-5 btn"  *ngIf="!print">Ouvrir GED</button>
-                <button class="col-sm-offset-6 col-sm-5 btn" style="margin-top: -35px;" type="button" *ngIf="!print" (click)=" imprimer()">Imprimer</button>
-
-
-
-            </form>
-            <!--<button (click)="debug()">debug</button>-->
-
+        <div class="col-sm-12">
+            <ged [gedName]="'produits'" [id]="id_product"></ged>
         </div>
-
 
     </div><!--fin container-fluid-->
 </div><!--fin id vente-->
-
-
-<div  *ngIf="loading" class="loading">
-    <div id="loadingImg">
-        <img [src]="config.logoPath" height=120 align="center"/>)
-        <div class="loader"></div>
-    </div>
-</div>

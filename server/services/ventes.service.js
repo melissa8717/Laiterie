@@ -9,7 +9,7 @@ var service = {};
 
 service.getAll = getAll;
 service.getById = getById;
-service.getAllById = getAllById;
+service.getAllHisto = getAllHisto;
 service.create = create;
 service.createVersion = createVersion;
 service.delete = _delete;
@@ -21,7 +21,6 @@ service.getAllProdComp = getAllProdComp;
 module.exports = service;
 
 function getAll() {
-    //console.log("get all service");
     var deferred = Q.defer();
     db.query('\
     SELECT produit_vente.*, \
@@ -34,14 +33,12 @@ function getAll() {
     ASC', function (error, produits, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
-        // console.log(produits);
         deferred.resolve(produits);
     });
     return deferred.promise;
 }
 
 function getAllProdComp(_id, num_version) {
-    //console.log("get prod comp in service");
     var deferred = Q.defer();
     db.query('SELECT * FROM produit_compose ' +
         'LEFT JOIN produit on produit.id_produit = produit_compose.id_produit && produit.num_version = produit_compose.achat_version ' +
@@ -64,7 +61,6 @@ function getAllProdComp(_id, num_version) {
                     var tmp = {};
                     tmp.produits = produit;
                     tmp.mainOeuvre = mo;
-                    //console.log(tmp);
                     deferred.resolve(tmp);
                 });
         });
@@ -72,19 +68,17 @@ function getAllProdComp(_id, num_version) {
 }
 
 
-function getAllById(_id) {
+function getAllHisto(_id) {
     var deferred = Q.defer();
     var sql = "SELECT * FROM produit_vente " +
-        "LEFT JOIN users on users.id = produit_vente.id_user " +
-        "WHERE id_prc = ? " +
+        "JOIN users ON produit_vente.id_user = users.id " +
+        "WHERE produit_vente.id_prc = ? " +
         "ORDER BY produit_vente.num_version DESC";
-    var inserts = [_id];
-    sql = mysql.format(sql, inserts);
-    db.query(sql, [_id], function (error, product, fields) {
+
+    db.query(sql, [_id], function (error, product) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
-
         deferred.resolve(product);
     });
     return deferred.promise;
@@ -107,8 +101,6 @@ function getById(_id, num_version) {
 function createVersion(productParam) {
     var deferred = Q.defer();
 
-    //console.log(productParam);
-
     var params = [
         productParam.produit.id_prc
     ];
@@ -117,14 +109,10 @@ function createVersion(productParam) {
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
         var num_version = +results[0].max + 1;
-
-        //console.log(num_version);
-
 
         var params = [
             productParam.produit.id_prc,
@@ -139,72 +127,59 @@ function createVersion(productParam) {
             productParam.produit.margemin,
             productParam.produit.margepc,
             productParam.produit.prix_vente,
-
+            productParam.produit.id_user
         ];
 
-        var query = "INSERT INTO produit_vente (id_prc, num_version, libelle, description, note, unite, categorie, prix_achat, marge, margemin, margepc, prix_vente) " +
-            "VALUES ( ?,  ? ,?, ?, ?, ?, ?, ?, ?, ?, ? , ? )";
-
-        //console.log(params)
+        var query = "INSERT INTO produit_vente (id_prc, num_version, libelle, description, note, unite, categorie, prix_achat, marge, margemin, margepc, prix_vente, id_user) " +
+            "VALUES ( ?,  ? ,?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? )";
 
         db.query(query, params, function (error, results, fields) {
             if (error) {
-                console.log(error.name + ': ' + error.message);
                 deferred.reject(error.name + ': ' + error.message);
             }
 
-            for (var p in productParam.produits) {
-                (function (product) {
-                    var params = [
-                        productParam.produit.id_prc,
-                        num_version,
-                        productParam.produits[product].id_produit,
-                        productParam.produits[product].num_version,
-                        productParam.produits[product].quantite,
-                        productParam.produits[product].prix_achat,
-                    ];
+            for (var p of productParam.produits) {
 
-                    var query = "INSERT INTO produit_compose (id_prc, num_version, id_produit,achat_version, quantite, prix_achat) " +
-                        "VALUES (?, ?, ?, ?, ?, ? )";
+                params = [
+                    productParam.produit.id_prc,
+                    num_version,
+                    p.id_produit,
+                    p.num_version,
+                    p.quantite,
+                    p.prix_achat
+                ];
+
+                var query = "INSERT INTO produit_compose (id_prc, num_version, id_produit,achat_version, quantite, prix_achat) " +
+                    "VALUES (?, ?, ?, ?, ?, ? )";
 
 
-                    db.query(query, params, function (error, results, fields) {
-                        if (error) {
-                            console.log(error.name + ': ' + error.message);
-                            deferred.reject(error.name + ': ' + error.message);
-                        }
+                db.query(query, params, function (error) {
+                    if (error) {
+                        deferred.reject(error.name + ': ' + error.message);
+                    }
 
-                        if (product == (productParam.produits.length - 1)) {
-                            deferred.resolve();
-                        }
-
-                    });
-
-                })(p);
+                    deferred.resolve();
+                });
             }
 
 
-            for (var p in productParam.mainOeuvre) {
-                (function (product) {
-                    var params = [
-                        productParam.produit.id_prc,
-                        num_version,
-                        productParam.mainOeuvre[product].id_produit,
-                        productParam.mainOeuvre[product].quantite,
-                        productParam.mainOeuvre[product].salaire_charge
-                    ];
-                    query = "INSERT INTO produit_compose (id_prc,num_version, id_produit, quantite, prix_achat) " +
-                        "VALUES (?, ?, ?, ?, ? )";
+            for (var mo of productParam.mainOeuvre) {
+                var params = [
+                    productParam.produit.id_prc,
+                    num_version,
+                    mo.id_produit,
+                    mo.quantite,
+                    mo.salaire_charge
+                ];
+                query = "INSERT INTO produit_compose (id_prc,num_version, id_produit, quantite, prix_achat) " +
+                    "VALUES (?, ?, ?, ?, ? )";
 
-                    db.query(query, params, function (error, results, fields) {
-                        if (error) {
-                            console.log(error.name + ': ' + error.message);
-                            deferred.reject(error.name + ': ' + error.message);
-                        }
+                db.query(query, params, function (error, results, fields) {
+                    if (error) {
+                        deferred.reject(error.name + ': ' + error.message);
+                    }
 
-                    });
-
-                })(p);
+                });
             }
         });
 
@@ -215,11 +190,9 @@ function createVersion(productParam) {
 }
 
 function create(productParam) {
+    let deferred = Q.defer();
 
-    var deferred = Q.defer();
-    //console.log(productParam);
-
-    var params = [
+    let params = [
         productParam.produit.libelle,
         productParam.produit.description,
         productParam.produit.note,
@@ -229,84 +202,64 @@ function create(productParam) {
         productParam.produit.marge,
         productParam.produit.margepcmin,
         productParam.produit.margepc,
-        productParam.produit.prix_vente
+        productParam.produit.prix_vente,
+        productParam.produit.id_user
     ];
 
-    var query = "INSERT INTO produit_vente (libelle, description, note, unite, categorie, prix_achat, marge, margemin, margepc, prix_vente) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-
-    console.log(query, params);
+    let query = "INSERT INTO produit_vente (libelle, description, note, unite, categorie, prix_achat, marge, margemin, margepc, prix_vente, id_user) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
+        let id_prc = results.insertId;
 
-        var id_prc = results.insertId;
+        for (let p of productParam.produits) {
+            let params = [
+                id_prc,
+                p.id_produit,
+                p.num_version,
+                p.quantite,
+                p.prix_achat,
+            ];
 
-        for (var p in productParam.produits) {
-            (function (product) {
-                var params = [
-                    id_prc,
-                    productParam.produits[product].id_produit,
-                    productParam.produits[product].num_version,
-                    productParam.produits[product].quantite,
-                    productParam.produits[product].prix_achat,
-                ];
+            let query = "INSERT INTO produit_compose (id_prc, id_produit, achat_version, quantite, prix_achat) " +
+                "VALUES (?, ?, ?, ?, ? )";
 
-                var query = "INSERT INTO produit_compose (id_prc, id_produit, achat_version, quantite, prix_achat) " +
-                    "VALUES (?, ?, ?, ?, ? )";
+            db.query(query, params, function (error) {
+                if (error) {
+                    deferred.reject(error.name + ': ' + error.message);
+                }
 
-
-                db.query(query, params, function (error, results, fields) {
-                    if (error) {
-                        console.log(error.name + ': ' + error.message);
-                        deferred.reject(error.name + ': ' + error.message);
-                    }
-
-                    if (product == productParam.produits.length - 1) {
-                        deferred.resolve();
-                    }
-
-                });
-
-            })(p);
+                deferred.resolve();
+            });
         }
 
 
-        for (var p in productParam.mainOeuvre) {
-            (function (product) {
-                var params = [
-                    id_prc,
-                    productParam.mainOeuvre[product].id_produit,
-                    productParam.mainOeuvre[product].quantite,
-                    productParam.mainOeuvre[product].salaire_charge
-                ];
-                query = "INSERT INTO produit_compose (id_prc, id_produit, quantite, prix_achat) " +
-                    "VALUES (?, ?, ?, ? )";
+        for (let p of productParam.mainOeuvre) {
+            let params = [
+                id_prc,
+                p.id_produit,
+                p.quantite,
+                p.salaire_charge
+            ];
+            query = "INSERT INTO produit_compose (id_prc, id_produit, quantite, prix_achat) " +
+                "VALUES (?, ?, ?, ? )";
 
-                db.query(query, params, function (error, results, fields) {
-                    if (error) {
-                        console.log(error.name + ': ' + error.message);
-                        deferred.reject(error.name + ': ' + error.message);
-                    }
-
-                });
-
-            })(p);
+            db.query(query, params, function (error, results, fields) {
+                if (error) {
+                    deferred.reject(error.name + ': ' + error.message);
+                }
+            });
         }
-
-
     });
     return deferred.promise;
 }
 
 function addInProdComposes(productParam) {
     var deferred = Q.defer();
-
-    //console.log(JSON.stringify(productParam));
 
     var params = [
         productParam.id_prc,
@@ -317,15 +270,11 @@ function addInProdComposes(productParam) {
     var query = "INSERT INTO produit_compose (id_prc, id_produit, quantite) VALUES (?, ?, ? )";
 
     db.query(query, params, function (error, results, fields) {
-        console.log("params: " + params);
         if (error) {
-            console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
         }
 
-        //console.log(results);
         deferred.resolve();
-
     });
     return deferred.promise;
 }
@@ -362,7 +311,6 @@ function update(id_product, productParam) {
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
-            console.log("error updating prod vente: " + error);
             deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
         deferred.resolve();

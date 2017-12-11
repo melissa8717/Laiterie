@@ -16,17 +16,19 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 export class ProduitachatComponent implements OnInit {
 
+    // Image uploader
+    private loc = location.hostname;
     public uploaderImg: FileUploader;
+    private url: any;
+    private production: any = {};
+
+    private id_product: number;
+    private num_version: string;
 
     private unites: any[] = [];
     private categories: any [] = [];
     private historique: any[];
     private fournisseurs: Contact[] = [];
-
-
-    private loc = location.hostname;
-    private id_produit: number;
-    private num_version: string;
 
     private product = new Product();
     private updateProduct: any = {};
@@ -36,9 +38,6 @@ export class ProduitachatComponent implements OnInit {
     private print: boolean = false;
     private currentUser: User;
     private droitsuser: any = {};
-    private production: any = {};
-    // visualisation de l'image avant envoi
-    private url: any;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -52,10 +51,10 @@ export class ProduitachatComponent implements OnInit {
         this.loaddroituser();
 
         this.route.params.subscribe(params => {
-            this.id_produit = params['id'];
+            this.id_product = params['id'];
             this.num_version = params['num_version'];
 
-            this.achatsService.getById(this.id_produit, this.num_version).subscribe(val => {
+            this.achatsService.getById(this.id_product, this.num_version).subscribe(val => {
                 this.product = val[0];
 
                 this.updateProduct = Object.assign({}, this.product);
@@ -64,14 +63,14 @@ export class ProduitachatComponent implements OnInit {
                 // la date a afficher sur la page
                 let productDate = new Date(this.product.tarif_du);
                 this.formattedDate = this.formatDate(productDate);
-                this.loadHistorique(this.id_produit);
+                this.loadHistorique(this.id_product);
                 this.loadCat();
                 this.loadAllImg();
                 this.loadUnites();
                 this.loadFournisseurs();
             });
 
-            this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id_produit});
+            this.uploaderImg = new FileUploader({url: URLimg + "img/" + this.id_product});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };

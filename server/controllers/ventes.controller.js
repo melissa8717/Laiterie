@@ -9,7 +9,7 @@ router.post('/newprodcomp', addInProdComposes);
 
 router.get('/', getAll);
 router.get('/id/:_id/:num_version', getById);
-router.get('/id/:_id', getAllById);
+router.get('/id/:_id', getAllHisto);
 router.get('/composes/:_id/:num_version', getAllProdComp);
 
 router.put('/:_id', update);
@@ -23,7 +23,6 @@ function create(req, res) {
             res.sendStatus(200);
         })
         .catch(function (err) {
-            console.log(err);
             res.status(400).send(err);
         });
 }
@@ -34,26 +33,21 @@ function createVersion(req, res) {
             res.sendStatus(200);
         })
         .catch(function (err) {
-            console.log(err);
             res.status(400).send(err);
         });
 }
 
 function addInProdComposes(req, res) {
-    console.log("prod comp controller");
     ventesService.addInProdComposes(req.body)
         .then(function (results) {
-            //console.log(results.insertId);
             res.sendStatus(200);
         })
         .catch(function (err) {
-            //console.log(err);
             res.status(400).send(err);
         });
 }
 
 function getAll(req, res) {
-    console.log("get all ventes controller");
     ventesService.getAll()
         .then(function (ventes) {
             res.send(ventes);
@@ -65,7 +59,6 @@ function getAll(req, res) {
 
 // recupere les produits composes d'un produit vente
 function getAllProdComp(req, res) {
-    console.log("get prods compos");
     ventesService.getAllProdComp(req.params._id, req.params.num_version)
         .then(function (prodComps) {
             if (prodComps) {
@@ -79,8 +72,8 @@ function getAllProdComp(req, res) {
         });
 }
 
-function getAllById(req, res) {
-    ventesService.getAllById(req.params._id)
+function getAllHisto(req, res) {
+    ventesService.getAllHisto(req.params._id)
         .then(function (produit) {
             if (produit) {
                 res.send(produit);

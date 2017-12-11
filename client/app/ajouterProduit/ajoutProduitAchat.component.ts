@@ -117,8 +117,7 @@ export class AjoutProduitAchatComponent {
         this.produit.categorie = this.getCategoryId();
         this.produit.unite = this.getUniteId();
 
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.produit.id_user = currentUser._id;
+        this.produit.id_user = this.currentUser._id;
 
 
         this.achatsService.add(this.produit).subscribe(data => {

@@ -516,7 +516,7 @@ CREATE TABLE IF NOT EXISTS `contact` (
   `Date_naissance` timestamp NULL DEFAULT NULL,
   `lieu_naissance` varchar(100) DEFAULT NULL,
   `n_identite` varchar(30) DEFAULT NULL,
-  `n_secu` int(255) DEFAULT NULL,
+  `n_secu` varchar(255) DEFAULT NULL,
   `n_permis` varchar(30) DEFAULT NULL,
   `raison_sociale` varchar(100) DEFAULT NULL,
   `siret` varchar(255) DEFAULT NULL,
@@ -1925,7 +1925,7 @@ CREATE TABLE IF NOT EXISTS `testing` (
 --
 
 INSERT INTO `testing` (`id_valitest`, `numtest`, `datedeb`, `datefin`, `validate`, `nbi_user`, `id_entreprise`) VALUES
-(1, 'feab819fd1e0fb156f7b39bfea7409b6', NULL, NULL, NULL, 2, NULL);
+(1, 'wbat1234', NULL, NULL, NULL, 5, NULL);
 
 -- --------------------------------------------------------
 
