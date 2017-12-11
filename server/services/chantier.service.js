@@ -547,11 +547,12 @@ function getAllMois(month, year) {
 
 function getAllCmois() {
     var deferred = Q.defer();
-    db.query('SELECT chantierdevisencours. * , facturechantiercours. * , chantier.nom_chantier, chantier.date_demarrage, contact.nom , adresse.ville ' +
+    db.query('SELECT chantierdevisencours. * , facturechantiercours. * , chantier.nom_chantier, chantier.date_demarrage, contact.nom , adresse.ville, devis_version.montantht ' +
         'FROM adresse, contact, chantierdevisencours ' +
         'LEFT JOIN facturechantiercours ON chantierdevisencours.id_devis = facturechantiercours.id_devis ' +
         'LEFT JOIN chantier ON chantierdevisencours.id_chantier = chantier.id_chantier ' +
         'LEFT JOIN chantierdevis ON chantierdevisencours.id_devis = chantierdevis.id_devis ' +
+        'LEFT JOIN devis_version ON chantierdevisencours.id_devis = devis_version.id_devis AND chantierdevisencours.num_version = devis_version.num_version '+
         'WHERE contact.id_contact = chantier.id_contact AND adresse.id_chantier = chantier.id_chantier', function (error, chantier, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);

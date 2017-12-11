@@ -115,7 +115,7 @@ export class ChantiermoisComponent {
 
         for (let chantiers of this.cmois) {
 
-                totaldevis += chantiers.total;
+                totaldevis += chantiers.total ? chantiers.total : chantiers.montantht;
 
         }
         return totaldevis;
