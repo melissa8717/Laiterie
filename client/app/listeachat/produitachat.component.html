@@ -103,36 +103,30 @@
             </article>
 
             <!-- description -->
-            <article class="col-sm-7 gauche">
-
+            <article *ngIf="!print" class="col-sm-7 gauche">
                 <div class="form-group col-sm-12 justif" style="margin-top: 10px;">
                     <span style="font-weight: bold;">Description:</span>
                 </div>
                 <div class="form-group" style="margin-top: 10px;">
-                    <textarea *ngIf="!print" name="description" class="form-control" rows="3"
+                    <textarea name="description" class="form-control" rows="3"
                               [(ngModel)]="updateProduct.description">
-
                     </textarea>
                 </div>
-
             </article>
 
             <!-- notes -->
-            <article class="col-sm-7 gauche">
+            <article *ngIf="!print" class="col-sm-7 gauche">
 
                 <div class="form-group col-sm-12 justif">
                     <span style="font-weight: bold;">Note: </span>
-                    <!--variable à l'intérieur du second span-->
                 </div>
                 <div class="form-group" style="margin-top: 10px;">
-                    <textarea *ngIf="!print" type="text" name="note" class="form-control" rows="3"
+                    <textarea type="text" name="note" class="form-control" rows="3"
                               [(ngModel)]="updateProduct.note"></textarea>
                 </div>
-
             </article>
 
-            <div class="col-sm-7 gauche">
-
+            <div *ngIf="!print" class="col-sm-7 gauche">
                 <!-- historique de modifs -->
                 <h5>Historique :</h5>
                 <div class="table table-responsive" style="height: 190px;">
@@ -166,39 +160,15 @@
             </div>
 
             <button *ngIf="!print && droitsuser.modifproa" type="submit" [disabled]="loading"
-                    class="input-sm col-sm-offset-10 col-sm-1" (click)="modifyProduct();">Modifier
+                    class="input-sm col-sm-offset-10 col-sm-1 btn btn-default" (click)="modifyProduct();">Modifier
             </button>
         </form>
 
-        <!--une fois modifier créer un pdf à mettre dans la GED-->
 
-        <div class="col-sm-12 bas">
-            <form method="POST" action="#">
-                <input type="hidden" name="identifiant du produit"><!--variable correspondant a l'id produit-->
-                <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print && accesproa"
-                        (click)=" imprimer()">Imprimer
-                </button>
-            </form>
+        <div *ngIf="!print" class="col-sm-12">
+            <ged [gedName]="'produits'" [id]="id_product"></ged>
         </div>
 
-
-        <div class="col-sm-12">
-            <ged [gedName]="'produits'" [id]="id_produit"></ged>
-        </div>
-
-
-        <div class="col-sm-12 bas">
-            <form method="POST" action="#">
-                <button class="col-sm-offset-10 col-sm-1 btn btn btn-default " style="padding-left:-40px;"
-                        *ngIf="!print && droitsuser.modifproa" type="submit" [disabled]="loading">Modifier
-                </button>
-
-                <input type="hidden" name="identifiant du produit"><!--variable correspondant a l'id produit-->
-                <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accesproa"
-                        (click)=" imprimer()">Imprimer
-                </button>
-            </form>
-        </div>
     </div><!--fin container fluid-->
 
 </div><!--fin id achat-->

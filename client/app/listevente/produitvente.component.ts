@@ -21,36 +21,34 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 export class ProduitventeComponent implements OnInit {
 
+    // Image uploader
     private loc = location.hostname;
     private uploaderImg: FileUploader;
+    private url: any;
 
     private id_product: number;
+    private num_version: string;
 
+    private unites: any[] = [];
+    private categories: any[] = [];
+    private historique: any[];
     private allProducts: Product[] = [];
     private allMainOeuvres: any[] = [];
-    private categories: any[] = [];
-    private unites: any[] = [];
 
+    private product = new Product();
+    private updateProduct = new Product();
 
     private products: any[] = [];
     private mainOeuvres: any[] = [];
 
-    private product = new Product();
     private newProduct: any = {};
     private newMainOeuvre: any = {};
 
-
-    private num_version: string;
-    private productDate: Date;
     private formattedDate: string;
-    private updateProduct = new Product();
     private loading = false;
-    private historique: any[];
     private print: boolean = false;
     private currentUser: User;
     private droitsuser: any = {};
-    // visualisation de l'image avant envoi //**************************************************************************
-    private url: any;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -75,14 +73,13 @@ export class ProduitventeComponent implements OnInit {
                 this.updateProduct = Object.assign({}, this.product);
 
                 // la date a afficher sur la page
-                this.productDate = new Date(this.product.tarif_du);
-                this.formattedDate = this.formatDate(this.productDate);
+                this.formattedDate = this.formatDate(new Date(this.product.tarif_du));
 
                 this.loadHistorique(this.id_product);
                 this.loadAllCategories();
                 this.loadAllUnites();
 
-                this.uploaderImg = new FileUploader({url: URLimg + 'produitv/' + params['id']});
+                this.uploaderImg = new FileUploader({url: URLimg + 'produitv/' + this.id_product});
                 this.uploaderImg.onAfterAddingFile = (file) => {
                     file.withCredentials = false;
                 };
@@ -169,7 +166,7 @@ export class ProduitventeComponent implements OnInit {
     }
 
 
-    addProduct() {
+    private addProduct() {
         let check = this.products.filter(obj => obj.id_produit == this.newProduct.id_produit);
         if (check.length < 1) {
             let tmp = this.newProduct;
@@ -184,7 +181,7 @@ export class ProduitventeComponent implements OnInit {
         this.calcvalue(this.updateProduct);
     }
 
-    addMO() {
+    private addMO() {
         let check = this.mainOeuvres.filter(obj => obj.id_produit == this.newMainOeuvre.id_produit);
         if (check.length < 1) {
             let tmp = this.newMainOeuvre;
@@ -225,36 +222,36 @@ export class ProduitventeComponent implements OnInit {
     }
 
 
-    verifymarge(mo: any) {
+    private verifymarge(mo: any) {
         if (+mo.margepc < +mo.margemin) {
             alert('Attention, votre marge est inférieure à la marge minimale !');
         }
     }
 
-    supprimer(produit: any) {
+    private supprimer(produit: any) {
         this.products = this.products.filter(obj => obj !== produit);
         this.calcvalue(this.updateProduct);
     }
 
-    supprimermainoeuvre(produit: any) {
+    private supprimermainoeuvre(produit: any) {
         this.mainOeuvres = this.mainOeuvres.filter(obj => obj !== produit);
         this.calcvalue(this.updateProduct);
     }
 
-    private chooseMainOeuvreLibelle(i: number) {
-        let prod = this.allMainOeuvres.filter(x => x.libelle == this.newMainOeuvre.libelle.libelle)[0];
+    private chooseMainOeuvreLibelle() {
+        let prod = this.allMainOeuvres.find(x => x.libelle == this.newMainOeuvre.libelle.libelle);
         this.newMainOeuvre = Object.assign({}, prod);
         this.newMainOeuvre.quantite = '00:00';
         this.calcpercent(this.newMainOeuvre);
     }
 
-    calcpercent(mo: any) {
+    private calcpercent(mo: any) {
         mo.margepc = (mo.marge && this.getTotalPrixAchat()) ?
             (mo.marge / this.getTotalPrixAchat() * 100).toFixed(2) : 0;
     }
 
 
-    calcvalue(mo: any) {
+    private calcvalue(mo: any) {
         mo.marge = (mo.margepc && this.getTotalPrixAchat()) ?
             (mo.margepc * this.getTotalPrixAchat() / 100).toFixed(2) : 0;
     }

@@ -119,9 +119,6 @@
                     </div>
                 </div>
 
-                <label *ngIf="!print" class="col-sm-5">Ajouter dans GED:</label>
-                <input *ngIf="!print" type="file" name="GED" class="col-sm-7">
-
             </article>
 
             <!-- description -->
@@ -228,7 +225,8 @@
                                    target="_blank">Voir</a>
                             </td>
 
-                            <td><span>{{newProduct.raison_sociale ? newProduct.raison_sociale : newProduct.nom}}</span></td>
+                            <td><span>{{newProduct.raison_sociale ? newProduct.raison_sociale : newProduct.nom}}</span>
+                            </td>
                             <td><span>{{newProduct.unite}}</span></td>
                             <td><span>{{newProduct.prix_achat}}</span></td>
 
@@ -301,13 +299,12 @@
                                        name="mo"
                                        [source]="allMainOeuvres"
                                        [(ngModel)]="newMainOeuvre.libelle"
-                                       (ngModelChange)="newMainOeuvre.libelle"
                                        [list-formatter]="autocompleListFormatterMo"
                                        value-property-name="libelle"
                                        display-property-name="libelle"
                                        placeholder="Main d'oeuvre"
                                        class="col-sm-12"
-                                       (ngModelChange)="chooseMainOeuvreLibelle( 0)"
+                                       (ngModelChange)="chooseMainOeuvreLibelle()"
                                        autocomplete="off"></td>
 
                             <td><span>{{newMainOeuvre.salaire_charge}}</span></td>
@@ -339,25 +336,18 @@
 
                         </tbody>
                     </table>
-
                 </div>
             </div>
 
-            <button *ngIf="!print" type="submit" [disabled]="loading" class="col-sm-offset-11"
+            <button *ngIf="!print" type="submit" [disabled]="loading" class="col-sm-offset-11 btn btn-default"
                     (click)="modifyProduct()">Modifier
             </button>
 
         </form>
 
-        <div class="col-sm-12 bas">
-            <form method="POST" action="#" class="col-sm-2 col-sm-offset-4">
-                <input *ngIf="!print" type="hidden" name="identifiant du produit">
-                <button class="col-sm-offset-6 col-sm-5 btn" style="margin-top: -35px;" type="button" *ngIf="!print"
-                        (click)=" imprimer()">Imprimer
-                </button>
-            </form>
+        <div class="col-sm-12">
+            <ged [gedName]="'produits'" [id]="id_product"></ged>
         </div>
-
 
     </div><!--fin container-fluid-->
 </div><!--fin id vente-->

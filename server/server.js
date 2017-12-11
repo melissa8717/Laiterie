@@ -185,7 +185,6 @@ app.get('/ged', function (req, res) {
 });
 
 app.post('/ged/contact/:id', upload.any(), function (req, res, next) {
-    //console.log(req);
     res.end('file uploaded');
 });
 
@@ -196,7 +195,6 @@ var storagech = multer.diskStorage({
         cb(null, DIR)
     },
     filename: function (req, file, cb) {
-        //console.log(file.originalname);
         crypto.pseudoRandomBytes(16, function (err, raw) {
             var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
             var nom = file.originalname; // url
@@ -204,7 +202,6 @@ var storagech = multer.diskStorage({
 
             addFiletoDbch(url, nom, id_chantier);
 
-            console.log(req.params);
             cb(null, url);
         });
     }
@@ -243,7 +240,6 @@ app.get('/ged/chant/:id_chantier', function (req, res) {
 });
 
 app.post('/ged/chant/:id', upload.any(), function (req, res, next) {
-    //console.log(req);
     res.end('file uploaded');
 });
 
@@ -253,17 +249,14 @@ var storagevh = multer.diskStorage({
         cb(null, DIR)
     },
     filename: function (req, file, cb) {
-        //console.log(file.originalname);
         crypto.pseudoRandomBytes(16, function (err, raw) {
             var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
             var nom = file.originalname; // url
 
             var id_vehmat = req.params.id_vehmat;
-            console.log('GEDserver :' + id_vehmat);
 
             addFiletoDbpvh(url, nom, id_vehmat);
 
-            console.log('GEDserver2' + req.params);
             cb(null, url);
         });
     }
@@ -301,7 +294,6 @@ app.get('/ged/matvehi/:id_vehmat', function (req, res) {
 });
 
 app.post('/ged/matvehi/:id_vehmat', upload.any(), function (req, res, next) {
-    //console.log(req);
     res.end('file uploaded');
 });
 
@@ -311,17 +303,14 @@ var storageac = multer.diskStorage({
         cb(null, DIR)
     },
     filename: function (req, file, cb) {
-        //console.log(file.originalname);
         crypto.pseudoRandomBytes(16, function (err, raw) {
             var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
             var nom = file.originalname; // url
 
             var id_produit = req.params.id_produit;
-            console.log('GEDserver :' + id_produit);
 
             addFiletoDbpro(url, nom, id_produit);
 
-            console.log('GEDserver2' + req.params);
             cb(null, url);
         });
     }
@@ -357,7 +346,6 @@ app.get('/ged/produits/:id_produit', function (req, res) {
 });
 
 app.post('/ged/produits/:id_produit', upload.any(), function (req, res, next) {
-    //console.log(req);
     res.end('file uploaded');
 });
 
@@ -367,7 +355,6 @@ var storagedev = multer.diskStorage({
         cb(null, DIR)
     },
     filename: function (req, file, cb) {
-        //console.log(file.originalname);
         crypto.pseudoRandomBytes(16, function (err, raw) {
             var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
             var nom = file.originalname; // url
@@ -376,7 +363,6 @@ var storagedev = multer.diskStorage({
 
             addFiletoDbdev(url, nom, id);
 
-            console.log(req.params);
             cb(null, url);
         });
     }
@@ -485,7 +471,6 @@ var storagepr = multer.diskStorage({
         cb(null, DIR)
     },
     filename: function (req, file, cb) {
-        //console.log(file.originalname);
         crypto.pseudoRandomBytes(16, function (err, raw) {
             var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
             var nom = file.originalname; // url
@@ -494,7 +479,6 @@ var storagepr = multer.diskStorage({
 
             addFiletoDbpr(url, nom, id_param_ged);
 
-            console.log(req.params);
             cb(null, url);
         });
     }
