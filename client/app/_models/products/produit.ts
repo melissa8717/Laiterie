@@ -21,15 +21,12 @@ export class Product {
 
     categorie: string;  // id de categorie
     cat_libelle: string; // libelle de categorie, pour la recherche
-    nom: string;    // nom de fournisseur
+    nom: string; // nom de fournisseur
 
-    // valeur de tva, pour simplifier les choses; n'est pas envoye au serveur
-    tva: number;
+    tva: number; // valeur de tva, pour simplifier les choses; n'est pas envoye au serveur
 
-    // pour les produits composes
-    quantite: number;
+    quantite: number; // pour les produits composes
     id_prc: string;  // dans produit_vente
-
-
     id_unite:number;
+    id_user: number;
 }

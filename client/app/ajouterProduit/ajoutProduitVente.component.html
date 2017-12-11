@@ -3,7 +3,7 @@
     <my-header [title]='"Ajouter un produit vente"' [img]="'image/menu/produits_grand_gris.png'"></my-header>
 
 
-    <div class=" container-fluid" class="col-md-12">
+    <div class="container-fluid col-md-12">
         <div class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
             <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
@@ -23,7 +23,6 @@
                     <label class="col-sm-5 control-label">* Libellé : </label>
                     <div>
                         <textarea name="libelle" [(ngModel)]="produit.libelle" class="col-sm-7" rows="3"></textarea>
-                        <!--variable pour value-->
                     </div>
                 </div>
 
@@ -197,7 +196,7 @@
                                        display-property-name="libelle"
                                        placeholder="Produit"
                                        class="col-sm-12"
-                                       (ngModelChange)="chooseProductByLibelle(0)"
+                                       (ngModelChange)="chooseProductByLibelle()"
                                        autocomplete="off"
                             >
                                 <a *ngIf="produitadd.libelle"
@@ -206,14 +205,14 @@
 
                             </td>
                             <td>
-                                <span>{{produitadd.raison_sociale}}</span>
+                                <span>{{produitadd.raison_sociale ? produitadd.raison_sociale : produitadd.nom}}</span>
                             </td>
 
                             <td>
                                 <span>{{produitadd.unite}}</span>
                             </td>
                             <td><span>{{produitadd.prix_achat}}</span></td>
-                            <td><input type="number" step="0.01" name="quantite"
+                            <td><input type="number" step="1" name="quantite"
                                        [(ngModel)]="produitadd.quantite"/></td>
 
                             <td><span> {{calctotalprod(produitadd) | currency:'EUR':true:'1.2-2'}}</span>
@@ -228,30 +227,20 @@
                         </tr>
 
 
-                        <tr *ngFor="let produits of produitsComposes, let i = index; trackBy:customTrackBy">
+                        <tr *ngFor="let product of produitsComposes">
                             <td><span class="col-sm-12">
-                                <a *ngIf="produitsComposes[i].libelle"
-                                   [routerLink]="['/produitachat/' + produitsComposes[i].id_produit + '/' + produitsComposes[i].num_version]"
-                                   target="_blank">{{produitsComposes[i].libelle}}</a>
+                                <a *ngIf="product.libelle"
+                                   [routerLink]="['/produitachat/' + product.id_produit + '/' + product.num_version]"
+                                   target="_blank">{{product.libelle}}</a>
                             </span></td>
-                            <td>
-                                <span>{{produitsComposes[i].raison_sociale}}</span>
-                            </td>
-                            <td>
-                                <span>{{produitsComposes[i].unite}}</span>
-                            </td>
-                            <td><span>{{produitsComposes[i].prix_achat}}</span></td>
-                            <td><input type="number" step="0.01" name="quantite{{i}}"
-                                       [(ngModel)]="produitsComposes[i].quantite"
-                                       (ngModelChange)="calcvalue(produit)"
-                            /></td>
-
-
-                            <td><span>{{calctotalprod(produitsComposes[i]) | currency:'EUR':true:'1.2-2'}}
-                            </span></td>
+                            <td><span>{{product.raison_sociale ? product.raison_sociale : product.nom}}</span></td>
+                            <td><span>{{product.unite}}</span></td>
+                            <td><span>{{product.prix_achat}}</span></td>
+                            <td><span>{{product.quantite}}</span></td>
+                            <td><span>{{calctotalprod(product) | currency:'EUR':true:'1.2-2'}}</span></td>
                             <td>
                                 <a class=" col-sm-offset-1"
-                                   (click)="supprimer(produitsComposes[i])">
+                                   (click)="supprimer(product)">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"
                                           style="color: #0f0f0f"></span>
                                 </a>
@@ -287,36 +276,19 @@
                                        name="mo"
                                        [source]="mainOeuvre"
                                        [(ngModel)]="mainOeuvreAdd.libelle"
-                                       (ngModelChange)="mainOeuvreAdd.libelle"
                                        [list-formatter]="autocompleListFormatterMo"
                                        value-property-name="libelle"
                                        display-property-name="libelle"
                                        placeholder="Main d'oeuvre"
                                        class="col-sm-12"
                                        (ngModelChange)="chooseMainOeuvreLibelle( 0)"
-                                       autocomplete="off"
-                            ></td>
+                                       autocomplete="off"></td>
 
-                            <!-- TODO : make it nice to type and search -->
-                            <!--<td><input type="text" list="produits" name="designation"
-                                       (change)="chooseProductByLibelle($event.target.value, 0)"
-                                       [(ngModel)]="produitsComposes[0].libelle" required>
-                                <datalist id="produits" >
-                                    <option *ngFor="let pr of allProducts" [value]="pr.libelle">{{pr.libelle}}</option>
-                                </datalist>
-                            </td>-->
+                            <td><span>{{mainOeuvreAdd.salaire_charge}}</span></td>
+                            <td><input type="time" name="qte" [(ngModel)]="mainOeuvreAdd.quantite"
+                                       (ngModelChange)="calcvalue(produit)"/></td>
 
-                            <td>
-                                <span>{{mainOeuvreAdd.salaire_charge}}</span>
-                            </td>
-                            <td><input type="time" name="qte"
-                                       [(ngModel)]="mainOeuvreAdd.quantite"
-                                       (ngModelChange)="calcvalue(produit)"
-                            /></td>
-
-                            <td><span>
-                                {{calctotal(mainOeuvreAdd)| currency:'EUR':true:'1.2-2'}}
-                            </span></td>
+                            <td><span>{{calctotal(mainOeuvreAdd)| currency:'EUR':true:'1.2-2'}}</span></td>
                             <td>
                                 <button *ngIf="droitsuser.ajoutprov" type="button" class="btn right" (click)="addMO()"
                                         [disabled]="!mainOeuvreAdd.quantite || !mainOeuvreAdd.libelle">Ajouter
@@ -326,25 +298,17 @@
                         </tr>
 
 
-                        <tr *ngFor="let produits of mainOeuvreList, let i = index; trackBy:customTrackBy">
-                            <td><span class="col-sm-12">
-                                {{mainOeuvreList[i].libelle}}
-                            </span></td>
+                        <tr *ngFor="let mainOeuvre of mainOeuvreList">
+                            <td><span class="col-sm-12">{{mainOeuvre.libelle}}</span></td>
+                            <td><span>{{mainOeuvre.salaire_charge}}</span></td>
 
-                            <td>
-                                <span>{{mainOeuvreList[i].salaire_charge}}</span>
-                            </td>
-                            <td><input type="time"
-                                       name="qte{{i}}"
-                                       [(ngModel)]="mainOeuvreList[i].quantite"
+                            <td><input type="time" name="qte" [(ngModel)]="mainOeuvre.quantite"
                                        (ngModelChange)="calcvalue(produit)"/></td>
 
-                            <td><span>
-                                {{calctotal(mainOeuvreList[i])| currency:'EUR':true:'1.2-2'}}
-                                </span></td>
+                            <td><span>{{calctotal(mainOeuvre)| currency:'EUR':true:'1.2-2'}}</span></td>
                             <td>
                                 <a class=" col-sm-offset-1"
-                                   (click)="supprimermainoeuvre(mainOeuvreList[i])">
+                                   (click)="supprimermainoeuvre(mainOeuvre)">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"
                                           style="color: #0f0f0f"></span>
                                 </a>

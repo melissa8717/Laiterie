@@ -152,7 +152,7 @@ export class ParamsService {
         return this.http.get(this.config.apiUrl + '/params/util/'+id, this.jwt()).map((response: Response) => response.json());
     }
 
-    getByIdDroit(_id: string) {
+    getByIdDroit(_id: number) {
     return this.http.get(this.config.apiUrl + '/params/droit/'+ _id, this.jwt()).map((response: Response) => response.json());
     }
 

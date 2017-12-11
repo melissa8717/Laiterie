@@ -21,7 +21,7 @@ export class MessageService {
         return this.http.get(this.config.apiUrl + '/messages/home/'+ _id, this.jwt()).map((response: Response) => response.json());
     }
 
-    unreadMsg(_id: string) {
+    unreadMsg(_id: number) {
         return this.http.get(this.config.apiUrl + '/messages/unread/'+ _id, this.jwt()).map((response: Response) => response.json());
     }
 

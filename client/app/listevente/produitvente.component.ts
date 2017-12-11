@@ -4,16 +4,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AchatsService, AlertService, AuthenticationService, ContactService} from '../_services/index';
+import {AchatsService, AlertService} from '../_services/index';
 import {Product} from '../_models/products/produit';
-import {Histo} from '../_models/histo';
 import {VentesService} from '../_services/ventes.service';
-import {FormBuilder} from '@angular/forms';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {ParamsService} from '../_services/params.service';
 import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
-import {AppConfig} from '../app.config';
 
 const URLimg = 'http://' + location.hostname + ':4000/image/';
 
@@ -23,177 +20,208 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 })
 
 export class ProduitventeComponent implements OnInit {
-    unites = ['m', 'm²', 'm3', 'litre', 'tonne', 'kilogramme', 'heure', 'unité', 'm linéaire', 'lot', 'sac', 'big bag'];
 
-    public uploaderImg: FileUploader;
+    private loc = location.hostname;
+    private uploaderImg: FileUploader;
 
-    loc = location.hostname;
-    id: string;
-    num_version: string;
-    private sub: any;
-    product = new Product();
-    productDate: Date;
-    formattedDate: string;
-    produitadd: any = {};
-    mainOeuvreAdd: any = {};
-    mainOeuvre: any[] = [];
-    allProducts: Product[] = [];
-    prodsComp: any[]; // de produit_compose, donc juste les IDs et la quantite
-    produitsComposes: any[] = []; // produits composes total (de la table 'produit'), avec les prix et tout
-    mainOeuvreList: any[] = []; // produits composes total (de la table 'produit'), avec les prix et tout
-    updateProduct = new Product();
-    modif = new Histo();
-    loading = false;
-    historique: any[];
-    print: boolean = false;
-    currentUser: User;
-    droitsuser: any = {};
-    _id: any;
-    data: any = {};
-    image: any[];
+    private id_product: number;
+
+    private allProducts: Product[] = [];
+    private allMainOeuvres: any[] = [];
+    private categories: any[] = [];
+    private unites: any[] = [];
+
+
+    private products: any[] = [];
+    private mainOeuvres: any[] = [];
+
+    private product = new Product();
+    private newProduct: any = {};
+    private newMainOeuvre: any = {};
+
+
+    private num_version: string;
+    private productDate: Date;
+    private formattedDate: string;
+    private updateProduct = new Product();
+    private loading = false;
+    private historique: any[];
+    private print: boolean = false;
+    private currentUser: User;
+    private droitsuser: any = {};
+    // visualisation de l'image avant envoi //**************************************************************************
+    private url: any;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
-                private authenticationService: AuthenticationService,
                 private ventesService: VentesService,
                 private achatsService: AchatsService,
-                private contactService: ContactService,
                 private alertService: AlertService,
-                private builder: FormBuilder, private _sanitizer: DomSanitizer,
-                private _route: ActivatedRoute,
-                private paramsService: ParamsService,
-                private config: AppConfig) {
+                private _sanitizer: DomSanitizer,
+                private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
-
         this.loaddroituser();
+        this.loadAllMainOeuvres();
 
-        this.getAllProduitsVentes();
-        this.loadAll();
-        this.route.params.forEach(
-            params => {
+        this.route.params.forEach(params => {
+            this.id_product = params['id'];
+            this.num_version = params['num_version'];
 
-                this.id = params['id']; // (+) converts string 'id' to a number
-                this.num_version = params['num_version'];
+            this.ventesService.getById(this.id_product, this.num_version).subscribe(val => {
+                this.product = val[0];
+                this.updateProduct = Object.assign({}, this.product);
 
-                this.loadProduitsComposes(this.id);
+                // la date a afficher sur la page
+                this.productDate = new Date(this.product.tarif_du);
+                this.formattedDate = this.formatDate(this.productDate);
 
-                // In a real app: dispatch action to load the details here.
+                this.loadHistorique(this.id_product);
+                this.loadAllCategories();
+                this.loadAllUnites();
 
-                this.ventesService.getById(this.id, this.num_version).subscribe(val => {
-                    this.product = val[0]; // val c'est l'array d'un seul element
-
-                    // init les vals de updateProduct
-                    this.updateProduct = Object.assign({}, this.product);
-
-                    // la date a afficher sur la page
-                    this.productDate = new Date(this.product.tarif_du);
-                    this.formattedDate = this.formatDate(this.productDate);
-
-                    this.loadHistorique(this.id);
-                    console.log(this.product);
-
-                    this.uploaderImg = new FileUploader({url: URLimg + 'produitv/' + params['id']});
-                    this.uploaderImg.onAfterAddingFile = (file) => {
-                        file.withCredentials = false;
-                    };
-                });
+                this.uploaderImg = new FileUploader({url: URLimg + 'produitv/' + params['id']});
+                this.uploaderImg.onAfterAddingFile = (file) => {
+                    file.withCredentials = false;
+                };
             });
-    }
-
-    // visualisation de l'image avant envoi //**************************************************************************
-    url: any;
-
-    readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            }
-
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    }
-
-    loaddroituser() {
-        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-
-            this.droitsuser = data[0];
-
-            console.log(this.data);
-            console.log(this.currentUser._id);
-
         });
     }
 
+    private loaddroituser() {
+        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
+            this.droitsuser = data[0];
+        });
+    }
+
+    private loadHistorique(id: number) {
+        this.ventesService.getAllHisto(id).subscribe(data => {
+            this.historique = data;
+        });
+    }
+
+    private loadAllCategories() {
+        this.achatsService.getAllCategories().subscribe(categories => {
+            this.categories = categories;
+            this.updateProduct.categorie = this.categories.find(cat => cat.id_cat == this.updateProduct.categorie).libelle;
+        });
+    }
+
+    private loadAllUnites() {
+        this.achatsService.getAllUnite().subscribe(unites => {
+            this.unites = unites;
+            this.updateProduct.unite = this.unites.find(u => u.id_unite == this.updateProduct.unite).libelle;
+            this.loadAllProduitsVentes();
+            this.loadProduitsComposes();
+        });
+    }
+
+    private loadAllMainOeuvres() {
+        this.achatsService.getAllMainOeuvre().subscribe(data => {
+            this.allMainOeuvres = data;
+        });
+    }
+
+    private loadAllProduitsVentes() {
+        this.achatsService.getAll().subscribe(products => {
+            this.allProducts = products;
+            this.allProducts.forEach((product: any) => {
+                product.unite = this.unites.find(u => u.id_unite == product.unite).libelle;
+            });
+        });
+    }
+
+    private loadProduitsComposes() {
+        this.loading = true;
+        this.ventesService.getAllProdComp(this.id_product, this.num_version).subscribe(produits => {
+            this.products = produits.produits;
+            this.products.forEach((product: any) => {
+                product.unite = this.unites.find(u => u.id_unite == product.unite).libelle;
+            });
+            this.mainOeuvres = produits.mainOeuvre;
+            this.loading = false;
+        });
+    }
 
     private modifyProduct() {
-
-        this.product.prix_achat = this.getTotalPrixAchat();
-        this.product.prix_vente = this.getTotalPrixVente();
-
+        this.updateProduct.prix_achat = this.getTotalPrixAchat();
+        this.updateProduct.prix_vente = this.getTotalPrixVente();
+        this.updateProduct.categorie = this.categories.find(cat => cat.libelle == this.updateProduct.categorie).id_cat;
+        this.updateProduct.unite = this.unites.find(u => u.libelle == this.updateProduct.unite).id_unite;
+        this.updateProduct.id_user = this.currentUser._id;
 
         let tmp: any = {
-            produit: this.product,
-            produits: this.produitsComposes,
-            mainOeuvre: this.mainOeuvreList
+            produit: this.updateProduct,
+            produits: this.products,
+            mainOeuvre: this.mainOeuvres
+        };
+
+        this.loading = true;
+        this.ventesService.newVersion(tmp).subscribe(() => {
+            this.loading = false;
+            this.router.navigate(['/listevente']);
+            this.alertService.success('Le produit a bien été mis a jour. ')
+        }, err => {
+            console.error(err);
+        })
+    }
+
+
+    addProduct() {
+        let check = this.products.filter(obj => obj.id_produit == this.newProduct.id_produit);
+        if (check.length < 1) {
+            let tmp = this.newProduct;
+            this.newProduct = {};
+            this.products.push(tmp);
+            this.products.sort();
+        }
+        else {
+            this.newProduct = {};
+            this.alertService.error('Le produit n\'a pas pu être ajouté. Il est déjà présent dans la liste.')
+        }
+        this.calcvalue(this.updateProduct);
+    }
+
+    addMO() {
+        let check = this.mainOeuvres.filter(obj => obj.id_produit == this.newMainOeuvre.id_produit);
+        if (check.length < 1) {
+            let tmp = this.newMainOeuvre;
+            this.mainOeuvres.push(tmp);
+            this.newMainOeuvre = {};
+        }
+        else {
+            this.newMainOeuvre = {};
+            this.alertService.error('Cette main d\'oeuvre n\'a pas pu être ajoutée. Elle est déjà présente dans la liste.');
         }
 
-        console.log(tmp);
-        this.loading = true;
-        this.ventesService.newVersion(tmp).subscribe(
-            data => {
-                this.loading = false;
-                this.router.navigate(['/listevente']);
-                this.alertService.success('Le produit a bien été mis a jour. ')
-            },
-            err => {
-                console.log(err);
-            }
-        )
-
-
+        this.calcvalue(this.updateProduct);
     }
 
 
-    private loadHistorique(id: string) {
-        this.ventesService.getAllById(id).subscribe(
-            data => {
-                this.historique = data;
-            },
-            err => {
-                console.log('impossible de charger l\'historique');
-            }
-        )
-    }
-
-
-    private chooseProductByLibelle(i: number) {
-
-        var prod = this.allProducts.filter(x => x.libelle == this.produitadd.libelle.libelle)[0];
-        this.produitadd = Object.assign({}, prod);
-        this.produitadd.quantite = 1;
-        this.calcpercent(this.produitadd);
+    private chooseProductByLibelle() {
+        let prod = this.allProducts.find(x => x.libelle == this.newProduct.libelle.libelle);
+        this.newProduct = Object.assign({}, prod);
+        this.newProduct.quantite = 1;
+        this.calcpercent(this.newProduct);
     }
 
     private getTotalMarge() {
-        var total = 0;
-        for (var i in this.produitsComposes) {
-            total += (+this.produitsComposes[i].marge * this.produitsComposes[i].quantite);
+        let i;
+        let total = 0;
+        for (i in this.products) {
+            total += (+this.products[i].marge * this.products[i].quantite);
         }
-        for (var i in this.mainOeuvreList) {
-            total += (+this.mainOeuvreList[i].marge * this.mainOeuvreList[i].quantite);
+        for (i in this.mainOeuvres) {
+            total += (+this.mainOeuvres[i].marge * this.mainOeuvres[i].quantite);
         }
         return total;
     }
 
 
     private getTotalPrixVente(): number {
-        //return (1* (this.getTotalPrixAchat() + this.getTotalMarge()));
-        return +((+this.getTotalPrixAchat() + +this.product.marge).toFixed(2));
+        return +((+this.getTotalPrixAchat() + +this.updateProduct.marge).toFixed(2));
     }
 
 
@@ -204,104 +232,54 @@ export class ProduitventeComponent implements OnInit {
     }
 
     supprimer(produit: any) {
-        this.produitsComposes = this.produitsComposes.filter(obj => obj !== produit);
-        console.log(this.produitsComposes)
-        this.calcvalue(this.product);
+        this.products = this.products.filter(obj => obj !== produit);
+        this.calcvalue(this.updateProduct);
     }
 
     supprimermainoeuvre(produit: any) {
-        this.mainOeuvreList = this.mainOeuvreList.filter(obj => obj !== produit);
-        this.calcvalue(this.product);
+        this.mainOeuvres = this.mainOeuvres.filter(obj => obj !== produit);
+        this.calcvalue(this.updateProduct);
     }
 
     private chooseMainOeuvreLibelle(i: number) {
-        var prod = this.mainOeuvre.filter(x => x.libelle == this.mainOeuvreAdd.libelle.libelle)[0];
-        this.mainOeuvreAdd = Object.assign({}, prod);
-        this.mainOeuvreAdd.quantite = '00:00';
-        this.calcpercent(this.mainOeuvreAdd);
+        let prod = this.allMainOeuvres.filter(x => x.libelle == this.newMainOeuvre.libelle.libelle)[0];
+        this.newMainOeuvre = Object.assign({}, prod);
+        this.newMainOeuvre.quantite = '00:00';
+        this.calcpercent(this.newMainOeuvre);
     }
 
     calcpercent(mo: any) {
-        console.log('lol', mo.marge, this.getTotalPrixAchat());
         mo.margepc = (mo.marge && this.getTotalPrixAchat()) ?
             (mo.marge / this.getTotalPrixAchat() * 100).toFixed(2) : 0;
     }
 
 
     calcvalue(mo: any) {
-        //this.verifymarge(mo);
-        console.log(mo.margepc, this.getTotalPrixAchat())
-        console.log(mo);
         mo.marge = (mo.margepc && this.getTotalPrixAchat()) ?
             (mo.margepc * this.getTotalPrixAchat() / 100).toFixed(2) : 0;
     }
 
     private getTotalPrixAchat(): number {
-        /*var total = 0;
-         for (var i in this.produitsComposes) {
-         total += (this.produitsComposes[i].prix_achat * this.produitsComposes[i].quantite);
-         }
-         return total;*/
+        let i;
+        let total: number = 0;
 
-        var total: number = 0;
-
-        for (var i in this.produitsComposes) {
-            total += (this.produitsComposes[i].prix_achat ) * this.produitsComposes[i].quantite;
+        for (i in this.products) {
+            total += (this.products[i].prix_achat) * this.products[i].quantite;
         }
 
-        for (var i in this.mainOeuvreList) {
-            total += this.calctotal(this.mainOeuvreList[i]);
+        for (i in this.mainOeuvres) {
+            total += this.calctotal(this.mainOeuvres[i]);
         }
-
         return +total.toFixed(2);
     }
 
-    addProduct() {
-        if (this.produitadd.id_produit) {
-            console.log(this.produitadd.id_produit);
-        }
-        var check = this.produitsComposes.filter(obj => obj.id_produit == this.produitadd.id_produit);
-        if (check.length < 1) {
-            let tmp = this.produitadd;
-            this.produitadd = {};
-            this.produitsComposes.push(tmp);
-            this.produitsComposes.sort();
-        }
-        else {
-            this.produitadd = {};
-            this.alertService.error('Le produit n\'a pas pu être ajouté. Il est déjà présent dans la liste.')
-        }
-
-        this.calcvalue(this.product);
-
-    }
-
-    addMO() {
-        var check = this.mainOeuvreList.filter(obj => obj.id_produit == this.mainOeuvreAdd.id_produit);
-        if (check.length < 1) {
-            let tmp = this.mainOeuvreAdd;
-            this.mainOeuvreList.push(tmp);
-
-            this.mainOeuvreAdd = {};
-        }
-        else {
-            this.mainOeuvreAdd = {};
-            this.alertService.error('Cette main d\'oeuvre n\'a pas pu être ajoutée. Elle est déjà présente dans la liste.');
-        }
-
-        this.calcvalue(this.product);
-    }
-
-
     calctotalprod(mo: any) {
-        return (mo.prix_achat && mo.quantite) ? ( mo.prix_achat) * mo.quantite : 0;
+        return (mo.prix_achat && mo.quantite) ? (mo.prix_achat) * mo.quantite : 0;
     }
 
     calctotal(mo: any): number {
-        if (mo.quantite) console.log(this.getMinutesFromTime(mo.quantite.toString()));
         return (mo.salaire_charge && this.getMinutesFromTime(mo.quantite.toString())) ?
-            (mo.salaire_charge) * this.getMinutesFromTime(mo.quantite.toString()) / 60 :
-            0;
+            (mo.salaire_charge) * this.getMinutesFromTime(mo.quantite.toString()) / 60 : 0;
     }
 
     customTrackBy(index: number, obj: any): any {
@@ -310,31 +288,10 @@ export class ProduitventeComponent implements OnInit {
 
     getMinutesFromTime(timer: string): number {
         if (timer) {
-            var t = timer.split(':');
+            let t = timer.split(':');
             return parseInt(t[0]) * 60 + parseInt(t[1]);
         }
         return 0;
-    }
-
-
-    private loadAll() {
-        this.achatsService.getAllMainOeuvre().subscribe(
-            data => {
-                this.mainOeuvre = data;
-                console.log(this.mainOeuvre)
-
-            }
-        );
-    }
-
-    private getAllProduitsVentes() {
-        // cherche dans la table produit - donc tous les produits
-        this.achatsService.getAll().subscribe(
-            produits => {
-                this.allProducts = produits;
-                console.log(this.allProducts);
-            }
-        );
     }
 
     autocompleListFormatterProducts = (data: any): SafeHtml => {
@@ -348,81 +305,20 @@ export class ProduitventeComponent implements OnInit {
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
-
-    // id - id de CE produit
-    private loadProduitsComposes(id: string) {
-        this.loading = true;
-        this.ventesService.getAllProdComp(id, this.num_version).subscribe(
-            produits => {
-                // recupere les prods comps de ce produit la
-                this.produitsComposes = produits.produits;
-                console.log(this.produitsComposes)
-
-                this.mainOeuvreList = produits.mainOeuvre;
-
-                this.loading = false;
-            }
-        );
-    }
-
-    // id - id du produit compose a charger
-    // cette methode cherche le produit dans la table 'produit' donc les prods achat
-    /*private loadEachProduct(id: string) {
-        this.achatsService.getById(id).subscribe(
-            product => {
-                // console.log("un prod: " + JSON.stringify(product));
-                this.produitsComposes.push(product[0]);
-            }
-        );
-    }*/
-
-
     private formatDate(date: Date) {
-        var day = ('0' + date.getDate()).slice(-2);
-        var month = ('0' + (date.getMonth() + 1)).slice(-2)
-        var year = date.getFullYear();
+        let day = ('0' + date.getDate()).slice(-2);
+        let month = ('0' + (date.getMonth() + 1)).slice(-2);
+        let year = date.getFullYear();
 
         return year + '-' + month + '-' + day; // format pour chrome, not tested in other browsers
     }
 
-    private formatStringToDate(date: any) {
-        var d = new Date(date);
-        return this.formatDate(d);
-    }
-
-    private getQuantity(id: string) {
-        return this.produitsComposes.filter(x => x.id_produit == id)[0].quantite;
-    }
-
-    // ======= pour l'affichage ========
-    private getMargePourcentage() {
-        return (this.updateProduct.marge / this.updateProduct.prix_achat * 100).toFixed(2);
-    }
-
-    private updatePrixVente() {
-        return (this.updateProduct.prix_achat + this.updateProduct.marge);
-    }
-
-    private updateMarge() {
-        return (this.updateProduct.prix_vente - this.updateProduct.prix_achat);
-    }
-
-    private debug() {
-        /*console.log("produits composes charges: " + JSON.stringify(this.produitsComposes));
-
-         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-         console.log(currentUser._id);
-         console.log(currentUser.firstName);*/
-        console.log('in debug');
-        console.log('prod modifie: ' + JSON.stringify(this.updateProduct));
-
-    }
 
     imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
-            var css = '@page { size: landscape; }',
+            let css = '@page { size: landscape; }',
                 head = document.head || document.getElementsByTagName('head')[0],
                 style = document.createElement('style');
 
@@ -441,5 +337,14 @@ export class ProduitventeComponent implements OnInit {
         }, 1000);
     }
 
+    private readUrl(event: any) {
+        if (event.target.files && event.target.files[0]) {
+            let reader = new FileReader();
 
+            reader.onload = (event: any) => {
+                this.url = event.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
 }
