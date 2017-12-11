@@ -574,6 +574,10 @@
                     </table>
                 </div>
             </fieldset> <!--(click)="submit()"-->
+
+            <div>
+                <label>Conditions de vente : </label><textarea rows="2" [(ngModel)]="devis.autre" name="autre" class="col-sm-12" maxlength="255"></textarea>
+            </div>
             <button *ngIf="droitsuser.ajoutdev" class="btn btn-default input-sm col-sm-offset-11"
                     type="submit"
                     [disabled]="produitDevis.length < 1 ">
