@@ -154,7 +154,6 @@ export class FicheDevisLibreComponent {
             this.devisService.getByIdLibreproduit(this.id_devis, this.num_version).subscribe(
                 data=>{
                     this.produit=data;
-                    console.log(this.produit);
 
                 }
             )

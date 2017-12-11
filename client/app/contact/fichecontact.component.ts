@@ -182,8 +182,7 @@ export class FichecontactComponent implements OnInit {
             this.id_contact = params['id_contact']
         this.contactService.getByIdLastContrat(this.id_contact).subscribe(data => {
                 this.lastcontrat = data[0];
-                console.log(this.lastcontrat);
-                console.log(this.id_contact);
+
             }
         )
         });

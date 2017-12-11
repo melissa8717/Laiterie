@@ -917,7 +917,8 @@ function getAlltotalfact(year) {
     //console.log('test6');
     db.query('SELECT *,month(date_fact) AS mois  ' +
         'FROM facture ' +
-        'WHERE  YEAR(date_fact) =? ', [year], function (error, chantier, fields) {
+        'WHERE  YEAR(date_fact) =? ' +
+        'ORDER BY  `facture`.`nfactclient` ASC ', [year], function (error, chantier, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);

@@ -162,7 +162,7 @@ function getList() {
 }
 
 function create(contactParam) {
-    console.log(contactParam)
+
     var deferred = Q.defer();
     var query = "INSERT INTO contact VALUES (NULL";
     var params = [
@@ -248,9 +248,7 @@ function getById(_id) {
 
 
 function update(contactParam) {
-    //console.log("TEST CONTACT");
-    //console.log(contactParam);
-    console.log(contactParam.n_secu);
+
     var deferred = Q.defer();
 
     var params = [
@@ -722,7 +720,6 @@ function deleteLinkQualification(id_contact) {
 
 /*----------------------------fiche client-----------------------------*/
 function getByIdchantier(_id_contact) {
-    console.log('test');
     var deferred = Q.defer();
     var sql = "SELECT contact.id_contact, chantier.reception_chantier, chantier.id_chantier, chantier.nom_chantier,listchantierfacturemois . * " +
         "FROM chantier, contact, chantierdevis, devis_version, listchantierfacturemois " +
@@ -748,7 +745,7 @@ function getByIdchantier(_id_contact) {
 }
 
 function getByIdencours(_id_contact) {
-    //console.log('test');
+
     var deferred = Q.defer();
     var sql = "SELECT chantier.id_chantier, chantier.nom_chantier,chantierdevis.id_devis,chantierdevis.num_version " +
         "FROM chantier, chantierdevis, contact " +
@@ -773,7 +770,7 @@ function getByIdencours(_id_contact) {
 /*********************fiche contact****************************/
 
 function getByIdContrat(_id_contact) {
-    //console.log('test');
+
     var deferred = Q.defer();
     var sql = "SELECT * " +
         "FROM contrat_histo " +
@@ -793,7 +790,7 @@ function getByIdContrat(_id_contact) {
 }
 
 function getByIdLastContrat(_id_contact) {
-    //console.log('test');
+
     var deferred = Q.defer();
     var sql = "SELECT * " +
         "FROM contrat_histo " +
@@ -816,7 +813,6 @@ function getByIdLastContrat(_id_contact) {
 function addcontrat(contrat_param) {
     var deferred = Q.defer();
 
-    //console.log(contrat_param);
 
     db.query("INSERT INTO contrat_histo (id_contact,date_debut, date_fin,type_contrat,tauxhoraire,tauxhorairesbrute,tauxsurcharge,panier,heure_mois,datechangement,agence_interim,id_interim) VALUES ( ? , ? , ? , ?,?,?,?,?,?,NOW(),?,? )",
         [contrat_param.id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.datechangement, contrat_param.agence_interim, contrat_param.id_interim],
@@ -834,7 +830,6 @@ function addcontrat(contrat_param) {
 function newcontrat(contrat_param, id_contact) {
     var deferred = Q.defer();
 
-    //console.log(contrat_param);
 
     db.query("INSERT INTO contrat_histo (id_contact,date_debut, date_fin,type_contrat,tauxhoraire,tauxhorairesbrute,tauxsurcharge,panier,heure_mois,datechangement,agence_interim,id_interim) VALUES ( ? , ? , ? , ?,?,?,?,?,?,NOW(),?,?)",
         [id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.datechangement, contrat_param.agence_interim, contrat_param.id_interim],
@@ -852,7 +847,7 @@ function newcontrat(contrat_param, id_contact) {
 /**************************************************************devis client*************************************************************************/
 
 function getByIdDevisclient(_id_contact) {
-    //console.log('test');
+
     var deferred = Q.defer();
     var sql = "SELECT devis_version. * , contact.nom, devis.ville, devis.nom_chantier " +
         "FROM contact, devis, devis_version " +
@@ -951,7 +946,6 @@ function deleteFormation(id_formationcontact) {
 
 function getAllCaces() {
     var deferred = Q.defer();
-    //console.log('ttest');
     db.query('SELECT * FROM `caces` ', function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
@@ -1039,7 +1033,7 @@ function upFormation(eParam) {
     ];
 
     var query = "UPDATE formationcontact SET datefor=? WHERE id_formationcontact = ?  ";
-    // console.log(query, params)
+
     db.query(query, params, function (error, results, fields) {
         if (error) {
             //console.log(+ error.message)

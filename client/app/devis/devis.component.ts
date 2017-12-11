@@ -121,7 +121,7 @@ export class DevisComponent implements OnInit {
                     this.produitDevis = data.detaille;
                     this.produitDevisOptions = data.options;
 
-                    console.log(this.produitDevisOptions);
+                    console.log(this.devis);
 
                 }
             )

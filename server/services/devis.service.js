@@ -89,8 +89,8 @@ function modify(devis_params, id, num_version) {
     //console.log(id);
     //console.log(num_version);
     //set devis, supprimer devis_detaille et option et rajouter derrière
-    db.query("UPDATE devis_version SET taux = ?, remise = ?, accompte = ?, accompte_value = ?, accompte_percent = ?, statut = 'Modifié' WHERE id_devis = ? && num_version = ?",
-        [devis_params.devis.taux, devis_params.devis.remise, devis_params.devis.accompte, devis_params.devis.accompte_value, devis_params.devis.accompte_percent, id, num_version], function (error, results, fields) {
+    db.query("UPDATE devis_version SET taux = ?, remise = ?, accompte = ?, accompte_value = ?, accompte_percent = ?, statut = 'Modifié', autre = ? WHERE id_devis = ? && num_version = ?",
+        [devis_params.devis.taux, devis_params.devis.remise, devis_params.devis.accompte, devis_params.devis.accompte_value, devis_params.devis.accompte_percent,devis_params.devis.other, id, num_version], function (error, results, fields) {
             if (error) deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
 
 
@@ -265,7 +265,7 @@ function getAll(month, year) {
 
 function getById(_id, num_version) {
     var deferred = Q.defer();
-    var sql = "SELECT * from devis_version " +
+    var sql = "SELECT *, devis_version.autre as other from devis_version " +
         "left join devis on devis.id_devis = devis_version.id_devis " +
         "left join contact on contact.id_contact = devis.id_contact " +
         //"left join chantier on chantier.id_chantier = devis.id_chantier " +
@@ -336,8 +336,8 @@ function duplicate(id_devis, devis_params) {
             //console.log("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, tva) VALUES ( ? , ? , ? , ?, ?, ?, NOW(), ?, ? )",
             //[id_devis,num_version, devis_params.devis.accompte, devis_params.devis.accompte_value, devis_params.devis.accompte_percent, false, "Dupliqué", devis_params.devis.tva, +id_devis]);
 
-            db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, taux, remise)" +
-                " VALUES ( ? , ? , ? , ?, ?, ?, NOW(), ?, ?, ? )",
+            db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, taux, remise, autre)" +
+                " VALUES ( ? , ? , ? , ?, ?, ?, NOW(), ?, ?, ? , ?)",
                 [id_devis,
                     num_version,
                     devis_params.devis.accompte,
@@ -347,6 +347,7 @@ function duplicate(id_devis, devis_params) {
                     "Dupliqué",
                     devis_params.devis.taux,
                     devis_params.devis.remise,
+                    devis_params.devis.other
                 ],
                 function (error, result, fields) {
                     if (error) {
@@ -490,7 +491,7 @@ function createLibre(bdc_param) {
 
 function create(bdc_param) {
     var deferred = Q.defer();
-    /*console.log(bdc_param.devis);
+   /* console.log(bdc_param.devis);
      console.log(bdc_param.produitDevis);
      console.log(bdc_param.produitDevisOptions);*/
 
@@ -501,9 +502,9 @@ function create(bdc_param) {
         }
 
 
-        db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, taux, remise,montantht,offre,designation)" +
-            " VALUES (? , ? , ? , ?, ?, ?, ?, ?, ?,?,?,?,? )",
-            [results.insertId, 1, bdc_param.devis.accompte, bdc_param.devis.accompteeuros, bdc_param.devis.accomptepercentage, false, new Date(), "Créé", bdc_param.devis.taux, bdc_param.devis.remise, bdc_param.devis.montantht, bdc_param.devis.offre, bdc_param.devis.designation],
+        db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, taux, remise,montantht,offre,designation,autre)" +
+            " VALUES (? , ? , ? , ?, ?, ?, ?, ?, ?,?,?,?,?,? )",
+            [results.insertId, 1, bdc_param.devis.accompte, bdc_param.devis.accompteeuros, bdc_param.devis.accomptepercentage, false, new Date(), "Créé", bdc_param.devis.taux, bdc_param.devis.remise, bdc_param.devis.montantht, bdc_param.devis.offre, bdc_param.devis.designation,bdc_param.devis.autre],
             function (error, result, fields) {
                 if (error) {
                     deferred.reject(error.name + ': ' + error.message);
