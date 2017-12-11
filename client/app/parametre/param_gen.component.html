@@ -17,9 +17,9 @@
             <div style="height: 15%; width: 100%;">
                 <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
                 <img *ngIf="!url && model.image"
-                     src="http://{{loc}}:4000/image/agence/{{model.id_agence}}/{{model.image}}" alt="..."
+                     src="{{urlImg}}/{{model.id_agence}}/{{model.image}}"
                      class="img-thumbnail col-sm-12"/>
-                <img *ngIf="!url && !model.image" src="image/test.ico" alt="..."
+                <img *ngIf="!url && !model.image" src="image/test.ico"
                      class="img-thumbnail images"/>
                 <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
             </div>
@@ -27,7 +27,7 @@
 
         <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam"
                 class="btn btn-default  col-sm-offset-11 col-sm-1"
-                (click)="modify(model); uploaderImg.queue[0].upload();"> Modifier
+                (click)="uploaderImg.queue[0].upload();"> Modifier
         </button>
 
 

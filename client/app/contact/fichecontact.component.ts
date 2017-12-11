@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 
 import {AlertService, ContactService, ParamsService} from '../_services/index';
 import {Adresse, Contact, Contrat, Mail, Qualification, Telephone, User} from '../_models/index';
+import {FileUploader} from "ng2-file-upload";
 
 @Component({
     moduleId: module.id,
@@ -11,7 +12,11 @@ import {Adresse, Contact, Contrat, Mail, Qualification, Telephone, User} from '.
 
 export class FichecontactComponent implements OnInit {
 
-    private loc = location.hostname;
+    // Image Uploader
+    private url: any;
+    private urlImg: string = 'http://' + location.hostname + ':4000/image/contact';
+    private uploaderImg: any;
+
     private currentUser: User;
     private droitsuser: any = {};
     private contact = new Contact();
@@ -31,8 +36,7 @@ export class FichecontactComponent implements OnInit {
     private contrat: any = [] = [];
     private lastcontrat: any = {};
     private newcontrat: any = {};
-    // visualisation de l'image avant envoi
-    private url: any;
+
 
     constructor(private route: ActivatedRoute,
                 private contactService: ContactService,
@@ -49,28 +53,20 @@ export class FichecontactComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadAllContrat();
-        this.loadAllLastContrat();
-        this.getQualifications();
         this.loaddroituser();
+        this.getQualifications();
 
         this.route.params.subscribe(params => {
             this.id_contact = params['id_contact'];
-            this.getContact(params['id_contact']);
+
+            this.getContact(this.id_contact);
+            this.loadAllContrat();
+            this.loadAllLastContrat();
+            this.setUploaderImg();
         });
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    }
-
-    readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
     }
 
     loaddroituser() {
@@ -84,38 +80,37 @@ export class FichecontactComponent implements OnInit {
             .subscribe(data => {
                 this.qualifications = data;
             }, error => {
-                console.log("Couldn't load the qualifications infos");
-                console.log(error);
-                this.alertService.error(error._body);
+                console.error(error);
+                this.alertService.error("Impossible de charger les qualifications.");
             });
     }
 
     private getContact(id_contact: number) {
         this.contactService.getByIdAllInfos(id_contact).subscribe(data => {
             this.contact = data.contact;
-            for (let i in data.mails) {
-                switch (data.mails[i].type_mail) {
+            for (let mail of data.mails) {
+                switch (mail.type_mail) {
                     case "perso":
-                        this.mail = data.mails[i];
+                        this.mail = mail;
                         break;
                     case "pro":
-                        this.mailPro = data.mails[i];
+                        this.mailPro = mail;
                         break;
                 }
             }
-            for (let i in data.telephones) {
-                switch (data.telephones[i].type_tel) {
+            for (let phone of data.telephones) {
+                switch (phone.type_tel) {
                     case "fixe":
-                        this.telephoneFixe = data.telephones[i];
+                        this.telephoneFixe = phone;
                         break;
                     case "mobile":
-                        this.telephoneMobile = data.telephones[i];
+                        this.telephoneMobile = phone;
                         break;
                     case "fax":
-                        this.telephoneFax = data.telephones[i];
+                        this.telephoneFax = phone;
                         break;
                     case "pro":
-                        this.telephonePro = data.telephones[i];
+                        this.telephonePro = phone;
                         break;
                 }
             }
@@ -123,7 +118,7 @@ export class FichecontactComponent implements OnInit {
             this.qualifChoisi = data.qualification;
             this.contrats = data.contrats;
 
-            let id_c = +id_contact;
+            let id_c = id_contact;
             this.mail.id_contact = id_c;
             this.mailPro.id_contact = id_c;
             this.telephoneFixe.id_contact = id_c;
@@ -149,7 +144,6 @@ export class FichecontactComponent implements OnInit {
             "qualification": this.qualifChoisi
         };
 
-        console.log(this.contact.n_secu);
         this.contactService.update(contactInfos, this.contact.id_contact).subscribe(() => {
             this.alertService.success('Contact mis à jour', true);
             if ((this.contact.contrat || this.contact.contrat != "") &&
@@ -163,47 +157,52 @@ export class FichecontactComponent implements OnInit {
             }
             this.getContact(this.id_contact);
         }, error => {
-            this.alertService.error(error._body);
+            this.alertService.error(error);
         });
     }
 
     loadAllContrat() {
-        this.route.params.subscribe(params => {
-            this.id_contact = params['id_contact']
         this.contactService.getByIdContrat(this.id_contact).subscribe(contrat => {
-                this.contrat = contrat;
-            }
-        )
+            this.contrat = contrat;
         });
     }
 
     loadAllLastContrat() {
-        this.route.params.subscribe(params => {
-            this.id_contact = params['id_contact']
         this.contactService.getByIdLastContrat(this.id_contact).subscribe(data => {
-                this.lastcontrat = data[0];
-
-            }
-        )
-        });
+            this.lastcontrat = data[0];
+        })
     }
 
     loadAdd() {
         this.contrat.push(this.lastcontrat);
-
         this.contactService.addcontrat(this.lastcontrat).subscribe(() => {
         });
     }
 
     loadNewcontrat() {
         this.contrat.push(this.newcontrat);
-
         this.contactService.newcontrat(this.id_contact, this.newcontrat).subscribe(() => {
         });
     }
 
+    private setUploaderImg() {
+        this.uploaderImg = new FileUploader({url: this.urlImg + "/" + this.id_contact});
+        this.uploaderImg.onAfterAddingFile = (file: any) => {
+            file.withCredentials = false;
+        };
+    }
 
-    imprimer() {
+    private readUrl(event: any) {
+        if (event.target.files && event.target.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (event: any) => {
+                this.url = event.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+    private imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {

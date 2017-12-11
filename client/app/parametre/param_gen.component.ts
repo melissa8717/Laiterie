@@ -16,15 +16,16 @@ import {FileUploader} from "ng2-file-upload";
 
 export class Param_genComponent {
 
-    private loc = location.hostname;
+    // Image Uploader
+    private url: any; // visualisation de l'image avant envoi
+    private uploaderImg: FileUploader;
+    private urlImg: string = 'http://' + location.hostname + ':4000/image/agence';
+
     private model: any = {};
     private print: boolean = false;
     private currentUser: User;
     private droitsuser: any = {};
-    // visualisation de l'image avant envoi
-    private url: any;
-    private uploaderImg: FileUploader;
-    private urlImg: string = 'http://' + location.hostname + ':4000/image/';
+
 
     constructor(private router: Router,
                 private alertService: AlertService,
@@ -57,7 +58,7 @@ export class Param_genComponent {
     }
 
     setUploaderImg() {
-        this.uploaderImg = new FileUploader({url: this.urlImg + "agence/" + this.model.id_agence});
+        this.uploaderImg = new FileUploader({url: this.urlImg + "/" + this.model.id_agence});
         this.uploaderImg.onAfterAddingFile = (file) => {
             file.withCredentials = false;
         };
