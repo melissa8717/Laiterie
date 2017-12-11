@@ -559,8 +559,10 @@
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
-
                     </table>
+
+                    <span class="col-sm-12" style="text-align: left;border-bottom: 1px solid white;border-top: 1px solid white;">Conditions de règlement :</span>
+                    <textarea [(ngModel)]="devis.other" name="other" style="border:none;width: 500px; height: 250px;"  class="col-sm-12"></textarea>
 
                     <button *ngIf="!print && droitsuser.validdev" class="btn btn-default input-sm col-sm-offset-11"
                             type="submit"

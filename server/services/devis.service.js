@@ -420,16 +420,16 @@ function duplicate(id_devis, devis_params) {
 
 function createLibre(bdc_param) {
     var deferred = Q.defer();
-    console.log(bdc_param);
+    //console.log(bdc_param);
 
     db.query("INSERT INTO devis (id_contact, nom_chantier, adresse, cp, ville, libre) VALUES (? , ? , ?, ?, ?, ?)", [bdc_param.devis.nomclient.id_contact, bdc_param.devis.chantier, bdc_param.devis.address, bdc_param.devis.cp, bdc_param.devis.ville, 1], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
             console.log("(2)" + error.name + ': ' + error.message);
         }
-        db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, tva, remise,montantht,offre,designation, libre)" +
-            " VALUES (? , ? , ? , ?, ?, ?, ?, ?, ?,?,?,?,?,?)",
-            [results.insertId, 1, bdc_param.devis.accompte, bdc_param.devis.accompteeuros, bdc_param.devis.accomptepercentage, false, new Date(), "Créé", bdc_param.devis.tva, bdc_param.devis.remise, bdc_param.devis.montant_ht ? bdc_param.devis.montant_ht :bdc_param.devis.total , bdc_param.devis.offre, bdc_param.devis.designation, 1],
+        db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, tva, remise,montantht,offre,designation, libre,autre)" +
+            " VALUES (? , ? , ? , ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)",
+            [results.insertId, 1, bdc_param.devis.accompte, bdc_param.devis.accompteeuros, bdc_param.devis.accomptepercentage, false, new Date(), "Créé", bdc_param.devis.tva, bdc_param.devis.remise, bdc_param.devis.montant_ht ? bdc_param.devis.montant_ht :bdc_param.devis.total , bdc_param.devis.offre, bdc_param.devis.designation, 1,bdc_param.devis.autre],
             function (error, result, fields) {
                 if (error) {
                     deferred.reject(error.name + ': ' + error.message);
@@ -731,7 +731,7 @@ function getByIdLibre(_id_devis,_num_version) {
     //console.log('test fact')
     // console.log(error.name + ': ' + error.message);
     var deferred = Q.defer();
-    var sql = "SELECT devis.adresse AS ad, devis.cp, devis.ville AS vil ,devis.nom_chantier, devis_version.* , contact.nom, contact.prenom, contact.raison_sociale, contact.adresse, contact.code_postal, contact.ville FROM contact, devis_version " +
+    var sql = "SELECT devis.adresse AS ad, devis.cp, devis.ville AS vil ,devis.nom_chantier, devis_version.* , contact.nom, contact.prenom, contact.raison_sociale, contact.adresse, contact.code_postal, contact.ville,devis_version.autre as other FROM contact, devis_version " +
         "LEFT JOIN devis ON devis.id_devis = devis_version.id_devis WHERE (devis_version.id_devis = ? AND devis_version.num_version = ?) AND devis.id_contact = contact.id_contact";
     var inserts = [_id_devis,_num_version];
 
@@ -809,7 +809,7 @@ function offerlibre(offerparams) {
 
 function getByIddupliquer(id_devis, num_version) {
     var deferred = Q.defer();
-    var sql = "SELECT devis_version . * , devis . * , contact.nom, contact.prenom, contact.raison_sociale, contact.adresse AS adr, contact.code_postal, contact.ville AS vil,devis_version .tva AS tvadevis from devis_version " +
+    var sql = "SELECT devis_version . * , devis . * , contact.nom, contact.prenom, contact.raison_sociale, contact.adresse AS adr, contact.code_postal, contact.ville AS vil,devis_version.tva AS tvadevis,devis_version.autre as other  from devis_version " +
         "left join devis on devis.id_devis = devis_version.id_devis " +
         "left join contact on contact.id_contact = devis.id_contact " +
         "WHERE devis_version.id_devis = ? and num_version = ?";
@@ -838,13 +838,13 @@ function getByIddupliquer(id_devis, num_version) {
                 var inserts = [id_devis, num_version];
 
                 sql = mysql.format(sql, inserts);
-                console.log(sql)
+                //console.log(sql)
                 db.query(sql, function (error, option, fields) {
                     if (error) {
                         deferred.reject(error.name + ': ' + error.message);
                         console.log(error.name + ': ' + error.message);
                     }
-                    console.log(option);
+                    //console.log(option);
                     var tmp = {};
                     tmp.devis = devis;
                     tmp.detaille = detaille;
@@ -873,8 +873,8 @@ function duplicatelibre(id_devis, devis_params) {
             var num_version = results[0].count + 1;
 
 
-            db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, tva, remise)" +
-                " VALUES ( ? , ? , ? , ?, ?, ?, NOW(), ?, ?, ? )",
+            db.query("INSERT INTO devis_version (id_devis, num_version, accompte, accompte_value, accompte_percent, accepted , date_version, statut, tva, remise,autre,libre)" +
+                " VALUES ( ? , ? , ? , ?, ?, ?, NOW(), ?, ?, ? , ? ,?)",
                 [   id_devis,
                     num_version,
                     devis_params.devis.accompte,
@@ -884,6 +884,8 @@ function duplicatelibre(id_devis, devis_params) {
                     "Dupliqué",
                     devis_params.devis.tvadevis,
                     devis_params.devis.remise,
+                    devis_params.devis.other,
+                    1
                 ],
                 function (error, result, fields) {
                     if (error) {
@@ -957,8 +959,8 @@ function modifylibre(devis_params, id_devis, num_version) {
     var deferred = Q.defer();
     console.log(devis_params)
     //set devis, supprimer devis_detaille et option et rajouter derrière
-    db.query( "UPDATE devis_version SET tva = ?, remise = ?, accompte = ?, accompte_value = ?, accompte_percent = ?, statut = 'Modifié' WHERE id_devis = ? && num_version = ?",
-        [devis_params.devis.tvadevis, devis_params.devis.remise, devis_params.devis.accompte, devis_params.devis.accompte_value, devis_params.devis.accompte_percent, id_devis, num_version], function (error, results, fields) {
+    db.query( "UPDATE devis_version SET tva = ?, remise = ?, accompte = ?, accompte_value = ?, accompte_percent = ?, statut = 'Modifié',autre = ? WHERE id_devis = ? && num_version = ?",
+        [devis_params.devis.tvadevis, devis_params.devis.remise, devis_params.devis.accompte, devis_params.devis.accompte_value, devis_params.devis.accompte_percent,devis_params.devis.other, id_devis, num_version], function (error, results, fields) {
             if (error) deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
 
             db.query("DELETE FROM devis_detaille_libre WHERE id_devis = ? && num_version = ?", [id_devis, num_version], function (error, results, fields) {
