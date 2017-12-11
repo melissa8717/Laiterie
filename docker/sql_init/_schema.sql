@@ -1925,7 +1925,7 @@ CREATE TABLE IF NOT EXISTS `testing` (
 --
 
 INSERT INTO `testing` (`id_valitest`, `numtest`, `datedeb`, `datefin`, `validate`, `nbi_user`, `id_entreprise`) VALUES
-(1, 'feab819fd1e0fb156f7b39bfea7409b6', NULL, NULL, NULL, 2, NULL);
+(1, 'wbat1234', NULL, NULL, NULL, 5, NULL);
 
 -- --------------------------------------------------------
 
