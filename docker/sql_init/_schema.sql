@@ -516,7 +516,7 @@ CREATE TABLE IF NOT EXISTS `contact` (
   `Date_naissance` timestamp NULL DEFAULT NULL,
   `lieu_naissance` varchar(100) DEFAULT NULL,
   `n_identite` varchar(30) DEFAULT NULL,
-  `n_secu` int(255) DEFAULT NULL,
+  `n_secu` varchar(255) DEFAULT NULL,
   `n_permis` varchar(30) DEFAULT NULL,
   `raison_sociale` varchar(100) DEFAULT NULL,
   `siret` varchar(255) DEFAULT NULL,
