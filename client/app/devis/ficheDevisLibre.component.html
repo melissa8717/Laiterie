@@ -15,15 +15,27 @@
     <div class=" container-fluid "  id="pageContent" style="z-index:10; ">
 
         <div class="row marge">
-            <img *ngIf="print" src="image/logo_wBAT_horizontal.png"  height="100" style="margin-left:-1000px;">
+            <img *ngIf="!print" [src]="config.logoPath"  style="width: -1000px;height: 100px;">
         </div>
-        <!--<div class="row marge">
-            <img *ngIf="print" src="image/logo_jd.png"  class="col-sm-2 col-sm-offset-5" style="text-align: center;margin-left:35%; top:0px; position: fixed;">
-        </div>-->
+        <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; heigh:auto; position: relative;">
+            <div *ngIf="print">
+                <img *ngIf="url" [src]="url" alt="..." class="col-sm-4"/>
+                <img *ngIf="!url && img.image" style="height: 300px; width: 200px;"
+                     src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="logo"
+                     class="img-responsive col-sm-12"/>
 
-        <!--<div *ngIf="print" style="position:fixed;z-index: -10;margin-top:35%;">
-            <img src="image/fili.png">
-        </div>-->
+            </div>
+        </div>
+
+        <div *ngIf="uploaderFili"  style="text-align: center; top:00px; position: fixed;">
+            <div *ngIf="print">
+                <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
+                <img *ngIf="!url && fili.fiigrane" style="height: 150px; width: 300px;"
+                     src="http://{{loc}}:4000/filigrane/agence/{{fili.id_agence}}/{{fili.filigrane}}" alt="filigrane"
+                     class="img-responsive col-sm-12"/>
+
+            </div>
+        </div>
 
         <div  style="margin-left: 50%;margin-top: 70px;">
             <div class="form-group " style="font-weight: bold;">

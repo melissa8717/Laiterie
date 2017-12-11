@@ -218,7 +218,7 @@
 
                                 <div class="form-group">
                                     <span *ngIf="produit.produit ? produit.produit : produit.obj" style="font-weight: bold;">{{produit.produit}}{{produit.obj}}</span><br>
-                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;" >{{produit.commentaire}}</textarea>
+                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;text-align: center;" >{{produit.commentaire}}</textarea>
                                 </div>
                             </td>
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
@@ -305,7 +305,7 @@
                             <td colspan="15" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <div class="form-group">
                                     <span style="font-weight: bold;">{{produit.produit}}</span><br>
-                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;">{{produit.commentaire}}</textarea>
+                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;text-align: center;">{{produit.commentaire}}</textarea>
                                 </div>
                             </td>
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">

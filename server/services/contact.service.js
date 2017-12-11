@@ -248,9 +248,9 @@ function getById(_id) {
 
 
 function update(contactParam) {
-    console.log("TEST CONTACT");
-    console.log(contactParam);
-    console.log(contactParam.id_contact);
+    //console.log("TEST CONTACT");
+    //console.log(contactParam);
+    console.log(contactParam.n_secu);
     var deferred = Q.defer();
 
     var params = [

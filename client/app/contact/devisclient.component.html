@@ -55,7 +55,7 @@
                     <td>{{deviss.num_version}}</td>
                     <td>{{deviss.date_version | date:'yyyy-MM-dd'}}</td>
                     <td>{{deviss.accepted}}</td>
-                    <td><button [routerLink]="['/devis' , deviss.id_devis,deviss.num_version]">Ouvrir</button></td>
+                    <td><button [routerLink]="!deviss.libre ? ['/devis' , deviss.id_devis,deviss.num_version] :['/ficheDevisLibre' , deviss.id_devis,deviss.num_version]">Ouvrir</button></td>
                 </tr>
                 </thead>
 

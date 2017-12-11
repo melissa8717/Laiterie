@@ -6,6 +6,14 @@ import {ChantierService} from "../_services/chantier.service";
 import {ParamsService} from "../_services/params.service";
 import {FactureService} from "../_services/facture.service";
 
+import {FileUploader} from 'ng2-file-upload';
+import {AppConfig} from '../app.config';
+
+
+const URL = 'http://localhost:4000/ged/';
+const URLimg = 'http://'+location.hostname+':4000/image/';
+const URLFili = 'http://'+location.hostname+':4000/filigrane/';
+
 import {User} from "../_models/user";
 import {
     startOfDay,
@@ -29,6 +37,15 @@ import {DevisService} from "../_services/devis.service";
 })
 
 export class FicheDevisLibreComponent {
+
+    public uploaderImg: FileUploader;
+    public uploaderFili: FileUploader;
+    public hasBaseDropZoneOver: boolean = false;
+
+    public fileOverBase(e: any): void {
+        this.hasBaseDropZoneOver = e;
+    }
+
     id_chantier:number;
     fact:any={};
     devis:any={};
@@ -48,6 +65,23 @@ export class FicheDevisLibreComponent {
     produitDevis: any[] = [];
     produitDevisOptions: any[] = [];
 
+    loc = location.hostname;
+    image: any[];
+    id_agence: number;
+    img: any = {};
+    fili: any = {};
+
+    logo: any = {};
+    Var: any;
+    files: any[] = [];
+    fileReader = new FileReader();
+    base64Files: any;
+
+    private sub: any;
+    section: any;
+    content: any;
+    options: any;
+
 
 
 
@@ -59,6 +93,7 @@ export class FicheDevisLibreComponent {
                 private devisService: DevisService,
                 private factureService: FactureService,
                 private alertService: AlertService,
+                private config: AppConfig,
                 private paramsService:ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -77,7 +112,7 @@ export class FicheDevisLibreComponent {
         this.produits();
         this.loadCat();
         this.produitsop();
-
+        this.loadAllagence();
 
 
     }
@@ -100,7 +135,7 @@ export class FicheDevisLibreComponent {
     }
 
     loadDevis(){
-        this.route.params.subscribe(params => {
+       this.route.params.subscribe(params => {
             this.id_devis=params['id_devis'];
             this.num_version=params['num_version'];
             this.devisService.getByIdLibre(this.id_devis, this.num_version).subscribe(
@@ -399,6 +434,63 @@ export class FicheDevisLibreComponent {
 
     totalHT(){
         return this.countTotalopt() + this.countTotaldet();
+    }
+
+    loadAllagence() {
+
+        this.paramsService.getAllAgence().subscribe(img => {
+
+            this.img = img[0];
+            console.log(this.img);
+            //console.log(this.currentUser);
+
+            this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
+            this.uploaderImg.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+        });
+
+
+
+    }
+
+    loadAllFili(){
+
+        this.paramsService.getAllFili().subscribe(fili => {
+
+            this.fili = fili[0];
+            console.log(this.fili);
+            //console.log(this.currentUser);
+
+            this.uploaderFili = new FileUploader({url: URLFili + "agence/" + this.fili.id_agence});
+            this.uploaderFili.onAfterAddingFile = (file) => {
+                file.withCredentials = false;
+            };
+
+
+        });
+    }
+
+    public onChange(event: Event) {
+        let files = event.target['files'];
+        if (event.target['files']) {
+            //console.log(event.target['files']);
+            this.readFiles(event.target['files'], 0);
+        }
+    };
+
+    private readFiles(files: any[], index: number) {
+        let file = files[index];
+        this.fileReader.onload = () => {
+            this.base64Files.push(this.fileReader.result);
+            if (files[index + 1]) {
+                this.readFiles(files, index + 1);
+            } else {
+                console.log('loaded all files');
+            }
+        };
+        this.fileReader.readAsDataURL(file);
     }
 
 }

@@ -1,5 +1,6 @@
 <div id="devis" style="border:none;-webkit-print-color-adjust: exact;" >
 
+
     <my-header *ngIf="!print" [title]='"Devis"' [img]='"image/menu/gestion_grand_gris.png"'></my-header>
 
 
@@ -15,11 +16,10 @@
     <div class=" container-fluid "  id="pageContent" style="background-color: white;">
 
 
-
         <div class="row marge">
-            <img *ngIf="!print" [src]="config.logoPath"  style="width: 200px;">
+            <img *ngIf="!print" [src]="config.logoPath"  style="width: -1000px;height: 100px;">
         </div>
-        <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; top:30px; position: fixed;">
+        <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; heigh:auto; position: relative;">
             <div *ngIf="print">
                 <img *ngIf="url" [src]="url" alt="..." class="col-sm-4"/>
                 <img *ngIf="!url && img.image" style="height: 300px; width: 200px;"
@@ -498,7 +498,7 @@
 
 
 
-        <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter" style="height: 50px;page-break-before:always;page-break-inside: avoid;">
+        <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter" style="height: 60px;page-break-before:always;page-break-inside: avoid;">
 
 
 

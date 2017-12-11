@@ -148,6 +148,8 @@ export class FichecontactComponent implements OnInit {
             "adresse": this.adresse,
             "qualification": this.qualifChoisi
         };
+
+        console.log(this.contact.n_secu);
         this.contactService.update(contactInfos, this.contact.id_contact).subscribe(() => {
             this.alertService.success('Contact mis à jour', true);
             if ((this.contact.contrat || this.contact.contrat != "") &&
