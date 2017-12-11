@@ -57,7 +57,6 @@ function getFooter(req, res) {
             res.send(footer);
         })
         .catch(function (err) {
-            console.log(err);
             res.status(400).send(err);
         });
 }
@@ -74,7 +73,6 @@ function addagence(req, res) {
 }
 
 function getAllAgence(req, res) {
-    //console.log("test");
     paramsService.getAllAgence()
         .then(function (agence) {
             res.send(agence);
@@ -85,7 +83,6 @@ function getAllAgence(req, res) {
 }
 
 function getAllFili(req, res) {
-    //console.log("test");
     paramsService.getAllFili()
         .then(function (agence) {
             res.send(agence);
@@ -96,7 +93,6 @@ function getAllFili(req, res) {
 }
 
 function updateAgence(req, res) {
-    //console.log("test3");
     paramsService.updateAgence(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -109,7 +105,6 @@ function updateAgence(req, res) {
 /*----------------------------------TVA----------------------------------------*/
 
 function getAllTVA(req, res) {
-    //console.log("test");
     paramsService.getAllTVA()
         .then(function (agence) {
             res.send(agence);
@@ -120,7 +115,6 @@ function getAllTVA(req, res) {
 }
 
 function updateTva(req, res) {
-    //console.log("test3");
     paramsService.updateTva(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -133,7 +127,6 @@ function updateTva(req, res) {
 /*-------------------Catégories produits------------------------------*/
 
 function getAllCat(req, res) {
-    //console.log("test");
     paramsService.getAllCat()
         .then(function (agence) {
             res.send(agence);
@@ -144,7 +137,6 @@ function getAllCat(req, res) {
 }
 
 function updateCat(req, res) {
-    //console.log("test3");
     paramsService.updateCat(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -155,7 +147,6 @@ function updateCat(req, res) {
 }
 
 function addCat(req, res) {
-    //console.log("test");
     paramsService.addCat(req.body)
         .then(function (agen) {
             res.send(agen);
@@ -166,7 +157,6 @@ function addCat(req, res) {
 }
 
 function getAllUnite(req, res) {
-    //console.log("test");
     paramsService.getAllUnite()
         .then(function (agence) {
             res.send(agence);
@@ -177,7 +167,6 @@ function getAllUnite(req, res) {
 }
 
 function updateUnite(req, res) {
-    //console.log("test3");
     paramsService.updateUnite(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -188,7 +177,6 @@ function updateUnite(req, res) {
 }
 
 function addUnite(req, res) {
-    //console.log("test");
     paramsService.addUnite(req.body)
         .then(function (agen) {
             res.send(agen);
@@ -200,7 +188,6 @@ function addUnite(req, res) {
 
 /*-----------------condition générale vente --------------------------------*/
 function getAllVente(req, res) {
-    //console.log("test");
     paramsService.getAllVente()
         .then(function (agence) {
             res.send(agence);
@@ -211,7 +198,6 @@ function getAllVente(req, res) {
 }
 
 function updateVente(req, res) {
-    //console.log("test3");
     paramsService.updateVente(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -232,7 +218,6 @@ function addVente(req, res) {
 }
 
 function addfraisprev(req, res) {
-    console.log("test frais");
     paramsService.addfraisprev(req.body)
         .then(function (agen) {
             res.send(agen);
@@ -243,7 +228,6 @@ function addfraisprev(req, res) {
 }
 
 function getAllFrais(req, res) {
-    //console.log("test");
     paramsService.getAllFrais()
         .then(function (agence) {
             res.send(agence);
@@ -254,7 +238,6 @@ function getAllFrais(req, res) {
 }
 
 function addLicence(req, res) {
-    //console.log("test3");
     paramsService.addLicence(req.body)
         .then(function (licence) {
             res.send(licence);
@@ -266,7 +249,6 @@ function addLicence(req, res) {
 }
 
 function getAllHome(req, res) {
-    //console.log("test");
     paramsService.getAllHome()
         .then(function (agence) {
             res.send(agence);
@@ -277,7 +259,6 @@ function getAllHome(req, res) {
 }
 
 function getByIduser(req, res) {
-    //console.log('dieu');
     paramsService.getByIduser(req.params.id)
         .then(function (chantier) {
             if (chantier) {
@@ -292,19 +273,16 @@ function getByIduser(req, res) {
 }
 
 function getByIdDroit(req, res) {
-    //console.log("toto");
     paramsService.getByIdDroit(req.params.id)
         .then(function (msg) {
             res.send(msg);
         })
         .catch(function (err) {
-            console.log(err);
             res.status(400).send(err);
         });
 }
 
 function deleteuser(req, res) {
-    //console.log('test1');
     paramsService.deleteuser(req.params.id)
         .then(function () {
             res.sendStatus(200);
@@ -315,7 +293,6 @@ function deleteuser(req, res) {
 }
 
 function updateuser(req, res) {
-    //console.log("test3");
     paramsService.updateuser(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -356,7 +333,6 @@ function getComlic(req, res) {
 }
 
 function addFormation(req, res) {
-    //console.log("test");
     paramsService.addFormation(req.body)
         .then(function (agen) {
             res.send(agen);
@@ -367,7 +343,6 @@ function addFormation(req, res) {
 }
 
 function getAllFormation(req, res) {
-    //console.log("test");
     paramsService.getAllFormation()
         .then(function (agence) {
             res.send(agence);
@@ -378,7 +353,6 @@ function getAllFormation(req, res) {
 }
 
 function getAlarmecaces(req, res) {
-    //console.log("test");
     paramsService.getAlarmecaces()
         .then(function (agence) {
             res.send(agence);
@@ -389,7 +363,6 @@ function getAlarmecaces(req, res) {
 }
 
 function getAlarmeformation(req, res) {
-    //console.log("test");
     paramsService.getAlarmeformation()
         .then(function (agence) {
             res.send(agence);
