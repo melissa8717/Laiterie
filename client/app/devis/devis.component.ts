@@ -1,26 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-
-import {AlertService, AuthenticationService} from '../_services/index';
-import {FormBuilder} from '@angular/forms';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {DevisService} from '../_services/devis.service';
-import {VentesService} from '../_services/ventes.service';
-import {ContactService} from '../_services/contact.service';
-import {ChantierService} from '../_services/chantier.service';
-import {FactureService} from '../_services/facture.service';
-import {ParamsService} from '../_services/params.service';
-import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
 import {AppConfig} from '../app.config';
+import {AlertService, ChantierService, ContactService, DevisService, FactureService, ParamsService, VentesService} from '../_services/index';
+import {User} from '../_models/user';
 
 
-const URL = 'http://localhost:4000/ged/';
-const URLimg = 'http://'+location.hostname+':4000/image/';
-const URLFili = 'http://'+location.hostname+':4000/filigrane/';
-
-
-
+const URLimg = 'http://' + location.hostname + ':4000/image/';
+const URLFili = 'http://' + location.hostname + ':4000/filigrane/';
 
 @Component({
     moduleId: module.id,
@@ -29,63 +17,35 @@ const URLFili = 'http://'+location.hostname+':4000/filigrane/';
 
 export class DevisComponent implements OnInit {
 
-    public uploaderImg: FileUploader;
-    public uploaderFili: FileUploader;
-    public hasBaseDropZoneOver: boolean = false;
+    private uploaderImg: FileUploader;
+    private uploaderFili: FileUploader;
 
-    public fileOverBase(e: any): void {
-        this.hasBaseDropZoneOver = e;
-    }
+    private devis: any = {};
 
+    private produit: any = {};
 
-
-    devis: any = {};
-
-    produit: any = {};
-
-    produits: {}[] = [];
-    chantiers: {}[] = [];
-    clients: {}[] = [];
-    fact: any = {};
-    model: any = {};
-    address = false;
-    currentUser: User;         //
-    droitsuser: any = {};         //
-    _id: any;                   //
-    data: any = {};
-
-    loc = location.hostname;
-    image: any[];
-    id_agence: number;
-    img: any = {};
-
-    fili: any = {};
-
-
-
-    num_version: number;
-
-    produitDevis: any[] = [];
-    produitDevisOptions: any[] = [];
-
-    private sub: any;
-    print: boolean = false;
-    section: any;
-    content: any;
-    options: any;
-    cgv: any = {};
-    id: number;
-    ged: any[];
-    logo: any = {};
-    Var: any;
-    files: any[] = [];
-    fileReader = new FileReader();
-    base64Files: any;
+    private produits: {}[] = [];
+    private chantiers: {}[] = [];
+    private clients: {}[] = [];
+    private fact: any = {};
+    private address = false;
+    private currentUser: User;
+    private droitsuser: any = {};
+    private loc = location.hostname;
+    private img: any = {};
+    private fili: any = {};
+    private num_version: number;
+    private produitDevis: any[] = [];
+    private produitDevisOptions: any[] = [];
+    private print: boolean = false;
+    private cgv: any = {};
+    private id: number;
+    private fileReader = new FileReader();
+    private base64Files: any;
 
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
-                private authenticationService: AuthenticationService,
                 private alertService: AlertService,
                 private contactService: ContactService,
                 private chantierService: ChantierService,
@@ -93,14 +53,12 @@ export class DevisComponent implements OnInit {
                 private venteService: VentesService,
                 private factureService: FactureService,
                 private paramsService: ParamsService,
-                private builder: FormBuilder,
                 private _sanitizer: DomSanitizer,
                 private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit(): void {
-        //let timer = Observable.timer(2000,5000);
         this.loadAllChantiers();
         this.loadAllClients();
         this.loadAllProduits();
@@ -111,43 +69,23 @@ export class DevisComponent implements OnInit {
         this.loadAllFili();
 
 
-        this.sub = this.route.params.subscribe(params => {
-            this.id = params['id'];
-            this.num_version = params['num_version'];
-            //console.log(this.num_version)
-            this.devisService.getById(this.id, this.num_version).subscribe(
-                (data: any) => {
-                    this.devis = data.devis[0];
-                    this.produitDevis = data.detaille;
-                    this.produitDevisOptions = data.options;
-
-                    console.log(this.devis);
-
-                }
-            )
-        });
-
         this.route.params.subscribe(params => {
             this.id = params['id'];
+            this.num_version = params['num_version'];
 
+            this.devisService.getById(this.id, this.num_version).subscribe((data: any) => {
+                this.devis = data.devis[0];
+                this.produitDevis = data.detaille;
+                this.produitDevisOptions = data.options;
+            })
         });
     }
 
-    loaddroituser() {                                 //
+    loaddroituser() {
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-
             this.droitsuser = data[0];
-
-            //console.log(this.data);
-            //onsole.log(this.currentUser._id);
-
         });
     }
-
-
-    //getdevis
-    //getalldevisprod
-    //getalldevisoptions
 
 
     ajouter() {
@@ -159,7 +97,7 @@ export class DevisComponent implements OnInit {
         tmp.option = this.produit.option;
         tmp.ref = this.produit.ref;
 
-        var check = this.produitDevis.filter(obj => obj.ref == this.produit.obj.id_prc);
+        let check = this.produitDevis.filter(obj => obj.ref == this.produit.obj.id_prc);
 
         if (check.length < 1) {
             if (tmp.obj.id_prc) {
@@ -168,8 +106,7 @@ export class DevisComponent implements OnInit {
                 }
                 else {
                     this.produitDevis.push(tmp);
-                    for (var i = 0; i < this.produitDevis.length; i++) {
-                        console.log(this.produitDevis[i]);
+                    for (let i = 0; i < this.produitDevis.length; i++) {
                         let qte = this.produitDevis[i].qte;
                         let prix = this.produitDevis[i].prix;
                         this.produitDevis[i].qte = qte;
@@ -191,7 +128,6 @@ export class DevisComponent implements OnInit {
         this.produit.prix = null;
         this.produit = {};
         this.accomptepercent();
-        //console.log(this.produitDevis);
     }
 
     supprimer(produit: any) {
@@ -210,24 +146,14 @@ export class DevisComponent implements OnInit {
         this.devis.accompteeuros = (this.devis.accomptepercentage * this.totalTVA() / 100).toFixed(2);
     }
 
-    test() {
-        console.log(this.devis)
-        console.log(this.produit)
-        this.produit.qte = 1;
-        this.produit.prix = this.produit.obj.prix_vente;
-        this.produit.unite = this.produit.obj.unite;
-        this.produit.ref = this.produit.obj.id_prc;
-    }
 
     private loadAllChantiers() {
         this.chantierService.getAll().subscribe(chantiers => {
             this.chantiers = chantiers;
-
         });
     }
 
     private loadAllClients() {
-        // console.log("on envoie la requette");
         this.contactService.getAllClients().subscribe(clients => {
             this.clients = clients;
 
@@ -235,12 +161,9 @@ export class DevisComponent implements OnInit {
     }
 
     loadAllProduits() {
-        this.venteService.getAll().subscribe(
-            data => {
-                this.produits = data;
-                //  console.log(this.produits);
-            }
-        )
+        this.venteService.getAll().subscribe(data => {
+            this.produits = data;
+        })
     }
 
     countTotal() {
@@ -321,22 +244,20 @@ export class DevisComponent implements OnInit {
 
     getAddress(id: any) {
         if (id != null) {
-            this.contactService.getAddress(id).subscribe(
-                data => {
-                    if (data[0]) {
-                        this.devis.address = data[0].adresse;
-                        this.devis.cp = data[0].code_postal;
-                        this.devis.ville = data[0].ville;
-                        this.address = false
-                    }
-                    else {
-                        this.devis.address = '';
-                        this.devis.cp = '';
-                        this.devis.ville = '';
-                        this.address = true;
-                    }
+            this.contactService.getAddress(id).subscribe(data => {
+                if (data[0]) {
+                    this.devis.address = data[0].adresse;
+                    this.devis.cp = data[0].code_postal;
+                    this.devis.ville = data[0].ville;
+                    this.address = false
                 }
-            )
+                else {
+                    this.devis.address = '';
+                    this.devis.cp = '';
+                    this.devis.ville = '';
+                    this.address = true;
+                }
+            })
         }
         else {
             this.address = false;
@@ -344,18 +265,15 @@ export class DevisComponent implements OnInit {
     }
 
     submit() {
-
         let devisparams: any = {};
         devisparams.devis = this.devis;
         devisparams.produitDevis = this.produitDevis;
         devisparams.produitDevisOptions = this.produitDevisOptions;
 
-        console.log(devisparams);
-        this.devisService.add(devisparams).subscribe(
-            data => {
-                this.router.navigate(['/listedevis']);
-                this.alertService.success('Le devis a été créé avec succès.');
-            });
+        this.devisService.add(devisparams).subscribe(() => {
+            this.router.navigate(['/listedevis']);
+            this.alertService.success('Le devis a été créé avec succès.');
+        });
     }
 
     autocompleListFormatterProducts = (data: any): SafeHtml => {
@@ -364,8 +282,7 @@ export class DevisComponent implements OnInit {
     };
 
     autocompleListFormatterContactValue = (data: any): SafeHtml => {
-        let html = `${data.raison_sociale ? data.raison_sociale : data.nom + ' ' + data.prenom}`;
-        return html;
+        return `${data.raison_sociale ? data.raison_sociale : data.nom + ' ' + data.prenom}`;
     };
 
     autocompleListFormatterContact = (data: any): SafeHtml => {
@@ -383,11 +300,6 @@ export class DevisComponent implements OnInit {
     imprimer() {
         this.alertService.clear();
 
-
-        var css = '@page ',
-            pageFooter = document.getElementById('pageFooter');
-
-
         this.print = true;
         setTimeout(() => {
 
@@ -397,7 +309,6 @@ export class DevisComponent implements OnInit {
     }
 
     loadAllFooter() {
-        //console.log(this.recherche.seek)
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
 
@@ -406,30 +317,18 @@ export class DevisComponent implements OnInit {
     }
 
     loadCat() {
-        console.log(this.cgv)
-
         this.paramsService.getAllVente().subscribe(cgv => {
-
             this.cgv = cgv[0];
-
-
         });
     }
 
     acceptOffer(option: any) {
-        console.log(option);
-        this.devisService.acceptOffer(option).subscribe(
-            data => {
-
-            }
-        );
+        this.devisService.acceptOffer(option).subscribe();
     }
 
 
     public onChange(event: Event) {
-        let files = event.target['files'];
         if (event.target['files']) {
-            //console.log(event.target['files']);
             this.readFiles(event.target['files'], 0);
         }
     };
@@ -440,8 +339,6 @@ export class DevisComponent implements OnInit {
             this.base64Files.push(this.fileReader.result);
             if (files[index + 1]) {
                 this.readFiles(files, index + 1);
-            } else {
-                console.log('loaded all files');
             }
         };
         this.fileReader.readAsDataURL(file);
@@ -449,50 +346,32 @@ export class DevisComponent implements OnInit {
 
 
     loadAllagence() {
-
         this.paramsService.getAllAgence().subscribe(img => {
-
             this.img = img[0];
-            console.log(this.img);
-            //console.log(this.currentUser);
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
-
         });
-
-
-
     }
 
-    loadAllFili(){
-
+    loadAllFili() {
         this.paramsService.getAllFili().subscribe(fili => {
-
             this.fili = fili[0];
-            console.log(this.fili);
-            //console.log(this.currentUser);
 
             this.uploaderFili = new FileUploader({url: URLFili + "agence/" + this.fili.id_agence});
             this.uploaderFili.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
-
-
         });
     }
 
     countNTVAZ() {
         let total = 0;
-
         for (let produit of this.produitDevis) {
-
             if ((produit.taux == 0) || (parseInt(produit.tva) == 0)) {
                 total += 0;
-
-
             }
         }
         return total;
@@ -505,7 +384,7 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -521,7 +400,7 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -537,7 +416,7 @@ export class DevisComponent implements OnInit {
 
 
             if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
 
             }
@@ -553,7 +432,7 @@ export class DevisComponent implements OnInit {
 
 
             if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
             }
         }
         return total;
@@ -581,7 +460,7 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -595,7 +474,7 @@ export class DevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -610,7 +489,7 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
 
             }
@@ -625,7 +504,7 @@ export class DevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
             }
         }
@@ -635,13 +514,13 @@ export class DevisComponent implements OnInit {
 
 
     countAllTVA() {
-        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 ) + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
+        return ((this.countNTVA() ? this.countNTVA() : 0) + (this.countNTVAC() ? this.countNTVAC() : 0) + (this.countNTVAD() ? this.countNTVAD() : 0)) + (this.countNTVAs() ? this.countNTVAs() : 0);
 
 
     }
 
     countAllTVAO() {
-        return ((this.countNTVAO() ? this.countNTVAO() : 0 ) + (this.countNTVACO() ? this.countNTVACO() : 0 ) + (this.countNTVADO() ? this.countNTVADO() : 0 )) + (this.countNTVAsO() ? this.countNTVAsO() : 0 );
+        return ((this.countNTVAO() ? this.countNTVAO() : 0) + (this.countNTVACO() ? this.countNTVACO() : 0) + (this.countNTVADO() ? this.countNTVADO() : 0)) + (this.countNTVAsO() ? this.countNTVAsO() : 0);
 
 
     }

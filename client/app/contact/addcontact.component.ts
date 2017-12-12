@@ -13,33 +13,29 @@ import {Adresse, Contact, Mail, Qualification, Telephone, User} from '../_models
 })
 
 export class AddcontactComponent implements OnInit {
-    types = ["Employé", "Fournisseur", "Client",
+    private types = ["Employé", "Fournisseur", "Client",
         "Entreprise de travaux", "Laboratoire d'analyse",
         "Transporteur", "Site de traitement", "Ouvrier"];
-    contrats = ["CDI", "CDD", "Intérimaire",
+    private contrats = ["CDI", "CDD", "Intérimaire",
         "Stagiaire", "Contrat de professionnalisation"];
-    statuts = ["User", "Superuser", "Admin"];
-    qualifications: Qualification[];
-    qualifChoisi: number;
+    private statuts = ["User", "Superuser", "Admin"];
 
-    contact = new Contact();
-    mail = new Mail();
-    mailPro = new Mail();
-    telephoneFixe = new Telephone();
-    telephoneMobile = new Telephone();
-    telephonePro = new Telephone();
-    telephoneFax = new Telephone();
-    adresse = new Adresse();
+    private qualifications: Qualification[];
+    private qualifChoisi: number;
 
-    image: File;
-    ged: File[];
+    private contact = new Contact();
+    private mail = new Mail();
+    private mailPro = new Mail();
+    private telephoneFixe = new Telephone();
+    private telephoneMobile = new Telephone();
+    private telephonePro = new Telephone();
+    private telephoneFax = new Telephone();
+    private adresse = new Adresse();
 
-    loading = false;
-    returnUrl: string;
-    currentUser: User;         //
-    droitsuser: any = {};         //
-    _id: any;                   //
-    data: any = {};               //
+    private loading = false;
+    private returnUrl: string;
+    private currentUser: User;
+    private droitsuser: any = {};
 
 
     constructor(private route: ActivatedRoute,
@@ -99,27 +95,12 @@ export class AddcontactComponent implements OnInit {
             "adresse": this.adresse,
             "qualification": this.qualifChoisi
         };
-        this.contactService.create(contactInfos)
-            .subscribe(data => {
-                let uploads = [];
-                if (this.image) {
-                    uploads.push(this.contactService.upload("/contacts/" + data + "/image/upload", this.image));
-                }
-                for (let i in this.ged) {
-                    uploads.push(this.contactService.upload("/contacts/" + data + "/ged/upload", this.ged[i]));
-                }
-                Promise.all(uploads)
-                    .then(() => {
-                        this.alertService.success('Nouveau contact créé', true);
-                        this.loading = false;
-                    }).catch((error) => {
-                    this.alertService.error(error._body);
-                    this.loading = false;
-                });
-            }, error => {
-                this.alertService.error(error._body);
-                this.loading = false;
-            });
+        this.contactService.create(contactInfos).subscribe(() => {
+            this.alertService.success('Nouveau contact créé', true);
+            this.loading = false;
+        }, error => {
+            this.alertService.error(error);
+            this.loading = false;
+        });
     }
-
 }
