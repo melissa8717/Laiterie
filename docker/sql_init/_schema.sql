@@ -387,6 +387,8 @@ CREATE TABLE IF NOT EXISTS `cgv` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+INSERT INTO `cgv` (`texte`) VALUES ('À remplir');
+
 -- --------------------------------------------------------
 
 --
