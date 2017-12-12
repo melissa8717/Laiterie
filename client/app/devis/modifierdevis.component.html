@@ -195,7 +195,7 @@
                         <tr>
                             <td colspan="2"></td>
                             <td colspan="4"><textarea rows="2" class="col-sm-12" placeholder="Commentaire" name="commentaire" [(ngModel)]="produit.commentaire"></textarea></td>
-                            <td></td>
+                            <td colspan="3"></td>
                         </tr>
 
 
@@ -265,17 +265,17 @@
                         </tr>
 
                         <tr>
-                            <td colspan="6" class="total" style="text-align: right;">HT :</td>
+                            <td colspan="8" class="total" style="text-align: right;">HT :</td>
                             <td class="total">{{countTotal() | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
 
                         <tr *ngIf="devis.remise">
-                            <td colspan="6" class="total" style="text-align: right;">Total après remise :</td>
+                            <td colspan="8" class="total" style="text-align: right;">Total après remise :</td>
                             <td class="total">{{countTotalRemise() | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
                         <tr *ngIf="((countNTVAZ()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td   style="text-align: left;" >TVA 0 %</td>
                                 <td  style="text-align: right;">
                                     {{countNTVAZ() | currency:'EUR':true:'1.2-2'}}
@@ -287,7 +287,7 @@
 
                         <tr *ngIf="((countNTVA()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td   style="text-align: left;" >TVA 2.1 %</td>
                                 <td   style="text-align: right;" >
                                     {{countNTVA() | currency:'EUR':true:'1.2-2'}}
@@ -298,7 +298,7 @@
                         </tr>
                         <tr *ngIf="((countNTVAC()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td    style="text-align: left;" >TVA 5.5 %</td>
                                 <td  style="text-align: right;" >
                                     {{countNTVAC() | currency:'EUR':true:'1.2-2' }}
@@ -309,7 +309,7 @@
                         </tr>
                         <tr *ngIf="((countNTVAD()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td  style="text-align: left;" >TVA 10 %</td>
                                 <td  style="text-align: right;" >
                                     {{countNTVAD() | currency:'EUR':true:'1.2-2' }}
@@ -320,7 +320,7 @@
                         </tr>
                         <tr *ngIf="((countNTVAs()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td  style="text-align: left;" >TVA 20 %</td>
                                 <td  style="text-align: right;" >
                                     {{countNTVAs() | currency:'EUR':true:'1.2-2' }}
@@ -331,10 +331,9 @@
                         </tr>
 
 
-                        <br />
 
                         <tr >
-                            <td colspan="5"></td>
+                            <td colspan="7"></td>
                             <td   style="text-align: left;">
                                 Total TVA :
                             </td>
@@ -345,7 +344,7 @@
 
 
                         <tr>
-                            <td colspan="6" class="total" style="text-align: right;">TTC :</td>
+                            <td colspan="8" class="total" style="text-align: right;">TTC :</td>
                             <td class="total">{{countTotalprodTVA() + countAllTVA()  | currency:'EUR':true:'1.2-2'}}</td>
                         </tr>
 
@@ -419,7 +418,9 @@
                                 </div>
                             </td>
                             <td>
+                                <div class="form-group">
                                 <span>{{produitDevisOptions[i].qte_devis * produitDevisOptions[i].prix_devis  | currency:'EUR':true:'1.2-2'}}</span>
+                                </div>
                             </td>
 
                             <td *ngIf="!print">
@@ -432,18 +433,18 @@
 
                         </tr>
                         <tr *ngIf="produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right;">HT:</td>
+                            <td colspan="8" class="total" style="text-align: right;">HT:</td>
                             <td class="total">{{countTotalOptions() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="produitDevisOptions.length> 0 && devis.remise">
-                            <td colspan="6" class="total" style="text-align: right;">Total après remise :</td>
+                            <td colspan="8" class="total" style="text-align: right;">Total après remise :</td>
                             <td class="total">{{countTotalOptionRemise() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="((countNTVAZO()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td   style="text-align: left;" >TVA 0 %</td>
                                 <td  style="text-align: right;">
                                     {{countNTVAZO() | currency:'EUR':true:'1.2-2'}}
@@ -455,7 +456,7 @@
 
                         <tr *ngIf="((countNTVAO()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td   style="text-align: left;" >TVA 2.1 %</td>
                                 <td   style="text-align: right;" >
                                     {{countNTVAO() | currency:'EUR':true:'1.2-2'}}
@@ -466,7 +467,7 @@
                         </tr>
                         <tr *ngIf="((countNTVACO()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td    style="text-align: left;" >TVA 5.5 %</td>
                                 <td  style="text-align: right;" >
                                     {{countNTVACO() | currency:'EUR':true:'1.2-2' }}
@@ -477,7 +478,7 @@
                         </tr>
                         <tr *ngIf="((countNTVADO()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td  style="text-align: left;" >TVA 10 %</td>
                                 <td  style="text-align: right;" >
                                     {{countNTVADO() | currency:'EUR':true:'1.2-2' }}
@@ -488,7 +489,7 @@
                         </tr>
                         <tr *ngIf="((countNTVAsO()>0) )">
                             <ng-container >
-                                <td colspan="5"></td>
+                                <td colspan="7"></td>
                                 <td  style="text-align: left;" >TVA 20 %</td>
                                 <td  style="text-align: right;" >
                                     {{countNTVAsO() | currency:'EUR':true:'1.2-2' }}
@@ -499,10 +500,9 @@
                         </tr>
 
 
-                        <br />
 
-                        <tr >
-                            <td colspan="5"></td>
+                        <tr *ngIf="produitDevisOptions.length> 0">
+                            <td colspan="7"></td>
                             <td   style="text-align: left;">
                                 Total TVA :
                             </td>
@@ -512,7 +512,7 @@
                         </tr>
                         <br />
                         <tr *ngIf="produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right;">TTC Options :</td>
+                            <td colspan="8" class="total" style="text-align: right;">TTC Options :</td>
                             <td class="total">{{countTotalOptionsTVA() + countAllTVAO() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
@@ -522,20 +522,20 @@
                         <br />
 
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                            <td colspan="8" class="total" style="text-align: right; background-color: #0f0f0f;
                                 color: white">Total HT :</td>
                             <td class="total">{{total() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise">
-                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                            <td colspan="8" class="total" style="text-align: right; background-color: #0f0f0f;
                                 color: white">Total après remise :</td>
                             <td class="total">{{totalRemiseTVA() | currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         </tr>
 
                         <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0">
-                            <td colspan="6" class="total" style="text-align: right; background-color: #0f0f0f;
+                            <td colspan="8" class="total" style="text-align: right; background-color: #0f0f0f;
                                 color: white">TTC Total :</td>
                             <td class="total">{{totalfinal() + countAllTVAO() + countAllTVA()| currency:'EUR':true:'1.2-2'}}</td>
                             <!--calcul la somme de toutes quantités ajouté au bon de commande-->

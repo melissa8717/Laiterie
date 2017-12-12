@@ -102,13 +102,13 @@
             <fieldset class="marge1">
 
                 <div class="table-responsive" style="min-height: 300px;">
-                    <table style="width: 100%;font-size:18px;z-index:1;margin-bottom:50px;height:100%;" >
+                    <table  class="table table-bordered" >
 
 
                         <thead style="border:1px solid black; background-color: grey;height: 30px;">
                         <th style="border-right: 1px solid black;" class="col-sm-1">Option</th>
                         <th  style="border-right: 1px solid black;" class="col-sm-1">Reference</th>
-                        <th  style="border-right: 1px solid black;" colspan="15" class="col-sm-4">Désignation</th>
+                        <th  style="border-right: 1px solid black;"  class="col-sm-4">Désignation</th>
                         <th  style="border-right: 1px solid black;" class="col-sm-1">Unité</th>
                         <th  style="border-right: 1px solid black;" class="col-sm-1">* Qte</th>
                         <th style="border-right: 1px solid black;" class="col-sm-1" *ngIf="!devis.tvadevis">TVA en %</th>
@@ -138,9 +138,9 @@
                                 </div>
                             </td>
 
-                            <td colspan="15" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
 
-                                <div colspan="15" class="form-group">
+                                <div  class="form-group">
                                     <input style="border:none;"
                                            value-property-name="id"
                                            display-property-name="libelle"
@@ -149,10 +149,10 @@
                                            name="produit"
                                            [(ngModel)]="produit.obj"
                                            (ngModelChange)="test()"
-                                    >
+                                    ><br>
 
-                                    <input style="border:none;" class="form-control input-sm"  type="text" name="commentaire"
-                                           [(ngModel)]="produit.commentaire"  placeholder="commentaire">
+                                    <textarea style="border:none;"    name="commentaire"
+                                              [(ngModel)]="produit.commentaire"  placeholder="commentaire"></textarea>
                                 </div>
                             </td>
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
@@ -194,7 +194,7 @@
                             <td *ngIf="!print && droitsuser.ajoutdev" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
                                 <button class="btn btn-default input-sm col-sm-offset-1"
                                         (click)="ajouter()"
-                                        [disabled]="!produit.obj"> Ajouter
+                                        [disabled]="!produit.obj && !produit.prix"> Ajouter
                                 </button>
                             </td>
 
@@ -209,16 +209,16 @@
 
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
 
-                                <div class="form-group">
-                                    <input name="reference{{i}}" type="number" [(ngModel)]="produitDevis[i].reference">
+                                <div class="form-group" >
+                                    <input name="reference{{i}}" type="number" [(ngModel)]="produitDevis[i].reference"  >
                                 </div>
                             </td>
 
-                            <td  colspan="15" style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
+                            <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
 
                                 <div class="form-group">
-                                    <span *ngIf="produit.produit ? produit.produit : produit.obj" style="font-weight: bold;">{{produit.produit}}{{produit.obj}}</span><br>
-                                    <textarea *ngIf="produit.commentaire" rows="6" class="col-sm-12" style="border:none;text-align: center;" >{{produit.commentaire}}</textarea>
+                                    <span *ngIf="produit.produit ? produit.produit : produit.obj" style="font-weight: bold;">{{produitDevis[i].produit}}{{produitDevis[i].obj}}</span><br>
+                                    <textarea *ngIf="produit.commentaire" rows="6" name="commentaire{{i}}"  style="border:none;text-align: center;" [(ngModel)]="produitDevis[i].commentaire">{{produit.commentaire}}</textarea>
                                 </div>
                             </td>
                             <td  style="border-right: 1px solid black;border-left:1px solid black;border-bottom: 1px solid black;">
