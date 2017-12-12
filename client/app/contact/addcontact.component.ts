@@ -1,28 +1,26 @@
 /**
  * Created by Wbat on 23/05/2017.
  */
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, ContactService } from '../_services/index';
-import { Contact, Mail, Telephone, Adresse, Qualification } from '../_models/index';
-import {ParamsService} from "../_services/params.service"; //
-import {User} from "../_models/user";
+import {AlertService, ContactService, ParamsService} from '../_services/index';
+import {Adresse, Contact, Mail, Qualification, Telephone, User} from '../_models/index';
 
 @Component({
     moduleId: module.id,
     templateUrl: 'addcontact.component.html'
 })
 
-export class AddcontactComponent {
+export class AddcontactComponent implements OnInit {
     types = ["Employé", "Fournisseur", "Client",
-            "Entreprise de travaux", "Laboratoire d'analyse",
-            "Transporteur", "Site de traitement", "Ouvrier"];
+        "Entreprise de travaux", "Laboratoire d'analyse",
+        "Transporteur", "Site de traitement", "Ouvrier"];
     contrats = ["CDI", "CDD", "Intérimaire",
-            "Stagiaire", "Contrat de professionnalisation"];
+        "Stagiaire", "Contrat de professionnalisation"];
     statuts = ["User", "Superuser", "Admin"];
-    qualifications : Qualification[];
-    qualifChoisi : number;
+    qualifications: Qualification[];
+    qualifChoisi: number;
 
     contact = new Contact();
     mail = new Mail();
@@ -39,26 +37,25 @@ export class AddcontactComponent {
     loading = false;
     returnUrl: string;
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};               //
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};               //
 
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private contactService: ContactService,
-        private alertService: AlertService,
-        private paramsService:ParamsService) {
+    constructor(private route: ActivatedRoute,
+                private router: Router,
+                private contactService: ContactService,
+                private alertService: AlertService,
+                private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            this.mail.type_mail = "perso";
-            this.mailPro.type_mail = "pro";
-            this.telephoneFixe.type_tel = "fixe";
-            this.telephoneMobile.type_tel = "mobile";
-            this.telephoneFax.type_tel = "fax";
-            this.telephonePro.type_tel = "pro";
-            this.adresse.type_adr = "defaut";
-        }
+        this.mail.type_mail = "perso";
+        this.mailPro.type_mail = "pro";
+        this.telephoneFixe.type_tel = "fixe";
+        this.telephoneMobile.type_tel = "mobile";
+        this.telephoneFax.type_tel = "fax";
+        this.telephonePro.type_tel = "pro";
+        this.adresse.type_adr = "defaut";
+    }
 
     ngOnInit() {
         this.getQualifications();
@@ -73,49 +70,25 @@ export class AddcontactComponent {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    loaddroituser() {                                 //
+    loaddroituser() {
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-
             this.droitsuser = data[0];
-
-            console.log(this.data);
-            console.log(this.currentUser._id);
-
         });
     }
 
-    private getQualifications(){
+    private getQualifications() {
         this.contactService.getQualifications()
-            .subscribe(
-                data => {
-                    this.qualifications = data;
-                },
-                error => {
-                    console.log("Couldn't load the qualifications infos");
-                    console.log(error);
-                    this.alertService.error(error._body);
-                });
-    }
-
-    public fileImageChange(event: any) {
-        let fileList: FileList = event.target.files;
-        if(fileList.length > 0) {
-            this.image = fileList[0];
-            this.contact.image_url = this.image.name;
-        }
-    }
-
-    public fileGEDChange(event: any) {
-        let fileList = event.target.files;
-        if(fileList.length > 0) {
-            this.ged = fileList;
-        }
+            .subscribe(data => {
+                this.qualifications = data;
+            }, error => {
+                console.error(error);
+                this.alertService.error(error);
+            });
     }
 
     addContact() {
         this.loading = true;
-        console.log("Validate addContact");
-        var contactInfos = {
+        let contactInfos = {
             "contact": this.contact,
             "mail": this.mail,
             "mailPro": this.mailPro,
@@ -126,30 +99,27 @@ export class AddcontactComponent {
             "adresse": this.adresse,
             "qualification": this.qualifChoisi
         };
-        console.log(contactInfos);
         this.contactService.create(contactInfos)
-            .subscribe(
-                data => {
-                    var uploads = [];
-                    if(this.image){
-                        uploads.push(this.contactService.upload("/contacts/"+data+"/image/upload", this.image));
-                    }
-                    for(var i in this.ged){
-                        uploads.push(this.contactService.upload("/contacts/"+data+"/ged/upload", this.ged[i]));
-                    }
-                    Promise.all(uploads)
-                    .then((response) => {
+            .subscribe(data => {
+                let uploads = [];
+                if (this.image) {
+                    uploads.push(this.contactService.upload("/contacts/" + data + "/image/upload", this.image));
+                }
+                for (let i in this.ged) {
+                    uploads.push(this.contactService.upload("/contacts/" + data + "/ged/upload", this.ged[i]));
+                }
+                Promise.all(uploads)
+                    .then(() => {
                         this.alertService.success('Nouveau contact créé', true);
                         this.loading = false;
                     }).catch((error) => {
-                        this.alertService.error(error._body);
-                        this.loading = false;
-                    });
-                },
-                error => {
                     this.alertService.error(error._body);
                     this.loading = false;
                 });
+            }, error => {
+                this.alertService.error(error._body);
+                this.loading = false;
+            });
     }
 
 }
