@@ -84,9 +84,8 @@ export class FichecontactComponent implements OnInit {
             .subscribe(data => {
                 this.qualifications = data;
             }, error => {
-                console.log("Couldn't load the qualifications infos");
-                console.log(error);
-                this.alertService.error(error._body);
+                console.error(error);
+                this.alertService.error(error);
             });
     }
 
@@ -123,7 +122,7 @@ export class FichecontactComponent implements OnInit {
             this.qualifChoisi = data.qualification;
             this.contrats = data.contrats;
 
-            let id_c = +id_contact;
+            let id_c = id_contact;
             this.mail.id_contact = id_c;
             this.mailPro.id_contact = id_c;
             this.telephoneFixe.id_contact = id_c;
@@ -149,7 +148,6 @@ export class FichecontactComponent implements OnInit {
             "qualification": this.qualifChoisi
         };
 
-        console.log(this.contact.n_secu);
         this.contactService.update(contactInfos, this.contact.id_contact).subscribe(() => {
             this.alertService.success('Contact mis à jour', true);
             if ((this.contact.contrat || this.contact.contrat != "") &&

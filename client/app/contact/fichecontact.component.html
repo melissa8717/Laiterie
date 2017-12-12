@@ -154,6 +154,7 @@
                                                                             [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'"
                                                                             (ngModelChange)="contact.Date_naissance = $event"
                                                                             [value]="contact.Date_naissance | date:'yyyy-MM-dd'"
+
                                                                             class="col-sm-11"/>
                 </div>
 
@@ -165,9 +166,12 @@
 
                 <div class="form-group">
                     <span class="col-sm-4">Date d'entrée :</span>
-                    <input type="date" name="date_entree" [ngModel]="contact.date_entree | date:'yyyy-MM-dd'"
+                    <input type="date" name="date_entree"
+                           [ngModel]="contact.date_entree | date:'yyyy-MM-dd'"
                            (ngModelChange)="contact.date_entree = $event"
-                           [value]="contact.date_entree | date:'yyyy-MM-dd'" class="col-sm-6"/>
+                           [value]="contact.date_entree | date:'yyyy-MM-dd'"
+                           class="col-sm-6"
+                           />
                 </div>
                 <div class="form-group">
                     <span class="col-sm-4">Type :</span>
@@ -347,7 +351,8 @@
 
                     <div class="form-group">
                         <span class="col-sm-2" for="">Heure brute :</span>
-                        <input type="number" class="col-sm-2" name="tauxhorairebrutes"
+                        <span class="col-sm-2" for="">Heure brute :</span>
+                        <input type="number" class="col-sm-2" name="tauxhorairesbrute"
                                [(ngModel)]="lastcontrat.tauxhorairesbrute">
                     </div>
                     <div class="form-group">
@@ -461,7 +466,7 @@
 
                     <div class="form-group">
                         <span class="col-sm-2" for="">Heure brute :</span>
-                        <input type="number" class="col-sm-2" name="tauxhorairebrutes"
+                        <input type="number" class="col-sm-2" name="tauxhorairesbrute"
                                [(ngModel)]="newcontrat.tauxhorairesbrute">
                     </div>
                     <div class="form-group">

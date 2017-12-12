@@ -250,6 +250,10 @@ function getById(_id) {
 function update(contactParam) {
 
     var deferred = Q.defer();
+console.log(contactParam.date_entree);
+console.log(contactParam.Date_naissance);
+//var new_date_entree = new Date(contactParam.date_entree).toISOString();
+//console.log(new_date_entree);
 
     var params = [
         contactParam.nom,
