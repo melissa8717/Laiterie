@@ -2,7 +2,12 @@ import {Component, Input} from '@angular/core';
 import {User} from "../_models/user";
 import {FileItem, FileUploader} from "ng2-file-upload";
 import {
-    AchatsService, AlertService, ContactService, DevisService, FactureService,
+    AchatsService,
+    AlertService,
+    ContactService,
+    DevisService,
+    FactureService,
+    MessageService,
     ParamsService
 } from "../_services/index";
 
@@ -28,6 +33,7 @@ export class GedComponent {
                 private factureService: FactureService,
                 private contactService: ContactService,
                 private achatsService: AchatsService,
+                private messageService: MessageService,
                 private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
@@ -50,6 +56,7 @@ export class GedComponent {
         };
 
         this.uploader.onSuccessItem = (item: FileItem, response: string) => {
+            console.log(response);
             if (response) {
                 this.getGed();
                 item.remove();
@@ -81,6 +88,9 @@ export class GedComponent {
                 break;
             case 'produits':
                 this.achatsService.getGed(this.id).subscribe(ged => success(ged), err => error(err));
+                break;
+            case 'matvehi':
+                this.messageService.getGed(this.id).subscribe(ged => success(ged), err => error(err));
                 break;
             default:
                 console.error("GED NOT FOUND");
