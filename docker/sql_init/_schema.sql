@@ -387,6 +387,8 @@ CREATE TABLE IF NOT EXISTS `cgv` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+INSERT INTO `cgv` (`texte`) VALUES ('À remplir');
+
 -- --------------------------------------------------------
 
 --
@@ -513,7 +515,7 @@ CREATE TABLE IF NOT EXISTS `contact` (
   `nom` varchar(100) DEFAULT NULL,
   `prenom` varchar(100) DEFAULT NULL,
   `titre` varchar(5) DEFAULT NULL COMMENT 'Mr,Mme,Mlle',
-  `Date_naissance` timestamp NULL DEFAULT NULL,
+  `Date_naissance` DATE NULL DEFAULT NULL,
   `lieu_naissance` varchar(100) DEFAULT NULL,
   `n_identite` varchar(30) DEFAULT NULL,
   `n_secu` varchar(255) DEFAULT NULL,

@@ -5,7 +5,7 @@
 
     <div class=" container-fluid ">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
-            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+            <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
         <h3>Fiche chantier</h3>
 
@@ -16,17 +16,14 @@
                 <h5>Informations générales chantier</h5>
 
 
+                <span class="col-sm-3 control-label" style="font-weight: bold;">Nom du chantier : </span><!--variable-->
+
+                <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.nom_chantier}}</span>
 
 
-                    <span class="col-sm-3 control-label" style="font-weight: bold;">Nom du chantier : </span><!--variable-->
+                <span class="col-sm-3  control-label" style="font-weight: bold;">N° chantier : </span>
 
-                        <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.nom_chantier}}</span>
-
-
-
-                    <span class="col-sm-3  control-label" style="font-weight: bold;">N° chantier : </span>
-
-                        <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.id_chantier}}</span>
+                <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.id_chantier}}</span>
 
                 <span class="col-sm-3  control-label" style="font-weight: bold;">Nom du client :</span>
                 <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.nom}}</span>
@@ -34,119 +31,136 @@
                 <span class="col-sm-3  control-label" style="font-weight: bold;">Raison sociale : </span>
                 <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.raison_sociale}}</span>
 
-                <p>&nbsp;</p> <p>&nbsp;</p><!--variable pour value-->
-            <div class="col-sm-12" >
-                <div class="form-group col-sm-12">
+                <p>&nbsp;</p>
+                <p>&nbsp;</p><!--variable pour value-->
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-12">
 
-                    <label class="col-sm-2  control-label" > Adresse </label>
-                    <div >
-                        <input type="text" name="adresse"  class="col-sm-10" [(ngModel)]="model.adresse" /><!--variable pour value-->
-                    </div>
-                </div>
-            </div>
-                <div class="col-sm-12" >
-                    <div class="form-group col-sm-6">
-
-                        <label class="col-sm-3 control-label" > Code postal </label>
-                        <div >
-                            <input type="text" name="code_postal"  class="col-sm-7  col-sm-offset-1" [(ngModel)]="model.code_postal" />
-                       <!--variable pour value-->
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <label class="col-sm-3 control-label" >Ville  </label>
-                        <div >
-                            <input type="text" name="ville"  class="col-sm-9" [(ngModel)]="model.ville" /><!--variable pour value-->
+                        <label class="col-sm-2  control-label"> Adresse </label>
+                        <div>
+                            <input type="text" name="adresse" class="col-sm-10" [(ngModel)]="model.adresse"/>
+                            <!--variable pour value-->
                         </div>
                     </div>
                 </div>
-             <div class="col-sm-12" >
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-2 control-label" >Responsable  </label>
-                    <div >
-                        <input type="text" name="responsable"  class="col-sm-10  " [(ngModel)]="model.responsable" /><!--variable pour value-->
-                    </div>
-                </div>
-             </div>
-             <div class="col-sm-12">
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-4  control-label" >Tel  </label>
-                    <div >
-                        <input type="text" name="tel"  class="col-sm-8" [(ngModel)]="model.telresponsable" /><!--variable pour value-->
-                    </div>
-                </div>
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
 
-                <div class="form-group  col-sm-6 ">
-                    <label class="col-sm-3 control-label" >Mobile  </label>
-                    <div >
-                        <input type="text" name="telresponsablemob"  class="col-sm-9" [(ngModel)]="model.telresponsablemob"/><!--variable pour value-->
+                        <label class="col-sm-3 control-label"> Code postal </label>
+                        <div>
+                            <input type="text" name="code_postal" class="col-sm-7  col-sm-offset-1"
+                                   [(ngModel)]="model.code_postal"/>
+                            <!--variable pour value-->
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Ville </label>
+                        <div>
+                            <input type="text" name="ville" class="col-sm-9" [(ngModel)]="model.ville"/>
+                            <!--variable pour value-->
+                        </div>
                     </div>
                 </div>
-              </div>
-             <div class="col-sm-12" >
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-2  control-label" >Début de projet  </label>
-                    <div >
-                        <input type="date" name="date_demarrage"  class="col-sm-10" [ngModel]="model.date_demarrage  | date:'yyyy-MM-dd'" (ngModelChange)="model.date_demarrage = $event" [value]="model.date_demarrage | date:'yyyy-MM-dd'"/><!--variable pour value-->
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-2 control-label">Responsable </label>
+                        <div>
+                            <input type="text" name="responsable" class="col-sm-10  " [(ngModel)]="model.responsable"/>
+                            <!--variable pour value-->
+                        </div>
                     </div>
                 </div>
-             </div>
-              <div class="col-sm-12" >
-                <div class="form-group col-sm-12">
-                    <label class="col-sm-2 control-label" >Réception travaux  </label>
-                    <div >
-                        <input type="date" name="reception_chantier"  class="col-sm-10" [ngModel]="model.reception_chantier  | date:'yyyy-MM-dd'" (ngModelChange)="model.reception_chantier = $event" [value]="model.reception_chantier | date:'yyyy-MM-dd'"/><!--variable pour value et création d'une alarme quand 1 année c'est passé
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-4  control-label">Tel </label>
+                        <div>
+                            <input type="text" name="tel" class="col-sm-8" [(ngModel)]="model.telresponsable"/>
+                            <!--variable pour value-->
+                        </div>
+                    </div>
+
+                    <div class="form-group  col-sm-6 ">
+                        <label class="col-sm-3 control-label">Mobile </label>
+                        <div>
+                            <input type="text" name="telresponsablemob" class="col-sm-9"
+                                   [(ngModel)]="model.telresponsablemob"/><!--variable pour value-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-2  control-label">Début de projet </label>
+                        <div>
+                            <input type="date" name="date_demarrage" class="col-sm-10"
+                                   [ngModel]="model.date_demarrage  | date:'yyyy-MM-dd'"
+                                   (ngModelChange)="model.date_demarrage = $event"
+                                   [value]="model.date_demarrage | date:'yyyy-MM-dd'"/><!--variable pour value-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-2 control-label">Réception travaux </label>
+                        <div>
+                            <input type="date" name="reception_chantier" class="col-sm-10"
+                                   [ngModel]="model.reception_chantier  | date:'yyyy-MM-dd'"
+                                   (ngModelChange)="model.reception_chantier = $event"
+                                   [value]="model.reception_chantier | date:'yyyy-MM-dd'"/><!--variable pour value et création d'une alarme quand 1 année c'est passé
 								-->
+                        </div>
                     </div>
                 </div>
-              </div>
-            <div class="col-sm-12" >
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3  control-label" >Maitre d'oeuvre  </label>
-                    <div >
-                        <input type="text" name="maitreoeuvre"  class="col-sm-7 col-sm-offset-1" [(ngModel)]="model.maitreoeuvre" /><!--variable pour value-->
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3  control-label">Maitre d'oeuvre </label>
+                        <div>
+                            <input type="text" name="maitreoeuvre" class="col-sm-7 col-sm-offset-1"
+                                   [(ngModel)]="model.maitreoeuvre"/><!--variable pour value-->
+                        </div>
                     </div>
-                </div>
 
 
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3 control-label" >Tel   </label>
-                    <div >
-                        <input type="text" name="telmaitre"   class="col-sm-9" [(ngModel)]="model.telmaitre" /><!--variable pour value-->
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Tel </label>
+                        <div>
+                            <input type="text" name="telmaitre" class="col-sm-9" [(ngModel)]="model.telmaitre"/>
+                            <!--variable pour value-->
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-12" >
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3  control-label" >Architecte  </label>
-                    <div >
-                        <input type="text" name="architecte"  class="col-sm-7 col-sm-offset-1" [(ngModel)]="model.architecte" /><!--variable pour value-->
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3  control-label">Architecte </label>
+                        <div>
+                            <input type="text" name="architecte" class="col-sm-7 col-sm-offset-1"
+                                   [(ngModel)]="model.architecte"/><!--variable pour value-->
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Tel </label>
+                        <div>
+                            <input type="text" name="telarchi" class="col-sm-9 " [(ngModel)]="model.telarchi"/>
+                            <!--variable pour value-->
+                        </div>
                     </div>
                 </div>
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3 control-label" >Tel  </label>
-                    <div >
-                        <input type="text" name="telarchi"   class="col-sm-9 " [(ngModel)]="model.telarchi" /><!--variable pour value-->
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3  control-label">Autre contact </label>
+                        <div>
+                            <input type="text" name="autrecontact" class="col-sm-7 col-sm-offset-1"
+                                   [(ngModel)]="model.autrecontact"/><!--variable pour value-->
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-sm-12" >
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3  control-label" >Autre contact  </label>
-                    <div >
-                        <input type="text" name="autrecontact"   class="col-sm-7 col-sm-offset-1" [(ngModel)]="model.autrecontact" /><!--variable pour value-->
-                    </div>
-                </div>
 
-                <div class="form-group col-sm-6">
-                    <label class="col-sm-3 control-label" >Tel   </label>
-                    <div >
-                        <input type="text" name="telautre"  class="col-sm-9 " [(ngModel)]="model.telautre" /><!--variable pour value-->
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Tel </label>
+                        <div>
+                            <input type="text" name="telautre" class="col-sm-9 " [(ngModel)]="model.telautre"/>
+                            <!--variable pour value-->
+                        </div>
                     </div>
                 </div>
-            </div>
-
-
 
 
                 <div *ngIf="!print" class="form-group">
@@ -158,212 +172,130 @@
         </form>
 
 
-            <div class="col-sm-5" style="margin: 0;">
+        <div class="col-sm-5" style="margin: 0;">
 
-                <h5>Phases chantier</h5>
-                <!--boucle pour renplir les phases-->
-                <div class=" table-responsive">
-                    <table class="table table-bordered" >
-                        <thead>
-                        <tr>
-                            <th class="col-sm-1">Date phase</th>
-                            <th class="col-sm-7">Phase</th>
+            <h5>Phases chantier</h5>
+            <!--boucle pour renplir les phases-->
+            <div class=" table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="col-sm-1">Date phase</th>
+                        <th class="col-sm-7">Phase</th>
 
-                            <th *ngIf="!print" class="col-sm-2">Action</th>
-                        </tr>
-                        </thead>
+                        <th *ngIf="!print" class="col-sm-2">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr *ngFor="let phase of phases, let i= index">
+                        <td class="col-sm-1"><input type="date" name="date_creation{{i}}" value="" class="col-sm-11"
+                                                    [ngModel]="phases[i].date_creation | date:'yyyy-MM-dd'"
+                                                    (ngModelChange)="phases[i].date_creation = $event"
+                                                    [value]="phases[i].date_creation | date:'yyyy-MM-dd'"/></td>
+                        <td class="col-sm-7"><input type="text" name="nom_phase{{i}}" value="" class="col-sm-12"
+                                                    [(ngModel)]="phases[i].nom_phase"/></td>
+                        <td *ngIf="!print && droitsuser.supcha" class="col-sm-2">
+                            <button (click)="deletePhase(phases[i].id_phase )">Supprimer</button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+                <form method="" (ngSubmit)=" addPhase()">
+                    <table class="table table-bordered">
                         <tbody>
 
-                        <tr *ngFor="let phase of phases, let i= index">
-                            <td class="col-sm-1"><input type="date" name="date_creation{{i}}" value="" class="col-sm-11" [ngModel]="phases[i].date_creation | date:'yyyy-MM-dd'" (ngModelChange)="phases[i].date_creation = $event" [value]="phases[i].date_creation | date:'yyyy-MM-dd'"/></td>
-                            <td class="col-sm-7"><input type="text" name="nom_phase{{i}}" value="" class="col-sm-12"[(ngModel)]="phases[i].nom_phase"/></td>
-                            <td  *ngIf="!print && droitsuser.supcha" class="col-sm-2"><button (click)="deletePhase(phases[i].id_phase )">Supprimer</button></td>
+                        <tr>
+                            <td><input type="date" name="date_creation" value="" class="col-sm-12"
+                                       [(ngModel)]="aphases.date_creation "/></td>
+                            <td><input type="text" name="nom_phase" value="" class="col-sm-12"
+                                       [(ngModel)]="aphases.nom_phase"/></td>
+                            <td *ngIf="!print && droitsuser.ajoutcha">
+                                <button type="submit" [disabled]="loading">Ajouter</button>
+                            </td>
                         </tr>
 
                         </tbody>
 
                     </table>
+                </form>
 
-                    <form  method=""  (ngSubmit)=" addPhase()" >
-                        <table class="table table-bordered">
-                            <tbody>
-
-                            <tr >
-                                <td><input type="date" name="date_creation" value="" class="col-sm-12" [(ngModel)]="aphases.date_creation "/></td>
-                                <td><input type="text" name="nom_phase" value="" class="col-sm-12"[(ngModel)]="aphases.nom_phase"/></td>
-                                <td *ngIf="!print && droitsuser.ajoutcha"><button type="submit" [disabled]="loading">Ajouter</button></td>
-                            </tr>
-
-                            </tbody>
-
-                        </table>
-                    </form>
-
-                </div>
+            </div>
 
 
-                <!--boucle pour renplir les message-->
-                <div class=" table-responsive">
+            <!--boucle pour renplir les message-->
+            <div class=" table-responsive">
 
-                    <h5 class="col-sm-12"><img src="image/menu/messagerie_petit_gris.png"> Rapports</h5>
-                    <table class="table-bordered">
+                <h5 class="col-sm-12"><img src="image/menu/messagerie_petit_gris.png"> Rapports</h5>
+                <table class="table-bordered">
 
-                        <thead>
-                            <tr>
-                                <th class="col-sm-1">Date du rapport</th>
-                                <th class="col-sm-7">Rapport</th>
-                                <th *ngIf="!print" class="col-sm-2">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody *ngIf="!print">
-                            <tr *ngFor="let rapport of rapports, let i= index">
-                                <td class="col-sm-1"><input type="date" name="date_rapport"  class="col-sm-11" [ngModel]="rapports[i].date_rapport | date:'yyyy-MM-dd'" (ngModelChange)="rapports[i].date_rapport = $event" [value]="rapports[i].date_rapport | date:'yyyy-MM-dd'"/></td>
-                                <td class="col-sm-7"><input type="text" name="note"  class="col-sm-12" [(ngModel)]="rapports[i].note"/></td>
-                                <td *ngIf="droitsuser.supcha"><button type="submit" (click)="deleteRapport(rapports[i].id_rapport )">Supprimer</button></td>
-                            </tr>
+                    <thead>
+                    <tr>
+                        <th class="col-sm-1">Date du rapport</th>
+                        <th class="col-sm-7">Rapport</th>
+                        <th *ngIf="!print" class="col-sm-2">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="!print">
+                    <tr *ngFor="let rapport of rapports, let i= index">
+                        <td class="col-sm-1"><input type="date" name="date_rapport" class="col-sm-11"
+                                                    [ngModel]="rapports[i].date_rapport | date:'yyyy-MM-dd'"
+                                                    (ngModelChange)="rapports[i].date_rapport = $event"
+                                                    [value]="rapports[i].date_rapport | date:'yyyy-MM-dd'"/></td>
+                        <td class="col-sm-7"><input type="text" name="note" class="col-sm-12"
+                                                    [(ngModel)]="rapports[i].note"/></td>
+                        <td *ngIf="droitsuser.supcha">
+                            <button type="submit" (click)="deleteRapport(rapports[i].id_rapport )">Supprimer</button>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+                <form (ngSubmit)=" addRapport()">
+                    <table class="table table-bordered">
+                        <tbody>
+
+                        <tr>
+                            <td><input type="date" name="date_rapport" value="" class="col-sm-12"
+                                       [(ngModel)]="araps.date_rapport "/></td>
+                            <td><input type="text" name="note" value="" class="col-sm-12" [(ngModel)]="araps.note"/>
+                            </td>
+                            <td *ngIf="!print && droitsuser.ajoutcha">
+                                <button type="submit" [disabled]="loading">Ajouter</button>
+                            </td>
+                        </tr>
+
                         </tbody>
 
                     </table>
+                </form>
 
-                    <form    (ngSubmit)=" addRapport()" >
-                        <table class="table table-bordered">
-                            <tbody>
-
-                            <tr >
-                                <td><input type="date" name="date_rapport" value="" class="col-sm-12" [(ngModel)]="araps.date_rapport "/></td>
-                                <td><input type="text" name="note" value="" class="col-sm-12"[(ngModel)]="araps.note"/></td>
-                                <td *ngIf="!print && droitsuser.ajoutcha"><button type="submit" [disabled]="loading">Ajouter</button></td>
-                            </tr>
-
-                            </tbody>
-
-                        </table>
-                    </form>
-
-                </div>
+            </div>
 
 
-            </div><!--fin col sm 6-->
-
+        </div><!--fin col sm 6-->
 
 
         <div class="col-sm-12" style="margin-top: 10px;">
 
 
-
-            <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accescha"  (click)=" imprimer()">Imprimer</button>
+            <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accescha"
+                    (click)=" imprimer()">Imprimer
+            </button>
 
 
         </div><!--fin col sm 12-->
 
 
-
-
         <div class="col-sm-12">
-            <h3 >GED</h3>
 
-            <div class="col-md-3">
-
-                <h3>Choisir Fichier</h3>
-
-                <div ng2FileDrop
-                     [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                     (fileOver)="fileOverBase($event)"
-                     [uploader]="uploader"
-                     class="well my-drop-zone">
-                    Base drop zone
-                </div>
-
-                <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
-
-            </div>
-
-            <div class="col-md-5" style="margin-bottom: 40px">
-
-                <h3>File d'attente</h3>
-
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Etat</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let item of uploader.queue">
-                        <td><strong>{{ item?.file?.name }}</strong></td>
-                        <td class="text-center">
-                            <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                            <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                        </td>
-                        <td nowrap>
-                            <button type="button" class="btn btn-success btn-xs"
-                                    (click)="item.upload(); getGed(id_chantier)" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                <span class="glyphicon glyphicon-upload"></span> Mettre en ligne
-                            </button>
-                            <button type="button" class="btn btn-warning btn-xs"
-                                    (click)="item.cancel()" [disabled]="!item.isUploading">
-                                <span class="glyphicon glyphicon-ban-circle"></span> Annuler
-                            </button>
-                            <button type="button" class="btn btn-danger btn-xs"
-                                    (click)="item.remove()">
-                                <span class="glyphicon glyphicon-trash"></span> Retirer de la liste
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div>
-                    <div>
-                        Avancement:
-                        <div class="progress" style="">
-                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-success btn-s"
-                            (click)="uploader.uploadAll(); getGed(id_chantier);" [disabled]="!uploader.getNotUploadedItems().length">
-                        <span class="glyphicon glyphicon-upload"></span> Tout mettre en ligne
-                    </button>
-                    <button type="button" class="btn btn-warning btn-s"
-                            (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                        <span class="glyphicon glyphicon-ban-circle"></span> Tout annuler
-                    </button>
-                    <button type="button" class="btn btn-danger btn-s"
-                            (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                        <span class="glyphicon glyphicon-trash"></span> Tout retirer de la liste
-                    </button>
-                </div>
-
-            </div>
-
-            <div class="col-md-4" style="margin-bottom: 40px">
-
-                <h3>GED</h3>
-
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Date d'ajout</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let item of ged">
-                        <td><strong><a href="http://{{loc}}:4000/ged/chant/{{id_chantier}}/{{item.url}}" target="_blank">{{ item.nom }}</a></strong></td>
-                        <td nowrap>{{item.date_ajout | date : 'dd/MM/yyyy'}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
+            <ged [gedName]="'chant'" [id]="id_chantier"></ged>
 
         </div>
-
-
-
 
     </div><!--fin container fluid-->
 </div>

@@ -1,8 +1,8 @@
 /**
  * Created by cédric on 04/07/2017.
  */
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService} from '../_services/index';
 import {AchatsService} from "../_services/achats.service";
 import {MessageService} from "../_services/message.service";
@@ -10,7 +10,6 @@ import {FileUploader} from 'ng2-file-upload';
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
 
-const URL = 'http://' + location.hostname + ':4000/ged/';
 const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
@@ -19,30 +18,19 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 })
 
 export class SuivivehiculeComponent {
-    //ged
-    public uploader: FileUploader;
-    public uploaderImg: FileUploader;
-    public hasBaseDropZoneOver: boolean = false;
 
-    public fileOverBase(e: any): void {
-        this.hasBaseDropZoneOver = e;
-    }
+    private uploaderImg: FileUploader;
+    private loc = location.hostname;
+    private url: any;
 
-    //fin ged
-    loc = location.hostname;
-    model: any = {};
-    id_vehmat: number;
-    entre: any = {};
-    print: boolean = false;
-    entretiens: any[] = [];
-    mat: any;
-    returnUrl: string;
-    ged: any[];
-    currentUser: User;
-    droitsuser: any = {};
-    _id: any;
-    data: any = {};
-    image: any[];
+    private model: any = {};
+    private id_vehmat: number;
+    private entre: any = {};
+    private print: boolean = false;
+    private entretiens: any[] = [];
+    private mat: any;
+    private currentUser: User;
+    private droitsuser: any = {};
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -55,122 +43,75 @@ export class SuivivehiculeComponent {
     }
 
     ngOnInit() {
-
-        let body = document.getElementsByTagName('body')[0];
-        body.className = "";
-        body.className += "flatclair";
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.loadvehimat();
-        this.loadentretien();
         this.loaddroituser();
+
+        this.route.params.subscribe(params => {
+            this.id_vehmat = params['id'];
+            this.loadvehimat();
+            this.loadentretien();
+        })
     }
 
     loaddroituser() {
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-
             this.droitsuser = data[0];
-
-            console.log(this.data);
-            console.log(this.currentUser._id);
         });
     }
 
     loadvehimat() {
-        this.route.params.subscribe(params => {
-            this.id_vehmat = params['id']
-            //ged
-            this.getGed(params['id']);
+        this.uploaderImg = new FileUploader({url: URLimg + "matvehi/" + this.id_vehmat});
+        this.uploaderImg.onAfterAddingFile = (file) => {
+            file.withCredentials = false;
+        };
 
-            this.uploaderImg = new FileUploader({url: URLimg + "matvehi/" + params['id']});
-            this.uploaderImg.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-
-            this.uploader = new FileUploader({url: URL + "matvehi/" + params['id']});
-            this.uploader.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-            //ged
-            console.log(this.id_vehmat);
-            this.achatsService.getByIdmat(this.id_vehmat).subscribe(
-                data => {
-                    this.model = data[0];
-                    console.log(data)
-                }
-            )
-        });
+        this.achatsService.getByIdmat(this.id_vehmat).subscribe(data => {
+            this.model = data[0];
+        })
     }
-
-    // visualisation de l'image avant envoi
-    url: any;
 
     readUrl(event: any) {
         if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
-
+            let reader = new FileReader();
             reader.onload = (event: any) => {
                 this.url = event.target.result;
-            }
+            };
             reader.readAsDataURL(event.target.files[0]);
         }
     }
 
     private modify() {
-        console.log("new id_vehmat: " + JSON.stringify(this.model));
-        this.achatsService.updatevehmat(this.model).subscribe(
-            data => {
-                this.alertService.success('Votre demande a été modifiée avec succès', true);
-                console.log("added successful: " + data);
-                console.log(this.model);
-            }
-        );
+        this.achatsService.updatevehmat(this.model).subscribe(() => {
+            this.alertService.success('Votre demande a été modifiée avec succès', true);
+        })
     }
 
     private loadentretien() {
-        this.route.params.subscribe(params => {
-            this.id_vehmat = params['id']
-            console.log(this.id_vehmat);
-            this.achatsService.getByIdEntretien1(this.id_vehmat).subscribe(
-                data => {
-                    this.entretiens = data;
-                    console.log(data)
-                }
-            )
+        this.achatsService.getByIdEntretien1(this.id_vehmat).subscribe(data => {
+            this.entretiens = data;
+        })
+    }
+
+    private addEntretien() {
+        this.achatsService.addEntretien(this.id_vehmat, this.entre).subscribe(mat => {
+            this.mat = mat;
+            this.entretiens.push(this.entre);
+            this.entre = {};
         });
     }
 
-    addEntretien() {
-
-        //console.log(currentUser._id);
-        this.achatsService.addEntretien(this.id_vehmat, this.entre).subscribe(
-            mat => {
-                this.mat = mat;
-                console.log(this.mat);
-
-                this.entretiens.push(this.entre);
-                this.entre = {};
-            });
-    }
-
     private deleteEntre(id_entretien: any) {
-        console.log("deleting prod" + id_entretien);
-        this.achatsService.deleteEntre(id_entretien)
-            .subscribe(
-                data => {
-                    this.entretiens = this.entretiens.filter(x => x.id_entretien != id_entretien);
-
-                    // console.log("after deletind: " + JSON.stringify(this.prod));
-                },
-                error => {
-                    this.alertService.error(error._body);
-                });
+        this.achatsService.deleteEntre(id_entretien).subscribe(() => {
+            this.entretiens = this.entretiens.filter(x => x.id_entretien != id_entretien);
+        }, error => {
+            this.alertService.error(error._body);
+        })
     }
 
     imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
-            var css = '@page { size: landscape; }',
+            let css = '@page { size: landscape; }',
                 head = document.head || document.getElementsByTagName('head')[0],
                 style = document.createElement('style');
 
@@ -187,23 +128,6 @@ export class SuivivehiculeComponent {
             window.print();
             this.print = false;
         }, 1000);
-    }
-
-    /*************************** GED ***************************/
-
-    private getGed(id_vehmat: number) {
-        this.messageService.getGed(id_vehmat)
-            .subscribe(
-                data => {
-                    this.ged = data;
-                    console.log(this.ged);
-                },
-                error => {
-                    console.log("Couldn't load the ged infos");
-                    console.log(error);
-                    console.log(id_vehmat);
-                    this.alertService.error(error._body);
-                });
     }
 
 }
