@@ -242,6 +242,14 @@
                                                                      [(ngModel)]="contact.poste" class="col-sm-2 "/>
                     </div>
 
+                    <div class="form-group">
+                        <span class="col-sm-2 ">Visite médicale :</span><input type="date" name="visite_medicale"
+                                                                               [ngModel]="contact.visite_medicale | date:'yyyy-MM-dd'"
+                                                                               (ngModelChange)="contact.visite_medicale = $event"
+                                                                               [value]="contact.visite_medicale | date:'yyyy-MM-dd'"
+                                                                               class="col-sm-2"/>
+                    </div>
+
                     <!--  <div class="form-group">
                           <span class="col-sm-2 ">CACES :</span><input type="text" name="caces"
                                                                        [(ngModel)]="contact.id_caces" class="col-sm-2 "/>
@@ -274,22 +282,16 @@
                                                                                    [value]="contact.travail_hauteur | date:'yyyy-MM-dd'"
                                                                                    class="col-sm-3"/>
                       </div>
-                      <div class="form-group">
-                          <span class="col-sm-3 ">Visite médicale :</span><input type="date" name="visite_medicale"
-                                                                                 [ngModel]="contact.visite_medicale | date:'yyyy-MM-dd'"
-                                                                                 (ngModelChange)="contact.visite_medicale = $event"
-                                                                                 [value]="contact.visite_medicale | date:'yyyy-MM-dd'"
-                                                                                 class="col-sm-3"/>
-                      </div>-->
+                      -->
                     <div class="form-group">
-                        <span class="col-sm-3">Autorisation conduite :</span><input type="text"
+                        <span class="col-sm-2">Autorisation conduite :</span><input type="text"
                                                                                     name="autorisation_conduite"
                                                                                     [(ngModel)]="contact.autorisation_conduite"
-                                                                                    class="col-sm-3"/>
+                                                                                    class="col-sm-2"/>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-3">Qualification :</span>
-                        <select name="qualification" class="col-sm-3 input-sm" [(ngModel)]="qualifChoisi">
+                        <span class="col-sm-2">Qualification :</span>
+                        <select name="qualification" class="col-sm-2 input-sm" [(ngModel)]="qualifChoisi">
                             <option value=""></option>
                             <option *ngFor="let qualification of qualifications"
                                     [value]="qualification.id_qualification" [title]="qualification.designation">
@@ -345,8 +347,8 @@
                         <!--variable pour value-->
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-3">Type contrat :</span>
-                        <select name="type_contrat" class="col-sm-3 input-sm" [(ngModel)]="lastcontrat.type_contrat">
+                        <span class="col-sm-2">Type contrat :</span>
+                        <select name="type_contrat" class="col-sm-2 input-sm" [(ngModel)]="lastcontrat.type_contrat">
                             <option [selected]="lastcontrat.type_contrat=='CDI'">CDI</option>
                             <option [selected]="lastcontrat.type_contrat=='CDD'">CDD</option>
                             <option [selected]="lastcontrat.type_contrat=='Intérimaire'">Intérimaire</option>
@@ -357,24 +359,24 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-3 ">Date d'entrée:</span>
+                        <span class="col-sm-2 ">Date d'entrée:</span>
                         <input type="date" name="date_debut" [ngModel]="lastcontrat.date_debut | date:'yyyy-MM-dd'"
                                (ngModelChange)="lastcontrat.date_debut = $event"
-                               [value]="lastcontrat.date_debut | date:'yyyy-MM-dd'" class="col-sm-3 "/>
+                               [value]="lastcontrat.date_debut | date:'yyyy-MM-dd'" class="col-sm-2 "/>
                         <!--variable pour value-->
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-3 ">Date de sortie:</span>
+                        <span class="col-sm-2">Date de sortie:</span>
                         <input type="date" name="date_fin" [ngModel]="lastcontrat.date_fin | date:'yyyy-MM-dd'"
                                (ngModelChange)="lastcontrat.date_fin = $event"
-                               [value]="lastcontrat.date_fin | date:'yyyy-MM-dd'" class="col-sm-3 "/>
+                               [value]="lastcontrat.date_fin | date:'yyyy-MM-dd'" class="col-sm-2 "/>
                         <!--variable pour value-->
                     </div>
 
                     <div class="form-group">
-                        <span class="col-sm-3 ">Agence intérim :</span>
+                        <span class="col-sm-2 ">Agence intérim :</span>
                         <input type="text" name="agence_interim" [(ngModel)]="lastcontrat.agence_interim"
-                               class="col-sm-3 "/>
+                               class="col-sm-2 "/>
                         <!--variable pour value-->
                     </div>
 

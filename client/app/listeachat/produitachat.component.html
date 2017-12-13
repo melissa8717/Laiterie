@@ -19,18 +19,8 @@
         <form method="POST" action="#">
             <article class="col-sm-4">
 
-                <div style="height: 10%; width: 50%;">
-                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img
-                            src="http://{{loc}}:4000/image/produit/{{production.id_produit}}/{{production.image_url}}"
-                            alt="..." class="img-thumbnail col-sm-12"/>
-                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
-
-                </div>
-                <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam" class="btn btn-default"
-                        (click)="modifyProduct(); uploaderImg.queue[0].upload();"> Modifier
-                </button>
-
+                <img-uploader *ngIf="id_product" [(uploaderImg)]="uploaderImg" [name]="'produit'" [id]="id_product"
+                              [onlineImgUrl]="updateProduct.image_url"></img-uploader>
 
                 <div class="form-group col-sm-12">
 
@@ -159,7 +149,7 @@
                 </div>
             </div>
 
-            <button *ngIf="!print && droitsuser.modifproa" type="submit" [disabled]="loading"
+            <button *ngIf="!print && utilsService.droitsUser.modifproa" type="submit" [disabled]="loading"
                     class="input-sm col-sm-offset-10 col-sm-1 btn btn-default" (click)="modifyProduct();">Modifier
             </button>
         </form>
