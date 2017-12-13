@@ -126,7 +126,7 @@ function getAlarms() {
 
 function getAllTravail() {
     var deferred = Q.defer();
-    db.query('SELECT * from travail', function (error, solo, fields) {
+    db.query('SELECT travail . * , chantier.nom_chantier from travail LEFT JOIN chantier ON chantier.id_chantier = travail.id_chantier', function (error, solo, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
         //console.log(rdv)
 

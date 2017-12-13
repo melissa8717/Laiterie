@@ -117,7 +117,7 @@ export class Planning_simpleComponent implements OnInit {
         this.contactService.getAllEquipes().subscribe(
             data => {
                 this.equipes = data;
-                console.log(data)
+                //console.log(data)
             }
         );
     }
@@ -128,7 +128,7 @@ export class Planning_simpleComponent implements OnInit {
             data => {
                 this.ouvriers = data;
                 this.ouvriersfiltered = data;
-                console.log(data)
+                //console.log(data)
             }
         );
     }
@@ -274,8 +274,6 @@ export class Planning_simpleComponent implements OnInit {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
 
         });
     }

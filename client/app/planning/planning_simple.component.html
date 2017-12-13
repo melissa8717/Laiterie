@@ -150,7 +150,7 @@
                 <div class="col-md-4">
                     <h6 class="title" >Du : </h6>
                     <input  type="date" class="form-control" name="debeq" [(ngModel)]="modalDataAdd.eq.deb">
-                </div>test
+                </div>
 
                 <div class="col-md-4">
                     <h6 class="title" >Au: </h6>
@@ -198,7 +198,7 @@
             <h2 *ngIf="modalData.solo.length > 0"> Individu</h2>
             <div class="col-md-12 " style='padding-bottom:15px ; padding-top:5px ; border-bottom:1px solid #ccc;' *ngFor="let travail of modalData.solo; let i = index">
                 <h5  *ngIf="travail.valid" class="col-md-12 text-warning">Heures déjà validées !</h5>
-                <h6 class="col-md-3 title" >Chantier <span class="badge badge-pill badge-default">{{travail.id_chantier}}</span> : </h6>
+                <h6 class="col-md-3 title" >Chantier : <span class="badge badge-pill badge-default">N° {{travail.id_chantier}}<br>{{travail.nom_chantier}}</span>  </h6>
                 <div class="col-md-3">
                     <label>Heures : </label>
                     <input  type="time" class="form-control" name="heure{{i}}" [(ngModel)]="travail.nb_heure" >
@@ -306,7 +306,7 @@
                     <!--tableau pour les heures-->
                     <ng-container *ngIf="travaux && view=='Heures'">
                         <tr *ngFor="let ouvrier of ouvriersfiltered" >
-                            <td  [ngStyle]="{'background-color': ouvrier.couleur? ouvrier.couleur : 'white'}" style="background-color: #337ab7;">{{ouvrier.nom}}<br>{{ouvrier.prenom}}</td><!--variable du nom et prénom de la personne-->
+                            <td  [ngStyle]="{'background-color': ouvrier.couleur? ouvrier.couleur : 'white'}" style="background-color: #337ab7;">{{ouvrier.nom}} <br>{{ouvrier.prenom}}</td><!--variable du nom et prénom de la personne-->
                             <td *ngFor="let n of inittable(getMonthDays(month))" (click)="isTravail(month, n, ouvrier.id_contact, ouvrier.id_equipe)?test(month, n, ouvrier):'' " [ngClass]="(checkValid(month, n, ouvrier))?'valid':'invalid'">
                                 {{isTravail(month, n, ouvrier.id_contact, ouvrier.id_equipe)}}
                             </td><!-- si plusieurs code chantier pour la meme personne mettre "divers" sinon le code chantier-->
@@ -317,7 +317,7 @@
                         <tr *ngFor="let ouvrier of ouvriersfiltered" >
                             <td  [ngStyle]="{'background-color': ouvrier.couleur? ouvrier.couleur : 'white'}" style="background-color: #337ab7;">{{ouvrier.nom}}<br>{{ouvrier.prenom}}</td><!--variable du nom et prénom de la personne-->
                             <td  *ngFor="let n of inittable(getMonthDays(month))" (click)="isTravail(month, n, ouvrier.id_contact, ouvrier.id_equipe)?test(month, n, ouvrier):'' " [ngClass]="(checkValid(month, n, ouvrier))?'valid':'invalid'">
-                                {{getChantier(month, n, ouvrier.id_contact, ouvrier.id_equipe)}}
+                                {{getChantier(month, n, ouvrier.id_contact, ouvrier.id_equipe)}}<!--nom chantier-->
                             </td><!-- si plusieurs code chantier pour la meme personne mettre "divers" sinon le code chantier-->
                         </tr>
                     </ng-container>
