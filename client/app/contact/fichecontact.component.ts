@@ -161,12 +161,14 @@ export class FichecontactComponent implements OnInit {
     }
 
     loadAdd() {
+        console.log(this.lastcontrat);
         this.contrat.push(this.lastcontrat);
         this.contactService.addcontrat(this.lastcontrat).subscribe(() => {
         });
     }
 
     loadNewcontrat() {
+
         this.contrat.push(this.newcontrat);
         this.contactService.newcontrat(this.id_contact, this.newcontrat).subscribe(() => {
         });
