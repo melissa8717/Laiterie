@@ -760,13 +760,13 @@ function getByIdAcco(_id_chantier) {
 function getByIdTotalDevis(_id_chantier) {
     //console.log('test');
     var deferred = Q.defer();
-    var sql = "SELECT devisList. * " +
-        "FROM  `devisList` , chantierdevis, devis_version " +
-        "WHERE devisList.id_devis = chantierdevis.id_devis " +
+    var sql = "SELECT alldevis. * " +
+        "FROM  `alldevis` , chantierdevis, devis_version " +
+        "WHERE alldevis.id_devis = chantierdevis.id_devis " +
         "AND chantierdevis.id_chantier =? " +
         "AND (chantierdevis.status =  'en cours' AND chantierdevis.id_devis = devis_version.id_devis AND devis_version.num_version = chantierdevis.num_version)  " +
-        "AND ( devis_version.id_devis = devisList.id_devis AND devis_version.num_version = devisList.num_version ) " +
-        "AND devisList.accepted IS TRUE ";
+        "AND ( devis_version.id_devis = alldevis.id_devis AND devis_version.num_version = alldevis.num_version ) " +
+        "AND alldevis.accepted IS TRUE ";
     var inserts = [_id_chantier];
     sql = mysql.format(sql, inserts);//console.log(sql);
     db.query(sql, function (error, results, fields) {
