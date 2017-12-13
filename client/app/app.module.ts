@@ -164,6 +164,7 @@ import {AvoirlibreComponent} from './facture/avoirlibre.component';
 import {MenuparamComponent} from './parametre/menuparam.component';
 import {HeaderComponent} from './utils/header.component';
 import {GedComponent} from "./utils/ged.component";
+import {ImguploaderComponent} from "./utils/imguploader.component";
 
 @NgModule({
     imports: [
@@ -316,7 +317,8 @@ import {GedComponent} from "./utils/ged.component";
         FactlibreimprimComponent,
         AvoirlibreComponent,
         HeaderComponent,
-        GedComponent
+        GedComponent,
+        ImguploaderComponent
     ],
     providers: [
         AppConfig,

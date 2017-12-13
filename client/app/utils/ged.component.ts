@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../_models/user";
 import {FileItem, FileUploader} from "ng2-file-upload";
 import {
@@ -17,7 +17,7 @@ import {
     templateUrl: 'ged.component.html'
 })
 
-export class GedComponent {
+export class GedComponent implements OnInit {
 
     @Input() gedName: string;
     @Input() id: number;

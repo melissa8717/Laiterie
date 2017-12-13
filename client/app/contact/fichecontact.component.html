@@ -65,23 +65,13 @@
 
         <form method="POST" action="#">
 
-            <div>
-                <div style="height: 200px; width: 150px;">
-                    <img *ngIf="url" [src]="url" style="height: 200px; width: 150px;">
-                    <img *ngIf="!url && contact.image_url"
-                         src="{{urlImg}}/{{contact.id_contact}}/{{contact.image_url}}"
-                         style="height: 200px; width: 150px;"/>
-                    <img *ngIf="!url && !contact.image_url" src="image/test.ico" class="img-thumbnail images"/>
-                    <input *ngIf="!print" type="file" ng2FileSelect [uploader]="uploaderImg"
-                           (change)="readUrl($event)"/>
-                </div>
-                <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam"
-                        class="btn btn-default  col-sm-offset-2 col-sm-1"
-                        (click)="uploaderImg.queue[0].upload();"> Modifier
-                </button>
+            <img-uploader *ngIf="contact.id_contact" [(uploaderImg)]="uploaderImg" [name]="'contact'"
+                          [id]="contact.id_contact" [onlineImgUrl]="contact.image_url"></img-uploader>
 
-            </div>
-
+            <button *ngIf="utilsService.droitsUser.modifparam && uploaderImg?.queue[0]"
+                    class="btn btn-default  col-sm-offset-2 col-sm-1"
+                    (click)="uploaderImg.queue[0].upload()">Modifier
+            </button>
 
             <div class="col-sm-6" style="margin-top: 100px;">
                 <div class="form-group">
@@ -96,80 +86,67 @@
                 </div>
 
                 <div class="form-group">
-                    <span class="col-sm-3">Nom:</span><input type="text" name="nom" [(ngModel)]="contact.nom"
-                                                             class="col-sm-11"/>
+                    <span class="col-sm-3">Nom:</span>
+                    <input type="text" name="nom" [(ngModel)]="contact.nom" class="col-sm-11"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-2 ">Prénom:</span><input type="text" name="prenom" [(ngModel)]="contact.prenom"
-                                                                 class="col-sm-11 "/>
+                    <span class="col-sm-2 ">Prénom:</span>
+                    <input type="text" name="prenom" [(ngModel)]="contact.prenom" class="col-sm-11 "/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-3 ">Raison social:</span><input type="text" name="raison_social"
-                                                                        [(ngModel)]="contact.raison_sociale"
-                                                                        class="col-sm-11 "/>
+                    <span class="col-sm-3 ">Raison social:</span>
+                    <input type="text" name="raison_social" [(ngModel)]="contact.raison_sociale" class="col-sm-11 "/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-2 ">SIRET:</span><input type="text" name="siret" [(ngModel)]="contact.siret"
-                                                                class="col-sm-11"/>
+                    <span class="col-sm-2 ">SIRET:</span>
+                    <input type="text" name="siret" [(ngModel)]="contact.siret" class="col-sm-11"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-3">Adresse:</span><input type="text" name="adresse"
-                                                                 [(ngModel)]="contact.adresse" class="col-sm-11"/>
+                    <span class="col-sm-3">Adresse:</span>
+                    <input type="text" name="adresse" [(ngModel)]="contact.adresse" class="col-sm-11"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-2">Code postal:</span><br/>
-                    <input type="text" name="code_postal"
-                           [(ngModel)]="contact.code_postal"
-                           class="col-sm-2"/>
+                    <input type="text" name="code_postal" [(ngModel)]="contact.code_postal" class="col-sm-2"/>
                 </div>
                 <br/>
                 <div class="form-group"><br/>
-                    <span class="col-sm-2 ">Ville:</span><input type="text" name="ville" [(ngModel)]="contact.ville"
-                                                                class="col-sm-5"/>
+                    <span class="col-sm-2 ">Ville:</span>
+                    <input type="text" name="ville" [(ngModel)]="contact.ville" class="col-sm-5"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-2 ">N° sécu:</span><input type="text" name="n_secu" [(ngModel)]="contact.n_secu"
-                                                                  class="col-sm-11"/>
+                    <span class="col-sm-2 ">N° sécu:</span>
+                    <input type="text" name="n_secu" [(ngModel)]="contact.n_secu" class="col-sm-11"/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-3 ">N° Permis :</span><input type="text" name="n_permis"
-                                                                     [(ngModel)]="contact.n_permis" class="col-sm-11 "/>
+                    <span class="col-sm-3 ">N° Permis :</span>
+                    <input type="text" name="n_permis" [(ngModel)]="contact.n_permis" class="col-sm-11 "/>
                 </div>
                 <div class="form-group">
-                    <span class="col-sm-3 ">N° d'identité:</span><input type="text" name="n_identite"
-                                                                        [(ngModel)]="contact.n_identite"
-                                                                        class="col-sm-11"/>
+                    <span class="col-sm-3 ">N° d'identité:</span>
+                    <input type="text" name="n_identite" [(ngModel)]="contact.n_identite" class="col-sm-11"/>
                 </div>
-
-
                 <div class="form-group">
-                    <span class="col-sm-2">Mutuelle: </span><input type="text" name="mutuelle"
-                                                                   [(ngModel)]="contact.mutuelle" class="col-sm-11 "/>
+                    <span class="col-sm-2">Mutuelle: </span>
+                    <input type="text" name="mutuelle" [(ngModel)]="contact.mutuelle" class="col-sm-11 "/>
                 </div>
-
                 <div class="form-group">
-                    <span class="col-sm-3 ">Date de naissance:</span><input type="date" name="Date_naissance"
-                                                                            [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'"
-                                                                            (ngModelChange)="contact.Date_naissance = $event"
-                                                                            [value]="contact.Date_naissance | date:'yyyy-MM-dd'"
-
-                                                                            class="col-sm-11"/>
+                    <span class="col-sm-3 ">Date de naissance:</span>
+                    <input type="date" name="Date_naissance" [ngModel]="contact.Date_naissance | date:'yyyy-MM-dd'"
+                           (ngModelChange)="contact.Date_naissance = $event"
+                           [value]="contact.Date_naissance | date:'yyyy-MM-dd'" class="col-sm-11"/>
                 </div>
-
-
                 <div class="form-group">
-                    <span class="col-sm-3 ">Lieu :</span><input type="text" name="lieu_naissance"
-                                                                [ngModel]="contact.lieu_naissance " class="col-sm-8 "/>
+                    <span class="col-sm-3 ">Lieu :</span>
+                    <input type="text" name="lieu_naissance" [ngModel]="contact.lieu_naissance " class="col-sm-8 "/>
                 </div>
-
                 <div class="form-group">
                     <span class="col-sm-4">Date d'entrée :</span>
                     <input type="date" name="date_entree"
                            [ngModel]="contact.date_entree | date:'yyyy-MM-dd'"
                            (ngModelChange)="contact.date_entree = $event"
                            [value]="contact.date_entree | date:'yyyy-MM-dd'"
-                           class="col-sm-6"
-                           />
+                           class="col-sm-6"/>
                 </div>
                 <div class="form-group">
                     <span class="col-sm-4">Type :</span>
@@ -325,7 +302,7 @@
 
             <div class="col-sm-12" style="margin-top: 10px;">
 
-                <button *ngIf="droitsuser.modifcontact && !print" class="btn btn-default  col-sm-offset-11 col-sm-1"
+                <button *ngIf="utilsService.droitsUser.modifcontact && !print" class="btn btn-default  col-sm-offset-11 col-sm-1"
                         (click)="updateContact();">Modifier
                 </button>
 
@@ -405,7 +382,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <button *ngIf="droitsuser.modifcontact && !print" class="col-sm-offset-11 col-sm-1 btn"
+                    <button *ngIf="utilsService.droitsUser.modifcontact && !print" class="col-sm-offset-11 col-sm-1 btn"
                             type="button"
                             (click)="loadAdd()">Modifier
                     </button>
@@ -508,7 +485,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <button *ngIf="droitsuser.modifcontact" class="col-sm-offset-11 col-sm-1 btn" type="button"
+                    <button *ngIf="utilsService.droitsUser.modifcontact" class="col-sm-offset-11 col-sm-1 btn" type="button"
                             (click)="loadNewcontrat()">Modifier
                     </button>
 
@@ -517,7 +494,7 @@
 
             <div class="col-sm-12">
                 <button class="col-sm-offset-11 col-sm-1 btn"
-                        type="button" *ngIf="!print && droitsuser.accescontact" (click)=" imprimer()">Imprimer
+                        type="button" *ngIf="!print && utilsService.droitsUser.accescontact" (click)=" imprimer()">Imprimer
                 </button>
             </div>
         </form>
