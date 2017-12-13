@@ -817,9 +817,9 @@ function getByIdLastContrat(_id_contact) {
 function addcontrat(contrat_param) {
     var deferred = Q.defer();
 
-
-    db.query("INSERT INTO contrat_histo (id_contact,date_debut, date_fin,type_contrat,tauxhoraire,tauxhorairesbrute,tauxsurcharge,panier,heure_mois,datechangement,agence_interim,id_interim) VALUES ( ? , ? , ? , ?,?,?,?,?,?,NOW(),?,? )",
-        [contrat_param.id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.datechangement, contrat_param.agence_interim, contrat_param.id_interim],
+console.log(contrat_param);
+    db.query("INSERT INTO contrat_histo (id_contact,date_debut, date_fin,type_contrat,tauxhoraire,tauxhorairesbrute,tauxsurcharge,panier,heure_mois,agence_interim,id_interim) VALUES ( ? , ? , ? , ?,?,?,?,?,?,?,? )",
+        [contrat_param.id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois,  contrat_param.agence_interim, contrat_param.id_interim],
         function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
@@ -835,8 +835,8 @@ function newcontrat(contrat_param, id_contact) {
     var deferred = Q.defer();
 
 
-    db.query("INSERT INTO contrat_histo (id_contact,date_debut, date_fin,type_contrat,tauxhoraire,tauxhorairesbrute,tauxsurcharge,panier,heure_mois,datechangement,agence_interim,id_interim) VALUES ( ? , ? , ? , ?,?,?,?,?,?,NOW(),?,?)",
-        [id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.datechangement, contrat_param.agence_interim, contrat_param.id_interim],
+    db.query("INSERT INTO contrat_histo (id_contact,date_debut, date_fin,type_contrat,tauxhoraire,tauxhorairesbrute,tauxsurcharge,panier,heure_mois,agence_interim,id_interim) VALUES ( ? , ? , ? , ?,?,?,?,?,?,?,?)",
+        [id_contact, contrat_param.date_debut, contrat_param.date_fin, contrat_param.type_contrat, contrat_param.tauxhoraire, contrat_param.tauxhorairesbrute, contrat_param.tauxsurcharge, contrat_param.panier, contrat_param.heure_mois, contrat_param.agence_interim, contrat_param.id_interim],
         function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
