@@ -1,8 +1,8 @@
 <div style="height: 200px; width: 150px;">
-    <img *ngIf="localImgUrl" [src]="localImgUrl" style="height: 200px; width: 150px;">
-    <img *ngIf="!localImgUrl && onlineImgUrl" src="{{uploadUrl}}/{{id}}/{{onlineImgUrl}}"
-         style="height: 200px; width: 150px;"/>
-    <img *ngIf="!localImgUrl && !onlineImgUrl" src="image/test.ico" class="img-thumbnail images"/>
+    <img *ngIf="localImgUrl" [src]="localImgUrl" class="img-thumbnail images">
+    <img *ngIf="!localImgUrl && onlineImgUrl" [src]="uploadUrl+'/'+id+'/'+onlineImgUrl"
+         class="img-thumbnail images"/>
+    <img *ngIf="!localImgUrl && !onlineImgUrl" [src]="DEFAULT_IMG_PATH" class="img-thumbnail images"/>
 
     <input *ngIf="!utilsService.isPrinting" type="file" ng2FileSelect [uploader]="uploaderImg"
            (change)="readUrl($event)"/>

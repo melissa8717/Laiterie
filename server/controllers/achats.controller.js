@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
-var achatsService = require('services/achats.service');
+let achatsService = require('services/achats.service');
 
-var multer = require('multer');
-var fs = require('fs');
+let multer = require('multer');
+let fs = require('fs');
 
 // routes
 router.post('/new', create);
@@ -55,25 +55,18 @@ router.get('/img', getAllImg);
 
 
 router.post('/:_id_vehmat/image/upload', function (req, res) {
-    console.log("controller img"+req.body + id_vehmat);
     uploadImage(req, res, function (err) {
         if (err) {
-            console.log("Error uploading file.");
-            console.log(err);
             return res.end(JSON.stringify(err));
         }
-        console.log("Image is uploaded");
         res.end("Image uploaded");
     });
 });
 router.post('/:_id/ged/upload', function (req, res) {
-    console.log("In Router ged");
     uploadGED(req, res, function (err) {
         if (err) {
-            console.log("Error uploading file.");
             return res.end(JSON.stringify(err));
         }
-        console.log("GED is uploaded");
         res.end("GED is uploaded");
     });
 });
@@ -82,7 +75,7 @@ router.post('/:_id/ged/upload', function (req, res) {
 module.exports = router;
 
 
-var storageImage = multer.diskStorage({
+let storageImage = multer.diskStorage({
     destination: function (req, file, callback) {
         try {
             fs.mkdirSync('./files/produits/' + req.params._id);
@@ -100,13 +93,12 @@ var storageImage = multer.diskStorage({
 
     },
     filename: function (req, file, callback) {
-        console.log(file.originalname);
         callback(null, file.originalname);
     }
 });
-var uploadImage = multer({storage: storageImage}).fields([{name: 'file'}]);
+let uploadImage = multer({storage: storageImage}).fields([{name: 'file'}]);
 
-var storageGED = multer.diskStorage({
+let storageGED = multer.diskStorage({
     destination: function (req, file, callback) {
         try {
             fs.mkdirSync('./files/produits/' + req.params._id);
@@ -123,11 +115,10 @@ var storageGED = multer.diskStorage({
         callback(null, './files/produits/' + req.params._id + '/ged');
     },
     filename: function (req, file, callback) {
-        console.log(file.originalname);
         callback(null, file.originalname);
     }
 });
-var uploadGED = multer({storage: storageGED}).fields([{name: 'file'}]);
+let uploadGED = multer({storage: storageGED}).fields([{name: 'file'}]);
 
 function downloadImage(req, res) {
     res.download("./files/produits/" + req.params._id + "/image/" + req.params.url);
@@ -135,7 +126,6 @@ function downloadImage(req, res) {
 
 function downloadGED(req, res) {
     res.download("./files/produits/" + req.params._id + "/ged" + req.params.url);
-    C
 }
 
 
@@ -144,11 +134,9 @@ function downloadGED(req, res) {
 function create(req, res) {
     achatsService.create(req.body)
         .then(function (results) {
-            //console.log(results.insertId);
             res.send("" + results.insertId);
         })
         .catch(function (err) {
-            //console.log(err);
             res.status(400).send(err);
         });
 }
@@ -187,12 +175,10 @@ function getAllMainOeuvre(req, res) {
 function createMainOeuvre(req, res) {
     achatsService.createMainOeuvre(req.body)
         .then(function (results) {
-            //console.log(results.insertId);
             res.send("" + results.insertId);
             //res.sendStatus(200);
         })
         .catch(function (err) {
-            //console.log(err);
             res.status(400).send(err);
         });
 }
@@ -307,7 +293,6 @@ function updateModif(req, res) {
             res.sendStatus(200);
         })
         .catch(function (err) {
-            console.log(err);
             res.status(400).send(err);
         });
 }
@@ -335,7 +320,6 @@ function getStockclick(req, res) {
 
 
 function addMat(req, res) {
-    //console.log("test");
     achatsService.addMat(req.body)
         .then(function (Vehiculemateriel) {
             res.send(Vehiculemateriel);
@@ -346,7 +330,6 @@ function addMat(req, res) {
 }
 
 function getAllVehimat(req, res) {
-    //console.log("test");
     achatsService.getAllVehimat()
         .then(function (Vehiculemateriel) {
             res.send(Vehiculemateriel);
@@ -396,7 +379,6 @@ function getByIdmat(req, res) {
 }
 
 function deletemat(req, res) {
-    //console.log('test1');
     achatsService.deletemat(req.params.id_vehmat)
         .then(function () {
             res.sendStatus(200);
@@ -435,7 +417,6 @@ function getByIdEntretien1(req, res) {
 }
 
 function getAllRef(req, res) {
-    //console.log("test");
     achatsService.getAllRef(req.params.ref)
         .then(function (produit) {
             res.send(produit);
@@ -446,7 +427,6 @@ function getAllRef(req, res) {
 }
 
 function addEntretien(req, res) {
-    //console.log("test3");
     achatsService.addEntretien(req.body, req.params.id_vehmat)
         .then(function (entretien) {
             res.send(entretien);
@@ -458,7 +438,6 @@ function addEntretien(req, res) {
 }
 
 function deleteEntre(req, res) {
-    //console.log('test1');
     achatsService.deleteEntre(req.params.id_entretien)
         .then(function () {
             res.sendStatus(200);

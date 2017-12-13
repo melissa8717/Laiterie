@@ -15,12 +15,6 @@
             <!-- toutes les infor required -->
             <article class="col-sm-4">
 
-                <div style="height: 10%; width: 100%;">
-                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url" src="image/test.ico" alt="..." class="img-thumbnail images"/>
-                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
-                </div>
-
                 <!-- libelle -->
                 <div class="form-group col-sm-12">
                     <label class="col-sm-5 control-label">* Libellé : </label>
@@ -121,8 +115,8 @@
 
             </article>
 
-            <button *ngIf="droitsuser.ajoutproa" type="submit" [disabled]="loading"
-                    class="col-sm-offset-10 col-sm-1 input-sm" (click)="uploaderImg.queue[0].upload();">Enregistrer
+            <button *ngIf="utilsService.droitsUser.ajoutproa" type="submit" [disabled]="loading"
+                    class="col-sm-offset-10 col-sm-1 input-sm">Enregistrer
             </button>
         </form>
         <!--une fois modifier créer un pdf à mettre dans la GED-->
