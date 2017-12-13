@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
-import {AlertService, ContactService, ParamsService} from '../_services/index';
-import {Adresse, Contact, Contrat, Mail, Qualification, Telephone, User} from '../_models/index';
+import {AlertService, ContactService, ParamsService, UtilsService} from '../_services/index';
+import {Adresse, Contact, Contrat, Mail, Qualification, Telephone} from '../_models/index';
 import {FileUploader} from "ng2-file-upload";
 
 @Component({
@@ -12,13 +12,8 @@ import {FileUploader} from "ng2-file-upload";
 
 export class FichecontactComponent implements OnInit {
 
-    // Image Uploader
-    private url: any;
-    private urlImg: string = 'http://' + location.hostname + ':4000/image/contact';
-    private uploaderImg: any;
+    private uploaderImg: FileUploader;
 
-    private currentUser: User;
-    private droitsuser: any = {};
     private contact = new Contact();
     private returnUrl: string;
     private mail = new Mail();
@@ -38,11 +33,11 @@ export class FichecontactComponent implements OnInit {
     private newcontrat: any = {};
 
 
-    constructor(private route: ActivatedRoute,
+    constructor(public utilsService: UtilsService,
+                private route: ActivatedRoute,
                 private contactService: ContactService,
                 private alertService: AlertService,
                 private paramsService: ParamsService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.mail.type_mail = "perso";
         this.mailPro.type_mail = "pro";
         this.telephoneFixe.type_tel = "fixe";
@@ -53,7 +48,6 @@ export class FichecontactComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loaddroituser();
         this.getQualifications();
 
         this.route.params.subscribe(params => {
@@ -62,17 +56,10 @@ export class FichecontactComponent implements OnInit {
             this.getContact(this.id_contact);
             this.loadAllContrat();
             this.loadAllLastContrat();
-            this.setUploaderImg();
         });
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    }
-
-    loaddroituser() {
-        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-            this.droitsuser = data[0];
-        });
     }
 
     private getQualifications() {
@@ -183,23 +170,6 @@ export class FichecontactComponent implements OnInit {
         this.contrat.push(this.newcontrat);
         this.contactService.newcontrat(this.id_contact, this.newcontrat).subscribe(() => {
         });
-    }
-
-    private setUploaderImg() {
-        this.uploaderImg = new FileUploader({url: this.urlImg + "/" + this.id_contact});
-        this.uploaderImg.onAfterAddingFile = (file: any) => {
-            file.withCredentials = false;
-        };
-    }
-
-    private readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
     }
 
     private imprimer() {

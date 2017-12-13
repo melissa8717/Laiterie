@@ -11,4 +11,5 @@ export * from './message.service';
 export * from './params.service';
 export * from './planning.service';
 export * from './user.service';
+export * from './utils.service';
 export * from './ventes.service';
