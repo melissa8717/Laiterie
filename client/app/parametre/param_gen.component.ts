@@ -3,10 +3,9 @@
  */
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {AlertService} from '../_services/index';
-import {ParamsService} from "../_services/params.service";
-import {User} from "../_models/user";
 import {FileUploader} from "ng2-file-upload";
+
+import {AlertService, ParamsService, UtilsService} from '../_services/index';
 
 
 @Component({
@@ -22,20 +21,16 @@ export class Param_genComponent {
     private urlImg: string = 'http://' + location.hostname + ':4000/image/agence';
 
     private model: any = {};
-    private print: boolean = false;
-    private currentUser: User;
-    private droitsuser: any = {};
 
 
     constructor(private router: Router,
                 private alertService: AlertService,
-                private paramsService: ParamsService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                private paramsService: ParamsService,
+                public utilsService: UtilsService) {
     }
 
     ngOnInit() {
         this.loadAllagence();
-        this.loaddroituser();
     }
 
     readUrl(event: any) {
@@ -64,12 +59,6 @@ export class Param_genComponent {
         };
     }
 
-    loaddroituser() {
-        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-            this.droitsuser = data[0];
-        });
-    }
-
     addagence() {
         this.paramsService.addagence(this.model).subscribe(id => {
             this.model.id_agence = id;
@@ -78,27 +67,15 @@ export class Param_genComponent {
         });
     }
 
-    modify(aparams: any) {
-        this.paramsService.updateAgence(aparams).subscribe(() => {
+    modify() {
+        this.paramsService.updateAgence(this.model).subscribe(() => {
             this.alertService.success("Les données ont bien été modifiées.");
         });
     }
 
-    imprimer() {
-        this.alertService.clear();
-        let css = '@page',
-            head = document.head || document.getElementsByTagName('head')[0],
-            style = document.createElement('style');
-        style.type = 'text/css';
-        style.media = 'print';
-        if (style.sheet) {
-        } else {
-            style.appendChild(document.createTextNode(css));
-        }
-        this.print = true;
-        setTimeout(() => {
-            window.print();
-            this.print = false;
-        }, 1000);
+    modifyImg() {
+        this.uploaderImg.queue[0].upload();
+        this.alertService.success("Image modifiée");
     }
+
 }

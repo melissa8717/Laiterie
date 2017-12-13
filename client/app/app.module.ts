@@ -15,9 +15,16 @@ import {
     AchatsService,
     AlertService,
     AuthenticationService,
+    ChantierService,
+    CommandeService,
     ContactService,
+    DevisService,
+    FactureService,
     MessageService,
+    ParamsService,
+    PlanningService,
     UserService,
+    UtilsService,
     VentesService
 } from './_services/index';
 import {HomeComponent} from './home/index';
@@ -43,16 +50,13 @@ import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {FileDropDirective, FileSelectDirective} from 'ng2-file-upload';
 // noinspection TypeScriptCheckImport
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
-import {ChantierService} from './_services/chantier.service';
 import {RepondreComponent} from './message/repondre.component';
-import {CommandeService} from './_services/commandes.service';
 import {ModifierBDCComponent} from './bdc/modifiercommande.component';
 import {Ajout_vehimatComponent} from './vehiculemateriel/ajout_vehimat.component';
 import {ValidationCommandeComponent} from './bdc/validationcommande.component';
 import {DemandePrixComponent} from './bdc/demandeprix.component';
 
 import {ListeDevisComponent} from './devis/listedevis.component';
-import {DevisService} from './_services/devis.service';
 import {ListechantierComponent} from './chantiers/listechantier.component';
 import {ListevehimatComponent} from './vehiculemateriel/listevehimat.component';
 import {RechercheBdcComponent} from './bdc/rechercheBdc.component';
@@ -64,13 +68,11 @@ import {NewDevisComponent} from './devis/newDevis.component';
 import {AjoutchantierComponent} from './chantiers/ajoutchantier.component';
 import {ListefactureComponent} from './facture/listefacture.component';
 import {Balance_generaleComponent} from './facture/balance_generale.component';
-import {FactureService} from './_services/facture.service';
 import {RecherchefacturationComponent} from './facture/recherchefact.component';
 import {RechercheChantierComponent} from './chantiers/recherchechantier.component';
 import {Editer_factureComponent} from './facture/editer_facture.component';
 import {ModifierfactureComponent} from './facture/modifierfacture.component';
 import {DevisComponent} from './devis/devis.component';
-import {ParamsService} from './_services/params.service';
 import {DupliquerDevisComponent} from './devis/dupliquerdevis.component';
 import {FichechantierComponent} from './chantiers/fichechantier.component';
 import {RechercheAchatComponent} from './listeachat/rechercheachat.component';
@@ -87,7 +89,6 @@ import {ChantiermoisComponent} from './chantiers/chantiermois.component';
 import {DevischantierComponent} from './chantiers/devischantier.component';
 import {DepensereelComponent} from './chantiers/depensereel.component';
 import {DepenseprevComponent} from './chantiers/depenseprev.component';
-import {PlanningService} from './_services/planning.service';
 import {AnalysetempsComponent} from './chantiers/analysetemps.component';
 import {BalancechantierComponent} from './chantiers/balancechantier.component';
 import {PhotochantierComponent} from './chantiers/photochantier.component';
@@ -333,7 +334,8 @@ import {GedComponent} from "./utils/ged.component";
         DevisService,
         FactureService,
         ParamsService,
-        PlanningService
+        PlanningService,
+        UtilsService
     ],
     exports: [PlanningComponent],
     bootstrap: [AppComponent]
