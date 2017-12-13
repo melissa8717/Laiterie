@@ -1,9 +1,8 @@
-<div id="devis" style="border:none;" >
+<div id="devis" style="border:none;background-color:white;font-size:16px;" >
 
     <my-header *ngIf="!print" [title]='"Devis"' [img]='"image/menu/gestion_grand_gris.png"'></my-header>
 
 
-    <body style="margin:0px;font-size: 18px;background-color: white;">
     <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
         <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
 
@@ -14,16 +13,19 @@
 
     <div class=" container-fluid "  id="pageContent" style="z-index:10; ">
 
-        <div class="row marge">
-            <img *ngIf="!print" [src]="config.logoPath"  style="width: -1000px;height: 100px;">
+        <div class="row marge" style="top:100px;position:absolute;">
+            <img *ngIf="!print" [src]="config.logoPath"  style="height: auto;width: 300px;">
         </div>
-        <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; heigh:auto; position: relative;">
-            <div *ngIf="print">
-                <img *ngIf="url" [src]="url" alt="..." class="col-sm-4"/>
-                <img *ngIf="!url && img.image" style="height: 300px; width: 200px;"
-                     src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="logo"
-                     class="img-responsive col-sm-12"/>
+        <div  style="top:100px;position:fixed;left:50px">
 
+            <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; heigh:auto; top:10px;position:fixed;left:50px;">
+                <div *ngIf="print" style="top:10px;position:fixed;left:50px;">
+                    <img *ngIf="url" [src]="url" alt="..." class="col-sm-4"/>
+                    <img *ngIf="!url && img.image" style="height: auto; width: 200px;top:10px;position:fixed;left:50px;"
+                         src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="logo"
+                         class="img-responsive col-sm-12"/>
+
+                </div>
             </div>
         </div>
 
@@ -37,7 +39,7 @@
             </div>
         </div>
 
-        <div  style="margin-left: 50%;margin-top: 70px;">
+        <div  style="margin-left: 50%;margin-top: 70px;border:1px solid black;width: 350px;text-align: center;">
             <div class="form-group " style="font-weight: bold;">
                 <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
             </div>
@@ -87,18 +89,18 @@
 
 
 
-        <table style="width: 100%;font-size:18px;z-index:1;margin-bottom:50px;height:100%;margin-top: 15px" >
+        <table style="font-size:18px;margin-top: 15px;" >
 
-            <thead style="height: 50px; -webkit-print-color-adjust: exact;border:4px solid grey;">
+            <thead style="height: 50px;border:4px solid grey;" >
 
-            <tr>
-                <th colspan="10" style="border-bottom:1px solid black; border-top:1px solid black;border-left: 1px solid black;text-align: center;" class="col-sm-4">Désignation</th>
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;" class="col-sm-1">Réf</th>
-                <th style="border-bottom:1px solid black;border-left: 1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
-                <th   style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">Qte</th>
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">P.U. HT</th>
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1" >TVA</th>
-                <th style="border-right: 1px solid black;border-bottom:1px solid black;border-top:1px solid black;text-align: center;" class="col-sm-1">Total HT :</th>
+            <tr style="width: 100%;height: 50px;">
+                <th style="border-bottom:1px solid black; border-top:1px solid black;border-left: 1px solid black;text-align: center;width: 1000px; " class="col-sm-4">Désignation</th>
+                <th  style="width: 150px;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;" class="col-sm-1">Réf</th>
+                <th style="width: 50px;border-bottom:1px solid black;border-left: 1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
+                <th   style="width:50px;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; " class="col-sm-1">Qte</th>
+                <th  style="width: 280px;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; " class="col-sm-1">P.U. HT</th>
+                <th  style="width: 50px;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; " class="col-sm-1" >TVA</th>
+                <th style="width: 280px;border-right: 4px solid grey;border-bottom:1px solid black;border-top:1px solid black;text-align: center;" class="col-sm-1">Total HT €:</th>
 
 
             </tr>
@@ -107,48 +109,55 @@
 
             <tbody>
 
-            <ng-container *ngFor="let prod of produit, let  i = index" style="width: 100%;">
+            <ng-container *ngFor="let prod of produit, let  i = index" >
 
             <tr [ngClass]="(prod.commentaire)?'commentes':'comments'">
 
 
 
-                <td colspan="10"  style="text-align: left;">
+                <td  style="text-align: left;width: 1000px;border-left:1px solid black;padding-left:10px;border-right: 1px solid black;">
                     <div  class="form-group">
                         <span style="font-weight: bold;">{{prod.produit}}</span>
                     </div>
                 </td>
 
-                <td style="text-align: center;">
+                <td style="text-align: center;width: 150px;border-right: 1px solid black;">
+                    <div  class="form-group">
                     {{prod.reference}}
+                    </div>
                 </td>
 
-                <td style="text-align: center;">
+                <td style="width: 50px;text-align: center;border-right: 1px solid black;">
                     <div class="form-group" >
                         {{prod.unite}}
                     </div>
                 </td>
 
-                <td style="text-align: center;">
+                <td style="width: 50px;text-align: center;border-right: 1px solid black;">
                     <div class="form-group" >
                         {{prod.qte_devis}}
                     </div>
 
-                <td style="text-align: center;">
+                <td style="width: 50px;text-align: center;border-right: 1px solid black;">
                     <div class="form-group" >
 
                     {{prod.prix_devis}}
                     </div>
                 </td>
 
-                <td style="text-align: center;" >
+                <td style="width: 50px;text-align: center;border-right: 1px solid black;" >
                     <div class="form-group" >
                     {{prod.tva ? prod.tva : prod.taux  }} {{devis.tva}}
                     </div>
                 </td>
 
-                <td colspan="2" style="text-align: center;">
-                    {{prod.qte_devis * prod.prix_devis | number:'1.0-2'}}</td>
+                <td  style="width: 280px;text-align: center;border-right:1px solid black;">
+                    <div  class="form-group">
+
+                    {{prod.qte_devis * prod.prix_devis | number:'1.0-2'}}
+                    </div>
+                </td>
+
             </tr>
                 <script type="text/javascript">
                     function haut(idt) {
@@ -167,104 +176,116 @@
 
                 <tr [ngClass]="(prod.commentaire)?'comments':'commentes'">
 
-                    <td colspan="10"  style="text-align: left;"><textarea name="commentaire"  *ngIf="prod.commentaire" style="width: 500px; height: 250px;border:none;" id="commentaire" onkeyup="javascript: haut(this.id)" onfocus="javascript: top(this.id)">{{prod.commentaire}}</textarea></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td  style="text-align: left;border-left:1px solid black;padding-left:10px;border-right: 1px solid black;"><textarea name="commentaire"  *ngIf="prod.commentaire" style="width: 500px; height: 250px;border:none;" id="commentaire" onkeyup="javascript: haut(this.id)" onfocus="javascript: top(this.id)">{{prod.commentaire}}</textarea></td>
+                    <td style="border-right: 1px solid black;"></td>
+                    <td style="border-right: 1px solid black;"></td>
+                    <td style="border-right: 1px solid black;"></td>
+                    <td style="border-right: 1px solid black;"></td>
+                    <td style="border-right: 1px solid black;"></td>
+                    <td style="border-right:1px solid black;"></td>
                 </tr>
 
             </ng-container>
+            </tbody>
+        </table>
             <p></p>
+        <table >
             <tr style="height: 10px;border:none;">
 
-                <td colspan="13"></td>
 
-                <td  colspan="2"  style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >Total HT :</td>
+                <td style="width: 1200px;"></td>
+                <td    style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;width:450px;" >Total HT :</td>
 
-                <td  style="text-align: right;border-top:1px solid black;border-bottom:1px solid black;border-right:1px solid black;"  >{{countTotaldet() | currency:'EUR':true:'1.2-2'}}</td>
+                <td  style="width:180px;text-align: right;border-top:1px solid black;border-bottom:1px solid black;border-right:1px solid black;"  >{{countTotaldet() | currency:'EUR':true:'1.2-2'}}</td>
             </tr>
 
-            <tr *ngIf="devis.remise" style="height: 30px;margin-left:90%;">
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">Total H.T. après remise de {{devis.remise}}%</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">{{countTotaldet() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
+            <tr *ngIf="devis.remise" style="height: 30px;">
+                <td style="width: 1200px;"></td>
+
+                <td   style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">Total H.T. après remise de {{devis.remise}}%</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">{{countTotaldet() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
             </tr>
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="devis.tva">
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA {{devis.tva}} %:</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;"> {{countTva()| number:'1.0-2'}} €</td>
+            <tr *ngIf="devis.tva">
+                <td style="width: 1200px;"></td>
+
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA {{devis.tva}} %:</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;"> {{countTva()| number:'1.0-2'}} €</td>
             </tr>
 
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAZ()>0) )">
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 0 %</td>
-                <td  style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+            <tr  *ngIf="((countNTVAZ()>0) )">
+                <td style="width: 1200px;"></td>
+
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 0 %</td>
+                <td  style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
                     0.00 €
 
                 </td>
 
             </tr>
 
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVA()>0) )">
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 2.1 %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+            <tr  *ngIf="((countNTVA()>0) )">
+                <td style="width: 1200px;"></td>
+
+                <td   style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 2.1 %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
                     {{countNTVA() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
 
             </tr>
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAC()>0) )">
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 5.5 %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+            <tr  *ngIf="((countNTVAC()>0) )">
+                <td style="width: 1200px;"></td>
+
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 5.5 %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
                     {{countNTVAC() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
 
             </tr>
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAD()>0) )">
+            <tr  *ngIf="((countNTVAD()>0) )">
 
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 10 %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+
+                <td style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 10 %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
                     {{countNTVAD() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
 
             </tr>
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAs()>0) )">
+            <tr  *ngIf="((countNTVAs()>0) )">
 
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 20 %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TVA 20 %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">
                     {{countNTVAs() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
             </tr>
             <tr >
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TTC :</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">{{countTtc() | number:'1.0-2'}} €</td>
+                <td style="width: 1200px;"></td>
+
+                <td   style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TTC :</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">{{countTtc() | number:'1.0-2'}} €</td>
             </tr>
 
             <p>&nbsp;</p>
-            </tbody>
+
+        </table>
+        <table style="font-size:18px;">
 
             <thead style="height: 50px; -webkit-print-color-adjust: exact;border:4px solid grey;">
 
-            <tr *ngIf="produitop.length>0">
-                <th colspan="10" style="border-bottom:1px solid black; border-top:1px solid black;border-left: 1px solid black;text-align: center;" class="col-sm-4">Options: Désignation</th>
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;" class="col-sm-1">Réf</th>
-                <th style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
-                <th   style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">Qte</th>
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1">P.U. HT</th>
-                <th  style="border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; width: 50px;" class="col-sm-1" *ngIf="!devis.tva">TVA</th>
-                <th style="border-right: 1px solid black;border-bottom:1px solid black;border-top:1px solid black;text-align: center;" class="col-sm-1">Total HT :</th>
-
+            <tr *ngIf="produitop.length>0" style="width: 100%;height: 50px;">
+                <th style="border-bottom:1px solid black; border-top:1px solid black;border-left: 1px solid black;text-align: center;width: 1000px; " class="col-sm-4">Options Désignation</th>
+                <th  style="width: 50px;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;" class="col-sm-1">Réf</th>
+                <th style="width: 50px;border-bottom:1px solid black;border-left: 1px solid black;border-top:1px solid black;border-right: 1px solid black;"class="col-sm-1">Unité</th>
+                <th   style="width:50px;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; " class="col-sm-1">Qté</th>
+                <th  style="width: 280px;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; " class="col-sm-1">P.U. HT</th>
+                <th  style="width: 50px;border-bottom:1px solid black;border-top:1px solid black;border-right: 1px solid black; " class="col-sm-1" >TVA</th>
+                <th style="width: 280px;border-right: 4px solid grey;border-bottom:1px solid black;border-top:1px solid black;text-align: center;" class="col-sm-1">Total HT €:</th>
 
             </tr>
             </thead>
@@ -277,7 +298,7 @@
             <tr [ngClass]="(prode.commentaire)?'commentes':'comments'">
 
 
-                <td  colspan="10" style="text-align: left;">
+                <td   style="text-align: left;width: 1000px;border-left:1px solid black;">
 
 
                     <div class="form-group">
@@ -287,35 +308,38 @@
                     </div>
                 </td>
 
-                <td style="text-align: center;">
+                <td style="text-align: center;width: 50px;">
+                    <div class="form-group">
+
                     {{prode.reference}}
+                    </div>
                 </td>
-                <td style="text-align: center;">
+                <td style="text-align: center;width: 50px;">
                     <div class="form-group">
                     {{prode.unite}}
                     </div>
                 </td>
-                <td style="text-align: center;">
+                <td style="text-align: center;width: 50px;">
                     <div class="form-group">
 
                     {{prode.qte_devis}}
                     </div>
                 </td>
-                <td style="text-align: center;">
+                <td style="text-align: center;width: 280px;">
                     <div class="form-group">
 
                     {{prode.prix_devis}}
                     </div>
                 </td>
 
-                <td style="text-align: center;">
+                <td style="text-align: center;width: 50px;">
                     <div class="form-group">
 
                     {{prode.tva}}
                     </div>
                 </td>
 
-                <td style="text-align: center;">
+                <td style="text-align: center;width: 280px;border-right: 1px solid black;">
                     <div class="form-group">
                     {{prode.qte_devis * prode.prix_devis | number:'1.0-2'}}
                     </div>
@@ -333,29 +357,32 @@
 
                 </tr>
             </ng-container>
+            </tbody>
+        </table>
             <p>&nbsp;</p>
+    <table>
 
             <tr *ngIf="countTotalopt(0)" style="height: 10px;margin-left:90%;">
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align:left;border-top:1px solid black;border-left: 1px solid black;">Total H.T. option : </td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;">{{countTotalopt() | number:'1.0-2'}} €</td>
+                <td style="width: 1200px;"></td>
+                <td style="width:450px;text-align:left;border-top:1px solid black;border-left: 1px solid black;">Total H.T. option : </td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;">{{countTotalopt() | number:'1.0-2'}} €</td>
             </tr>
             <tr *ngIf="countTotalopt(0) && devis.remise" style="height: 10px;margin-left:90%;">
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align:left;border-top:1px solid black;border-left: 1px solid black;">Total H.T. après remise {{devis.remise}}%</td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;">{{countTotalopt() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
+                <td style="width: 1200px;"></td>
+                <td style="width:450px;text-align:left;border-top:1px solid black;border-left: 1px solid black;">Total H.T. après remise {{devis.remise}}%</td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;">{{countTotalopt() *(1-(devis.remise/100)) | number:'1.0-2'}} €</td>
             </tr>
             <tr *ngIf="countTvaopt(0)" style="border-left:1px solid black; border-right:1px solid black;">
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align:left;border-top:1px solid black;border-left: 1px solid black;">TVA {{devis.tva}} %:</td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;">{{countTvaopt() | number:'1.0-2'}} €</td>
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align:left;border-top:1px solid black;border-left: 1px solid black;">TVA {{devis.tva}} %:</td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;">{{countTvaopt() | number:'1.0-2'}} €</td>
             </tr>
 
             <tr  *ngIf="((countNTVAZO()>0) )">
 
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align:left;border-top:1px solid black;border-left: 1px solid black;">TVA 0 %</td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;" >
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align:left;border-top:1px solid black;border-left: 1px solid black;">TVA 0 %</td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;" >
                     {{countNTVAZO() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
@@ -364,9 +391,9 @@
 
             <tr  *ngIf="((countNTVAO()>0) )">
 
-                <td colspan="13"></td>
-                <td  colspan="2"  style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TVA 2.1 %</td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;">
+                <td style="width: 1200px;"></td>
+                <td   style="width:450px;text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TVA 2.1 %</td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;">
                     {{countNTVAO() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
@@ -375,48 +402,51 @@
             </tr>
             <tr  *ngIf="((countNTVACO()>0) )">
 
-                <td colspan="13"></td>
-                <td  colspan="2"  style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TVA 5.5 %</td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;">
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TVA 5.5 %</td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;">
                     {{countNTVACO() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
             </tr>
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVADO()>0) )">
+            <tr *ngIf="((countNTVADO()>0) )">
 
-                <td colspan="13"></td>
-                <td  colspan="2"  style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TVA 10 %</td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;">
+                <td style="width: 1200px;"></td>
+                <td   style="width:450px;text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TVA 10 %</td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;">
                     {{countNTVADO() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
 
 
             </tr>
-            <tr style="border-left:1px solid black; border-right:1px solid black;" *ngIf="((countNTVAsO()>0) )">
+            <tr  *ngIf="((countNTVAsO()>0) )">
 
-                <td colspan="13"></td>
-                <td  colspan="2"  style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TVA 20 %</td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;" >
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TVA 20 %</td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;" >
                     {{countNTVAsO() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
 
             </tr>
-            <tr style="height: 30px;margin-left:90%;" *ngIf="countTtcopt(0)" >
-                <td colspan="13"></td>
-                <td  colspan="2"  style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TTC :</td>
-                <td style="border-top:1px solid black;text-align: right;border-right: 1px solid black;border-bottom:1px solid black;">{{countTtcopt() | number:'1.0-2'}} €</td>
+            <tr  *ngIf="countTtcopt(0)" >
+                <td style="width: 1200px;"></td>
+                <td style="width:450px;text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" >TTC :</td>
+                <td style="width:180px;border-top:1px solid black;text-align: right;border-right: 1px solid black;border-bottom:1px solid black;">{{countTtcopt() | number:'1.0-2'}} €</td>
             </tr>
 
             <p></p>
 
-            <ng-container>
+
+    </table>
+    <table>
+
             <tr style="height: 10px;margin-left:90%;" *ngIf="((produit.length > 0 && produitop.length> 0 ))">
 
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align: left;border-top:1px solid black;border-left: 1px solid black;">Total HT :</td>
-                <td style="border-top:1px solid black;border-bottom:1px solid black;border-right: 1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;">Total HT :</td>
+                <td style="width:180px;border-top:1px solid black;border-bottom:1px solid black;border-right: 1px solid black;text-align: right;">
                     {{ totalHT() | currency:'EUR':true:'1.2-2'}}
 
                 </td>
@@ -424,9 +454,9 @@
 
             <tr style="height: 30px;margin-left:90%;" *ngIf="((produit.length > 0 && produitop.length> 0  &&  devis.remise))">
 
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align: left;border-top:1px solid black;border-left: 1px solid black;">Après remise de {{devis.remise}} %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;">Après remise de {{devis.remise}} %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;text-align: right;">
                     {{ totalremiseoptet() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
@@ -434,9 +464,9 @@
             </tr>
             <tr style="height: 30px;margin-left:90%;" *ngIf="((produit.length > 0 && produitop.length> 0  &&  (totaldei()>0)))">
 
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align: left;border-top:1px solid black;border-left: 1px solid black;">TVA 2.1 %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+                <td style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;">TVA 2.1 %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;text-align: right;">
                     {{ totaldei() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
@@ -445,9 +475,9 @@
 
             <tr style="height: 30px;margin-left:90%;" *ngIf="((produit.length > 0 && produitop.length> 0 &&  (totalci()>0)))">
 
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align: left;border-top:1px solid black;border-left: 1px solid black;">TVA 5.5 %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;">TVA 5.5 %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;text-align: right;">
                     {{ totalci() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
@@ -456,9 +486,9 @@
 
             <tr style="height: 30px;margin-left:90%;" *ngIf="(( produit.length > 0 && produitop.length> 0  && (totaldi()>0)))">
 
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align: left;border-top:1px solid black;border-left: 1px solid black;">TVA 10 %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;">TVA 10 %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;text-align: right;">
                     {{ totaldi() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
@@ -467,9 +497,9 @@
 
             <tr style="height: 30px;margin-left:90%;" *ngIf="((produit.length > 0 && produitop.length> 0  && (totalvi()>0)))">
 
-                <td colspan="13"></td>
-                <td colspan="2" style="text-align: left;border-top:1px solid black;border-left: 1px solid black;">TVA 20 %</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;">TVA 20 %</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;text-align: right;">
                     {{totalvi() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
@@ -477,26 +507,28 @@
             </tr>
             <tr style="height: 30px;margin-left:90%;" *ngIf="produit.length > 0 && produitop.length> 0 ">
 
-                <td colspan="13"></td>
-                <td colspan="2"  style="text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TTC</td>
-                <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom:1px solid black;text-align: right;">
+                <td style="width: 1200px;"></td>
+                <td  style="width:450px;text-align: left;margin-left:90%;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">TTC</td>
+                <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom:1px solid black;text-align: right;">
                     {{totalcountTTC() | currency:'EUR':true:'1.2-2'}} €
 
                 </td>
 
             </tr>
-            </ng-container>
 
-            </tbody>
+
+    </table>
+    <table>
 
         <ng-container>
-            <tr style="height: 10px;">
-                <td class="col-sm-12" style="text-align: left;border-bottom: 1px solid white;border-top: 1px solid white;">Conditions de règlement :</td>
+            <tr style="height: 10px;" *ngIf="devis.other">
+                <td class="col-sm-3" style="text-align: left;border-bottom: 1px solid white;border-top: 1px solid white;"><div class="form-group"><span>Conditions de règlement :</span></div></td>
 
-
+                <td><div class="form-group"><textarea [(ngModel)]="devis.other" name="other" style="border:none;width: 500px; height: 150px;margin-top:128px;" disabled></textarea></div></td>
             </tr>
-            <td style="border:none;" colspan="10"><textarea [(ngModel)]="devis.other" name="other" style="border:none;width: 500px; height: 250px;" disabled></textarea></td>
-            <td></td>
+            <td style="border:none;" ></td>
+
+
             <td></td>
             <td></td>
             <td></td>
@@ -525,7 +557,7 @@
             </tr>
         </ng-container>
 
-            </tbody>
+
 
 
 
@@ -535,10 +567,9 @@
         </table>
 
 
-    </body>
-    <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter"  style="height:50px;page-break-before:always;page-break-inside: avoid;">
+    <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter"  style="height:60px;page-break-before:always;">
 
-        <article style="margin-top: -40px;bottom:27px;left: 0; right: 0;position: fixed;text-align: center;z-index: 4;" >
+        <article style="margin-top: -40px;bottom:47px;left: 0; right: 0;position: fixed;text-align: center;z-index: 4;" >
 
             <p style="font-size:11px; height: 10px;" class="red">{{fact.pied_page1}}
                 {{fact.pied_page2}}
@@ -550,8 +581,9 @@
 
     </div>
 
-    <div   style="font-size: 12px;position:relative;page-break-before:always;page-break-inside: avoid;text-align: justify;" *ngIf="print && cgv"  id="cgv">
+    <div   style="font-size: 12px;page-break-before:always;text-align: justify;" *ngIf="print && cgv"  id="cgv">
         <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
         <p style="text-align: justify;">{{cgv.texte}}</p>
     </div>
+
 </div>

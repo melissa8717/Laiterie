@@ -507,14 +507,15 @@
 
 
 
-        <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter" style="height: 60px;page-break-before:always;page-break-inside: avoid;">
+        <div class="form-group col-sm-4" *ngIf="print"  id="pageFooter" style="height: 60px;page-break-before:always;">
 
 
 
 
-            <article style="margin-top: -40px;bottom:27px;left: 0; right: 0;position: fixed;text-align: center;z-index: 4;" >
+            <article style="margin-top: -40px;bottom:47px;left: 0; right: 0;position: fixed;text-align: center;z-index: 4;" >
 
-                <p style="font-size:9px; height: 10px;" class="red">{{fact.pied_page1}}
+                <p style="font-size:11px; height: 10px;" class="red">
+                    {{fact.pied_page1}}
                     {{fact.pied_page2}}
                     {{fact.pied_page3}}
                     {{fact.pied_page4}}

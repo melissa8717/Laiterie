@@ -388,3 +388,17 @@ export class FicheDevisLibreComponent implements OnInit {
         this.fileReader.readAsDataURL(file);
     }
 }
+
+export class AppComponent {
+    title = 'app works!';
+    //set a property that holds a random color for our style.
+
+    //declare the fontsize and background color properties
+    public font_size="12px";
+    public background_color="grey ";
+
+    //declare a variable to hold class name:
+    public my_Class = 'style1';
+
+
+    }
