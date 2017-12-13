@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li *ngIf="droitsuser.accescha" id="fichechantier"><a [routerLink]="['/fichechantier' , id_chantier]">Général</a></li>
-                <li *ngIf="droitsuser.accescha" id="photochantier"><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>
+               <!-- <li *ngIf="droitsuser.accescha" id="photochantier"><a  [routerLink]="['/photochantier' , id_chantier]">Photos</a><span class="sr-only">(current)</span></li>-->
                 <li *ngIf="droitsuser.accesdev" id="devischantier"><a [routerLink]="['/devischantier' , id_chantier]">Devis</a></li>
                 <li *ngIf="droitsuser.accescha" id="depenseprev" role="presentation"><a [routerLink]="['/depenseprev' , id_chantier]">Dépenses prévisionnelles</a></li>
                 <li *ngIf="droitsuser.accescha" id="depensereel" role="presentation"><a [routerLink]="['/depensereel' , id_chantier]">Dépenses réelles</a></li>
