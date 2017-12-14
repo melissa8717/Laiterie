@@ -1,11 +1,11 @@
 // produits achats
 // sont stockes sand la table 'produit'
 
-var Q = require('q');
-var mysql = require('mysql');
-var db = require('../db.js').get();
+let Q = require('q');
+let mysql = require('mysql');
+let db = require('../db.js').get();
 
-var service = {};
+let service = {};
 
 service.getAllMainOeuvre = getAllMainOeuvre;
 service.createMainOeuvre = createMainOeuvre;
@@ -49,7 +49,7 @@ module.exports = service;
 
 
 function getAllStock() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT  produit.`id_produit`,`libelle`,reference, produit.id_contact,stock.`stock`,stock.`stockmini`,stock.`stockmaxi`, MAX(produit.num_version) as num_version,contact.nom,prix_achat\
     FROM produit, stock,contact\
       WHERE stock.id_produit = produit.id_produit \
@@ -64,14 +64,14 @@ function getAllStock() {
 }
 
 function getStockclick(id_product, stock) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         stock,
         id_product
     ];
 
-    var query = "UPDATE stock SET  stock = ? WHERE id_produit = ?";
+    let query = "UPDATE stock SET  stock = ? WHERE id_produit = ?";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -84,7 +84,7 @@ function getStockclick(id_product, stock) {
 
 
 function getAll() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT produit.*, contact.* FROM produit ' +
         'LEFT JOIN contact on produit.id_contact = contact.id_contact ' +
         'where produit.type != 1  && (produit.num_version , produit.id_produit) IN (SELECT MAX(num_version), id_produit\
@@ -100,7 +100,7 @@ function getAll() {
 
 
 function getAllProduitsAchat() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT produit.*, contact.* , produit_categorie.libelle AS catlibel FROM produit ' +
         'LEFT JOIN contact on produit.id_contact = contact.id_contact ' +
         'LEFT JOIN produit_categorie ON produit.id_cat = produit_categorie.id_cat ' +
@@ -116,9 +116,9 @@ function getAllProduitsAchat() {
 }
 
 function createMainOeuvre(moParams) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         moParams.libelle,
         moParams.taux_horaire,
         moParams.heure_brute,
@@ -126,7 +126,7 @@ function createMainOeuvre(moParams) {
     ];
 
     // type = 1 pour indiquer que c'est un main d'oeuvre
-    var query = "INSERT INTO produit (libelle, taux_horaire, heure_brute, salaire_charge,  tarif_du, prix_achat, marge, type) " +
+    let query = "INSERT INTO produit (libelle, taux_horaire, heure_brute, salaire_charge,  tarif_du, prix_achat, marge, type) " +
         "VALUES (? , ? , ?, ?, NOW(), 0, 0, 1 )";
 
     db.query(query, params, function (error, results, fields) {
@@ -140,7 +140,7 @@ function createMainOeuvre(moParams) {
 }
 
 function getAllMainOeuvre() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT * FROM produit WHERE type = 1 order by libelle ASC', function (error, mainoeuvres, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
@@ -151,9 +151,9 @@ function getAllMainOeuvre() {
 }
 
 function updateMainOeuvre(id_mo, moParam) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         moParam.libelle,
         moParam.taux_horaire,
         moParam.heure_brute,
@@ -161,7 +161,7 @@ function updateMainOeuvre(id_mo, moParam) {
         id_mo
     ];
 
-    var query = "UPDATE produit SET libelle = ?, taux_horaire = ?, heure_brute = ?, salaire_charge = ? WHERE id_produit = ?";
+    let query = "UPDATE produit SET libelle = ?, taux_horaire = ?, heure_brute = ?, salaire_charge = ? WHERE id_produit = ?";
 
     db.query(query, params, function (error) {
         if (error) {
@@ -174,13 +174,13 @@ function updateMainOeuvre(id_mo, moParam) {
 }
 
 function getById(_id, num_version) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var sql = "SELECT produit.*,stock.* FROM produit " +
+    let sql = "SELECT produit.*,stock.* FROM produit " +
         "LEFT JOIN stock on stock.id_produit = produit.id_produit " +
         "WHERE produit.id_produit = ? && num_version = ? ";
 
-    var inserts = [_id, num_version];
+    let inserts = [_id, num_version];
     sql = mysql.format(sql, inserts);
 
     db.query(sql, inserts, function (error, product) {
@@ -193,9 +193,9 @@ function getById(_id, num_version) {
 }
 
 function create(productParam) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         productParam.libelle,
         productParam.id_contact,
         productParam.reference,
@@ -212,7 +212,7 @@ function create(productParam) {
         productParam.stockmaxi
     ];
 
-    var query = "INSERT INTO produit (libelle, id_contact, reference, id_cat, tarif_du, id_user, unite, prix_achat, id_tva, " +
+    let query = "INSERT INTO produit (libelle, id_contact, reference, id_cat, tarif_du, id_user, unite, prix_achat, id_tva, " +
         "description, note, stockmini, stockmaxi, type) VALUES (? , ? , ? , ?, NOW() ,?, ? , ? , ? , ?, ?, ?, ?, 0 )";
 
     db.query(query, params, function (error, results) {
@@ -220,28 +220,28 @@ function create(productParam) {
             deferred.reject(error.name + ': ' + error.message);
         }
 
-        var params = [
+        deferred.resolve(results);
+
+        let params = [
             results.insertId,
             0,
             productParam.stockmini,
             productParam.stockmaxi];
 
-        var query = "INSERT INTO stock (id_produit, stock, stockmini, stockmaxi ) VALUES (? , ? , ? , ? )";
+        let query = "INSERT INTO stock (id_produit, stock, stockmini, stockmaxi ) VALUES (? , ? , ? , ? )";
 
-        db.query(query, params, function (error, results) {
+        db.query(query, params, function (error) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
             }
-            deferred.resolve(results);
         });
-
     });
 
     return deferred.promise;
 }
 
 function _delete(_id) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query("DELETE FROM produit WHERE id_produit = ? ", [_id], function (error, results, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
         deferred.resolve();
@@ -251,22 +251,22 @@ function _delete(_id) {
 }
 
 function update(id_produit, productParam) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         productParam.id_produit
     ];
 
-    var query = "SELECT MAX(num_version) as max FROM produit WHERE id_produit = ? ";
+    let query = "SELECT MAX(num_version) as max FROM produit WHERE id_produit = ? ";
 
     db.query(query, params, function (error, results) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
 
-        var num_version = +results[0].max + 1;
+        let num_version = +results[0].max + 1;
 
-        var params = [
+        let params = [
             productParam.id_produit,
             num_version,
             productParam.libelle,
@@ -285,7 +285,7 @@ function update(id_produit, productParam) {
             productParam.image_url
         ];
 
-        var query = "INSERT INTO produit (id_produit, num_version, libelle, id_contact, reference, id_cat, tarif_du, id_user, unite, prix_achat, id_tva, " +
+        let query = "INSERT INTO produit (id_produit, num_version, libelle, id_contact, reference, id_cat, tarif_du, id_user, unite, prix_achat, id_tva, " +
             "description, note, type, image_url) VALUES (? , ? , ? , ?,  ? , ?, NOW() ,?, ? , ? , ?, ?, ?, 0 ,?)";
 
         db.query(query, params, function (error, results) {
@@ -293,13 +293,13 @@ function update(id_produit, productParam) {
                 deferred.reject(error.name + ': ' + error.message);
             }
 
-            var params = [
+            let params = [
                 productParam.stock,
                 productParam.stockmini,
                 productParam.stockmaxi,
                 results.insertId];
 
-            var query = "UPDATE stock SET stock = ?, stockmini = ?, stockmaxi = ? WHERE id_produit = ?";
+            let query = "UPDATE stock SET stock = ?, stockmini = ?, stockmaxi = ? WHERE id_produit = ?";
 
             db.query(query, params, function (error, results) {
                 if (error) {
@@ -314,7 +314,7 @@ function update(id_produit, productParam) {
 }
 
 function getAllTva() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT * FROM tva', function (error, tvas, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
@@ -324,7 +324,7 @@ function getAllTva() {
 }
 
 function getAllFournisseur() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query("SELECT * FROM contact WHERE type = 'Fournisseur' OR type =  'Sous-traitant'", function (error, fournisseurs, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
@@ -334,7 +334,7 @@ function getAllFournisseur() {
 }
 
 function getAllCategories() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query("SELECT * FROM produit_categorie", function (error, categories, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
@@ -344,7 +344,7 @@ function getAllCategories() {
 }
 
 function getAllUnite() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query("SELECT * FROM cat_unite", function (error, unites, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
@@ -354,7 +354,7 @@ function getAllUnite() {
 }
 
 function getAllProdComp() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT * FROM produit_compose', function (error, prd_comp, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
@@ -365,13 +365,13 @@ function getAllProdComp() {
 
 function updateModif(modifParams) {
 
-    var deferred = Q.defer();
-    var params = [
+    let deferred = Q.defer();
+    let params = [
         modifParams.id_produit,
         modifParams.id_contact
     ];
 
-    var query = "INSERT INTO produit_histo (id_produit, id_contact, date_histo) VALUES (?, ?, NOW())";
+    let query = "INSERT INTO produit_histo (id_produit, id_contact, date_histo) VALUES (?, ?, NOW())";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -383,7 +383,7 @@ function updateModif(modifParams) {
 }
 
 function getAllHisto(_id) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT * FROM produit\
     JOIN users ON produit.id_user = users.id\
     WHERE produit.id_produit = ?\
@@ -399,8 +399,8 @@ function getAllHisto(_id) {
 
 
 function addMat(matParam) {
-    var params;
-    var deferred = Q.defer();
+    let params;
+    let deferred = Q.defer();
     params = [
         matParam.libelle,
         matParam.marque,
@@ -441,7 +441,7 @@ function addMat(matParam) {
         matParam.dgarant
     ];
 
-    var query = "INSERT INTO Vehiculemateriel (libelle,marque,vehimate,energie,type,annee,datectrltech,immatriculation,genre,date1ctrl,carrosserie,puissance,pl_ass,nserie,poidstc,poidsvide,bruit,regmot,remarque,dateachat,datevente,visite_ampliroll,visite_grue,pneu_av,pneu_ar,gps,code_poste,largeur,surface,gr,ncartegr,date_depreciation,ntelepeage,geolocalisation,poidstr,fgarant,dgarant) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    let query = "INSERT INTO Vehiculemateriel (libelle,marque,vehimate,energie,type,annee,datectrltech,immatriculation,genre,date1ctrl,carrosserie,puissance,pl_ass,nserie,poidstc,poidsvide,bruit,regmot,remarque,dateachat,datevente,visite_ampliroll,visite_grue,pneu_av,pneu_ar,gps,code_poste,largeur,surface,gr,ncartegr,date_depreciation,ntelepeage,geolocalisation,poidstr,fgarant,dgarant) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     db.query(query, params, function (error, results) {
         if (error) {
@@ -454,7 +454,7 @@ function addMat(matParam) {
 }
 
 function getAllVehimat() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT  `id_vehmat`,`libelle`,`marque`,`immatriculation`,`nserie`,`type`,`vehimate`,`annee`\
     FROM Vehiculemateriel \ ORDER BY libelle \ ASC ', function (error, produits, fields) {
         if (error) {
@@ -466,9 +466,9 @@ function getAllVehimat() {
 }
 
 function getByIdvehmat(_id_vehmat) {
-    var deferred = Q.defer();
-    var sql = "SELECT * FROM Vehiculemateriel WHERE id_vehmat = ?";
-    var inserts = [_id_vehmat];
+    let deferred = Q.defer();
+    let sql = "SELECT * FROM Vehiculemateriel WHERE id_vehmat = ?";
+    let inserts = [_id_vehmat];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, product, fields) {
         if (error) {
@@ -481,9 +481,9 @@ function getByIdvehmat(_id_vehmat) {
 }
 
 function updatevehmat(id_vehmat, matParam) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         matParam.libelle,
         matParam.marque,
         matParam.vehimate,
@@ -525,7 +525,7 @@ function updatevehmat(id_vehmat, matParam) {
         id_vehmat
     ];
 
-    var query = "UPDATE Vehiculemateriel SET libelle=?,marque=?,vehimate=?,energie=?,type=?,annee=?,datectrltech=?,immatriculation=?,genre=?,date1ctrl=?,carrosserie=?,puissance=?,pl_ass=?,nserie=?,poidstc=?,poidsvide=?,bruit=?,regmot=?,remarque=?,dateachat=?,datevente=?,visite_ampliroll=?,visite_grue=?,pneu_av=?,pneu_ar=?,gps=?,code_poste=?,largeur=?,surface=?,gr=?,ncartegr=?,date_depreciation=?,ntelepeage=?,geolocalisation=?,poidstr=?,fgarant=?,dgarant=?,image_vh=? WHERE id_vehmat = ?";
+    let query = "UPDATE Vehiculemateriel SET libelle=?,marque=?,vehimate=?,energie=?,type=?,annee=?,datectrltech=?,immatriculation=?,genre=?,date1ctrl=?,carrosserie=?,puissance=?,pl_ass=?,nserie=?,poidstc=?,poidsvide=?,bruit=?,regmot=?,remarque=?,dateachat=?,datevente=?,visite_ampliroll=?,visite_grue=?,pneu_av=?,pneu_ar=?,gps=?,code_poste=?,largeur=?,surface=?,gr=?,ncartegr=?,date_depreciation=?,ntelepeage=?,geolocalisation=?,poidstr=?,fgarant=?,dgarant=?,image_vh=? WHERE id_vehmat = ?";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -537,9 +537,9 @@ function updatevehmat(id_vehmat, matParam) {
 }
 
 function getByIdmat(_id_vehmat) {
-    var deferred = Q.defer();
-    var sql = "SELECT * FROM Vehiculemateriel WHERE id_vehmat = ?";
-    var inserts = [_id_vehmat];
+    let deferred = Q.defer();
+    let sql = "SELECT * FROM Vehiculemateriel WHERE id_vehmat = ?";
+    let inserts = [_id_vehmat];
 
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, product, fields) {
@@ -553,7 +553,7 @@ function getByIdmat(_id_vehmat) {
 }
 
 function deletemat(_id_vehmat) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query("DELETE FROM Vehiculemateriel WHERE id_vehmat = ? ", [_id_vehmat], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
@@ -566,9 +566,9 @@ function deletemat(_id_vehmat) {
 }
 
 function getByIdEntretien(_id_vehmat) {
-    var deferred = Q.defer();
-    var sql = "SELECT  * FROM entretien WHERE id_vehmat = ?";
-    var inserts = [_id_vehmat];
+    let deferred = Q.defer();
+    let sql = "SELECT  * FROM entretien WHERE id_vehmat = ?";
+    let inserts = [_id_vehmat];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, product, fields) {
         if (error) {
@@ -581,9 +581,9 @@ function getByIdEntretien(_id_vehmat) {
 }
 
 function getByIdEntretien1(_id_vehmat) {
-    var deferred = Q.defer();
-    var sql = "SELECT  * FROM entretien WHERE id_vehmat = ?";
-    var inserts = [_id_vehmat];
+    let deferred = Q.defer();
+    let sql = "SELECT  * FROM entretien WHERE id_vehmat = ?";
+    let inserts = [_id_vehmat];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, product, fields) {
         if (error) {
@@ -596,9 +596,9 @@ function getByIdEntretien1(_id_vehmat) {
 }
 
 function getAllRef(reference) {
-    var deferred = Q.defer();
-    var sql = "SELECT reference FROM produit WHERE reference = ?";
-    var inserts = [reference];
+    let deferred = Q.defer();
+    let sql = "SELECT reference FROM produit WHERE reference = ?";
+    let inserts = [reference];
 
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, product, fields) {
@@ -612,16 +612,16 @@ function getAllRef(reference) {
 }
 
 function addEntretien(EParams, id_vehmat) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         EParams.date,
         EParams.motif,
         EParams.tarif,
         id_vehmat
     ];
 
-    var query = "INSERT INTO entretien (date, motif, tarif,id_vehmat) VALUES (? , ? , ?, ?)";
+    let query = "INSERT INTO entretien (date, motif, tarif,id_vehmat) VALUES (? , ? , ?, ?)";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -634,7 +634,7 @@ function addEntretien(EParams, id_vehmat) {
 }
 
 function deleteEntre(_id_entretien) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query("DELETE FROM entretien WHERE id_entretien = ? ", [_id_entretien], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
@@ -647,7 +647,7 @@ function deleteEntre(_id_entretien) {
 
 
 function getAllImg() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT * from produit',
         function (error, produit, fields) {
             if (error) {

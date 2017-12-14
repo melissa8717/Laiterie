@@ -72,12 +72,12 @@ app.post('/image/contact/:id', uploadImg.any(), function (req, res) {
 });
 
 // IMAGES FICHE PRODUITS ACHAT / AJOUT PRODUIT ACHAT
-app.get('/image/img/:id/:nom_fichier', function (req, res) {
+app.get('/image/produit/:id/:nom_fichier', function (req, res) {
     res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
 
 });
 
-app.post('/image/img/:id', uploadImg.any(), function (req, res, next) {
+app.post('/image/produit/:id', uploadImg.any(), function (req, res, next) {
     db.query("UPDATE produit SET image_url = ? WHERE id_produit = ?", [req.files[0].filename, req.params.id]);
     res.end('image uploaded');
 });

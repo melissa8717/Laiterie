@@ -1,13 +1,10 @@
 import {Component} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AlertService, AuthenticationService, AchatsService} from '../_services/index';
+import {Router} from '@angular/router';
+import {AchatsService, AlertService, UtilsService} from '../_services/index';
 import {Tva} from "../_models/index";
 import {Contact} from "../_models/contacts/contact";
-import {ParamsService} from "../_services/params.service";
-import {User} from "../_models/user";
 import {FileUploader} from 'ng2-file-upload';
 
-const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -16,71 +13,35 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 export class AjoutProduitAchatComponent {
 
-    private uploaderImg: FileUploader;
+    private unites: any[];
+    private tvas: Tva[] = [];
+    private fournisseurs: Contact[] = [];
+    private categories: any[] = [];
 
     private tva_choisi: number;
-    private tvas: Tva[] = [];
-    private filter_tva: Tva[] = [];
-    private fournisseurs: Contact[] = [];
     private fournisseur_choisi: string; // id de fournisseur
-    private categories: any[] = [];
     private cat_choisi: string;
     private produit: any = {};
     private loading = false;
-    private currentUser: User;
-    private droitsuser: any = {};
-    private id: string;
-    // visualisation de l'image avant envoi
-    private url: any;
 
-    private unites: any[];
 
-    constructor(private route: ActivatedRoute,
+    constructor(private utilsService: UtilsService,
                 private router: Router,
-                private authenticationService: AuthenticationService,
                 private achatsService: AchatsService,
-                private alertService: AlertService,
-                private paramsService: ParamsService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                private alertService: AlertService) {
     }
 
     ngOnInit() {
         this.getTVA();
         this.getFournisseurs();
         this.getCategories();
-        this.loaddroituser();
         this.getUnite();
-
-        this.route.params.subscribe(params => {
-            this.id = params['id'];
-            this.uploaderImg = new FileUploader({url: URLimg + "produit/" + params['id']});
-            this.uploaderImg.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-        });
-    }
-
-
-    readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
     }
 
     getUnite() {
         this.achatsService.getAllUnite().subscribe(unites => {
             this.unites = unites;
             this.produit.unite = this.unites[0].libelle;
-        });
-    }
-
-    loaddroituser() {
-        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-            this.droitsuser = data[0];
         });
     }
 
@@ -105,22 +66,17 @@ export class AjoutProduitAchatComponent {
         });
     }
 
-    private getUniteId() {
-        return this.unites.filter(x => x.libelle == this.produit.unite)[0].id_unite;
-    }
-
     private addProduct() {
         this.loading = true;
 
-        this.produit.id_tva = this.getTvaId();
-        this.produit.id_contact = this.getFournisseurId();
-        this.produit.categorie = this.getCategoryId();
-        this.produit.unite = this.getUniteId();
+        this.produit.id_tva = this.tvas.find(x => x.taux == this.tva_choisi).id_tva;
+        this.produit.id_contact = this.fournisseurs.find(x => x.nom == this.fournisseur_choisi).id_contact;
+        this.produit.categorie = this.categories.find(x => x.libelle == this.cat_choisi).id_cat;
+        this.produit.unite = this.unites.find(x => x.libelle == this.produit.unite).id_unite;
 
-        this.produit.id_user = this.currentUser._id;
+        this.produit.id_user = this.utilsService.currentUser._id;
 
-
-        this.achatsService.add(this.produit).subscribe(data => {
+        this.achatsService.add(this.produit).subscribe(id => {
             this.alertService.success('Nouveau produit ajouté avec succès', true);
             this.loading = false;
             this.router.navigate(['/listeachat']);
@@ -128,19 +84,6 @@ export class AjoutProduitAchatComponent {
             this.alertService.error(error._body);
             this.loading = false;
         });
-    }
-
-    private getCategoryId() {
-        return this.categories.filter(x => x.libelle == this.cat_choisi)[0].id_cat;
-    }
-
-    private getTvaId() {
-        this.filter_tva = this.tvas.filter(x => x.taux == this.tva_choisi);
-        return this.filter_tva[0].id_tva;
-    }
-
-    private getFournisseurId() {
-        return this.fournisseurs.filter(x => x.nom == this.fournisseur_choisi)[0].id_contact;
     }
 
     Allref() {

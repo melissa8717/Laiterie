@@ -11,6 +11,8 @@ import {AlertService, UtilsService} from "../_services/index";
 
 export class ImguploaderComponent implements OnInit {
 
+    private DEFAULT_IMG_PATH: string = 'image/test.ico';
+
     @Input() name: string;
     @Input() id: number;
     @Input() onlineImgUrl: string;

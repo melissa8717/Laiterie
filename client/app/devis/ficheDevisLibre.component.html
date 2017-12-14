@@ -21,7 +21,7 @@
             <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; heigh:auto; top:10px;position:fixed;left:50px;">
                 <div *ngIf="print" style="top:10px;position:fixed;left:50px;">
                     <img *ngIf="url" [src]="url" alt="..." class="col-sm-4"/>
-                    <img *ngIf="!url && img.image" style="height: auto; width: 200px;top:10px;position:fixed;left:50px;"
+                    <img *ngIf="!url && img.image" style="height: auto; width: 200px;top:0px;position:fixed;left:50px;"
                          src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="logo"
                          class="img-responsive col-sm-12"/>
 
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div  style="margin-left: 50%;margin-top: 70px;border:1px solid black;width: 350px;text-align: center;">
+        <div  style="margin-left: 50%;margin-top: 150px;border:1px solid black;width: 350px;text-align: center;">
             <div class="form-group " style="font-weight: bold;">
                 <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
             </div>
@@ -582,7 +582,7 @@
     </div>
 
     <div   style="font-size: 12px;page-break-before:always;text-align: justify;" *ngIf="print && cgv"  id="cgv">
-        <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+        <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
         <p style="text-align: justify;">{{cgv.texte}}</p>
     </div>
 
