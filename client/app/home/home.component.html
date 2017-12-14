@@ -328,6 +328,23 @@
 
                 </div>
 
+                <div class="col-sm-3">
+
+                    <h4  >Alarmes visites médicales!</h4>
+
+                    <table class="table table-bordered " >
+                        <!--<thead style="text-align: center; background-color: white;"><th>Nom :</th><th>Type :</th><th style="text-align: center;">Date :</th></thead>-->
+                        <tbody class="" style="background-color: #B2B2B2;" *ngIf="visite.length >0">
+                        <!--créer une boucle conditionnelle pour créer les lignes du tableau-->
+                        <tr *ngFor="let visites of visite">
+                            <td>{{visites.nom}} {{visites.prenom}}</td><td>Visite médicale</td><td>{{visites.DATE | date: 'dd/MM/yyyy'}} </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
             </div>
 
 
