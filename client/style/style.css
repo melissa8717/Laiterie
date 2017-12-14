@@ -37,6 +37,7 @@ footer
 	margin-top: 10px;
 	height: 10px;
 	width: 100%;
+	page-break-before: always;
 }
 .glyphicon-warning-sign
 {
@@ -895,6 +896,7 @@ form label
 	width: 100%;
 	content: counter(page);
 	counter-increment: page;
+	page-break-before: always;
 }
 
 #pageContent
