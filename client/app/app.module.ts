@@ -165,6 +165,7 @@ import {MenuparamComponent} from './parametre/menuparam.component';
 import {HeaderComponent} from './utils/header.component';
 import {GedComponent} from "./utils/ged.component";
 import {ImguploaderComponent} from "./utils/imguploader.component";
+import {FiligraneComponent} from "./parametre/filigrane.component";
 
 @NgModule({
     imports: [
@@ -318,7 +319,8 @@ import {ImguploaderComponent} from "./utils/imguploader.component";
         AvoirlibreComponent,
         HeaderComponent,
         GedComponent,
-        ImguploaderComponent
+        ImguploaderComponent,
+        FiligraneComponent
     ],
     providers: [
         AppConfig,

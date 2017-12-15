@@ -7,15 +7,16 @@
     <div  class="col-sm-2 col-sm-offset-3">
         <h4>Filigrane</h4>
 
+
         <div style="height: 15%; width: 100%;">
             <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-            <img *ngIf="!url && fili.image"
-                 src="http://{{loc}}:4000/image/filig/{{fili.id_agence}}/{{fili.image}}" alt="..."
+            <img *ngIf="!url && fili.image" src="{{urlFili}}/{{fili.id_agence}}/{{fili.image}}"
                  class="img-thumbnail col-sm-12"/>
-            <img *ngIf="!url && !fili.image" src="image/test.ico" alt="..."
-                 class="img-thumbnail images"/>
-            <input type="file" ng2FileSelect [uploader]="uploaderFili" (change)="readUrl($event)"/>
+            <img *ngIf="!url && !fili.image" src="image/test.ico" class="img-thumbnail images"/>
+            <input  type="file" ng2FileSelect [uploader]="uploaderFili"
+                   (change)="readUrl($event)"/>
         </div>
+    </div>
     </div>
 
     <button
@@ -35,5 +36,3 @@
         <button type="button" class="col-sm-offset-11 col-sm-1 " (click)="addcgv()" *ngIf="!cgv">Ajouter</button>
     </div>
 
-
-</div>

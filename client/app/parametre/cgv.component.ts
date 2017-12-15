@@ -22,6 +22,7 @@ export class CgvComponent implements OnInit {
     cgv: any ={};
     currentUser: User;
     fili: any= {};
+    model: any= {};
     id_agence : any={};
     private url: any; // visualisation de l'image avant envoi
     private uploaderFili: FileUploader;
@@ -84,13 +85,14 @@ export class CgvComponent implements OnInit {
         this.paramsService.addVente(this.cgv).subscribe(id => {
             this.setUploaderFili();
             this.fili.id_agence = id;
+            console.log("fili ts"+this.fili.id_agence+id);
 
 
 
         });
     }
     setUploaderFili() {
-        this.uploaderFili = new FileUploader({url: this.urlFili + "/" + this.fili.id_agence});
+        this.uploaderFili = new FileUploader({url: this.urlFili + "/" + this.model.id_agence});
         this.uploaderFili.onAfterAddingFile = (file) => {
             file.withCredentials = false;
         };

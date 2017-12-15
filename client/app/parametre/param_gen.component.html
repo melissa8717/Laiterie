@@ -12,8 +12,10 @@
         </div>
 
         <h3 class="col-sm-12">Agence</h3>
+        <a [routerLink]="['/filigrane/'+model.id_agence]" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Ajouter un filigrane</span>
 
-        <div *ngIf="uploaderImg" class="col-sm-2">
+
+        <div class="col-sm-2">
             <h4>Logo</h4>
 
             <div style="height: 15%; width: 100%;">
@@ -33,7 +35,7 @@
 
 
 
-        <form *ngIf="utilsService.droitsUser.accesparam == 1">
+    <form *ngIf="utilsService.droitsUser.accesparam == 1">
             <div class="col-sm-12">
                 <div class="form-group" style="margin-top: 10px;">
                     <label class="col-sm-1">Nom :</label>
@@ -143,4 +145,3 @@
 
     </div>
 
-</div>

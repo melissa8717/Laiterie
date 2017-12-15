@@ -53,6 +53,8 @@ var storageFili = multer.diskStorage({
     filename: function (req, file, cb) {
         crypto.pseudoRandomBytes(16, function (err, raw) {
             var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
+            var id_agence = req.params.id;
+
             cb(null, url);
         });
     }
@@ -130,17 +132,20 @@ app.post('/image/agence/:id', uploadImg.any(), function (req, res, next) {
 });
 
 app.post('/image/filig/:id_agence', uploadFili.any(), function (req, res, next) {
-    db.query("UPDATE agence SET filigrane = ? WHERE id_agence = ?", [req.files[0].filename, req.params.id]);
+    db.query("UPDATE agence SET filigrane = ? WHERE id_agence = ?", [req.files[0].filename, req.params.id_agence]);
     res.end('filigrane uploaded');
+    console.log("server fili"+req.files[0].filename, req.params.id_agence);
 });
 
-
+app.get('/image/filig/:id_agence/:nom_fichier', function (req, res) {
+    res.sendFile(path.join(__dirname, 'images', req.params.nom_fichier));
+    console.log("get fili"+req.params.nom_fichier);
+});
 
 /******************GED CONTACT***************************/
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, DIR)
-    },
+        cb(null, DIR)},
     filename: function (req, file, cb) {
         crypto.pseudoRandomBytes(16, function (err, raw) {
             var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
