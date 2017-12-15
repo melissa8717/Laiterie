@@ -4,7 +4,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FileUploader} from 'ng2-file-upload';
-import {AchatsService, AlertService, ParamsService} from "../_services/index";
+import {AchatsService, AlertService, ParamsService, UtilsService} from "../_services/index";
 import {User} from "../_models/user";
 
 const URLimg = 'http://' + location.hostname + ':4000/images/';
@@ -17,8 +17,6 @@ const URLimg = 'http://' + location.hostname + ':4000/images/';
 export class SuivimaterielComponent implements OnInit {
 
     private uploaderImg: FileUploader;
-    private loc = location.hostname;
-    private url: any;
 
     private model: any = {};
     private id_vehmat: number;
@@ -27,47 +25,34 @@ export class SuivimaterielComponent implements OnInit {
     private id_entretien: number;
     private mat: any;
     private print: boolean = false;
-    private currentUser: User;
-    private droitsuser: any = {};
 
 
     constructor(private route: ActivatedRoute,
                 private alertService: AlertService,
                 private achatsService: AchatsService,
-                private paramsService: ParamsService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                private utilsService: UtilsService) {
     }
 
     ngOnInit() {
-        this.loaddroituser();
-
         this.route.params.subscribe(params => {
             this.id_vehmat = params['id'];
 
             this.loadvehimat();
             this.loadentretien();
-
-            this.uploaderImg = new FileUploader({url: URLimg + "matvehi/" + this.id_vehmat});
-            this.uploaderImg.onAfterAddingFile = (file) => {
-                file.withCredentials = false;
-            };
-
         });
     }
 
-    loaddroituser() {
-        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-            this.droitsuser = data[0];
-        });
-    }
-
-    loadvehimat() {
+    private loadvehimat() {
         this.achatsService.getByIdIdvehmat(this.id_vehmat).subscribe(data => {
             this.model = data[0];
         })
     }
 
     private modify() {
+        if(this.uploaderImg && this.uploaderImg.queue[0]) {
+            this.uploaderImg.queue[0].upload();
+        }
+
         this.achatsService.updatevehmat(this.model).subscribe(() => {
             this.alertService.success('Votre demande a été modifiée avec succès', true);
         });
@@ -79,7 +64,7 @@ export class SuivimaterielComponent implements OnInit {
         })
     }
 
-    addEntretien() {
+    private addEntretien() {
         this.achatsService.addEntretien(this.id_vehmat, this.entre).subscribe(mat => {
             this.mat = mat;
 
@@ -95,17 +80,6 @@ export class SuivimaterielComponent implements OnInit {
             }, error => {
                 this.alertService.error(error._body);
             });
-    }
-
-
-    readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
     }
 
     imprimer() {

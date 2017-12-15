@@ -21,19 +21,9 @@
 
                 <h3>Fiche matériel</h3>
 
-                <!--
-                <div style="height: auto; max-width: 20%;">
-                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img
-                            src="http://{{loc}}:4000/image/matvehi/{{rik.id_vehmat}}/{{rik.image}}" alt="..."
-                            class="img-thumbnail col-sm-12"/>
-                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
-                </div>
-                <button *ngIf="uploaderImg && uploaderImg.queue[0] && droitsuser.modifparam"
-                        class="btn btn-default  col-sm-offset-3 col-sm-1"
-                        (click)="modify(); uploaderImg.queue[0].upload();"> Modifier
-                </button>
-                -->
+                <img-uploader *ngIf="model.id_vehmat" [(uploaderImg)]="uploaderImg" [name]="'matvehi'"
+                              [id]="model.id_vehmat" [onlineImgUrl]="model.image_vh"></img-uploader>
+
                 <br/>
 
                 <div class="form-group">
@@ -261,7 +251,7 @@
                 </div>
 
 
-                <button *ngIf="!print && (droitsuser.modifproa || droitsuser.modifprov)"
+                <button *ngIf="!print && (utilsService.droitsUser.modifproa || utilsService.droitsUser.modifprov)"
                         class="btn btn-default  col-sm-offset-11 col-sm-1"
                         (click)="modify(id_vehmat);uploaderImg.queue[0].upload();"> Modifier
                 </button>
@@ -294,7 +284,7 @@
                             <td><input type="text" name="entreprix{{i}}" value="" class="col-sm-12"
                                        [(ngModel)]="entretiens[i].tarif"/></td>
                             <td *ngIf="!print">
-                                <button *ngIf="droitsuser.supproa || droitsuser.supprov"
+                                <button *ngIf="utilsService.droitsUser.supproa || utilsService.droitsUser.supprov"
                                         (click)="deleteEntre(entretiens[i].id_entretien )">Supprimer
                                 </button>
                             </td>
@@ -315,7 +305,7 @@
                                 <td class="col-sm-2"><input type="text" name="tarif" value="" class="col-sm-12"
                                                             [(ngModel)]="entre.tarif"/></td>
                                 <td class="col-sm-2">
-                                    <button *ngIf="droitsuser.ajoutproa || droitsuser.ajoutprov" type="submit"
+                                    <button *ngIf="utilsService.droitsUser.ajoutproa || utilsService.droitsUser.ajoutprov" type="submit"
                                             [disabled]="loading">Ajouter
                                     </button>
                                 </td>
@@ -332,7 +322,7 @@
             </div>
 
             <button class="col-sm-offset-10 col-sm-1 btn" type="button"
-                    *ngIf="!print && (droitsuser.accesproa || droitsuser.accesprov)" (click)=" imprimer()">Imprimer
+                    *ngIf="!print && (utilsService.droitsUser.accesproa || utilsService.droitsUser.accesprov)" (click)=" imprimer()">Imprimer
             </button>
 
 
