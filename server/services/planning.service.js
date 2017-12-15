@@ -34,6 +34,7 @@ service.upouvrier = upouvrier;
 service.getAllEquipeouvrier = getAllEquipeouvrier;
 service.getAllouvrier = getAllouvrier;
 service.addWorker = addWorker;
+service.getAllNamechantier = getAllNamechantier;
 
 module.exports = service;
 
@@ -208,7 +209,6 @@ function _deleteTravailEquipe(_id) {
 function _delete(_id) {
     var deferred = Q.defer();
 
-    //console.log("DELETE FROM event WHERE id_event = ?", [_id])
 
     db.query("DELETE FROM event WHERE id_event = ?", [_id], function (error, result, fields) {
         if (error) {
@@ -227,8 +227,7 @@ function _delete(_id) {
 function update(id, eventparams) {
     var deferred = Q.defer();
 
-//console.log("UPDATE event SET start = ?, end = ?, title = ?, type = ?, id_contact = ?, id_chantier = ? WHERE id_event = ? ",
-    //[eventparams.start,eventparams.end,eventparams.title,eventparams.type, eventparams.employe.id_contact, eventparams.chantier.id_chantier, id]);
+
     db.query("UPDATE event SET start = ?, end = ?, title = ?, type = ?, id_contact = ?, id_chantier = ? WHERE id_event = ? ",
         [eventparams.start, eventparams.end, eventparams.title, eventparams.type, eventparams.employe.id_contact, (eventparams.chantier ? eventparams.chantier.id_chantier : null), id], function (error, result, fields) {
             if (error) {
@@ -250,8 +249,6 @@ function update(id, eventparams) {
 function validate(id, eventparams) {
     var deferred = Q.defer();
 
-//console.log("UPDATE event SET start = ?, end = ?, title = ?, type = ?, id_contact = ?, id_chantier = ? WHERE id_event = ? ",
-    //[eventparams.start,eventparams.end,eventparams.title,eventparams.type, eventparams.employe.id_contact, eventparams.chantier.id_chantier, id]);
     db.query("UPDATE travail SET nb_heure = ?,type=?, valid = true WHERE id_travail = ? ",
         [eventparams.nb_heure, eventparams.type, id], function (error, result, fields) {
             if (error) {
@@ -326,8 +323,6 @@ function create(eventParam) {
 function updateplanning_simple(id, eventparams) {
     var deferred = Q.defer();
 
-//console.log("UPDATE event SET start = ?, end = ?, title = ?, type = ?, id_contact = ?, id_chantier = ? WHERE id_event = ? ",
-    //[eventparams.start,eventparams.end,eventparams.title,eventparams.type, eventparams.employe.id_contact, eventparams.chantier.id_chantier, id]);
     db.query("UPDATE event SET start = ?, end = ?, title = ?, type = ?, id_contact = ?, id_chantier = ? WHERE id_event = ? ",
         [eventparams.start, eventparams.end, eventparams.title, eventparams.type, eventparams.employe.id_contact, (eventparams.chantier ? eventparams.chantier.id_chantier : null), id], function (error, result, fields) {
             if (error) {
@@ -347,7 +342,6 @@ function updateplanning_simple(id, eventparams) {
 
 function addEquipe(EParams, id_equipe) {
     var deferred = Q.defer();
-    console.log("service js");
 
     var params = [
         EParams.n_equipe,
@@ -405,7 +399,7 @@ function getAllEquipe() {
 
 function getAllRecap(month, year) {
     var deferred = Q.defer();
-    console.log(month, year);
+
     db.query('SELECT * FROM heuremois WHERE mois =? AND annee =?  ', [month, year], function (error, chantier, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
@@ -445,7 +439,6 @@ function getAllEquipeouvrier() {
 }
 
 function upouvrier(eParam) {
-    console.log(eParam);
 
     var deferred = Q.defer();
     var params = [
@@ -461,7 +454,7 @@ function upouvrier(eParam) {
             console.log(error.message);
             deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
-        //console.log(results)
+
 
         deferred.resolve();
     });
@@ -473,7 +466,6 @@ function upouvrier(eParam) {
             console.log(error.message);
             deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
         }
-        //console.log(results)
 
         deferred.resolve();
     });
@@ -505,6 +497,21 @@ function addWorker(Eparams) {
             deferred.reject(error.name + ': ' + error.message);
             console.log("(2)" + error.name + ': ' + error.message);
         }
+    });
+    return deferred.promise;
+}
+
+function getAllNamechantier(month, year) {
+    var deferred = Q.defer();
+    console.log(month, year);
+    db.query('SELECT travail.id_chantier, chantier.nom_chantier FROM  `travail` ' +
+        'LEFT JOIN chantier ON chantier.id_chantier = travail.id_chantier ' +
+        'WHERE YEAR( DATE ) =? AND MONTH( DATE ) =? GROUP BY travail.id_chantier  ', [year,month], function (error, chantier, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        deferred.resolve(chantier);
     });
     return deferred.promise;
 }

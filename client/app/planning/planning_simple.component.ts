@@ -34,6 +34,10 @@ import {User} from "../_models/user";
 })
 
 export class Planning_simpleComponent implements OnInit {
+    my: Date = new Date();
+    date: boolean = false;
+    mois:any= []=[];
+    loading = false;
 
     month: Date = new Date();
     view:string = "Chantier";
@@ -107,17 +111,21 @@ export class Planning_simpleComponent implements OnInit {
 
     up() {
         this.month = addMonths(this.month, 1);
+        this.my.setMonth(this.my.getMonth()+1);
+        this.loadMois();
     }
 
     back() {
         this.month = subMonths(this.month, 1);
+        this.my.setMonth(this.my.getMonth()-1);
+        this.loadMois();
     }
 
     loadAllEquipes() {
         this.contactService.getAllEquipes().subscribe(
             data => {
                 this.equipes = data;
-                //console.log(data)
+
             }
         );
     }
@@ -128,7 +136,7 @@ export class Planning_simpleComponent implements OnInit {
             data => {
                 this.ouvriers = data;
                 this.ouvriersfiltered = data;
-                //console.log(data)
+
             }
         );
     }
@@ -257,6 +265,7 @@ export class Planning_simpleComponent implements OnInit {
         this.loadAllOuvriers();
         this.loadAllTravail();
         this.loadAllEquipes();
+        this.loadMois();
         this.chantierService.getAll().subscribe(
             data=>{
                 this.chantiers = data;
@@ -443,10 +452,26 @@ export class Planning_simpleComponent implements OnInit {
             (data:any) => {
                 this.alertService.success('Votre demande a été modifiée avec succès', true);
                 console.log("added successful: " + data);
-                console.log(this.modal);
+
             }
         );
     }
+
+    loadMois() {
+
+        this.date = false;
+        this.planningService.getAllNamechantier(this.my.getMonth()+1, this.my.getFullYear()).subscribe(
+            data => {
+                this.mois = data;
+                this.loading= false;
+            },
+            err =>{
+                this.alertService.error("Impossible de charger les semaines du mois, veuillez réessayer ultérieurement");
+                this.loading= false;
+            }
+        );
+    }
+
     imprimer() {
         this.alertService.clear();
         this.print = true;
@@ -457,3 +482,4 @@ export class Planning_simpleComponent implements OnInit {
 
     }
 }
+

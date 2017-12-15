@@ -328,5 +328,24 @@
         </div>
 
 
+        <table class="table-bordered col-sm-2">
+
+            <thead>
+                <tr>
+                    <th >N° de chantier</th>
+                    <th >Nom du chantier</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let moiss of mois">
+                    <td>{{moiss.id_chantier}}</td>
+                    <td>{{moiss.nom_chantier}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+
     </div><!--fin container fluid-->
 </div>
