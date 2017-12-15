@@ -3,12 +3,10 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-
-import {AchatsService, AlertService, UtilsService} from '../_services/index';
-import {Product} from '../_models/products/produit';
-import {VentesService} from '../_services/ventes.service';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {FileUploader} from 'ng2-file-upload';
+import {AchatsService, AlertService, UtilsService, VentesService} from '../_services/index';
+import {Product} from '../_models/products/produit';
 
 
 @Component({

@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AchatsService, AlertService, UtilsService} from '../_services/index';
-import {Product} from "../_models/products/produit";
+import {Contact, Product} from "../_models/index";
 import {FileUploader} from 'ng2-file-upload';
-import {Contact} from "../_models/contacts/contact";
 
 @Component({
     moduleId: module.id,

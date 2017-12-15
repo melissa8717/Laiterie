@@ -121,7 +121,7 @@ function createVersion(productParam) {
             productParam.produit.description,
             productParam.produit.note,
             productParam.produit.unite,
-            productParam.produit.categorie,
+            productParam.produit.id_cat,
             productParam.produit.prix_achat,
             productParam.produit.marge,
             productParam.produit.margemin,
