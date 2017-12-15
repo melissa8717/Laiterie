@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var ventesService = require('services/ventes.service');
+let express = require('express');
+let router = express.Router();
+let ventesService = require('services/ventes.service');
 
 // routes
 router.post('/new', create);
@@ -20,7 +20,7 @@ module.exports = router;
 function create(req, res) {
     ventesService.create(req.body)
         .then(function (results) {
-            res.sendStatus(200);
+            res.send("" + results.insertId);
         })
         .catch(function (err) {
             res.status(400).send(err);

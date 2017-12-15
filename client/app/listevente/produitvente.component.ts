@@ -4,15 +4,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AchatsService, AlertService} from '../_services/index';
+import {AchatsService, AlertService, UtilsService} from '../_services/index';
 import {Product} from '../_models/products/produit';
 import {VentesService} from '../_services/ventes.service';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {ParamsService} from '../_services/params.service';
-import {User} from '../_models/user';
 import {FileUploader} from 'ng2-file-upload';
 
-const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -21,10 +18,7 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 export class ProduitventeComponent implements OnInit {
 
-    // Image uploader
-    private loc = location.hostname;
     private uploaderImg: FileUploader;
-    private url: any;
 
     private id_product: number;
     private num_version: string;
@@ -47,8 +41,7 @@ export class ProduitventeComponent implements OnInit {
     private formattedDate: string;
     private loading = false;
     private print: boolean = false;
-    private currentUser: User;
-    private droitsuser: any = {};
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -56,12 +49,10 @@ export class ProduitventeComponent implements OnInit {
                 private achatsService: AchatsService,
                 private alertService: AlertService,
                 private _sanitizer: DomSanitizer,
-                private paramsService: ParamsService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                private utilsService: UtilsService) {
     }
 
     ngOnInit() {
-        this.loaddroituser();
         this.loadAllMainOeuvres();
 
         this.route.params.forEach(params => {
@@ -75,43 +66,10 @@ export class ProduitventeComponent implements OnInit {
                 // la date a afficher sur la page
                 this.formattedDate = this.formatDate(new Date(this.product.tarif_du));
 
-                this.loadHistorique(this.id_product);
+                this.loadHistorique();
                 this.loadAllCategories();
                 this.loadAllUnites();
-
-                this.uploaderImg = new FileUploader({url: URLimg + 'produitv/' + this.id_product});
-                this.uploaderImg.onAfterAddingFile = (file) => {
-                    file.withCredentials = false;
-                };
             });
-        });
-    }
-
-    private loaddroituser() {
-        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-            this.droitsuser = data[0];
-        });
-    }
-
-    private loadHistorique(id: number) {
-        this.ventesService.getAllHisto(id).subscribe(data => {
-            this.historique = data;
-        });
-    }
-
-    private loadAllCategories() {
-        this.achatsService.getAllCategories().subscribe(categories => {
-            this.categories = categories;
-            this.updateProduct.categorie = this.categories.find(cat => cat.id_cat == this.updateProduct.categorie).libelle;
-        });
-    }
-
-    private loadAllUnites() {
-        this.achatsService.getAllUnite().subscribe(unites => {
-            this.unites = unites;
-            this.updateProduct.unite = this.unites.find(u => u.id_unite == this.updateProduct.unite).libelle;
-            this.loadAllProduitsVentes();
-            this.loadProduitsComposes();
         });
     }
 
@@ -121,7 +79,29 @@ export class ProduitventeComponent implements OnInit {
         });
     }
 
-    private loadAllProduitsVentes() {
+    private loadHistorique() {
+        this.ventesService.getAllHisto(this.id_product).subscribe(data => {
+            this.historique = data;
+        });
+    }
+
+    private loadAllCategories() {
+        this.achatsService.getAllCategories().subscribe(categories => {
+            this.categories = categories;
+            this.updateProduct.cat_libelle = this.categories.find(cat => cat.id_cat == this.updateProduct.id_cat).libelle;
+        });
+    }
+
+    private loadAllUnites() {
+        this.achatsService.getAllUnite().subscribe(unites => {
+            this.unites = unites;
+            this.updateProduct.unite = this.unites.find(u => u.id_unite == this.updateProduct.unite).libelle;
+            this.loadAllProduitsAchats();
+            this.loadProduitsComposes();
+        });
+    }
+
+    private loadAllProduitsAchats() {
         this.achatsService.getAll().subscribe(products => {
             this.allProducts = products;
             this.allProducts.forEach((product: any) => {
@@ -143,11 +123,17 @@ export class ProduitventeComponent implements OnInit {
     }
 
     private modifyProduct() {
+        this.loading = true;
+
+        if (this.uploaderImg && this.uploaderImg.queue[0]) {
+            this.uploaderImg.queue[0].upload();
+        }
+
         this.updateProduct.prix_achat = this.getTotalPrixAchat();
         this.updateProduct.prix_vente = this.getTotalPrixVente();
-        this.updateProduct.categorie = this.categories.find(cat => cat.libelle == this.updateProduct.categorie).id_cat;
+        this.updateProduct.id_cat = this.categories.find(cat => cat.libelle == this.updateProduct.cat_libelle).id_cat;
         this.updateProduct.unite = this.unites.find(u => u.libelle == this.updateProduct.unite).id_unite;
-        this.updateProduct.id_user = this.currentUser._id;
+        this.updateProduct.id_user = this.utilsService.currentUser._id;
 
         let tmp: any = {
             produit: this.updateProduct,
@@ -155,11 +141,10 @@ export class ProduitventeComponent implements OnInit {
             mainOeuvre: this.mainOeuvres
         };
 
-        this.loading = true;
         this.ventesService.newVersion(tmp).subscribe(() => {
+            this.alertService.success('Le produit a bien été mis a jour. ')
             this.loading = false;
             this.router.navigate(['/listevente']);
-            this.alertService.success('Le produit a bien été mis a jour. ')
         }, err => {
             console.error(err);
         })
@@ -332,16 +317,5 @@ export class ProduitventeComponent implements OnInit {
             window.print();
             this.print = false;
         }, 1000);
-    }
-
-    private readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
     }
 }

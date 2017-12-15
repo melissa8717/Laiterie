@@ -10,7 +10,7 @@
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
             <a *ngIf="!print"  [routerLink]="['/ajout_produit_achat']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Créer un produit</span>
         </div>
-        <button class="col-sm-offset-9 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accesproa" (click)=" imprimer()">Imprimer</button>
+        <button class="col-sm-offset-9 col-sm-1 btn" type="button" *ngIf="!print && utilsService.droitsUser.accesproa" (click)=" imprimer()">Imprimer</button>
 
 
        <rechercheachat #recherche [achat]="this"></rechercheachat>
@@ -40,17 +40,17 @@
                             <td>{{product.reference}}</td>
                             <td>{{product.libelle}}</td>
                             <td>{{product.prix_achat| currency:'EUR':true:'1.2-2'}}</td>
-                            <td>{{product.nom}}</td>
-                            <td>{{product.catlibel}}</td>
+                            <td>{{product.contact_name}}</td>
+                            <td>{{product.cat_libelle}}</td>
 
                             <td><div class="input-group">
                                 <input type="hidden" class="form-control" [name]="product.id_produit">
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-right" >
-                                        <li *ngIf="droitsuser.modifproa"><a [routerLink]="['/produitachat/' + product.id_produit+'/'+ product.num_version]">Modifier</a></li>
-                                        <li *ngIf="droitsuser.supproa" role="separator" class="divider"></li>
-                                        <li *ngIf="droitsuser.supproa"><a (click)="delete(product.id_produit)">Supprimer</a></li>
+                                        <li *ngIf="utilsService.droitsUser.modifproa"><a [routerLink]="['/produitachat/' + product.id_produit+'/'+ product.num_version]">Modifier</a></li>
+                                        <li *ngIf="utilsService.droitsUser.supproa" role="separator" class="divider"></li>
+                                        <li *ngIf="utilsService.droitsUser.supproa"><a (click)="delete(product.id_produit)">Supprimer</a></li>
                                     </ul>
                                 </div><!-- /btn-group -->
                             </div><!-- /input-group --></td>

@@ -5,8 +5,6 @@ import {Product} from "../_models/products/produit";
 import {FileUploader} from 'ng2-file-upload';
 import {Contact} from "../_models/contacts/contact";
 
-const URLimg = 'http://' + location.hostname + ':4000/image/';
-
 @Component({
     moduleId: module.id,
     templateUrl: 'produitachat.component.html',
@@ -26,7 +24,7 @@ export class ProduitachatComponent implements OnInit {
     private fournisseurs: Contact[] = [];
 
     private product = new Product();
-    private updateProduct: any = {};
+    private updateProduct = new Product();
 
     private formattedDate: string; // useless ?
     private loading: boolean = false;
@@ -72,7 +70,7 @@ export class ProduitachatComponent implements OnInit {
     private loadCat() {
         this.achatsService.getAllCategories().subscribe(categories => {
             this.categories = categories;
-            this.updateProduct.id_cat = this.categories.find(cat => cat.id_cat == this.updateProduct.id_cat).libelle;
+            this.updateProduct.cat_libelle = this.categories.find(cat => cat.id_cat == this.updateProduct.id_cat).libelle;
         });
     }
 
@@ -86,24 +84,26 @@ export class ProduitachatComponent implements OnInit {
     private loadFournisseurs() {
         this.achatsService.getAllFournisseur().subscribe(fournisseurs => {
             this.fournisseurs = fournisseurs;
-            this.updateProduct.id_contact = this.fournisseurs.find(f => f.id_contact == this.updateProduct.id_contact).nom;
+            this.updateProduct.contact_name = this.fournisseurs.find(f => f.id_contact == this.updateProduct.id_contact).nom;
         });
     }
 
     private modifyProduct() {
         this.loading = true;
 
-        this.uploaderImg.queue[0].upload();
+        if(this.uploaderImg && this.uploaderImg.queue[0]) {
+            this.uploaderImg.queue[0].upload();
+        }
 
         this.updateProduct.id_user = this.utilsService.currentUser._id;
-        this.updateProduct.id_cat = this.categories.find(cat => cat.libelle == this.updateProduct.id_cat).id_cat;
+        this.updateProduct.id_cat = this.categories.find(cat => cat.libelle == this.updateProduct.cat_libelle).id_cat;
         this.updateProduct.unite = this.unites.find(u => u.libelle == this.updateProduct.unite).id_unite;
-        this.updateProduct.id_contact = this.fournisseurs.find(f => f.nom == this.updateProduct.id_contact).id_contact;
+        this.updateProduct.id_contact = this.fournisseurs.find(f => f.nom == this.updateProduct.contact_name).id_contact;
 
         this.achatsService.update(this.updateProduct).subscribe(() => {
+            this.alertService.success("Le produit a bien été modifié. ");
             this.loading = false;
             this.router.navigate(['/listeachat']);
-            this.alertService.success("Le produit a bien été modifié. ")
         });
     }
 
