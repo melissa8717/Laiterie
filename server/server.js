@@ -45,6 +45,21 @@ app.get('/image', function (req, res) {
 });
 
 /******************IMAGES********************************/
+// Filigrane
+var storageFili = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, DIRimg)
+    },
+    filename: function (req, file, cb) {
+        crypto.pseudoRandomBytes(16, function (err, raw) {
+            var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
+            cb(null, url);
+        });
+    }
+});
+var uploadFili = multer({storage: storageFili});
+
+
 var storageImg = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, DIRimg)
@@ -57,6 +72,8 @@ var storageImg = multer.diskStorage({
     }
 });
 var uploadImg = multer({storage: storageImg});
+
+
 
 app.options('/image');
 
@@ -112,21 +129,13 @@ app.post('/image/agence/:id', uploadImg.any(), function (req, res, next) {
     res.end('logo uploaded');
 });
 
-// Filigrane
-var storageFili = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, DIRimg)
-    },
-    filename: function (req, file, cb) {
-        crypto.pseudoRandomBytes(16, function (err, raw) {
-            var url = raw.toString('hex') + Date.now() + '.' + getFileExtension(file.originalname); // url
-            cb(null, url);
-        });
-    }
+app.post('/image/filig/:id_agence', uploadFili.any(), function (req, res, next) {
+    db.query("UPDATE agence SET filigrane = ? WHERE id_agence = ?", [req.files[0].filename, req.params.id]);
+    res.end('filigrane uploaded');
 });
-var uploadFili = multer({storage: storageFili});
 
-app.options('/image');
+
+
 /******************GED CONTACT***************************/
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {

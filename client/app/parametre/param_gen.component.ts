@@ -18,7 +18,9 @@ export class Param_genComponent {
     // Image Uploader
     private url: any; // visualisation de l'image avant envoi
     private uploaderImg: FileUploader;
+
     private urlImg: string = 'http://' + location.hostname + ':4000/image/agence';
+
 
     private model: any = {};
 
@@ -52,6 +54,9 @@ export class Param_genComponent {
         });
     }
 
+
+
+
     setUploaderImg() {
         this.uploaderImg = new FileUploader({url: this.urlImg + "/" + this.model.id_agence});
         this.uploaderImg.onAfterAddingFile = (file) => {
@@ -75,6 +80,7 @@ export class Param_genComponent {
 
     modifyImg() {
         this.uploaderImg.queue[0].upload();
+
         this.alertService.success("Image modifiée");
     }
 

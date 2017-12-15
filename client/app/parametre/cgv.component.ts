@@ -7,6 +7,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {AlertService, AuthenticationService} from '../_services/index';
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
+import {FileUploader} from "ng2-file-upload";
 
 
 
@@ -20,6 +21,14 @@ export class CgvComponent implements OnInit {
 
     cgv: any ={};
     currentUser: User;
+    fili: any= {};
+    id_agence : any={};
+    private url: any; // visualisation de l'image avant envoi
+    private uploaderFili: FileUploader;
+
+    private urlFili: string = 'http://' + location.hostname + ':4000/image/filig';
+
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -38,6 +47,7 @@ export class CgvComponent implements OnInit {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.loadCat();
 
+
     }
 
 
@@ -45,10 +55,11 @@ export class CgvComponent implements OnInit {
         console.log(this.cgv)
 
         this.paramsService.getAllVente().subscribe(cgv => {
-
-            this.cgv = cgv[0];
-            console.log(this.cgv);
-
+            if (cgv && cgv[0]) {
+                this.cgv = cgv[0];
+                this.fili = cgv[0];
+                this.setUploaderFili();
+            }
         });
     }
 
@@ -61,13 +72,38 @@ export class CgvComponent implements OnInit {
             });
     }
 
+    modifyFili() {
+        this.uploaderFili.queue[0].upload();
+
+        this.alertService.success("Image modifiée");
+    }
+
     addcgv() {
 
 
-        this.paramsService.addVente(this.cgv).subscribe(mat => {
+        this.paramsService.addVente(this.cgv).subscribe(id => {
+            this.setUploaderFili();
+            this.fili.id_agence = id;
 
 
-            });
+
+        });
+    }
+    setUploaderFili() {
+        this.uploaderFili = new FileUploader({url: this.urlFili + "/" + this.fili.id_agence});
+        this.uploaderFili.onAfterAddingFile = (file) => {
+            file.withCredentials = false;
+        };
+    }
+
+    readUrl(event: any) {
+        if (event.target.files && event.target.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (event: any) => {
+                this.url = event.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
     }
 
 }

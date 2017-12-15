@@ -39,6 +39,7 @@ export class FicheDevisLibreComponent implements OnInit {
     private base64Files: any;
 
 
+
     constructor(private route: ActivatedRoute,
                 private devisService: DevisService,
                 private factureService: FactureService,
