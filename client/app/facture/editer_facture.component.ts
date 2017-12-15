@@ -682,8 +682,8 @@ export class Editer_factureComponent {
 
         for (let libreoptions of this.libreoption) {
 
-            if (libreoptions.taux == 2.1) {
-                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (parseFloat(libreoptions.taux) / 100);
+            if (libreoptions.tva == 2.1) {
+                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (parseFloat(libreoptions.tva) / 100);
             }
 
         }

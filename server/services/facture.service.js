@@ -326,7 +326,7 @@ function create(facture_param) {
             for (var p in facture_param.libre) {
                 (function (facture) {
                     db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,tva) VALUES (? , ? , ? , ? , ?, ? , ?  )",
-                        [results.insertId, 1, facture_param.libre[facture].produit,  facture_param.libre[facture].pourcentage, facture_param.libre[facture].qte_devis, facture_param.libre[facture].prix_devis,facture_param.libre[facture].taux],
+                        [results.insertId, 1, facture_param.libre[facture].produit,  facture_param.libre[facture].pourcentage, facture_param.libre[facture].qte_devis, facture_param.libre[facture].prix_devis,parseFloat(facture_param.libre[facture].tva)],
                         function (error, result, fields) {
                             if (error) {
                                 deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
@@ -342,7 +342,7 @@ function create(facture_param) {
             for (var p in facture_param.libreoption) {
                 (function (facture) {
                     db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,option,tva) VALUES (? , ? , ? , ? , ?, ? ,? , ?)",
-                        [results.insertId, 1, facture_param.libreoption[facture].produit,  facture_param.libreoption[facture].pourcentage, facture_param.libreoption[facture].qte_devis, facture_param.libreoption[facture].prix_devis,1, facture_param.libreoption[facture].taux],
+                        [results.insertId, 1, facture_param.libreoption[facture].produit,  facture_param.libreoption[facture].pourcentage, facture_param.libreoption[facture].qte_devis, facture_param.libreoption[facture].prix_devis,1, parseFloat(facture_param.libreoption[facture].tva)],
                         function (error, result, fields) {
                             if (error) {
                                 deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
@@ -1686,7 +1686,7 @@ function getByIdDevislibreoption(_id_devis, _num_version) {
 
 function getByIdlibresituation(_id_fact, _n_situation) {
     var deferred = Q.defer();
-    var sql = "SELECT * FROM  facture_libredetail WHERE id_fact =? AND n_situation =? and option IS NOT TRUE ";
+    var sql = "SELECT *, pourcent AS pourcents FROM  facture_libredetail WHERE id_fact =? AND n_situation =? and option IS NOT TRUE ";
     var inserts = [_id_fact, _n_situation];
 
     sql = mysql.format(sql, inserts);

@@ -176,6 +176,7 @@ export class ModifierfactureComponent {
         });
     }
 
+
     loadlibreSituation() {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture']
@@ -311,10 +312,12 @@ export class ModifierfactureComponent {
         else return 0;
     }
 
-    totalignesitua(lsituas: any) {
-        if (lsituas.pourcent)
-            return (lsituas.qteprod / 100) * lsituas.prix_prod * lsituas.pourcent;
+    totalignesitua(lbsituas: any) {
+        console.log(lbsituas.pourcents);
+        if (lbsituas.pourcents)
+            return (lbsituas.qteprod / 100) * lbsituas.prix_prod * lbsituas.pourcents;
         else return 0;
+
     }
 
     totalignesituaop(situaop: any) {
@@ -341,8 +344,26 @@ export class ModifierfactureComponent {
         return totalopt;
     }
 
-    countTTC(situas: any, options: any) {
-        return this.countSitua(situas) + this.countSituaopt(options)
+    countSitualib(lsituas: any) {
+        let totalopt = 0;
+
+        for (let lsituas of this.libsitua) {
+            totalopt += lsituas.qteprod * lsituas.prix_prod;
+        }
+        return totalopt;
+    }
+
+    countSituaoptlib(situaop: any) {
+        let totalopt = 0;
+
+        for (let situaop of this.libsituaop) {
+            totalopt += situaop.qteprod * situaop.prix_prod;
+        }
+        return totalopt;
+    }
+
+    countTTC(situas: any, options: any, situaop :any, lsituas: any) {
+        return this.countSitua(situas) + this.countSituaopt(options) + this.countSituaoptlib(situaop) + this.countSitualib(lsituas);
     }
 
     countLigne(situas: any) {
@@ -367,6 +388,30 @@ export class ModifierfactureComponent {
         return totalopt;
     }
 
+    countLignel(lbsituas: any) {
+        let totalopt = 0;
+
+        for (let lbsituas of this.libsitua) {
+            if (lbsituas.pourcents)
+                totalopt += (lbsituas.qteprod / 100) * lbsituas.prix_prod * lbsituas.pourcents;
+            else totalopt += 0;
+        }
+        return totalopt;
+
+    }
+
+    countLignelO(situaop: any) {
+        let totalopt = 0;
+
+        for (let situaop of this.libsituaop) {
+            if (situaop.pourcent)
+                totalopt += (situaop.qteprod / 100) * situaop.prix_prod * situaop.pourcent;
+            else totalopt += 0;
+        }
+        return totalopt;
+
+    }
+
     countTotaldessitua(options: any) {
         let totalopt = 0;
 
@@ -376,20 +421,20 @@ export class ModifierfactureComponent {
         return  totalopt;
     }
 
-    countTotal(situas: any, valeur: any, options: any) {
-        return this.countLigne(situas) + this.countOption(options);
+    countTotal(situas: any, valeur: any, options: any,lbsituas: any,situaop: any) {
+        return (this.countLigne(situas)>0 ?this.countLigne(situas) :0) + (this.countOption(options)>0 ? this.countOption(options) :0) + (this.countLignel(lbsituas)>0 ? this.countLignel(lbsituas) : 0) + (this.countLignelO(situaop)>0 ? this.countLignelO(situaop) :0);
     }
 
-    countRemise(situas: any, valeur: any, options: any) {
-        return this.countTotal(situas, valeur, options) * ((this.valeur.remise ? this.valeur.remise : 0) / 100);
+    countRemise(situas: any, valeur: any, options: any,lbsituas: any,situaop: any) {
+        return this.countTotal(situas, valeur, options,lbsituas,situaop) * ((this.valeur.remise ? this.valeur.remise : 0) / 100);
     }
 
-    countTotalRemise(situas: any, valeur: any, options: any) {
-        return this.countTotal(situas, valeur, options) * (1 - ((this.valeur.remise ? this.valeur.remise : 0) / 100));
+    countTotalRemise(situas: any, valeur: any, options: any,lbsituas: any,situaop: any) {
+        return this.countTotal(situas, valeur, options,lbsituas,situaop) * (1 - ((this.valeur.remise ? this.valeur.remise : 0) / 100));
     }
 
-    countTotalNet(situas: any, valeur: any, options: any) {// en attendant plus value moins value
-        return this.countTotalRemise(situas, valeur, options)
+    countTotalNet(situas: any, valeur: any, options: any,lbsituas: any,situaop: any) {// en attendant plus value moins value
+        return this.countTotalRemise(situas, valeur, options,lbsituas,situaop)
     }
 
     totalsituation(valeur: any,options:any) {
@@ -397,27 +442,27 @@ export class ModifierfactureComponent {
 
     }
 
-    countTotalsituation(situas: any, valeur: any, options: any) {
-        this.model.montant_ht = this.countTotalNet(situas, valeur, options) - this.totalsituation(valeur,options);
+    countTotalsituation(situas: any, valeur: any, options: any,lbsituas :any,situaop: any) {
+        this.model.montant_ht = this.countTotalNet(situas, valeur, options,lbsituas,situaop) - this.totalsituation(valeur,options);
         return this.model.montant_ht;
     }
 
-    countTVA(situas: any, valeur: any, options: any) {
+    countTVA(situas: any, valeur: any, options: any,lbsituas:any,situaop: any) {
 
-        return this.countTotalsituation(situas, valeur, options) * (this.valeur.tva ? this.valeur.tva : 0) / 100;
+        return this.countTotalsituation(situas, valeur, options,lbsituas,situaop) * (this.valeur.tva ? this.valeur.tva : 0) / 100;
     }
 
-    countSTotal(situas: any, valeur: any, options: any) {
-        return this.countTotalsituation(situas, valeur, options) + this.countTVA(situas, valeur, options);
+    countSTotal(situas: any, valeur: any, options: any,lbsituas:any,situaop: any) {
+        return this.countTotalsituation(situas, valeur, options,lbsituas,situaop) + this.countTVA(situas, valeur, options,lbsituas,situaop);
     }
 
-    countRetenu(situas: any, valeur: any, options: any) {
+    countRetenu(situas: any, valeur: any, options: any,lsituas:any,situaop: any) {
 
-        return this.countSTotal(situas, valeur, options) * (this.model.retenue ? this.model.retenue : 0) / 100;
+        return this.countSTotal(situas, valeur, options,lsituas,situaop) * (this.model.retenue ? this.model.retenue : 0) / 100;
     }
 
-    countTotalTTC(situas: any, valeur: any, options: any) {
-        return this.countSTotal(situas, valeur, options) - this.countRetenu(situas, valeur, options);
+    countTotalTTC(situas: any, valeur: any, options: any,lsituas:any,situaop: any) {
+        return this.countSTotal(situas, valeur, options,lsituas,situaop) - this.countRetenu(situas, valeur, options,lsituas,situaop);
 
     }
 
