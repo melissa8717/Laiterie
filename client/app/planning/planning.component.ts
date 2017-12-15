@@ -1,26 +1,16 @@
 import {
-    Component,
     ChangeDetectionStrategy,
-    ViewChild,
-    TemplateRef, OnInit, OnChanges, SimpleChanges
+    Component,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+    TemplateRef,
+    ViewChild
 } from '@angular/core';
-import {
-    startOfDay,
-    endOfDay,
-    subDays,
-    addDays,
-    endOfMonth,
-    isSameDay,
-    isSameMonth,
-    addHours
-} from 'date-fns';
-import { Subject } from 'rxjs/Subject';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-    CalendarEvent,
-    CalendarEventAction,
-    CalendarEventTimesChangedEvent
-} from 'angular-calendar';
+import {addDays, addHours, endOfDay, endOfMonth, isSameDay, isSameMonth, startOfDay, subDays} from 'date-fns';
+import {Subject} from 'rxjs/Subject';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent} from 'angular-calendar';
 import {ContactService} from "../_services/contact.service";
 import {ChantierService} from "../_services/chantier.service";
 import {AlertService} from "../_services/alert.service";
@@ -53,23 +43,25 @@ const colors: any = {
     styleUrls: ['styles.css'],
     templateUrl: 'planning.component.html'
 })
-export class PlanningComponent implements  OnInit, OnChanges{
+export class PlanningComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         console.log(changes);
     }
+
     ngOnInit(): void {
         this.loaddroituser();
         this.contactService.getAllEmploye().subscribe(
-            data=>{
+            data => {
                 this.employes = data;
                 this.refresh.next();
             }
         );
 
         this.chantierService.getAll().subscribe(
-            data=>{
+            data => {
                 this.chantiers = data;
+
             }
         );
 
@@ -77,17 +69,18 @@ export class PlanningComponent implements  OnInit, OnChanges{
 
 
     }
+
     @ViewChild('modalContent') modalContent: TemplateRef<any>;
     @ViewChild('modalAdd') modalAdd: TemplateRef<any>;
 
     view: string = 'month';
 
-    locale:string = "fr";
+    locale: string = "fr";
 
     viewDate: Date = new Date();
 
-    employes : any[] = [];
-    chantiers : any[] = [];
+    employes: any[] = [];
+    chantiers: any[] = [];
 
 
     modalData: {
@@ -97,27 +90,25 @@ export class PlanningComponent implements  OnInit, OnChanges{
 
     modalDataAdd: any = {};
 
-    employe :any = {};
+    employe: any = {};
     print: boolean = false;
 
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
-
-
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
 
     actions: CalendarEventAction[] = [
         {
             label: '<i class="fa fa-fw fa-pencil"></i>',
-            onClick: ({ event }: { event: CalendarEvent }): void => {
+            onClick: ({event}: { event: CalendarEvent }): void => {
                 this.handleEvent('Edited', event);
             }
         },
         {
             label: '<i class="fa fa-fw fa-times"></i>',
-            onClick: ({ event }: { event: CalendarEvent }): void => {
+            onClick: ({event}: { event: CalendarEvent }): void => {
                 this.events = this.events.filter(iEvent => iEvent !== event);
                 this.handleEvent('Deleted', event);
             }
@@ -127,43 +118,43 @@ export class PlanningComponent implements  OnInit, OnChanges{
     refresh: Subject<any> = new Subject();
 
     events: any[] = [
-       /*{
-            start: subDays(startOfDay(new Date()), 1),
-            end: addDays(new Date(), 1),
-            title: 'Première pierre stade',
-            employe:{
-                prenom:"Alexandre",
-                nom:"BAR",
-            },
-            color: colors.red,
-            actions: this.actions
-        },
-        {
-            start: subDays(endOfMonth(new Date()), 3),
-            end: addDays(endOfMonth(new Date()), 3),
-            title: 'Formation n° 36 - Semaine 1',
-            employe:{
-                prenom:"Manon",
-                nom:"LE ROY",
-            },
-            color: colors.blue
-        },
-        {
-            start: addHours(startOfDay(new Date()), 2),
-            end: new Date(),
-            title: 'RDV stade, fondations à determiner',
-            employe:{
-                prenom:"Alexandre",
-                nom:"BAR",
-            },
-            color: colors.yellow,
-            actions: this.actions,
-            resizable: {
-                beforeStart: true,
-                afterEnd: true
-            },
-            draggable: true
-        }*/
+        /*{
+             start: subDays(startOfDay(new Date()), 1),
+             end: addDays(new Date(), 1),
+             title: 'Première pierre stade',
+             employe:{
+                 prenom:"Alexandre",
+                 nom:"BAR",
+             },
+             color: colors.red,
+             actions: this.actions
+         },
+         {
+             start: subDays(endOfMonth(new Date()), 3),
+             end: addDays(endOfMonth(new Date()), 3),
+             title: 'Formation n° 36 - Semaine 1',
+             employe:{
+                 prenom:"Manon",
+                 nom:"LE ROY",
+             },
+             color: colors.blue
+         },
+         {
+             start: addHours(startOfDay(new Date()), 2),
+             end: new Date(),
+             title: 'RDV stade, fondations à determiner',
+             employe:{
+                 prenom:"Alexandre",
+                 nom:"BAR",
+             },
+             color: colors.yellow,
+             actions: this.actions,
+             resizable: {
+                 beforeStart: true,
+                 afterEnd: true
+             },
+             draggable: true
+         }*/
     ];
     activeDayIsOpen: boolean = true;
 
@@ -171,28 +162,31 @@ export class PlanningComponent implements  OnInit, OnChanges{
                 private contactService: ContactService,
                 private planningService: PlanningService,
                 private alertService: AlertService,
-
                 private _sanitizer: DomSanitizer,
                 private chantierService: ChantierService,
-                private paramsService:ParamsService) {
+                private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
-    selectTT(){
+    selectTT() {
         this.planningService.getAll().subscribe(
-            data=>{
-                for(let i = 0; i< data.length; i++ ){
+            data => {
+                for (let i = 0; i < data.length; i++) {
                     data[i].end = addHours(new Date(data[i].end), 2);
                     data[i].start = addHours(new Date(data[i].start), 2);
 
                 }
-                console.log(data);
-                this.events = data;
 
-                if(this.employe.name && this.employe.name.id_contact){
+                this.events = data;
+                this.events.forEach(event => {
+                    let date = new Date(event.start);
+                    event.title = (date.getHours()>9 ?date.getHours() : "0" +date.getHours()) + ":" + (date.getMinutes()>9? date.getMinutes() : "0"+date.getMinutes() ) + " " + event.title;
+                });
+
+                if (this.employe.name && this.employe.name.id_contact) {
                     console.log(this.events);
                     this.events = this.events.filter(obj => obj.employe.id_contact == this.employe.name.id_contact);
-                    console.log(this.events);
+                    //console.log(this.events);
                     this.refresh.next();
                 }
                 this.refresh.next();
@@ -208,13 +202,11 @@ export class PlanningComponent implements  OnInit, OnChanges{
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
 
         });
     }
 
-    dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
         if (isSameMonth(date, this.viewDate)) {
             if (
                 (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -228,25 +220,25 @@ export class PlanningComponent implements  OnInit, OnChanges{
         }
     }
 
-    delete(event: any){
+    delete(event: any) {
 
-       this.planningService.delete(event.id_event).subscribe(
-            data=>{
+        this.planningService.delete(event.id_event).subscribe(
+            data => {
                 console.log("removed")
                 this.events = this.events.filter(obj => obj.id_event != event.id_event);
                 this.refresh.next();
             },
-            err=>{
+            err => {
                 console.log("erreur remove event")
             }
         )
     }
 
 
-    update(event: any){
+    update(event: any) {
 
         this.planningService.update(event).subscribe(
-            data=>{
+            data => {
                 console.log("updated")
                 this.events = this.events.filter(obj => obj.id_event != event.id_event);
                 this.events.push(event);
@@ -254,7 +246,7 @@ export class PlanningComponent implements  OnInit, OnChanges{
 
                 this.refresh.next()
             },
-            err=>{
+            err => {
                 console.log("error during update")
             }
         )
@@ -276,9 +268,9 @@ export class PlanningComponent implements  OnInit, OnChanges{
 
         let event = Object.assign({}, test);
 
-        this.modalData = { action, event };
+        this.modalData = {action, event};
         console.log(this.modalData);
-        this.modal.open(this.modalContent, { size: 'lg' });
+        this.modal.open(this.modalContent, {size: 'lg'});
     }
 
 
@@ -288,21 +280,21 @@ export class PlanningComponent implements  OnInit, OnChanges{
             end: endOfDay(new Date()),
             color: colors.red,
         };
-        this.modal.open(this.modalAdd, {size:'lg'});
+        this.modal.open(this.modalAdd, {size: 'lg'});
     }
 
-    dbcall(): void{
+    dbcall(): void {
         this.planningService.add(this.modalDataAdd).subscribe(data => {
             console.log(data);
 
             this.events.push({
-                id_event : data,
+                id_event: data,
                 title: this.modalDataAdd.title,
                 start: this.modalDataAdd.start,
                 end: this.modalDataAdd.end,
-                type : this.modalDataAdd.type,
-                chantier : this.modalDataAdd.chantier,
-                color:  this.modalDataAdd.color,
+                type: this.modalDataAdd.type,
+                chantier: this.modalDataAdd.chantier,
+                color: this.modalDataAdd.color,
                 employe: this.modalDataAdd.employe,
                 draggable: true,
                 resizable: {
@@ -319,21 +311,21 @@ export class PlanningComponent implements  OnInit, OnChanges{
 
 
     autocompleListFormatterContact = (data: any): SafeHtml => {
-        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom +" " +data.prenom}</span>`;
+        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}</span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
     autocompleListFormatterContactValue = (data: any): SafeHtml => {
-        let html = `${(data.nom || data.prenom) ? ((data.nom ? (data.nom + " "): "" )  + (data.prenom ? data.prenom : "")) : ""}`;
+        let html = `${(data.nom || data.prenom) ? ((data.nom ? (data.nom + " ") : "") + (data.prenom ? data.prenom : "")) : ""}`;
         return html;
     };
-
 
 
     autocompleListFormatterchantier = (data: any): SafeHtml => {
         let html = `<span>${data.nom_chantier} </span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
+
     imprimer() {
         this.alertService.clear();
         this.print = true;

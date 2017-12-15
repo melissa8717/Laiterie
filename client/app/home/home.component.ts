@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
     loc = location.hostname;
     image: any[];
     id_agence: number;
+    visite: any [] = [];
 
     constructor(private userService: UserService,
                 private planningService: PlanningService,
@@ -59,6 +60,7 @@ export class HomeComponent implements OnInit {
         this.loadAlarmeform();
         this.loadAlarmecaces();
         this.loadAllagence();
+        this.loadVisite();
     }
 
     loadAllagence() {
@@ -143,4 +145,12 @@ export class HomeComponent implements OnInit {
             this.caces = caces;
         });
     }
+
+    loadVisite() {
+        this.paramsService.getVisitemedicale().subscribe(visite => {
+            this.visite = visite;
+            console.log(this.visite);
+        });
+    }
+
 }

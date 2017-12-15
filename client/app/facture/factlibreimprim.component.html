@@ -15,13 +15,13 @@
 
             <fieldset class="separe">
                 <div class="row marge">
-                    <img *ngIf="!print" [src]="config.logoPath"  style="margin-left:100px;">
+                    <img *ngIf="!print" [src]="config.logoPath"  style="margin-left:100px;height: auto;width: 300px;">
                 </div>
                 <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
-                <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; top:30px; position: fixed;">
-                    <div *ngIf="print">
-                        <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
-                        <img *ngIf="!url && img.image" style="height: 150px; width: 300px;"
+                <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; heigh:auto; top:10px;position:fixed;left:50px;">
+                    <div *ngIf="print" style="top:10px;position:fixed;left:50px;">
+                        <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-4"/>
+                        <img *ngIf="!url && img.image" style="height: auto; width: 200px;top:0px;position:fixed;left:50px;page-break-after:always;"
                              src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="..."
                              class="img-responsive col-sm-12"/>
 

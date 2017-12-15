@@ -118,6 +118,11 @@ export class PlanningService {
         return this.http.post(this.config.apiUrl + '/planning/adoubvrir',params, this.jwt());
     }
 
+    getAllNamechantier(month:number, year:number) {
+        //console.log(this.config.apiUrl + '/facture/prev/'+month+"/"+year);
+        return this.http.get(this.config.apiUrl + '/planning/getAllNamechantier/'+month+"/"+year, this.jwt()).map((response: Response) => response.json());
+    }
+
     private jwt() {
         // create authorization header with jwt token
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
