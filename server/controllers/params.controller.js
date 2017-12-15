@@ -46,6 +46,7 @@ router.get('/retfor', getAllFormation);
 
 router.get('/alarmform', getAlarmeformation);
 router.get('/alarcaces', getAlarmecaces);
+router.get('/visitemedicale',getVisitemedicale);
 
 
 module.exports = router;
@@ -364,6 +365,16 @@ function getAlarmecaces(req, res) {
 
 function getAlarmeformation(req, res) {
     paramsService.getAlarmeformation()
+        .then(function (agence) {
+            res.send(agence);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getVisitemedicale(req, res) {
+    paramsService.getVisitemedicale()
         .then(function (agence) {
             res.send(agence);
         })

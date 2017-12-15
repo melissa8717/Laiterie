@@ -31,7 +31,7 @@ router.get('/semaine/:month/:year', getAllHeuresem);
 router.get('/worker', getAllEquipeouvrier);
 router.get('/allouvrier', getAllouvrier);
 router.post('/adoubvrir', addWorker);
-
+router.get('/getAllNamechantier/:month/:year',getAllNamechantier);
 
 module.exports = router;
 
@@ -176,7 +176,6 @@ function updateplanning_simple(req, res) {
 
 
 function addEquipe(req, res) {
-    //console.log("test3");
     planningService.addEquipe(req.body, req.params.id_equipe)
         .then(function (data) {
             res.send(data);
@@ -210,7 +209,6 @@ function getAllEquipe(req, res) {
 }
 
 function getAllRecap(req, res) {
-    //console.log("test");
     planningService.getAllRecap(req.params.month, req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -222,7 +220,6 @@ function getAllRecap(req, res) {
 
 
 function getAllHeuresem(req, res) {
-    //console.log("test");
     planningService.getAllHeuresem(req.params.month, req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
@@ -244,8 +241,7 @@ function getAllEquipeouvrier(req, res) {
 
 
 function upouvrier(req, res) {
-    //console.log("test3");
-    planningService.upouvrier(req.body)
+   planningService.upouvrier(req.body)
         .then(function () {
             res.sendStatus(200);
         })
@@ -266,7 +262,6 @@ function getAllouvrier(req, res) {
 }
 
 function addWorker(req, res) {
-    //console.log("test3");
     planningService.addWorker(req.body)
         .then(function () {
             res.send(200);
@@ -275,4 +270,15 @@ function addWorker(req, res) {
                 res.status(400).send(err);
             }
         );
+}
+
+function getAllNamechantier(req, res) {
+    console.log("test");
+    planningService.getAllNamechantier(req.params.month, req.params.year)
+        .then(function (Chantier) {
+            res.send(Chantier);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
 }

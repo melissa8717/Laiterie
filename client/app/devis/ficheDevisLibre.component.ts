@@ -88,6 +88,7 @@ export class FicheDevisLibreComponent implements OnInit {
     produits() {
         this.devisService.getByIdLibreproduit(this.id_devis, this.num_version).subscribe(data => {
             this.produit = data;
+
         })
     }
 
@@ -148,10 +149,14 @@ export class FicheDevisLibreComponent implements OnInit {
         this.print = true;
         setTimeout(() => {
 
+
             window.print();
             this.print = false;
         }, 1000);
+
     }
+
+
 
     loadCat() {
         this.paramsService.getAllVente().subscribe(cgv => {
@@ -403,3 +408,4 @@ export class AppComponent {
 
 
     }
+

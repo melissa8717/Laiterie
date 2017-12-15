@@ -196,6 +196,10 @@ export class ParamsService {
         return this.http.put(this.config.apiUrl + '/params/test', ag_params, this.jwt());
     }
 
+    getVisitemedicale() {
+        return this.http.get(this.config.apiUrl + '/params/visitemedicale', this.jwt()).map((response: Response) => response.json());
+    }
+
 
     // private helper methods
 

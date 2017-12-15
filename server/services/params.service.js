@@ -52,6 +52,7 @@ service.getAllFormation = getAllFormation;
 
 service.getAlarmecaces = getAlarmecaces;
 service.getAlarmeformation = getAlarmeformation;
+service.getVisitemedicale = getVisitemedicale;
 
 module.exports = service;
 
@@ -652,6 +653,18 @@ function getAlarmeformation() {
 function getAlarmecaces() {
     let deferred = Q.defer();
     db.query('SELECT * FROM  cacesalert ', function (error, params, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        deferred.resolve(params);
+    });
+    return deferred.promise;
+}
+
+function getVisitemedicale() {
+    let deferred = Q.defer();
+    db.query('SELECT visite_medicale AS DATE, nom, prenom FROM  `contact` WHERE visite_medicale ' +
+        'BETWEEN NOW( ) AND (NOW( ) + INTERVAL 1 MONTH) ', function (error, params, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
