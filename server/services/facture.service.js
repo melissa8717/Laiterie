@@ -96,6 +96,7 @@ service.getByIdlibresituationoption = getByIdlibresituationoption;
 service.getByIdlibresituation = getByIdlibresituation;
 service.getByIdTotlafact = getByIdTotlafact;
 service.getByIdTotlaTVA = getByIdTotlaTVA;
+service.getByIdSitlibredetail = getByIdSitlibredetail;
 
 module.exports = service;
 
@@ -415,6 +416,25 @@ function getByIdSitoption(_id_facture, _n_situation) {
     //console.log('facture');
     var deferred = Q.defer();
     var sql = "SELECT situation_option.*,produit_vente.libelle,produit_vente.unite FROM situation_option, produit_vente WHERE situation_option.id_facture =? AND situation_option.n_situation =? AND situation_option.id_produit = produit_vente.id_prc AND produit_vente.num_version = situation_option.num_version";
+    var inserts = [_id_facture, _n_situation];
+
+    sql = mysql.format(sql, inserts);
+    //console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdSitlibredetail(_id_facture, _n_situation) {
+    //console.log('facture');
+    var deferred = Q.defer();
+    var sql = "SELECT facture_libredetail.* FROM facture_libredetail WHERE facture_libredetail.id_fact =? AND facture_libredetail.n_situation =? ";
     var inserts = [_id_facture, _n_situation];
 
     sql = mysql.format(sql, inserts);

@@ -40,6 +40,7 @@ export class AvoirComponent {
     produitDevisopt: any[] = [];
     valeur: any = {};
     navoir: any = {};
+    libre: any[] = [];
 
     files: any[] = [];
     fileReader = new FileReader();
@@ -48,6 +49,7 @@ export class AvoirComponent {
     image: any[];
     id_agence: number;
     img: any = {};
+
 
 
     constructor(private route: ActivatedRoute,
@@ -76,6 +78,7 @@ export class AvoirComponent {
         this.loadValeur();
         this.loadAllAvoir();
         this.loadAllagence();
+        this.loadLibre();
 
 
     }
@@ -88,6 +91,7 @@ export class AvoirComponent {
         tmp.prixfact = this.situas.prixfact;
         tmp.num_version = this.situas.num_version;
         tmp.id_produit = this.situas.id_produit;
+        tmp.tvas = this.situas.tvas;
 
 
         var check = this.produitDevis.filter(obj => obj.ref == this.situas.obj.id_produit);
@@ -128,6 +132,7 @@ export class AvoirComponent {
         this.situas.prixfact = this.situas.obj.prixfact;
         this.situas.num_version = this.situas.obj.num_version;
         this.situas.id_produit = this.situas.obj.id_produit;
+        this.situas.tvas = this.situas.obj.tvas;
     }
 
     supprimer(situas: any) {
@@ -141,6 +146,7 @@ export class AvoirComponent {
         tmp.prixfact = this.options.prixfact;
         tmp.num_version = this.options.num_version;
         tmp.id_produit = this.options.id_produit;
+        tmp.tvao = this.options.tvao;
 
 
         var check = this.produitDevisopt.filter(obj => obj.ref == this.options.obj.id_produit);
@@ -171,7 +177,7 @@ export class AvoirComponent {
         this.options.prixfact = null;
         this.options = {};
 
-        //console.log(this.produitDevis);
+
     }
 
     testopt() {
@@ -181,6 +187,7 @@ export class AvoirComponent {
         this.options.prixfact = this.options.obj.prixfact;
         this.options.num_version = this.options.obj.num_version;
         this.options.id_produit = this.options.obj.id_produit;
+        this.options.tvao = this.options.obj.tvao;
     }
 
     supprimeropt(options: any) {
@@ -232,7 +239,7 @@ export class AvoirComponent {
             this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-                    console.log(this.model)
+
                 }
             )
         });
@@ -246,6 +253,7 @@ export class AvoirComponent {
             this.factureService.getByIdSituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.situa = data;
+
                 }
             )
         });
@@ -259,6 +267,21 @@ export class AvoirComponent {
             this.factureService.getByIdSitoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.option = data;
+                    console.log(this.option);
+                }
+            )
+        });
+    }
+
+    loadLibre() {
+        this.route.params.subscribe(params => {
+            this.id_facture = params['id_facture']
+            this.n_situation = params['n_situation']
+            console.log(this.id_facture, this.n_situation);
+            this.factureService.getByIdSitlibredetail(this.id_facture, this.n_situation).subscribe(
+                data => {
+                    this.libre = data;
+                    console.log(this.libre);
                 }
             )
         });
