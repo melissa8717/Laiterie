@@ -198,7 +198,8 @@ export class AcompteComponent {
         factureparams.version = this.version;
         factureparams.nfact = this.nfact;
 
-        var test = +confirm('Etes vous sûr de vouloir enregistrer votre facture d\'acompte :');
+        var test = +confirm('Etes vous sûr de vouloir enregistrer votre facture d\'acompte. ' +
+            'N\'oubliez pas de remplir les chanmps de date de facturation et d\'échéance');
         console.log(factureparams);
         if (test) {
             this.factureService.addacompte(factureparams).subscribe(
