@@ -1,11 +1,11 @@
 /**
  * Created by Wbat on 23/05/2017.
  */
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { AlertService, AuthenticationService, AchatsService } from '../_services/index';
-import { Product } from "../_models/products/produit";
+import {AlertService, AuthenticationService} from '../_services/index';
+import {Product} from "../_models/products/produit";
 import {VentesService} from "../_services/ventes.service";
 import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
@@ -15,7 +15,7 @@ import {User} from "../_models/user";
     templateUrl: 'listevente.component.html',
 })
 
-export class ListeventeComponent {
+export class ListeventeComponent implements OnInit {
     products: Product[] = [];       // ne change jamais, contient tous les produits
     returnUrl: string;
 
@@ -26,18 +26,16 @@ export class ListeventeComponent {
     print: boolean = false;
 
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
-    constructor(
-
-        private route: ActivatedRoute,
-        private router: Router,
-        private authenticationService: AuthenticationService,
-        private ventesService: VentesService,
-        private alertService: AlertService,
-        private paramsService:ParamsService) {
+    constructor(private route: ActivatedRoute,
+                private router: Router,
+                private authenticationService: AuthenticationService,
+                private ventesService: VentesService,
+                private alertService: AlertService,
+                private paramsService: ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
@@ -65,26 +63,22 @@ export class ListeventeComponent {
         });
     }
 
-    private delete(id: string) {
+    private delete(id: number) {
 
-        this.ventesService.delete(id)
-            .subscribe(
-                data => {
-                    this.alertService.success('Produit supprimé', true);
-                    this.products = this.products.filter(x => x.id_prc !== id);
-                    this.filteredProducts = this.products.filter(x => x.id_prc !== id);
-                    // console.log("after deletind: " + JSON.stringify(this.products));
-                },
-                error => {
-                    this.alertService.error(error._body);
-                });
+        this.ventesService.delete(id).subscribe(() => {
+            this.alertService.success('Produit supprimé', true);
+            this.products = this.products.filter(x => x.id_prc != id);
+            this.filteredProducts = this.products.filter(x => x.id_prc != id);
+        }, error => {
+            this.alertService.error(error._body);
+        });
     }
 
     private navigateToProduct(id: string) {
         this.router.navigate(['/produitvente', id]);
     }
 
-    private printPage(htmlPage: any)  {
+    private printPage(htmlPage: any) {
         var w = window.open("about:blank");
         w.document.write(htmlPage);
         if (navigator.appName == 'Microsoft Internet Explorer') window.print();
@@ -96,21 +90,21 @@ export class ListeventeComponent {
 
         this.filteredProducts = this.products;
 
-        if(seek.libelle){
+        if (seek.libelle) {
             this.filteredProducts = this.filteredProducts.filter(function (el: any) {
-                return ((el.libelle ? el.libelle : "").toLowerCase().indexOf((seek.libelle? seek.libelle : "").toLowerCase()) !== -1);
+                return ((el.libelle ? el.libelle : "").toLowerCase().indexOf((seek.libelle ? seek.libelle : "").toLowerCase()) !== -1);
             });
         }
 
-        if(seek.reference){
+        if (seek.reference) {
             this.filteredProducts = this.filteredProducts.filter(function (el: any) {
-                return ((el.id_prc ? el.id_prc : "").toString().toLowerCase().indexOf((seek.reference? seek.reference : "").toLowerCase()) !== -1);
+                return ((el.id_prc ? el.id_prc : "").toString().toLowerCase().indexOf((seek.reference ? seek.reference : "").toLowerCase()) !== -1);
             });
         }
 
-        if(seek.categorie){
+        if (seek.categorie) {
             this.filteredProducts = this.filteredProducts.filter(function (el: any) {
-                return ((el.cat_libelle ? el.cat_libelle : "").toLowerCase().indexOf((seek.categorie? seek.categorie : "").toLowerCase()) !== -1);
+                return ((el.cat_libelle ? el.cat_libelle : "").toLowerCase().indexOf((seek.categorie ? seek.categorie : "").toLowerCase()) !== -1);
             });
         }
     }
@@ -123,7 +117,7 @@ export class ListeventeComponent {
         return (!str || 0 === str.length);
     }
 
-    imprimer(){
+    imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {

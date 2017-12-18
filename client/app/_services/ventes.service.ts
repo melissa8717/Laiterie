@@ -42,7 +42,7 @@ export class VentesService {
         return this.http.post(this.config.apiUrl + '/produits_vente/newprodcomp', product, this.jwt()).map((response: Response) => response.json());
     } */
 
-    delete(_id: string) {
+    delete(_id: number) {
         return this.http.delete(this.config.apiUrl + '/produits_vente/' + _id, this.jwt());
     }
 

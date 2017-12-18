@@ -1,11 +1,11 @@
 // prioduits ventes
 // sont stockes dans produit_vente + produit_compose
 
-var Q = require('q');
-var mysql = require('mysql');
-var db = require('../db.js').get();
+let Q = require('q');
+let mysql = require('mysql');
+let db = require('../db.js').get();
 
-var service = {};
+let service = {};
 
 service.getAll = getAll;
 service.getById = getById;
@@ -21,7 +21,7 @@ service.getAllProdComp = getAllProdComp;
 module.exports = service;
 
 function getAll() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('\
     SELECT produit_vente.*, \
            produit_categorie.libelle AS cat_libelle \
@@ -39,13 +39,13 @@ function getAll() {
 }
 
 function getAllProdComp(_id, num_version) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query('SELECT * FROM produit_compose ' +
         'LEFT JOIN produit on produit.id_produit = produit_compose.id_produit && produit.num_version = produit_compose.achat_version ' +
         'LEFT JOIN contact on contact.id_contact = produit.id_contact ' +
         'WHERE id_prc = ? && produit.type = 0 && produit_compose.num_version = ?',
         [_id, num_version],
-        function (error, produit, fields) {
+        function (error, produits) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
             }
@@ -54,12 +54,12 @@ function getAllProdComp(_id, num_version) {
                 'LEFT JOIN produit on produit.id_produit = produit_compose.id_produit ' +
                 'WHERE id_prc = ? && type = 1 && produit_compose.num_version = ?',
                 [_id, num_version],
-                function (error, mo, fields) {
+                function (error, mo) {
                     if (error) {
                         deferred.reject(error.name + ': ' + error.message);
                     }
-                    var tmp = {};
-                    tmp.produits = produit;
+                    let tmp = {};
+                    tmp.produits = produits;
                     tmp.mainOeuvre = mo;
                     deferred.resolve(tmp);
                 });
@@ -69,8 +69,8 @@ function getAllProdComp(_id, num_version) {
 
 
 function getAllHisto(_id) {
-    var deferred = Q.defer();
-    var sql = "SELECT * FROM produit_vente " +
+    let deferred = Q.defer();
+    let sql = "SELECT * FROM produit_vente " +
         "JOIN users ON produit_vente.id_user = users.id " +
         "WHERE produit_vente.id_prc = ? " +
         "ORDER BY produit_vente.num_version DESC";
@@ -85,9 +85,9 @@ function getAllHisto(_id) {
 }
 
 function getById(_id, num_version) {
-    var deferred = Q.defer();
-    var sql = "SELECT produit_vente . * , produit_categorie.libelle AS catlibel FROM produit_vente , produit_categorie WHERE (id_prc = ? AND num_version = ?)  AND produit_categorie.id_cat = produit_vente.categorie";
-    var inserts = [_id, num_version];
+    let deferred = Q.defer();
+    let sql = "SELECT produit_vente.* , produit_categorie.libelle AS cat_libelle, produit_categorie.id_cat, produit_vente.image AS image_url FROM produit_vente , produit_categorie WHERE (id_prc = ? AND num_version = ?)  AND produit_categorie.id_cat = produit_vente.categorie";
+    let inserts = [_id, num_version];
     sql = mysql.format(sql, inserts);
     db.query(sql, [_id], function (error, product, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
@@ -99,29 +99,29 @@ function getById(_id, num_version) {
 
 
 function createVersion(productParam) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         productParam.produit.id_prc
     ];
 
-    var query = "SELECT MAX(num_version) as max FROM produit_vente WHERE id_prc = ? "
+    let query = "SELECT MAX(num_version) as max FROM produit_vente WHERE id_prc = ? "
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
 
-        var num_version = +results[0].max + 1;
+        let num_version = +results[0].max + 1;
 
-        var params = [
+        let params = [
             productParam.produit.id_prc,
             num_version,
             productParam.produit.libelle,
             productParam.produit.description,
             productParam.produit.note,
             productParam.produit.unite,
-            productParam.produit.categorie,
+            productParam.produit.id_cat,
             productParam.produit.prix_achat,
             productParam.produit.marge,
             productParam.produit.margemin,
@@ -130,7 +130,7 @@ function createVersion(productParam) {
             productParam.produit.id_user
         ];
 
-        var query = "INSERT INTO produit_vente (id_prc, num_version, libelle, description, note, unite, categorie, prix_achat, marge, margemin, margepc, prix_vente, id_user) " +
+        let query = "INSERT INTO produit_vente (id_prc, num_version, libelle, description, note, unite, categorie, prix_achat, marge, margemin, margepc, prix_vente, id_user) " +
             "VALUES ( ?,  ? ,?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? )";
 
         db.query(query, params, function (error, results, fields) {
@@ -138,7 +138,7 @@ function createVersion(productParam) {
                 deferred.reject(error.name + ': ' + error.message);
             }
 
-            for (var p of productParam.produits) {
+            for (let p of productParam.produits) {
 
                 params = [
                     productParam.produit.id_prc,
@@ -149,7 +149,7 @@ function createVersion(productParam) {
                     p.prix_achat
                 ];
 
-                var query = "INSERT INTO produit_compose (id_prc, num_version, id_produit,achat_version, quantite, prix_achat) " +
+                let query = "INSERT INTO produit_compose (id_prc, num_version, id_produit,achat_version, quantite, prix_achat) " +
                     "VALUES (?, ?, ?, ?, ?, ? )";
 
 
@@ -163,8 +163,8 @@ function createVersion(productParam) {
             }
 
 
-            for (var mo of productParam.mainOeuvre) {
-                var params = [
+            for (let mo of productParam.mainOeuvre) {
+                let params = [
                     productParam.produit.id_prc,
                     num_version,
                     mo.id_produit,
@@ -197,7 +197,7 @@ function create(productParam) {
         productParam.produit.description,
         productParam.produit.note,
         productParam.produit.unite,
-        productParam.produit.categorie,
+        productParam.produit.id_cat,
         productParam.produit.prix_achat,
         productParam.produit.marge,
         productParam.produit.margepcmin,
@@ -209,10 +209,12 @@ function create(productParam) {
     let query = "INSERT INTO produit_vente (libelle, description, note, unite, categorie, prix_achat, marge, margemin, margepc, prix_vente, id_user) " +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    db.query(query, params, function (error, results, fields) {
+    db.query(query, params, function (error, results) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
+
+        deferred.resolve(results);
 
         let id_prc = results.insertId;
 
@@ -259,15 +261,15 @@ function create(productParam) {
 }
 
 function addInProdComposes(productParam) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         productParam.id_prc,
         productParam.id_produit,
         productParam.quantite
     ];
 
-    var query = "INSERT INTO produit_compose (id_prc, id_produit, quantite) VALUES (?, ?, ? )";
+    let query = "INSERT INTO produit_compose (id_prc, id_produit, quantite) VALUES (?, ?, ? )";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {
@@ -280,7 +282,7 @@ function addInProdComposes(productParam) {
 }
 
 function _delete(_id) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     db.query("DELETE FROM produit_vente WHERE id_prc = ? ", [_id], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
@@ -299,15 +301,15 @@ function _delete(_id) {
 }
 
 function update(id_product, productParam) {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
 
-    var params = [
+    let params = [
         productParam.marge,
         productParam.prix_vente,
         id_product
     ];
 
-    var query = "UPDATE produit_vente SET marge = ?, prix_vente = ? WHERE id_prc = ?";
+    let query = "UPDATE produit_vente SET marge = ?, prix_vente = ? WHERE id_prc = ?";
 
     db.query(query, params, function (error, results, fields) {
         if (error) {

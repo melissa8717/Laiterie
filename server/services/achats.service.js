@@ -101,7 +101,7 @@ function getAll() {
 
 function getAllProduitsAchat() {
     let deferred = Q.defer();
-    db.query('SELECT produit.*, contact.* , produit_categorie.libelle AS catlibel FROM produit ' +
+    db.query('SELECT produit.*, contact.nom AS contact_name ,contact.raison_sociale, produit_categorie.libelle AS cat_libelle FROM produit ' +
         'LEFT JOIN contact on produit.id_contact = contact.id_contact ' +
         'LEFT JOIN produit_categorie ON produit.id_cat = produit_categorie.id_cat ' +
         'where produit.type != 1  && (produit.num_version , produit.id_produit) IN (SELECT MAX(num_version), id_produit\
