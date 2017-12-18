@@ -293,7 +293,7 @@ function create(facture_param) {
 
             for (var p in facture_param.detail) {
                 (function (facture) {
-                    db.query("INSERT INTO situation_facture (id_facture, n_situation, id_produit,num_version,pourcentage,qtefact,prixfact,tvas) VALUES (? ,? , ? , ? , ?, ? , ? , ?)",
+                    db.query("INSERT INTO situation_facture (id_facture, n_situation, id_produit,num_version,pourcentage,qtefact,prixfact,tvas) VALUES (? ,? , ? , ? , ?, ? , ? , ? )",
                         [results.insertId, 1, facture_param.detail[facture].id_produit, facture_param.detail[facture].num_version, facture_param.detail[facture].pourcentage, facture_param.detail[facture].qte_devis, facture_param.detail[facture].prix_devis, facture_param.detail[facture].taux],
                         function (error, result, fields) {
                             if (error) {
@@ -325,8 +325,8 @@ function create(facture_param) {
 
             for (var p in facture_param.libre) {
                 (function (facture) {
-                    db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,tva) VALUES (? , ? , ? , ? , ?, ? , ?  )",
-                        [results.insertId, 1, facture_param.libre[facture].produit,  facture_param.libre[facture].pourcentage, facture_param.libre[facture].qte_devis, facture_param.libre[facture].prix_devis,parseFloat(facture_param.libre[facture].tva)],
+                    db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,tva, unite) VALUES (? , ? , ? , ? , ?, ? , ? ,? )",
+                        [results.insertId, 1, facture_param.libre[facture].produit,  facture_param.libre[facture].pourcentage, facture_param.libre[facture].qte_devis, facture_param.libre[facture].prix_devis,parseFloat(facture_param.libre[facture].tva), facture_param.libre[facture].unite],
                         function (error, result, fields) {
                             if (error) {
                                 deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
@@ -341,8 +341,8 @@ function create(facture_param) {
 
             for (var p in facture_param.libreoption) {
                 (function (facture) {
-                    db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,option,tva) VALUES (? , ? , ? , ? , ?, ? ,? , ?)",
-                        [results.insertId, 1, facture_param.libreoption[facture].produit,  facture_param.libreoption[facture].pourcentage, facture_param.libreoption[facture].qte_devis, facture_param.libreoption[facture].prix_devis,1, parseFloat(facture_param.libreoption[facture].tva)],
+                    db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,option,tva,unite) VALUES (? , ? , ? , ? , ?, ? ,? , ?,?)",
+                        [results.insertId, 1, facture_param.libreoption[facture].produit,  facture_param.libreoption[facture].pourcentage, facture_param.libreoption[facture].qte_devis, facture_param.libreoption[facture].prix_devis,1, parseFloat(facture_param.libreoption[facture].tva), facture_param.libreoption[facture].unite],
                         function (error, result, fields) {
                             if (error) {
                                 deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
@@ -516,8 +516,8 @@ function createSituation(id_facture, facture_param) {
 
                     for (var p in facture_param.situa) {
                         (function (facture) {
-                            db.query("INSERT INTO situation_facture (id_facture, n_situation, id_produit,pourcentage,qtefact,prixfact,num_version) VALUES (? , ? , ? , ?, ? , ?, ? )",
-                                [id_facture, n_situation, facture_param.situa[facture].id_produit, facture_param.situa[facture].pourcentage, facture_param.situa[facture].qtefact, facture_param.situa[facture].prixfact, facture_param.situa[facture].num_version],
+                            db.query("INSERT INTO situation_facture (id_facture, n_situation, id_produit,pourcentage,qtefact,prixfact,num_version,tvas) VALUES (? , ? , ? , ?, ? , ?, ? , ? )",
+                                [id_facture, n_situation, facture_param.situa[facture].id_produit, facture_param.situa[facture].pourcentage, facture_param.situa[facture].qtefact, facture_param.situa[facture].prixfact, facture_param.situa[facture].num_version, facture_param.situa[facture].tvas],
                                 function (error, result, fields) {
                                     if (error) {
                                         deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
@@ -533,8 +533,8 @@ function createSituation(id_facture, facture_param) {
                     for (var p in facture_param.option) {
 
                         (function (facture) {
-                            db.query("INSERT INTO situation_option (id_facture, n_situation, id_produit,pourcentage,qtefact,prixfact,num_version) VALUES (? , ? , ? , ?, ? , ?, ? )",
-                                [id_facture, n_situation, facture_param.option[facture].id_produit, facture_param.option[facture].pourcentage, facture_param.option[facture].qtefact, facture_param.option[facture].prixfact, facture_param.option[facture].num_version],
+                            db.query("INSERT INTO situation_option (id_facture, n_situation, id_produit,pourcentage,qtefact,prixfact,num_version,tvao) VALUES (? , ? , ? , ?, ? , ?, ? , ?)",
+                                [id_facture, n_situation, facture_param.option[facture].id_produit, facture_param.option[facture].pourcentage, facture_param.option[facture].qtefact, facture_param.option[facture].prixfact, facture_param.option[facture].num_version, facture_param.option[facture].tvao],
 
                                 function (error, result, fields) {
                                     if (error) {
@@ -542,6 +542,42 @@ function createSituation(id_facture, facture_param) {
                                         console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
                                     }
                                     if (facture = facture_param.option.length) {
+                                        deferred.resolve()
+                                    }
+                                });
+                        })(p);
+                    }
+
+                    for (var p in facture_param.libsitua) {
+
+                        (function (facture) {
+                            db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,unite,tva) VALUES (? , ? , ? , ?, ? , ?, ? ,?)",
+                                [id_facture, n_situation, facture_param.libsitua[facture].nom_produit, facture_param.libsitua[facture].pourcents, facture_param.libsitua[facture].qteprod, facture_param.libsitua[facture].prix_prod, facture_param.libsitua[facture].unite , facture_param.libsitua[facture].tva],
+
+                                function (error, result, fields) {
+                                    if (error) {
+                                        deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                        console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                    }
+                                    if (facture = facture_param.libsitua.length) {
+                                        deferred.resolve()
+                                    }
+                                });
+                        })(p);
+                    }
+
+                    for (var p in facture_param.libsituaop) {
+
+                        (function (facture) {
+                            db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,unite,option,tva) VALUES (? , ? , ? , ?, ? , ?, ? , ? , ?)",
+                                [id_facture, n_situation, facture_param.libsituaop[facture].nom_produit, facture_param.libsituaop[facture].pourcent, facture_param.libsituaop[facture].qteprod, facture_param.libsituaop[facture].prix_prod, facture_param.libsituaop[facture].unite, 1, facture_param.libsituaop[facture].tva],
+
+                                function (error, result, fields) {
+                                    if (error) {
+                                        deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                        console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                    }
+                                    if (facture = facture_param.libsituaop.length) {
                                         deferred.resolve()
                                     }
                                 });
