@@ -19,7 +19,7 @@
         <form method="POST" action="#">
             <article class="col-sm-4">
 
-                <img-uploader *ngIf="id_product" [(uploaderImg)]="uploaderImg" [name]="'produit'" [id]="id_product"
+                <img-uploader *ngIf="updateProduct.id_produit" [(uploaderImg)]="uploaderImg" [name]="'produit'" [id]="id_product"
                               [onlineImgUrl]="updateProduct.image_url"></img-uploader>
 
                 <div class="form-group col-sm-12">
