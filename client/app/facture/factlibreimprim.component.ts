@@ -117,7 +117,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibreModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-                    console.log(this.model)
+
                 }
             )
         });
@@ -283,7 +283,6 @@ export class FactlibreimprimComponent {
             if (bases.tva == 20) {
                 total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
-            console.log(total);
         }
         return total;
     }
@@ -307,7 +306,6 @@ export class FactlibreimprimComponent {
 
             if (basei.tva == 20) {
                 total += basei.totaltvab;
-                console.log(total);
 
             }
         }

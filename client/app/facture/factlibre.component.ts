@@ -192,6 +192,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
             total += bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         }
+        console.log(total);
         return total;
     }
 
@@ -233,7 +234,7 @@ export class FactlibreComponent {
         for (let details of this.detail) {
 
             if (details.tva == 20) {
-                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf ? details.pourcentf / 100 : 0) * (details.tva / 100);
 
             }
         }
@@ -246,7 +247,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
 
             if (bases.tva == 20) {
-                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 0) * (bases.tva / 100);
             }
 
         }
@@ -287,7 +288,7 @@ export class FactlibreComponent {
         for (let details of this.detail) {
 
             if (details.tva == 10) {
-                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf ? details.pourcentf / 100 :0) * (details.tva / 100);
 
             }
         }
@@ -300,7 +301,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
 
             if (bases.tva == 10) {
-                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 0) * (bases.tva / 100);
             }
 
         }
@@ -396,7 +397,7 @@ export class FactlibreComponent {
         for (let details of this.detail) {
 
             if (details.tva == 2.1) {
-                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf ? details.pourcentf / 100 : 0) * (details.tva / 100);
             }
         }
         return total;
@@ -408,7 +409,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
 
             if (bases.tva == 2.1) {
-                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 0) * (bases.tva / 100);
             }
         }
         return total;
