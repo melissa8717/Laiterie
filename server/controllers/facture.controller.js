@@ -93,6 +93,8 @@ router.get('/getByIdlibresituation/:id_facture/:n_situation',getByIdlibresituati
 router.get('/getByIdlibresituationoption/:id_facture/:n_situation',getByIdlibresituationoption);
 router.get('/byIdTotlafacture/:id_facture/:n_situation',getByIdTotlafact);
 router.get('/getByIdTotlaTVA/:id_facture/:n_situation',getByIdTotlaTVA);
+router.get('/TotlaTVAimp/:id_facture/:n_situation',getByIdTotlaTVAimp);
+router.get('/ByIdTotlafactimprim/:id_facture/:n_situation',getByIdTotlafactimprim);
 router.get('/getByIdSitlibredetail/:id_facture/:n_situation',getByIdSitlibredetail);
 
 module.exports = router;
@@ -999,6 +1001,34 @@ function getByIdTotlaTVA(req, res) {
 
 function getByIdSitlibredetail(req, res) {
     factureService.getByIdSitlibredetail(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdTotlaTVAimp(req, res) {
+    factureService.getByIdTotlaTVAimp(req.params.id_facture, req.params.n_situation, req.body)
+        .then(function (devis) {
+            if (devis) {
+                res.send(devis);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdTotlafactimprim(req, res) {
+    factureService.getByIdTotlafactimprim(req.params.id_facture, req.params.n_situation, req.body)
         .then(function (devis) {
             if (devis) {
                 res.send(devis);

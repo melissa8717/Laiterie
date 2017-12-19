@@ -311,6 +311,14 @@ export class FactureService {
         return this.http.get(this.config.apiUrl + '/facture/getByIdSitlibredetail/' + id_facture + "/" + n_situation, this.jwt()).map((response: Response) => response.json());
     }
 
+    getByIdTotlaTVAimp(id_facture: number, n_situation: number) {
+        return this.http.get(this.config.apiUrl + '/facture/TotlaTVAimp/' + id_facture + "/" + n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdTotlafactimprim(id_facture: number, n_situation: number) {
+        return this.http.get(this.config.apiUrl + '/facture/ByIdTotlafactimprim/' + id_facture + "/" + n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
 
     /***************************************************GED*********************************************************************************/
     getGed() {

@@ -315,7 +315,6 @@ export class ModifierfactureComponent {
     }
 
     totalignesitua(lbsituas: any) {
-        console.log(lbsituas.pourcents);
         if (lbsituas.pourcents)
             return (lbsituas.qteprod / 100) * lbsituas.prix_prod * lbsituas.pourcents;
         else return 0;
