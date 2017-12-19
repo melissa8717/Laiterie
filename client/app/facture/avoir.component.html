@@ -81,7 +81,7 @@
                     <th class="col-sm-1 mil">Action</th>
                     </thead>
 
-                    <tbody>
+                    <tbody *ngIf="situa.length>0">
                     <tr>
 
                         <td>
@@ -124,7 +124,7 @@
 
                     <!------------------------------------------------------------------->
 
-                    <tbody>
+                    <tbody *ngIf="option.length>0">
                     <tr>
 
                         <td>
@@ -161,6 +161,48 @@
                         <td><button  class="btn btn-default input-sm col-sm-offset-1"
                                      (click)="ajouteropt()"
                                      [disabled]="!options.obj">Ajouter</button></td>
+                    </tr>
+                    </tbody>
+
+                    <!------------------------------------------------------------------->
+
+                    <tbody *ngIf="libre.length>0">
+                    <tr>
+
+                        <td>
+                            {{libres.id_prod}}
+                        </td>
+                        <td>
+                            <input ng2-auto-complete
+                                   #prod
+                                   [source]="libre"
+                                   [list-formatter]="autocompleListFormatterLibre"
+                                   value-property-name="id_prod"
+                                   display-property-name="nom_produit"
+                                   class="form-control input-sm"
+                                   placeholder="Ajoutez un produit en option"
+                                   name="produit"
+                                   [(ngModel)]="libres.obj"
+                                   (ngModelChange)="testlibre()"
+                            >
+                        </td>
+                        <td>{{libres.prix_prod}}
+
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm"  placeholder=""
+                                   name="qteprod"
+                                   [(ngModel)]="libres.qteprod">
+                        </td>
+                        <td>
+                            <span *ngIf="libres.qteprod && libres.prix_prod">{{libres.qteprod * libres.prix_prod *(-1)}}</span>
+                        </td>
+                        <td>{{libres.tva}}
+
+                        </td>
+                        <td><button  class="btn btn-default input-sm col-sm-offset-1"
+                                     (click)="ajouterlibre()"
+                                     [disabled]="!libres.obj">Ajouter</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -305,25 +347,102 @@
             </ng-container>
 
 
-            <table class="col-sm-offset-8 col-sm-4 gras ">
-                <tr>
-                    <td class="col-sm-6">Total H.T en € :</td>
-                    <td class="col-sm-6 ">{{ countTotal() | number:'1.0-2'}}</td>
+            <ng-container *ngFor="let libres of produitDevislibre, let i = index; trackBy:customTrackBy">
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-5 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        <th class="col-sm-2 mil"></th>
+                        <th class="col-sm-1 mil"></th>
+                        </thead>
+
+                        <tbody>
+
+                        <tr >
+
+                            <td>
+                                <div class="form-group">
+                                    <span>{{libres.obj.id_prod}} </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <span>{{libres.obj.nom_produit}}</span>
+                                </div>
+
+                            </td>
+                            <td>
+                                {{produitDevislibre[i].prix_prod}}
+
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="number"
+                                           class="form-control input-sm"
+                                           name="qteprod{{i}}"
+                                           placeholder=""
+                                           min="0"
+                                           [(ngModel)]="produitDevislibre[i].qteprod"
+                                           required>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span>{{produitDevislibre[i].qteprod * produitDevislibre[i].prix_prod * (-1) | number:'1.0-2'}}</span>
+                            </td>
+                            <td>
+                                {{produitDevislibre[i].tva}}
+
+                            </td>
+                            <td>
+                                <a class=" col-sm-offset-1"
+                                   (click)="supprimerlibre(produitDevislibre[i])">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                                      style="color: #0f0f0f"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </ng-container>
+
+            <fieldset style="margin-top: 30px;">
+            <table style="border:1px solid black;" class=" separe1 col-sm-3 table-striped ">
+                <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras">
+                    <td style="text-align:right;border-top:1px solid black;border-left:1px solid black;" class="gauche" style="text-align: left;">Total H.T en € :</td>
+                    <td >{{ countTotal() | number:'1.0-2'}}</td>
                 </tr>
-                <tr>
-                    <td class="col-sm-6">TVA {{valeur.tva}} % :</td>
-                    <td class="col-sm-6 ">{{countTva() | number:'1.0-2'}}</td>
+                <tr *ngIf="valeur.tva" style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;">
+                    <td  style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA {{valeur.tva}} % :</td>
+                    <td style="text-align: right;">{{countTva() | number:'1.0-2'}}</td>
                 </tr>
-                <tr >
-                    <td class="col-sm-6">Total TTC en € :</td>
-                    <td class="col-sm-6 ">{{countTtc() | number:'1.0-2'}}</td>
+
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 20 % </td><td style="text-align: right;">{{SumTvaV() | number:'1.0-2'}}</td></tr>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaD()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 10 % </td><td style="text-align: right;">{{SumTvaD() | number:'1.0-2'}}</td></tr>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaC()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 5.5 % </td><td style="text-align: right;">{{SumTvaC() | number:'1.0-2'}}</td></tr>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaDX()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 2.1 % </td><td style="text-align: right;">{{SumTvaDX() | number:'1.0-2'}}</td></tr>
+
+                <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total TVA :</td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;">{{TotauxTVA() | number:'1.0-2'}}</td></tr>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" class="basr grass">
+                    <td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" class="gauche" style="text-align: left;">Total TTC en € :</td>
+                    <td style="text-align: right;">{{countTtc() | number:'1.0-2'}}</td>
                 </tr>
             </table>
+            </fieldset>
 
 
             <button  class="btn btn-default input-sm col-sm-offset-11"
                      type="submit"
-                     [disabled]="(produitDevis.length || produitDevisopt.length ) < 1 ">
+                     [disabled]="(produitDevis.length || produitDevisopt.length || produitDevislibre.length) < 1 ">
                 Valider
             </button>
 

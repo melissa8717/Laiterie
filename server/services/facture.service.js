@@ -1244,6 +1244,27 @@ function addavoir(avoirparams) {
                 })(p);
             }
 
+            for (var p in avoirparams.produitDevislibre) {
+                (function (product) {
+                    db.query("INSERT INTO avoirlibre (id_avlibre,  nom,  prix, qte,tva,id_fact,n_situation) VALUES (  ? , ?, ?, ?, ?, ?, ?)",
+                        [
+                            avoirparams.navoir.navoir,
+                            avoirparams.produitDevislibre[product].obj.nom_produit,
+                            avoirparams.produitDevislibre[product].obj.prix_prod,
+                            avoirparams.produitDevislibre[product].obj.qteprod,
+                            avoirparams.produitDevislibre[product].obj.tva,
+                            avoirparams.model.id_facture,
+                            avoirparams.model.n_situation
+                        ],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (3) | ' + error.message);
+                            }
+                        });
+                })(p);
+            }
+
 
         });
     return deferred.promise;

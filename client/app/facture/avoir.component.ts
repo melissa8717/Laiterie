@@ -38,9 +38,11 @@ export class AvoirComponent {
     options: any = {};
     produitDevis: any[] = [];
     produitDevisopt: any[] = [];
+    produitDevislibre: any[] = [];
     valeur: any = {};
     navoir: any = {};
     libre: any[] = [];
+    libres: any = {};
 
     files: any[] = [];
     fileReader = new FileReader();
@@ -190,8 +192,57 @@ export class AvoirComponent {
         this.options.tvao = this.options.obj.tvao;
     }
 
-    supprimeropt(options: any) {
-        this.produitDevisopt = this.produitDevisopt.filter(obj => obj !== options);
+    ajouterlibre() {
+        let tmp: any = {};
+        tmp.obj = this.libres.obj;
+        tmp.qteprod = this.libres.qteprod;
+        tmp.prix_prod = this.libres.prix_prod;
+        tmp.id_prod = this.libres.id_prod;
+        tmp.tva = this.libres.tva;
+
+
+        var check = this.produitDevislibre.filter(obj => obj.ref == this.libres.obj.id_prod);
+
+        if (check.length < 1) {
+            if (tmp.obj.id_prod) {
+
+                this.produitDevislibre.push(tmp);
+                for (var i = 0; i < this.produitDevislibre.length; i++) {
+
+                    let qteprod = this.produitDevislibre[i].qteprod;
+                    let prix_prod = this.produitDevislibre[i].prix_prod;
+                    this.produitDevislibre[i].qteprod = qteprod;
+                    this.produitDevislibre[i].prix_prod = prix_prod;
+                }
+
+            }
+            else {
+                this.alertService.error('Veuillez ajouter un produit existant.');
+            }
+        }
+        else {
+            this.alertService.error('Le produit ' + tmp.obj.nom_produit + ' n\'a pas pu être ajouté.');
+        }
+
+
+        this.libres.qteprod = null;
+        this.libres.prix_prod = null;
+        this.libres = {};
+
+
+    }
+
+    testlibre() {
+
+        console.log(this.libres)
+        this.libres.qteprod = 1;
+        this.libres.prix_prod = this.libres.obj.prix_prod;
+        this.libres.id_prod = this.libres.obj.id_prod;
+        this.libres.tva = this.libres.obj.tva;
+    }
+
+    supprimerlibre(libres: any) {
+        this.produitDevislibre = this.produitDevislibre.filter(obj => obj !== libres);
     }
 
     loaddroituser() {
@@ -226,6 +277,7 @@ export class AvoirComponent {
             this.factureService.getByIdValeur(this.id_facture).subscribe(
                 data => {
                     this.valeur = data[0];
+                    console.log( this.valeur);
                 }
             )
         });
@@ -267,7 +319,7 @@ export class AvoirComponent {
             this.factureService.getByIdSitoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.option = data;
-                    console.log(this.option);
+                    //console.log(this.option);
                 }
             )
         });
@@ -297,6 +349,10 @@ export class AvoirComponent {
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
+    autocompleListFormatterLibre = (data: any): SafeHtml => {
+        let html = `<span>${data.nom_produit}</span>`;
+        return this._sanitizer.bypassSecurityTrustHtml(html);
+    };
 
     countTotalSit() {
         let total = 0;
@@ -314,8 +370,16 @@ export class AvoirComponent {
         return total;
     }
 
+    countTotalLibre() {
+        let total = 0;
+        for (let libres of this.produitDevislibre) {
+            total += libres.prix_prod * libres.qteprod;
+        }
+        return total;
+    }
+
     countTotal() {
-        return (this.countTotalOpt() + this.countTotalSit()) * (-1);
+        return (this.countTotalOpt() + this.countTotalSit() +this.countTotalLibre()) * (-1);
     }
 
     countTva() {
@@ -335,6 +399,7 @@ export class AvoirComponent {
         avoirparams.navoir = this.navoir;
         avoirparams.produitDevis = this.produitDevis;
         avoirparams.produitDevisopt = this.produitDevisopt;
+        avoirparams.produitDevislibre = this.produitDevislibre;
 
         this.factureService.addavoir(avoirparams).subscribe(
             data => {
@@ -364,7 +429,7 @@ export class AvoirComponent {
 
             this.img = img[0];
             console.log(this.img);
-            //console.log(this.currentUser);
+
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
@@ -377,6 +442,192 @@ export class AvoirComponent {
             };*/
         });
 
+    }
+
+
+    TVAVO() {
+        let total = 0;
+
+        for (let situas of this.produitDevis) {
+
+            if (situas.tvas == 20) {
+                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.tvas / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVAV() {
+        let total = 0;
+
+        for (let lsituas of this.produitDevislibre) {
+
+            if (lsituas.tva == 20) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (lsituas.tva / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATVt() {
+        let total = 0;
+
+        for (let options of this.produitDevisopt) {
+
+            if (options.tvao == 20) {
+                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (options.tvao / 100);
+            }
+
+        }
+        return total;
+    }
+
+
+
+
+    SumTvaV() {
+        return this.TVAV() + this.TVAVO() + this.TVATVt() ;
+    }
+
+    TVADO() {
+        let total = 0;
+
+        for (let situas of this.produitDevis) {
+
+            if (situas.tvas == 10) {
+                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (situas.tvas / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVAD() {
+        let total = 0;
+
+        for (let lsituas of this.produitDevislibre) {
+
+            if (lsituas.tva == 10) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (lsituas.tva / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATDt() {
+        let total = 0;
+
+        for (let options of this.produitDevisopt) {
+
+            if (options.tvao == 10) {
+                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (options.tvao / 100);
+            }
+
+        }
+        return total;
+    }
+
+
+
+    SumTvaD() {
+        return this.TVAD() + this.TVADO() + this.TVATDt();
+    }
+
+    TVACO() {
+        let total = 0;
+
+        for (let situas of this.produitDevis) {
+
+            if (situas.tvas == 5.5) {
+                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.tvas / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVAC() {
+        let total = 0;
+
+        for (let lsituas of this.produitDevislibre) {
+
+            if (lsituas.tva == 5.5) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (lsituas.tva / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATCt() {
+        let total = 0;
+
+        for (let options of this.produitDevisopt) {
+
+            if (options.tvao == 5.5) {
+                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) *  (options.tvao / 100);
+            }
+
+        }
+        return total;
+    }
+
+
+
+    SumTvaC() {
+        return this.TVAC() + this.TVACO()  + this.TVATCt() ;
+    }
+
+    TVADXO() {
+        let total = 0;
+
+        for (let situas of this.produitDevis) {
+
+            if (situas.tvas == 2.1) {
+                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.tvas / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVADX() {
+        let total = 0;
+
+        for (let lsituas of this.produitDevislibre) {
+
+            if (lsituas.tva == 2.1) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.tva / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATDXt() {
+        let total = 0;
+
+        for (let options of this.produitDevisopt) {
+
+            if (options.tvao == 2.1) {
+                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (options.tvao / 100);
+            }
+
+        }
+        return total;
+    }
+
+
+
+    SumTvaDX() {
+        return this.TVADX() + this.TVADXO()  + this.TVATDXt() ;
+    }
+
+    TotauxTVA(situas: any, valeur: any, options: any,lbsituas:any){
+        return  (this.SumTvaDX()>0 ? this.SumTvaDX() :0) + (this.SumTvaC() > 0 ? this.SumTvaC() : 0) + (this.SumTvaD()>0 ? this.SumTvaD() : 0) + (this.SumTvaV()> 0 ? this.SumTvaV() :0) + ( this.countTva()>0 ? this. countTva() : 0);
     }
 
 }
