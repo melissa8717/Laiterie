@@ -14,10 +14,10 @@ import {FileUploader} from "ng2-file-upload";
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'cgv.component.html'
+    templateUrl: 'filigrane.component.html'
 })
 
-export class CgvComponent implements OnInit {
+export class FiligraneComponent implements OnInit {
 
     cgv: any ={};
     currentUser: User;
@@ -46,32 +46,19 @@ export class CgvComponent implements OnInit {
         body.className = "";
         body.className += "flatclair";
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.loadCat();
+        this.loadAllFili();
+        this.route.params.subscribe(params => {
+            this.id_agence = params['id_agence'];
+            this.setUploaderFili();
 
 
-    }
 
-
-    loadCat(){
-        console.log(this.cgv)
-
-        this.paramsService.getAllVente().subscribe(cgv => {
-            if (cgv && cgv[0]) {
-                this.cgv = cgv[0];
-                this.fili = cgv[0];
-                this.setUploaderFili();
-            }
         });
+
+
+
     }
 
-    modify(aparams:any) {
-
-        console.log(aparams);
-        this.paramsService.updateVente(aparams).subscribe(
-            data=>{
-                this.alertService.success("Les données ont bien été modifiées.");
-            });
-    }
 
     modifyFili() {
         this.uploaderFili.queue[0].upload();
@@ -79,22 +66,33 @@ export class CgvComponent implements OnInit {
         this.alertService.success("Image modifiée");
     }
 
-    addcgv() {
+    loadAllFili (){
+        this.paramsService.getAllFili().subscribe(filigr => {
+            if (filigr && filigr[0]) {
+                this.fili = filigr[0];
+
+                this.setUploaderFili();
+                console.log(this.fili);
 
 
-        this.paramsService.addVente(this.cgv).subscribe(id => {
-            this.setUploaderFili();
-            this.fili.id_agence = id;
-            console.log("fili ts"+this.fili.id_agence+id);
-
-
+            }
 
         });
     }
+
+    addagence() {
+        this.paramsService.addagence(this.model).subscribe(id => {
+            this.model.id_agence = id;
+            this.setUploaderFili();
+            this.alertService.success('Nouvelle agence ajoutée avec succès', true);
+        });
+    }
     setUploaderFili() {
-        this.uploaderFili = new FileUploader({url: this.urlFili + "/" + this.model.id_agence});
+        this.uploaderFili = new FileUploader({url: this.urlFili + "/" + this.id_agence});
         this.uploaderFili.onAfterAddingFile = (file) => {
             file.withCredentials = false;
+            console.log(this.id_agence);
+
         };
     }
 

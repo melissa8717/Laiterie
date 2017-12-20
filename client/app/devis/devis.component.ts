@@ -357,13 +357,14 @@ export class DevisComponent implements OnInit {
     }
 
     loadAllFili() {
-        this.paramsService.getAllFili().subscribe(fili => {
-            this.fili = fili[0];
+        this.paramsService.getAllFili().subscribe(filigr => {
+            this.fili = filigr[0];
 
             this.uploaderFili = new FileUploader({url: URLFili + "agence/" + this.fili.id_agence});
             this.uploaderFili.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
+            console.log(this.fili+URLFili);
         });
     }
 

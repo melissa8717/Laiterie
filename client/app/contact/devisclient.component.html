@@ -22,6 +22,8 @@
                     <ul class="nav navbar-nav">
                         <li *ngIf="droitsuser.accescontact"><a [routerLink]="['/ficheclient' , id_contact]">Fiche client</a></li>
                         <li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
+                        <li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/factclient' , id_contact]">Factures du client</a></li>
+
                     </ul>
 
                 </div>
@@ -53,7 +55,7 @@
                     <td>{{deviss.ville}}</td>
                     <td>{{deviss.id_devis}}</td>
                     <td>{{deviss.num_version}}</td>
-                    <td>{{deviss.date_version | date:'yyyy-MM-dd'}}</td>
+                    <td>{{deviss.date_version | date:'dd-MM-yyyy'}}</td>
                     <td>{{deviss.accepted}}</td>
                     <td><button [routerLink]="!deviss.libre ? ['/devis' , deviss.id_devis,deviss.num_version] :['/ficheDevisLibre' , deviss.id_devis,deviss.num_version]">Ouvrir</button></td>
                 </tr>

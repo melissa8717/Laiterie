@@ -73,6 +73,8 @@ service.getByIdequipement = getByIdequipement;
 service.deleteEquipement = deleteEquipement;
 service.deleteCaces = deleteCaces;
 
+service.getByIdFacclient = getByIdFacclient;
+
 module.exports = service;
 
 /*******************************************************************************
@@ -1091,5 +1093,28 @@ function deleteEquipement(id_equipement) {
         deferred.resolve();
     });
 
+    return deferred.promise;
+}
+
+
+function getByIdFacclient(_id_contact) {
+
+    var deferred = Q.defer();
+    var sql = "SELECT contact.nom, contact.prenom, devis.*, facture . * \n" +
+        "FROM facture, contact\n" +
+        "LEFT JOIN devis ON devis.id_contact = contact.id_contact\n" +
+        "WHERE contact.id_contact =165\n" +
+        "AND facture.id_devis = devis.id_devis ";
+    var inserts = [_id_contact];
+    sql = mysql.format(sql, inserts);
+    //console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message)
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
     return deferred.promise;
 }

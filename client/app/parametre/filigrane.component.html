@@ -1,0 +1,26 @@
+<div id="chantier">
+
+    <my-header [title]='"Filigrane"' [img]="'image/menu/parametres_grand_orange.png'"></my-header>
+
+    <menu-param></menu-param>
+
+    <div  class="col-sm-2 col-sm-offset-3">
+        <h4>Filigrane</h4>
+
+
+        <div style="height: 100%; width: 100%;">
+            <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
+            <img *ngIf="!url && fili.image" src="{{urlFili}}/{{fili.id_agence}}/{{fili.filigrane}}"
+                 class="img-thumbnail col-sm-12"/>
+            <img *ngIf="!url && !fili.image" src="image/test.ico" class="img-thumbnail images"/>
+            <input  type="file" ng2FileSelect [uploader]="uploaderFili"
+                    (change)="readUrl($event)"/>
+        </div>
+    </div>
+</div>
+
+<button
+        class="btn btn-default  col-sm-offset-11 col-sm-1"
+        (click)="modifyFili(id_agence)">Modifier
+</button>
+
