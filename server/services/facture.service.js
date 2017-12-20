@@ -284,6 +284,7 @@ function getbyIdTotalopt(_id_devis, _num_version) {
 
 function create(facture_param) {
     var deferred = Q.defer();
+    //console.log(facture_param);
 
 
     db.query("INSERT INTO facture (n_situation, id_devis, id_version,remise,montant_ht,date_fact,date_echeance,nfactclient) VALUES (? , ?, ?,?,?,?,?,? )",
@@ -294,7 +295,7 @@ function create(facture_param) {
                 console.log(error.name + ': ' + error.message);
             }
 
-            for (var p in facture_param.detail) {
+            for (let p in facture_param.detail) {
                 (function (facture) {
                     db.query("INSERT INTO situation_facture (id_facture, n_situation, id_produit,num_version,pourcentage,qtefact,prixfact,tvas) VALUES (? ,? , ? , ? , ?, ? , ? , ? )",
                         [results.insertId, 1, facture_param.detail[facture].id_produit, facture_param.detail[facture].num_version, facture_param.detail[facture].pourcentage, facture_param.detail[facture].qte_devis, facture_param.detail[facture].prix_devis, facture_param.detail[facture].taux],
@@ -310,7 +311,7 @@ function create(facture_param) {
                 })(p);
             }
 
-            for (var p in facture_param.option) {
+            for (let p in facture_param.option) {
                 (function (facture) {
                     db.query("INSERT INTO situation_option (id_facture, n_situation, id_produit,num_version,pourcentage,qtefact,prixfact,tvao) VALUES (? , ? , ? , ? , ?, ? , ? , ?)",
                         [results.insertId, 1, facture_param.option[facture].id_produit, facture_param.option[facture].num_version, facture_param.option[facture].pourcentage, facture_param.option[facture].qte_devis, facture_param.option[facture].prix_devis,facture_param.option[facture].taux],
@@ -326,10 +327,12 @@ function create(facture_param) {
                 })(p);
             }
 
-            for (var p in facture_param.libre) {
+            for (let p in facture_param.libre) {
+
                 (function (facture) {
+                    console.log(facture);
                     db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,tva, unite) VALUES (? , ? , ? , ? , ?, ? , ? ,? )",
-                        [results.insertId, 1, facture_param.libre[facture].produit,  facture_param.libre[facture].pourcentage, facture_param.libre[facture].qte_devis, facture_param.libre[facture].prix_devis,parseFloat(facture_param.libre[facture].tva), facture_param.libre[facture].unite],
+                        [results.insertId, 1, facture_param.libre[facture].produit,  facture_param.libre[facture].pourcentage, facture_param.libre[facture].qte_devis, facture_param.libre[facture].prix_devis, facture_param.libre[facture].tva >0 ? parseFloat(facture_param.libre[facture].tva) : '', facture_param.libre[facture].unite],
                         function (error, result, fields) {
                             if (error) {
                                 deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
@@ -342,10 +345,12 @@ function create(facture_param) {
                 })(p);
             }
 
-            for (var p in facture_param.libreoption) {
+            for (let p in facture_param.libreoption) {
+
                 (function (facture) {
+
                     db.query("INSERT INTO facture_libredetail (id_fact, n_situation, nom_produit,pourcent,qteprod,prix_prod,option,tva,unite) VALUES (? , ? , ? , ? , ?, ? ,? , ?,?)",
-                        [results.insertId, 1, facture_param.libreoption[facture].produit,  facture_param.libreoption[facture].pourcentage, facture_param.libreoption[facture].qte_devis, facture_param.libreoption[facture].prix_devis,1, parseFloat(facture_param.libreoption[facture].tva), facture_param.libreoption[facture].unite],
+                        [results.insertId, 1, facture_param.libreoption[facture].produit,  facture_param.libreoption[facture].pourcentage, facture_param.libreoption[facture].qte_devis, facture_param.libreoption[facture].prix_devis,1, facture_param.libreoption[facture].tva>0 ? parseFloat(facture_param.libreoption[facture].tva) : '', facture_param.libreoption[facture].unite],
                         function (error, result, fields) {
                             if (error) {
                                 deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);

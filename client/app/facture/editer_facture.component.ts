@@ -65,6 +65,7 @@ export class Editer_factureComponent {
 
 
 
+
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private authenticationService: AuthenticationService,
@@ -191,7 +192,7 @@ export class Editer_factureComponent {
             this.factureService.getByIdOption(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.option = data;
-                    console.log(data)
+                    //console.log(data)
                 }
             )
         });
@@ -206,6 +207,7 @@ export class Editer_factureComponent {
                 data => {
                     this.libre = data;
                     console.log(data)
+                   parseFloat(data.tva);
 
 
                 }
@@ -221,7 +223,7 @@ export class Editer_factureComponent {
             this.factureService.getByIdDevislibreoption(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.libreoption = data;
-                    console.log(data);
+                    //console.log(data);
 
 
                 }
