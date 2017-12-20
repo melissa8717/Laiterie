@@ -22,6 +22,8 @@
                     <ul class="nav navbar-nav">
                         <li *ngIf="droitsuser.accescontact"><a [routerLink]="['/ficheclient' , id_contact]">Fiche client</a></li>
                         <li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
+                        <li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/factclient' , id_contact]">Factures du client</a></li>
+
                     </ul>
 
                 </div>
