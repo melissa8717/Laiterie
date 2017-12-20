@@ -192,7 +192,6 @@ export class FactlibreComponent {
         for (let bases of this.base) {
             total += bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         }
-        console.log(total);
         return total;
     }
 
@@ -206,7 +205,10 @@ export class FactlibreComponent {
     }
 
     totalfacture() {
-        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) * (1 - (this.model.remise ? (this.model.remise / 100 ) : 1) );
+        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 ));
+    }
+    totalreal(){
+        return this.counttotalbase() + this.counttotaldetail();
     }
 
     countTotals() {

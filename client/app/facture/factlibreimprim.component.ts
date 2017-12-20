@@ -117,7 +117,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibreModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-
+                    console.log(data);
                 }
             )
         });
@@ -130,6 +130,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
+                    console.log(data);
                 }
             )
         });
@@ -143,6 +144,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detail = data;
+                    //console.log(data);
                 }
             )
         });
@@ -227,6 +229,7 @@ export class FactlibreimprimComponent {
         for (let bases of this.base) {
             total += bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         }
+
         return total;
     }
 
@@ -240,7 +243,10 @@ export class FactlibreimprimComponent {
     }
 
     totalfacture() {
-        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) * (1 - (this.model.remise ? (this.model.remise / 100 ) : 1) );
+        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) ;
+    }
+    countreali(){
+        return (this.counttotalbase() + this.counttotaldetail());
     }
 
     countTotals() {
@@ -248,7 +254,7 @@ export class FactlibreimprimComponent {
     }
 
     countRemise() {
-        return this.countTotals() * ((this.model.remise ? (this.model.remise / 100) : 1) );
+        return this.countreali() * ((this.model.remise ? (this.model.remise / 100) : 1) );
     }
 
     countTotalNet() {

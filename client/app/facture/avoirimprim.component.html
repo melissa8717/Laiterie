@@ -90,7 +90,7 @@
                         <td>{{prod.libelle}}</td>
                         <td>{{prod.prixfact}}</td>
                         <td>{{prod.qtefact}}</td>
-                        <td></td>
+                        <td>{{valeur.tva}}</td>
                         <td>{{ prod.prixfact * prod.qtefact | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
@@ -117,7 +117,7 @@
 
                     <tr class="gras" *ngIf="valeur.tva">
                         <td colspan="4"></td>
-                        <td>TVA  {{valeur.tva}} % :</td>
+                        <td>TVA  {{valeur.tva}}  %:</td>
                         <td>- {{countTva() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 

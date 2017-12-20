@@ -8,7 +8,6 @@
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
             <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
-        <h3 *ngIf="!print" >Editer une nouvelle situation de la facture</h3>
 
 
         <form (ngSubmit)="submit()">
@@ -121,8 +120,9 @@
                     <tbody >
 
                     <tr   style="border-top:1px solid black;height: 50px;" class="basr"><td class="gauche" style="text-align: left;">Total des travaux H.T. :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{totalfacture() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr   style="border-top:1px solid black;height: 50px;" class="basr"><td class="gauche" style="text-align: left;">Total des travaux réalisés H.T. :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countreali() | currency:'EUR':true:'1.2-2'}}</td></tr>
                     <tr *ngIf="model.remise>0" style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;"> Remise:  {{model.remise}} %</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countRemise() | currency:'EUR':true:'1.2-2'}}</td></tr>
-                    <tr style="border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;">Travaux réalisés/devis :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countTotals() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr style="border-top:1px solid black;height: 50px;" *ngIf="model.remise>0"><td class="gauche" style="text-align: left;">Travaux réalisés :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countTotals() | currency:'EUR':true:'1.2-2'}}</td></tr>
                     <tr class="basr gras" style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;">Total H.T. net :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countTotals() | currency:'EUR':true:'1.2-2'}}</td></tr>
 
                     <!-- <tr style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;">Plus-Value :</td ><td style="text-align:right;border-top:1px solid black;">0.00</td></tr>
