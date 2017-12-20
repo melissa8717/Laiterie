@@ -166,6 +166,7 @@ import {HeaderComponent} from './utils/header.component';
 import {GedComponent} from "./utils/ged.component";
 import {ImguploaderComponent} from "./utils/imguploader.component";
 import {FiligraneComponent} from "./parametre/filigrane.component";
+import {FactclientComponent} from "./contact/factclient.component";
 
 @NgModule({
     imports: [
@@ -320,7 +321,8 @@ import {FiligraneComponent} from "./parametre/filigrane.component";
         HeaderComponent,
         GedComponent,
         ImguploaderComponent,
-        FiligraneComponent
+        FiligraneComponent,
+        FactclientComponent
     ],
     providers: [
         AppConfig,

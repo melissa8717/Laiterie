@@ -115,7 +115,8 @@ import {NewfactlibreComponent} from "./facture/newfactlibre.component";
 import {FactlibreComponent} from "./facture/factlibre.component";
 import {FactlibreimprimComponent} from "./facture/factlibreimprim.component";
 import {AvoirlibreComponent} from "./facture/avoirlibre.component";
-import {FiligraneComponent} from "./parametre/filigrane.component"; ///////////////////////////////////////////////////
+import {FiligraneComponent} from "./parametre/filigrane.component";
+import {FactclientComponent} from "./contact/factclient.component"; ///////////////////////////////////////////////////
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -244,6 +245,8 @@ const appRoutes: Routes = [
     {path: 'factlibreimprim/:id_facture/:n_situation', component: FactlibreimprimComponent, canActivate: [AuthGuard]} ,
     {path: 'avoirlibre/:id_facture/:n_situation', component: AvoirlibreComponent, canActivate: [AuthGuard]},
     {path: 'filigrane/:id_agence', component: FiligraneComponent, canActivate: [AuthGuard]},
+    {path: 'factclient/:id_contact', component: FactclientComponent, canActivate: [AuthGuard]},
+
 
 
     // otherwise redirect to home
