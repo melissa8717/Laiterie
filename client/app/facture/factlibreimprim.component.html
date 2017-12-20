@@ -15,13 +15,13 @@
 
             <fieldset class="separe">
                 <div class="row marge">
-                    <img *ngIf="!print" [src]="config.logoPath"  style="margin-left:100px;">
+                    <img *ngIf="!print" [src]="config.logoPath"  style="margin-left:100px;height: auto;width: 300px;">
                 </div>
                 <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
-                <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; top:30px; position: fixed;">
-                    <div *ngIf="print">
-                        <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
-                        <img *ngIf="!url && img.image" style="height: 150px; width: 300px;"
+                <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; heigh:auto; top:10px;position:fixed;left:50px;">
+                    <div *ngIf="print" style="top:10px;position:fixed;left:50px;">
+                        <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-4"/>
+                        <img *ngIf="!url && img.image" style="height: auto; width: 200px;top:0px;position:fixed;left:50px;page-break-after:always;"
                              src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="..."
                              class="img-responsive col-sm-12"/>
 
@@ -134,16 +134,16 @@
                     </tbody>
                 </table>
 
-                <table class=" separe1 col-sm-offset-6 col-sm-3 table-striped" *ngIf="!print">
+                <table class=" separe1 col-sm-offset-6 col-sm-3 table-striped" *ngIf="!print" style="float:right;margin-top:-10px;" >
                     <tbody style="text-align: center;">
 
                     <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-top:1px solid black;border-left:1px solid black;" class="gauche" style="text-align: left;">Total Net :</td><td style="border:1px solid black;">{{countTotalNet() | currency:'EUR':true:'1.2-2'}}</td></tr>
-                    <tr  style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right; border-left: 1px solid;;border-top:1px solid black;" class="gauche" style="text-align: left;">Acompte /situations antérieures :</td><td style="text-align:right;border:1px solid black;">{{summe.somme | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr  style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right; border-left: 1px solid;;border-top:1px solid black;" class="gauche" style="text-align: left;">Situations antérieures :</td><td style="text-align:right;border:1px solid black;">{{summe.somme | currency:'EUR':true:'1.2-2'}}</td></tr>
                     <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="basr gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total situation H.T. :</td><td style="text-align:right;border:1px solid black;" >{{CountTotalsituation() | currency:'EUR':true:'1.2-2'}}</td></tr>
 
 
                     <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 20 % </td><td style="text-align: right;border:1px solid black;" >{{SumTvaV() | currency:'EUR':true:'1.2-2'}}</td></tr>
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaD()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 10 % </td><td style="text-align: right;border:1px solid black;" >{{SummTvaD() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaD()"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >TVA à 10 % </td><td style="text-align: right;border:1px solid black;" >{{SummTvaD() | currency:'EUR':true:'1.2-2'}}</td></tr>
                     <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaC()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 5.5 % </td><td style="text-align: right;border:1px solid black;" >{{SummTvaC() | currency:'EUR':true:'1.2-2'}}</td></tr>
                     <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaDU()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 2.1 % </td><td style="text-align: right;border:1px solid black;" >{{SummTvaDU() | currency:'EUR':true:'1.2-2'}}</td></tr>
                     <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SummTvaZ()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 0 % </td><td style="text-align: right;border:1px solid black;" >{{SummTvaZ() | currency:'EUR':true:'1.2-2'}}</td></tr>
@@ -159,7 +159,7 @@
                     <tbody style="text-align: center;">
 
                     <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-top:1px solid black;border-left:1px solid black;" class="gauche" style="text-align: left;">Total Net :</td><td style="border:1px solid black;">{{countTotalNet() | currency:'EUR':true:'1.2-2'}}</td></tr>
-                    <tr  style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right; border-left: 1px solid;;border-top:1px solid black;" class="gauche" style="text-align: left;">Acompte /situations antérieures :</td><td style="text-align:right;border:1px solid black;">{{summe.somme | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr  style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right; border-left: 1px solid;;border-top:1px solid black;" class="gauche" style="text-align: left;">Acompte /situations antérieures :</td><td style="text-align:right;border:1px solid black;">{{(summe.somme>0 ?summe.somme : 0) | currency:'EUR':true:'1.2-2'}}</td></tr>
                     <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="basr gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total situation H.T. :</td><td style="text-align:right;border:1px solid black;" >{{CountTotalsituation() | currency:'EUR':true:'1.2-2'}}</td></tr>
 
 
@@ -201,7 +201,6 @@
             </div>
 
 
-            <button *ngIf="!print && droitsuser.modiffact" class="btn btn-default input-sm col-sm-offset-11" type="submit" [disabled]="loading">Enregistrer</button>
         </form>
 
     </div>

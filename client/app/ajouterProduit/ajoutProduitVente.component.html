@@ -12,12 +12,6 @@
         <form name="form" (submit)="ajouterProduitVente()">
             <article class="col-sm-4">
 
-                <div style="height: 10%; width: 100%;">
-                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url" src="image/test.ico" alt="..." class="img-thumbnail images"/>
-                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
-                </div>
-
                 <!-- libelle -->
                 <div class="form-group">
                     <label class="col-sm-5 control-label">* Libellé : </label>
@@ -186,19 +180,18 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><input ng2-auto-complete
+                            <td>
+                                <input ng2-auto-complete
                                        #prod
                                        name="produit"
                                        [source]="allProducts"
-                                       [(ngModel)]="produitadd.libelle"
                                        [list-formatter]="autocompleListFormatterProducts"
                                        value-property-name="libelle"
                                        display-property-name="libelle"
                                        placeholder="Produit"
                                        class="col-sm-12"
-                                       (ngModelChange)="chooseProductByLibelle()"
-                                       autocomplete="off"
-                            >
+                                       (valueChanged)="chooseProductByLibelle($event)"
+                                       autocomplete="off">
                                 <a *ngIf="produitadd.libelle"
                                    [routerLink]="['/produitachat/' + produitadd.id_produit + '/' + produitadd.num_version]"
                                    target="_blank">Voir</a>
@@ -218,7 +211,7 @@
                             <td><span> {{calctotalprod(produitadd) | currency:'EUR':true:'1.2-2'}}</span>
                             </td>
                             <td>
-                                <button *ngIf="droitsuser.ajoutprov" type="button" class="btn right"
+                                <button *ngIf="utilsService.droitsUser.ajoutprov" type="button" class="btn right"
                                         (click)="addProduct()"
                                         [disabled]="!produitadd.quantite || !produitadd.libelle">Ajouter
                                 </button>
@@ -290,20 +283,18 @@
 
                             <td><span>{{calctotal(mainOeuvreAdd)| currency:'EUR':true:'1.2-2'}}</span></td>
                             <td>
-                                <button *ngIf="droitsuser.ajoutprov" type="button" class="btn right" (click)="addMO()"
+                                <button *ngIf="utilsService.droitsUser.ajoutprov" type="button" class="btn right"
+                                        (click)="addMO()"
                                         [disabled]="!mainOeuvreAdd.quantite || !mainOeuvreAdd.libelle">Ajouter
                                 </button>
                             </td>
-
                         </tr>
-
 
                         <tr *ngFor="let mainOeuvre of mainOeuvreList">
                             <td><span class="col-sm-12">{{mainOeuvre.libelle}}</span></td>
                             <td><span>{{mainOeuvre.salaire_charge}}</span></td>
 
-                            <td><input type="time" name="qte" [(ngModel)]="mainOeuvre.quantite"
-                                       (ngModelChange)="calcvalue(produit)"/></td>
+                            <td><span>{{mainOeuvre.quantite}}</span></td>
 
                             <td><span>{{calctotal(mainOeuvre)| currency:'EUR':true:'1.2-2'}}</span></td>
                             <td>
@@ -314,26 +305,17 @@
                                 </a>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
-
                 </div>
             </div>
-            <button *ngIf="droitsuser.ajoutprov" (click)="uploaderImg.queue[0].upload();" type="submit"
-                    [disabled]="produitsComposes.length < 1 || !produit.margepcmin || !produit.margepc || !produit.marge  ||!produit.libelle"
-                    class="col-sm-offset-11 btn">
-                Enregistrer
-            </button>
-        </form>
 
-        <!--une fois modifier créer un pdf à mettre dans la GED
-        <div class="col-sm-12 bas">
-            <form  method="POST" action="#" class="col-sm-1 col-sm-offset-11 btn">
-                <button >Fermer</button>
-            </form>
-        </div>
-        -->
+            <button *ngIf="utilsService.droitsUser.ajoutprov" type="submit"
+                    [disabled]="produitsComposes.length < 1 || !produit.margepcmin || !produit.margepc || !produit.marge  ||!produit.libelle"
+                    class="col-sm-offset-11 btn">Enregistrer
+            </button>
+
+        </form>
 
     </div><!--fin container fluid-->
 

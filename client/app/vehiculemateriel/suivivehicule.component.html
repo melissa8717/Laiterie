@@ -19,14 +19,8 @@
 
                 <h3>Fiche véhicule</h3>
 
-                <div style="height: auto; max-width: 20%;">
-                    <img *ngIf="url" [src]="url" alt="..." class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && model.image"
-                         src="http://{{loc}}:4000/image/matvehi/{{model.id_vehmat}}/{{model.image}}" alt="..."
-                         class="img-thumbnail col-sm-12"/>
-                    <img *ngIf="!url && !model.image" src="image/test.ico" alt="..." class="img-thumbnail images"/>
-                    <input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>
-                </div>
+                <img-uploader *ngIf="model.id_vehmat" [(uploaderImg)]="uploaderImg" [name]="'matvehi'"
+                              [id]="model.id_vehmat" [onlineImgUrl]="model.image_vh"></img-uploader>
 
                 <div class="col-sm-12">
 
@@ -297,9 +291,9 @@
                 </div>
 
 
-                <button *ngIf="!print && (droitsuser.modifproa || droitsuser.modifprov)"
+                <button *ngIf="!print && (utilsService.droitsUser.modifproa || utilsService.droitsUser.modifprov)"
                         class="btn btn-default input-sm col-sm-offset-11"
-                        (click)="modify(id_vehmat); uploaderImg.queue[0].upload();">Modifier
+                        (click)="modify();">Modifier
                     <!-- ; uploaderImg.queue[0].upload(); -->
                 </button>
 
@@ -361,7 +355,7 @@
                 </div>
 
                 <button class="col-sm-offset-10 col-sm-1 btn" type="button"
-                        *ngIf="!print && (droitsuser.accesproa || droitsuser.accesprov)" (click)=" imprimer()">Imprimer
+                        *ngIf="!print && (utilsService.droitsUser.accesproa || utilsService.droitsUser.accesprov)" (click)=" imprimer()">Imprimer
                 </button>
 
             </div>

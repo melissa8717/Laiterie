@@ -65,6 +65,7 @@ export class Editer_factureComponent {
 
 
 
+
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private authenticationService: AuthenticationService,
@@ -191,7 +192,7 @@ export class Editer_factureComponent {
             this.factureService.getByIdOption(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.option = data;
-                    console.log(data)
+                    //console.log(data)
                 }
             )
         });
@@ -205,7 +206,8 @@ export class Editer_factureComponent {
             this.factureService.getByIdDevislibre(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.libre = data;
-                   // console.log(data)
+                    console.log(data)
+                   parseFloat(data.tva);
 
 
                 }
@@ -442,8 +444,6 @@ export class Editer_factureComponent {
         this.paramsService.getAllAgence().subscribe(img => {
 
             this.img = img[0];
-            console.log(this.img);
-            //console.log(this.currentUser);
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
             this.uploaderImg.onAfterAddingFile = (file) => {
@@ -453,8 +453,7 @@ export class Editer_factureComponent {
             this.paramsService.getAllAgence().subscribe(fili => {
 
                 this.fili = fili[0];
-                console.log(this.img);
-                //console.log(this.currentUser);
+
 
                 this.uploaderFili = new FileUploader({url: URLimg + "agence/" + this.fili.id_agence});
                 this.uploaderFili.onAfterAddingFile = (file) => {
@@ -478,8 +477,8 @@ export class Editer_factureComponent {
 
         for (let libres of this.libre) {
 
-            if (libres.taux == 20) {
-                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+            if (libres.tva == 20) {
+                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (parseInt(libres.tva) / 100);
 
             }
         }
@@ -517,8 +516,8 @@ export class Editer_factureComponent {
 
          for (let libreoptions of this.libreoption) {
 
-             if (libreoptions.taux == 20) {
-                 total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+             if (libreoptions.tva == 20) {
+                 total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (parseInt(libreoptions.tva) / 100);
              }
 
          }
@@ -526,7 +525,7 @@ export class Editer_factureComponent {
      }
 
     SumTvaV() {
-        return this.TVAV() + this.TVAVO() + this.TVATVOt() + this.TVATVt();
+        return (this.TVAV()>0 ? this.TVAV() : 0) + (this.TVAVO() ? this.TVAVO() : 0) + (this.TVATVOt() >0 ? this.TVATVOt() :0) + (this.TVATVt()>0 ? this.TVATVt() :0);
     }
 
     TVADO() {
@@ -534,12 +533,13 @@ export class Editer_factureComponent {
 
         for (let libres of this.libre) {
 
-            if (libres.taux == 10) {
-                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+            if (libres.tva == 10) {
+                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (parseInt(libres.tva) / 100);
 
             }
         }
         return total;
+
     }
 
     TVAD() {
@@ -573,16 +573,15 @@ export class Editer_factureComponent {
 
         for (let libreoptions of this.libreoption) {
 
-            if (libreoptions.taux == 10) {
-                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+            if (libreoptions.tva == 10) {
+                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (parseInt(libreoptions.tva) / 100);
             }
-
         }
         return total;
     }
 
     SumTvaD() {
-        return this.TVAD() + this.TVADO() + this.TVATDOt() + this.TVATDt();
+        return (this.TVAD()>0 ? this.TVAD() : 0) + (this.TVADO()>0 ? this.TVADO():0) + (this.TVATDOt()>0 ?this.TVATDOt() :0) + (this.TVATDt()>0 ? this.TVATDt() :0) ;
     }
 
     TVACO() {
@@ -590,8 +589,8 @@ export class Editer_factureComponent {
 
         for (let libres of this.libre) {
 
-            if (libres.taux == 5.5) {
-                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+            if (libres.tva == 5.5) {
+                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (parseFloat(libres.tva) / 100);
 
             }
         }
@@ -629,8 +628,8 @@ export class Editer_factureComponent {
 
         for (let libreoptions of this.libreoption) {
 
-            if (libreoptions.taux == 5.5) {
-                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+            if (libreoptions.tva == 5.5) {
+                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (parseFloat(libreoptions.tva) / 100);
             }
 
         }
@@ -638,7 +637,7 @@ export class Editer_factureComponent {
     }
 
     SumTvaC() {
-        return this.TVAC() + this.TVACO() + this.TVATCOt() + this.TVATCt();
+        return (this.TVAC()>0 ? this.TVAC() : 0)  + (this.TVACO()>0 ? this.TVACO() : 0) + (this.TVATCOt()>0 ? this.TVATCOt() : 0) + (this.TVATCt()>0 ? this.TVATCt() : 0);
     }
 
     TVADXO() {
@@ -646,8 +645,8 @@ export class Editer_factureComponent {
 
         for (let libres of this.libre) {
 
-            if (libres.taux == 2.1) {
-                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (libres.taux / 100);
+            if (libres.tva == 2.1) {
+                total += ( libres.prix_devis * libres.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libres.pourcentage / 100) * (parseFloat(libres.tva) / 100);
 
             }
         }
@@ -685,8 +684,8 @@ export class Editer_factureComponent {
 
         for (let libreoptions of this.libreoption) {
 
-            if (libreoptions.taux == 2.1) {
-                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (libreoptions.taux / 100);
+            if (libreoptions.tva == 2.1) {
+                total += (libreoptions.prix_devis * libreoptions.qte_devis * (this.version.remise ? (1 - (this.version.remise / 100)) : 1) ) * (libreoptions.pourcentage / 100) * (parseFloat(libreoptions.tva) / 100);
             }
 
         }
@@ -694,7 +693,7 @@ export class Editer_factureComponent {
     }
 
     SumTvaDX() {
-        return this.TVADX() + this.TVADXO() + this.TVATDXOt() + this.TVATDXt();
+        return (this.TVADX()>0 ? this.TVADX() :0) + (this.TVADXO() ? this.TVADXO() :0) + (this.TVATDXOt()>0 ? this.TVATDXOt() :0) + (this.TVATDXt()>0 ? this.TVATDXt() : 0);
     }
 
     TVAZO() {
@@ -702,7 +701,7 @@ export class Editer_factureComponent {
 
         for (let libres of this.libre) {
 
-            if (libres.taux == 0) {
+            if (libres.tva == 0) {
                 total +=0;
 
             }
@@ -741,7 +740,7 @@ export class Editer_factureComponent {
 
         for (let libreoptions of this.libreoption) {
 
-            if (libreoptions.taux == 0) {
+            if (libreoptions.tva == 0) {
                 total += 0;
             }
 

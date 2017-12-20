@@ -1,9 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AchatsService, AlertService, UtilsService} from '../_services/index';
 import {Tva} from "../_models/index";
 import {Contact} from "../_models/contacts/contact";
-import {FileUploader} from 'ng2-file-upload';
 
 
 @Component({
@@ -11,7 +10,7 @@ import {FileUploader} from 'ng2-file-upload';
     templateUrl: 'ajoutProduitAchat.component.html'
 })
 
-export class AjoutProduitAchatComponent {
+export class AjoutProduitAchatComponent implements OnInit {
 
     private unites: any[];
     private tvas: Tva[] = [];
@@ -38,7 +37,7 @@ export class AjoutProduitAchatComponent {
         this.getUnite();
     }
 
-    getUnite() {
+    private getUnite() {
         this.achatsService.getAllUnite().subscribe(unites => {
             this.unites = unites;
             this.produit.unite = this.unites[0].libelle;

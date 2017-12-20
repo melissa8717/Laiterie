@@ -1,16 +1,9 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AlertService, AuthenticationService} from '../_services/index';
-import {Product, Tva} from "../_models/index";
-import {VentesService} from "../_services/ventes.service";
-import {AchatsService} from "../_services/achats.service";
 import {FormBuilder} from "@angular/forms";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {ParamsService} from "../_services/params.service";
-import {User} from "../_models/user";
-import {FileUploader} from 'ng2-file-upload';
-
-const URLimg = 'http://' + location.hostname + ':4000/image/';
+import {AchatsService, AlertService, AuthenticationService, UtilsService, VentesService} from '../_services/index';
+import {Product, Tva} from "../_models/index";
 
 @Component({
     moduleId: module.id,
@@ -19,28 +12,22 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 export class AjoutProduitVenteComponent {
 
-    private uploaderImg: FileUploader;
-
     private allProducts: Product[] = [];
     private mainOeuvreList: any[] = [];
-
-    private produit = new Product();
-
-
     private categories: any[] = [];
-    private cat_choisi: string;
     private unites: any[] = [];
+    private tvas: Tva[] = [];
+
+    private cat_choisi: string;
     private uni_choisi: string;
     private tva_choisi: number;
-    private tvas: Tva[] = [];
-    private loading = false;
+
+    private produit = new Product();
+    private produitadd = new Product();
+    private produitsComposes: Product[] = [];
+
     private mainOeuvre: any[] = [];
     private mainOeuvreAdd: any = {};
-    private n: number;
-    private produitadd: any = {};
-    private produitsComposes: Product[] = [];
-    private currentUser: User;
-    private droitsuser: any = {};
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -50,58 +37,57 @@ export class AjoutProduitVenteComponent {
                 private alertService: AlertService,
                 private builder: FormBuilder,
                 private _sanitizer: DomSanitizer,
-                private paramsService: ParamsService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.n = 7;
+                private utilsService: UtilsService) {
         this.produit.marge = 0;
     }
 
     ngOnInit() {
         this.getTVA();
-        this.getAllProduitsVentes();
-        this.getCategories();
         this.loadAll();
+        this.getCategories();
         this.getUnite();
-        this.loaddroituser();
-
-        this.route.params.subscribe(params => {
-            this.uploaderImg = new FileUploader({url: URLimg + "produitv/" + params['id']});
-            this.uploaderImg.onAfterAddingFile = file => {
-                file.withCredentials = false;
-            };
-        });
     }
 
-    // visualisation de l'image avant envoi
-    url: any;
-
-    readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    }
-
-    loaddroituser() {
-        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-            this.droitsuser = data[0];
+    private getTVA() {
+        this.achatsService.getAllTva().subscribe(tvas => {
+            this.tvas = tvas;
+            this.tva_choisi = this.tvas[0].taux;
         });
     }
 
     private loadAll() {
-        this.achatsService.getAllMainOeuvre().subscribe(data => {
-            this.mainOeuvre = data;
+        this.achatsService.getAllMainOeuvre().subscribe(mainOeuvre => {
+            this.mainOeuvre = mainOeuvre;
+        });
+    }
+
+    private getCategories() {
+        this.achatsService.getAllCategories().subscribe(categories => {
+            this.categories = categories;
+            this.cat_choisi = this.categories[0].libelle;
+        });
+    }
+
+    private getUnite() {
+        this.achatsService.getAllUnite().subscribe(unites => {
+            this.unites = unites;
+            this.uni_choisi = this.unites[0].libelle;
+
+            this.getAllProduitsVentes();
         });
     }
 
     private getAllProduitsVentes() {
         this.achatsService.getAll().subscribe(produits => {
             this.allProducts = produits;
-        });
+
+            this.allProducts.forEach(product => {
+                product.id_unite = parseInt(product.unite);
+                product.unite = this.unites.find(u => u.id_unite == product.id_unite).libelle;
+            });
+        })
     }
+
 
     autocompleListFormatterProducts = (data: any): SafeHtml => {
         let html = `<span>${data.libelle} : ${data.prix_achat}€ - ${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom} </span>`;
@@ -115,46 +101,22 @@ export class AjoutProduitVenteComponent {
     };
 
     private ajouterProduitVente() {
-        this.produit.categorie = this.getCategoryId();
+        this.produit.id_cat = this.getCategoryId();
         this.produit.unite = this.getUnityId();
         this.produit.prix_achat = this.getTotalPrixAchat();
         this.produit.prix_vente = this.getTotalPrixVente();
-        this.produit.id_user = this.currentUser._id;
+        this.produit.id_user = this.utilsService.currentUser._id;
 
         let tmp: any = {};
         tmp.produit = this.produit;
         tmp.produits = this.produitsComposes;
         tmp.mainOeuvre = this.mainOeuvreList;
 
-        console.log(tmp);
-
         this.ventesService.add(tmp).subscribe(() => {
             this.alertService.success('Nouveau produit ajouté avec succès.', true);
-            this.loading = false;
             this.router.navigate(["/listevente"]);
         }, () => {
             this.alertService.error('Erreur lors de l\'ajout du produit. Veuillez réessayer.', true);
-        });
-    }
-
-    private getTVA() {
-        this.achatsService.getAllTva().subscribe(tvas => {
-            this.tvas = tvas;
-            this.tva_choisi = this.tvas[0].taux;
-        });
-    }
-
-    private getCategories() {
-        this.achatsService.getAllCategories().subscribe(cats => {
-            this.categories = cats;
-            this.cat_choisi = this.categories[0].libelle;
-        });
-    }
-
-    private getUnite() {
-        this.achatsService.getAllUnite().subscribe(unis => {
-            this.unites = unis;
-            this.uni_choisi = this.unites[0].libelle;
         });
     }
 
@@ -166,16 +128,14 @@ export class AjoutProduitVenteComponent {
         return this.unites.find(x => x.libelle == this.uni_choisi).id_unite;
     }
 
-    private chooseProductByLibelle() {
-        let prod = this.allProducts.find(x => x.libelle == this.produitadd.libelle.libelle);
-        this.produitadd = Object.assign({}, prod);
-
+    private chooseProductByLibelle(newVal: any) {
+        this.produitadd = newVal;
         this.produitadd.quantite = 1;
         this.calcpercent(this.produitadd);
     }
 
     private chooseMainOeuvreLibelle(i: number) {
-        let prod = this.mainOeuvre.filter(x => x.libelle == this.mainOeuvreAdd.libelle.libelle)[0];
+        let prod = this.mainOeuvre.find(x => x.libelle == this.mainOeuvreAdd.libelle.libelle);
         this.mainOeuvreAdd = Object.assign({}, prod);
         this.mainOeuvreAdd.quantite = "00:00";
         this.calcpercent(this.mainOeuvreAdd);
@@ -210,13 +170,13 @@ export class AjoutProduitVenteComponent {
 
     getMinutesFromTime(timer: string): number {
         if (timer) {
-            var t = timer.split(':');
+            let t = timer.split(':');
             return parseInt(t[0]) * 60 + parseInt(t[1]);
         }
         return 0;
     }
 
-    customTrackBy(index: number, obj: any): any {
+    customTrackBy(index: number): any {
         return index;
     }
 
@@ -224,12 +184,12 @@ export class AjoutProduitVenteComponent {
         let check = this.produitsComposes.filter(obj => obj.id_produit == this.produitadd.id_produit);
         if (check.length < 1) {
             let tmp = this.produitadd;
-            this.produitadd = {};
+            this.produitadd = new Product();
             this.produitsComposes.push(tmp);
             this.produitsComposes.sort();
         }
         else {
-            this.produitadd = {};
+            this.produitadd = new Product();
             this.alertService.error("Le produit n'a pas pu être ajouté. Il est déjà présent dans la liste.")
         }
 
@@ -292,18 +252,11 @@ export class AjoutProduitVenteComponent {
     }
 
     private getMargePourcentage() {
-        //return (100 * (this.getTotalMarge() / this.getTotalPrixAchat())).toFixed(2);
         return (100 * (this.getTotalMarge() / this.getTotalPrixAchat())).toFixed(2);
     }
 
     private getTotalPrixVente(): number {
-        //return (1* (this.getTotalPrixAchat() + this.getTotalMarge()));
         return +((+this.getTotalPrixAchat() + +this.produit.marge).toFixed(2));
-    }
-
-    private debug() {
-        let copy = Object.assign([], this.produitsComposes);
-        copy = copy.filter(x => x.id_produit != "0");
     }
 
 }

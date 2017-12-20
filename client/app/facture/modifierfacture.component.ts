@@ -176,6 +176,7 @@ export class ModifierfactureComponent {
         });
     }
 
+
     loadlibreSituation() {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture']
@@ -184,7 +185,7 @@ export class ModifierfactureComponent {
             this.factureService. getByIdlibresituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.libsitua = data;
-                    console.log(data);
+                  //  console.log(data);
                 }
             )
         });
@@ -198,7 +199,7 @@ export class ModifierfactureComponent {
             this.factureService. getByIdlibresituationoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.libsituaop = data;
-                    console.log(data);
+                   // console.log(data);
                 }
             )
         });
@@ -268,11 +269,13 @@ export class ModifierfactureComponent {
         factureparams.model = this.model;
         factureparams.valeur = this.valeur;
         factureparams.nfact = this.nfact;
+        factureparams.libsitua = this.libsitua;
+        factureparams.libsituaop = this.libsituaop;
 
         var test = +confirm('Etes vous sûr de vouloir enregistrer votre facture :');
         //console.log(factureparams);
         if (test ) {
-            console.log(factureparams);
+            //console.log(factureparams);
             this.factureService.createSituation(factureparams, this.id_facture).subscribe(
                 data => {
                     this.router.navigate(['/listefacture']);
@@ -311,10 +314,11 @@ export class ModifierfactureComponent {
         else return 0;
     }
 
-    totalignesitua(lsituas: any) {
-        if (lsituas.pourcent)
-            return (lsituas.qteprod / 100) * lsituas.prix_prod * lsituas.pourcent;
+    totalignesitua(lbsituas: any) {
+        if (lbsituas.pourcents)
+            return (lbsituas.qteprod / 100) * lbsituas.prix_prod * lbsituas.pourcents;
         else return 0;
+
     }
 
     totalignesituaop(situaop: any) {
@@ -341,8 +345,26 @@ export class ModifierfactureComponent {
         return totalopt;
     }
 
-    countTTC(situas: any, options: any) {
-        return this.countSitua(situas) + this.countSituaopt(options)
+    countSitualib(lsituas: any) {
+        let totalopt = 0;
+
+        for (let lsituas of this.libsitua) {
+            totalopt += lsituas.qteprod * lsituas.prix_prod;
+        }
+        return totalopt;
+    }
+
+    countSituaoptlib(situaop: any) {
+        let totalopt = 0;
+
+        for (let situaop of this.libsituaop) {
+            totalopt += situaop.qteprod * situaop.prix_prod;
+        }
+        return totalopt;
+    }
+
+    countTTC(situas: any, options: any, situaop :any, lsituas: any) {
+        return this.countSitua(situas) + this.countSituaopt(options) + this.countSituaoptlib(situaop) + this.countSitualib(lsituas);
     }
 
     countLigne(situas: any) {
@@ -367,6 +389,30 @@ export class ModifierfactureComponent {
         return totalopt;
     }
 
+    countLignel(lbsituas: any) {
+        let totalopt = 0;
+
+        for (let lbsituas of this.libsitua) {
+            if (lbsituas.pourcents)
+                totalopt += (lbsituas.qteprod / 100) * lbsituas.prix_prod * lbsituas.pourcents;
+            else totalopt += 0;
+        }
+        return totalopt;
+
+    }
+
+    countLignelO(situaop: any) {
+        let totalopt = 0;
+
+        for (let situaop of this.libsituaop) {
+            if (situaop.pourcent)
+                totalopt += (situaop.qteprod / 100) * situaop.prix_prod * situaop.pourcent;
+            else totalopt += 0;
+        }
+        return totalopt;
+
+    }
+
     countTotaldessitua(options: any) {
         let totalopt = 0;
 
@@ -376,20 +422,20 @@ export class ModifierfactureComponent {
         return  totalopt;
     }
 
-    countTotal(situas: any, valeur: any, options: any) {
-        return this.countLigne(situas) + this.countOption(options);
+    countTotal(situas: any, valeur: any, options: any,lbsituas: any,situaop: any) {
+        return (this.countLigne(situas)>0 ?this.countLigne(situas) :0) + (this.countOption(options)>0 ? this.countOption(options) :0) + (this.countLignel(lbsituas)>0 ? this.countLignel(lbsituas) : 0) + (this.countLignelO(situaop)>0 ? this.countLignelO(situaop) :0);
     }
 
-    countRemise(situas: any, valeur: any, options: any) {
-        return this.countTotal(situas, valeur, options) * ((this.valeur.remise ? this.valeur.remise : 0) / 100);
+    countRemise(situas: any, valeur: any, options: any,lbsituas: any,situaop: any) {
+        return this.countTotal(situas, valeur, options,lbsituas,situaop) * ((this.valeur.remise ? this.valeur.remise : 0) / 100);
     }
 
-    countTotalRemise(situas: any, valeur: any, options: any) {
-        return this.countTotal(situas, valeur, options) * (1 - ((this.valeur.remise ? this.valeur.remise : 0) / 100));
+    countTotalRemise(situas: any, valeur: any, options: any,lbsituas: any,situaop: any) {
+        return this.countTotal(situas, valeur, options,lbsituas,situaop) * (1 - ((this.valeur.remise ? this.valeur.remise : 0) / 100));
     }
 
-    countTotalNet(situas: any, valeur: any, options: any) {// en attendant plus value moins value
-        return this.countTotalRemise(situas, valeur, options)
+    countTotalNet(situas: any, valeur: any, options: any,lbsituas: any,situaop: any) {// en attendant plus value moins value
+        return this.countTotalRemise(situas, valeur, options,lbsituas,situaop)
     }
 
     totalsituation(valeur: any,options:any) {
@@ -397,27 +443,27 @@ export class ModifierfactureComponent {
 
     }
 
-    countTotalsituation(situas: any, valeur: any, options: any) {
-        this.model.montant_ht = this.countTotalNet(situas, valeur, options) - this.totalsituation(valeur,options);
+    countTotalsituation(situas: any, valeur: any, options: any,lbsituas :any,situaop: any) {
+        this.model.montant_ht = this.countTotalNet(situas, valeur, options,lbsituas,situaop) - this.totalsituation(valeur,options);
         return this.model.montant_ht;
     }
 
-    countTVA(situas: any, valeur: any, options: any) {
+    countTVA(situas: any, valeur: any, options: any,lbsituas:any,situaop: any) {
 
-        return this.countTotalsituation(situas, valeur, options) * (this.valeur.tva ? this.valeur.tva : 0) / 100;
+        return this.countTotalsituation(situas, valeur, options,lbsituas,situaop) * (this.valeur.tva ? this.valeur.tva : 0) / 100;
     }
 
-    countSTotal(situas: any, valeur: any, options: any) {
-        return this.countTotalsituation(situas, valeur, options) + this.countTVA(situas, valeur, options);
+    countSTotal(situas: any, valeur: any, options: any,lbsituas:any,situaop: any) {
+        return this.countTotalsituation(situas, valeur, options,lbsituas,situaop) + this.TotauxTVA(situas, valeur, options,lbsituas,situaop);
     }
 
-    countRetenu(situas: any, valeur: any, options: any) {
+    countRetenu(situas: any, valeur: any, options: any,lsituas:any,situaop: any) {
 
-        return this.countSTotal(situas, valeur, options) * (this.model.retenue ? this.model.retenue : 0) / 100;
+        return this.countSTotal(situas, valeur, options,lsituas,situaop) * (this.model.retenue ? this.model.retenue : 0) / 100;
     }
 
-    countTotalTTC(situas: any, valeur: any, options: any) {
-        return this.countSTotal(situas, valeur, options) - this.countRetenu(situas, valeur, options);
+    countTotalTTC(situas: any, valeur: any, options: any,lsituas:any,situaop: any) {
+        return this.countSTotal(situas, valeur, options,lsituas,situaop) - this.countRetenu(situas, valeur, options,lsituas,situaop);
 
     }
 
@@ -476,8 +522,8 @@ export class ModifierfactureComponent {
 
         for (let lsituas of this.libsitua) {
 
-            if (lsituas.tvas == 20) {
-                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.pourcent / 100) * (lsituas.tva / 100);
+            if (lsituas.tva == 20) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.pourcents / 100) * (lsituas.tva / 100);
             }
 
         }
@@ -503,7 +549,7 @@ export class ModifierfactureComponent {
         for (let situaop of this.libsituaop) {
 
             if (situaop.tva == 20) {
-                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.pourcentage / 100) * (situaop.taux / 100);
+                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.pourcent / 100) * (situaop.tva / 100);
             }
 
         }
@@ -546,8 +592,8 @@ export class ModifierfactureComponent {
 
         for (let lsituas of this.libsitua) {
 
-            if (lsituas.tvas == 10) {
-                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.pourcent / 100) * (lsituas.tva / 100);
+            if (lsituas.tva == 10) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.pourcents / 100) * (lsituas.tva / 100);
             }
 
         }
@@ -573,7 +619,7 @@ export class ModifierfactureComponent {
         for (let situaop of this.libsituaop) {
 
             if (situaop.tva == 10) {
-                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.pourcentage / 100) * (situaop.taux / 100);
+                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.pourcent / 100) * (situaop.tva / 100);
             }
 
         }
@@ -596,5 +642,149 @@ export class ModifierfactureComponent {
 
     SumTvaD() {
         return this.TVAD() + this.TVADO() + this.TVATDOt() + this.TVATDt() - this.STVAD();
+    }
+
+    TVACO() {
+        let total = 0;
+
+        for (let situas of this.situa) {
+
+            if (situas.tvas == 5.5) {
+                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.pourcentage / 100) * (situas.tvas / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVAC() {
+        let total = 0;
+
+        for (let lsituas of this.libsitua) {
+
+            if (lsituas.tva == 5.5) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.pourcents / 100) * (lsituas.tva / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATCt() {
+        let total = 0;
+
+        for (let options of this.option) {
+
+            if (options.tvao == 5.5) {
+                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.tvao / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATCOt() {
+        let total = 0;
+
+        for (let situaop of this.libsituaop) {
+
+            if (situaop.tva == 5.5) {
+                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.pourcent / 100) * (situaop.tva / 100);
+            }
+
+        }
+        return total;
+    }
+
+    STVAC(){
+        let total = 0;
+
+        for (let tvass of this.tvas) {
+
+            if (tvass.tva == 5.5) {
+                total += tvass.somme *(1-(this.valeur.remise / 100));
+            }
+
+        }
+        return total;
+    }
+
+
+    SumTvaC() {
+        return this.TVAC() + this.TVACO() + this.TVATCOt() + this.TVATCt() - this.STVAC();
+    }
+
+    TVADXO() {
+        let total = 0;
+
+        for (let situas of this.situa) {
+
+            if (situas.tvas == 2.1) {
+                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.pourcentage / 100) * (situas.tvas / 100);
+
+            }
+        }
+        return total;
+    }
+
+    TVADX() {
+        let total = 0;
+
+        for (let lsituas of this.libsitua) {
+
+            if (lsituas.tva == 2.1) {
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.pourcents / 100) * (lsituas.tva / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATDXt() {
+        let total = 0;
+
+        for (let options of this.option) {
+
+            if (options.tvao == 2.1) {
+                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (options.pourcentage / 100) * (options.tvao / 100);
+            }
+
+        }
+        return total;
+    }
+
+    TVATDXOt() {
+        let total = 0;
+
+        for (let situaop of this.libsituaop) {
+
+            if (situaop.tva == 2.1) {
+                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.pourcent / 100) * (situaop.tva / 100);
+            }
+
+        }
+        return total;
+    }
+
+    STVADX(){
+        let total = 0;
+
+        for (let tvass of this.tvas) {
+
+            if (tvass.tva == 2.1) {
+                total += tvass.somme *(1-(this.valeur.remise / 100));
+            }
+
+        }
+        return total;
+    }
+
+
+    SumTvaDX() {
+        return this.TVADX() + this.TVADXO() + this.TVATDXOt() + this.TVATDXt() - this.STVADX();
+    }
+
+    TotauxTVA(situas: any, valeur: any, options: any,lbsituas:any,situaop: any){
+        return (this.countTVA(situas, valeur, options,lbsituas,situaop)>0 ? this.countTVA(situas, valeur, options,lbsituas,situaop) : 0) + (this.SumTvaDX()>0 ? this.SumTvaDX() :0) + (this.SumTvaC() > 0 ? this.SumTvaC() : 0) + (this.SumTvaD()>0 ? this.SumTvaD() : 0) + (this.SumTvaV()> 0 ? this.SumTvaV() :0);
     }
 }

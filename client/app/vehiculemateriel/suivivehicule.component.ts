@@ -3,14 +3,9 @@
  */
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AlertService, AuthenticationService} from '../_services/index';
-import {AchatsService} from "../_services/achats.service";
-import {MessageService} from "../_services/message.service";
 import {FileUploader} from 'ng2-file-upload';
-import {ParamsService} from "../_services/params.service";
-import {User} from "../_models/user";
+import {AchatsService, AlertService, AuthenticationService, MessageService, UtilsService} from '../_services/index';
 
-const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
@@ -20,8 +15,6 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 export class SuivivehiculeComponent {
 
     private uploaderImg: FileUploader;
-    private loc = location.hostname;
-    private url: any;
 
     private model: any = {};
     private id_vehmat: number;
@@ -29,8 +22,6 @@ export class SuivivehiculeComponent {
     private print: boolean = false;
     private entretiens: any[] = [];
     private mat: any;
-    private currentUser: User;
-    private droitsuser: any = {};
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -38,13 +29,10 @@ export class SuivivehiculeComponent {
                 private alertService: AlertService,
                 private messageService: MessageService,
                 private achatsService: AchatsService,
-                private paramsService: ParamsService) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                private utilsService: UtilsService) {
     }
 
     ngOnInit() {
-        this.loaddroituser();
-
         this.route.params.subscribe(params => {
             this.id_vehmat = params['id'];
             this.loadvehimat();
@@ -52,34 +40,17 @@ export class SuivivehiculeComponent {
         })
     }
 
-    loaddroituser() {
-        this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-            this.droitsuser = data[0];
-        });
-    }
-
     loadvehimat() {
-        this.uploaderImg = new FileUploader({url: URLimg + "matvehi/" + this.id_vehmat});
-        this.uploaderImg.onAfterAddingFile = (file) => {
-            file.withCredentials = false;
-        };
-
         this.achatsService.getByIdmat(this.id_vehmat).subscribe(data => {
             this.model = data[0];
         })
     }
 
-    readUrl(event: any) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-            reader.onload = (event: any) => {
-                this.url = event.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    }
-
     private modify() {
+        if(this.uploaderImg && this.uploaderImg.queue[0]) {
+            this.uploaderImg.queue[0].upload();
+        }
+
         this.achatsService.updatevehmat(this.model).subscribe(() => {
             this.alertService.success('Votre demande a été modifiée avec succès', true);
         })

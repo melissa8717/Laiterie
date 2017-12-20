@@ -395,6 +395,11 @@ export class FicheDevisLibreComponent implements OnInit {
         };
         this.fileReader.readAsDataURL(file);
     }
+
+
+
+
+
 }
 
 export class AppComponent {

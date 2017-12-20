@@ -35,7 +35,7 @@ export class AchatsService {
         return this.http.post(this.config.apiUrl + '/products/modifs', histo, this.jwt());
     }
 
-    delete(_id: string) {
+    delete(_id: number) {
         return this.http.delete(this.config.apiUrl + '/products/' + _id, this.jwt());
     }
 

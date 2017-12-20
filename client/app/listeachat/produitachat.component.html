@@ -19,7 +19,7 @@
         <form method="POST" action="#">
             <article class="col-sm-4">
 
-                <img-uploader *ngIf="id_product" [(uploaderImg)]="uploaderImg" [name]="'produit'" [id]="id_product"
+                <img-uploader *ngIf="updateProduct.id_produit" [(uploaderImg)]="uploaderImg" [name]="'produit'" [id]="id_product"
                               [onlineImgUrl]="updateProduct.image_url"></img-uploader>
 
                 <div class="form-group col-sm-12">
@@ -37,7 +37,7 @@
 
                 <div class="form-group col-sm-12">
                     <label class="col-sm-5 control-label">Catégorie : </label>
-                    <select name="categorie" class="col-sm-7" [(ngModel)]="updateProduct.id_cat" #categorie="ngModel"
+                    <select name="categorie" class="col-sm-7" [(ngModel)]="updateProduct.cat_libelle" #categorie="ngModel"
                             required>
                         <option *ngFor="let cat of categories" [value]="cat.libelle">{{cat.libelle}}</option>
                     </select>
@@ -54,9 +54,8 @@
 
                 <div class="form-group col-sm-12">
                     <label class="col-sm-5 control-label">Fournisseur :</label>
-                    <select name="fournisseur" class="col-sm-7" [(ngModel)]="updateProduct.id_contact"
-                            #fournisseur="ngModel"
-                            required>
+                    <select name="fournisseur" class="col-sm-7" [(ngModel)]="updateProduct.contact_name"
+                            #fournisseur="ngModel" required>
                         <option *ngFor="let f of fournisseurs" [value]="f.nom">{{f.nom}}</option>
                     </select>
                 </div>
