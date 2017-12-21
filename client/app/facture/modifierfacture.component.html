@@ -72,7 +72,7 @@
 
             </fieldset>
 
-            <fieldset class="marge1">
+            <fieldset class="marge1" >
                 <!--boucle pour éditer les lignes du tableau de facturation et calcul posiible ou déjà en bdd-->
 
 
@@ -157,7 +157,7 @@
 
             </fieldset>
 
-            <fieldset style="margin-top: 30px;">
+            <fieldset style="margin-top: 30px;" >
                 <table  style="border:1px solid black;" class=" separe1 col-sm-3 table-striped ">
                     <tbody >
 
@@ -177,7 +177,7 @@
                     </tbody>
                 </table>
 
-                <table class=" separe1 col-sm-offset-9 table-striped" style=" float: right; text-align:center; margin-top :-500px">
+                <table class=" separe1 col-sm-offset-9 table-striped" style=" float: right; text-align:center; margin-top :-400px">
                     <tbody style="text-align: center;">
                     <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-top:1px solid black;border-left:1px solid black;" class="gauche" style="text-align: left;">Total Net :</td><td >{{countTotalNet() | number:'1.0-2'}}</td></tr>
                     <tr  style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right; border-left: 1px solid;;border-top:1px solid black;" class="gauche" style="text-align: left;">Acompte /situations antérieures :</td><td style="text-align:right;">{{totalsituation() | number:'1.0-2'}}</td></tr>
@@ -194,7 +194,7 @@
                     <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total TVA :</td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;">{{TotauxTVA() | number:'1.0-2'}}</td></tr>
                     <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" class="basr grass"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" class="gauche" style="text-align: left;">Total TTC :</td><td style="text-align: right;">{{countSTotal() | number:'1.0-2'}}</td></tr>
 
-                    <tr *ngIf="model.retenue>0" style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" style="text-align: left;" >Retenue de garantie<i style="padding-left: 20px;">{{model.retenue}}%</i></td><td style="text-align:right;">{{countRetenu() | number:'1.0-2'}}</td></tr><p>&nbsp;</p>
+                    <tr *ngIf="valeur.taux>0" style="height: 50px;border:1px solid black"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" style="text-align: left;" >Retenue de garantie<i style="padding-left: 20px;">{{valeur.taux}}%</i></td><td style="text-align:right;">{{countRetenu() | number:'1.0-2'}}</td></tr><p>&nbsp;</p>
                     <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" class="basr"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" lass="gauche" style="text-align: left;">Reste TTC :</td><td style="text-align:right;">{{countTotalTTC() | number:'1.0-2'}}</td></tr>
 
 

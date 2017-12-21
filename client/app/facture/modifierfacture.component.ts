@@ -131,6 +131,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
+                    console.log(data);
 
 
                 }
@@ -255,7 +256,7 @@ export class ModifierfactureComponent {
             this.factureService.getByIdTotlaTVA(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.tvas = data;
-                    console.log(this.tvas)
+
                 }
             )
         });
@@ -459,7 +460,7 @@ export class ModifierfactureComponent {
 
     countRetenu(situas: any, valeur: any, options: any,lsituas:any,situaop: any) {
 
-        return this.countSTotal(situas, valeur, options,lsituas,situaop) * (this.model.retenue ? this.model.retenue : 0) / 100;
+        return this.countSTotal(situas, valeur, options,lsituas,situaop) * (this.valeur.taux ? this.valeur.taux : 0) / 100;
     }
 
     countTotalTTC(situas: any, valeur: any, options: any,lsituas:any,situaop: any) {
@@ -488,7 +489,7 @@ export class ModifierfactureComponent {
         this.paramsService.getAllAgence().subscribe(img => {
 
             this.img = img[0];
-            console.log(this.img);
+            //console.log(this.img);
             //console.log(this.currentUser);
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});

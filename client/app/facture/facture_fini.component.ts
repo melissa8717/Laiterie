@@ -257,7 +257,7 @@ export class Facture_finiComponent {
             this.factureService.getByIdAccpt(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.accomp = data[0];
-                    console.log(this.accomp)
+                    //console.log(this.accomp)
                 }
             )
         });
@@ -275,7 +275,7 @@ export class Facture_finiComponent {
             this.factureService.getByIdValeur(this.id_facture).subscribe(
                 data => {
                     this.valeur = data[0];
-                    //console.log(data)
+                    console.log(data)
                 }
             )
         });
@@ -440,7 +440,7 @@ export class Facture_finiComponent {
 
     countRetenu(situas: any, valeur: any, options: any,lbsituas:any,situaop: any) {
 
-        return this.countSTotal(situas, valeur, options,lbsituas,situaop) * (this.model.retenue ? this.model.retenue : 0) / 100;
+        return this.countSTotal(situas, valeur, options,lbsituas,situaop) * (this.valeur.taux ? this.valeur.taux : 0) / 100;
     }
 
     countTotalTTC(situas: any, valeur: any, options: any,lbsituas:any,situaop: any) {

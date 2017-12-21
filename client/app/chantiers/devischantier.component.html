@@ -16,7 +16,7 @@
                     <thead>
                     <tr>
 
-                        <th class="col-sm-2">N° Devis</th><th class="col-sm-2">Version</th><th class="col-sm-2">Date démarrage</th><th class="col-sm-2">Date réception</th><th class="col-sm-2">Statut</th><th *ngIf="!print" class="col-sm-2">Action</th>
+                        <th class="col-sm-2">N° Devis</th><th class="col-sm-2">Version</th><th class="col-sm-2">Date démarrage</th><th class="col-sm-2">Date réception</th><th class="col-sm-2">Statut</th><th>Retenue de garantie en %</th><th *ngIf="!print" class="col-sm-2">Action</th>
                     </tr>
                     </thead>
 
@@ -41,7 +41,13 @@
                                 </select>
                             </div>
 
-                            </td>
+                        </td>
+
+                        <td>
+                            <div class="form-group" >
+                                <input name="taux"  [(ngModel)]="chantiers.taux" type="number">
+                            </div>
+                        </td>
                         <td>
                             <div class="input-group">
                                 <input type="hidden" class="form-control" name="identifiant du devis">

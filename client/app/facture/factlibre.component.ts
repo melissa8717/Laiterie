@@ -113,6 +113,7 @@ export class FactlibreComponent {
             this.factureService.getByIdLibreModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
+                    console.log(data);
                 }
             )
         });
@@ -125,7 +126,7 @@ export class FactlibreComponent {
             this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
-                    console.log(data);
+
                 }
             )
         });
@@ -139,7 +140,7 @@ export class FactlibreComponent {
             this.factureService.getByIdLibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detail = data;
-                    console.log(data);
+                    //console.log(data);
                 }
             )
         });
@@ -483,6 +484,9 @@ export class FactlibreComponent {
         return this.TotalTva() + this.CountTotalsituation();
     }
 
+    retenuettc(){
+        return this.countTotalttc() ;
+    }
 
     submit() {
 

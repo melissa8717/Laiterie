@@ -28,7 +28,7 @@
                         client</a></li>
                     <li *ngIf="droitsuser.accescontact" role="presentation"><a
                             [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
-					<li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/factclient' , id_contact]">Factures du client</a></li>
+					<li *ngIf="droitsuser.accescontact" role="presentation" ><a [routerLink]="['/factclient' , id_contact]">Factures du client</a></li>
 
 				</ul>
             </div>

@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li *ngIf="droitsuser.accescontact"><a [routerLink]="['/ficheclient' , id_contact]">Fiche client</a></li>
-                    <li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
+                    <li *ngIf="droitsuser.accescontact" role="presentation" ><a [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
                     <li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/factclient' , id_contact]">Factures du client</a></li>
 
                 </ul>
@@ -41,19 +41,25 @@
             <table class="table">
                 <thead>
                 <tr >
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Date</th>
-                    <th>Montant</th>
+                    <th>N° facture</th>
+                    <th>Situation</th>
+                    <th>Nom Prénom</th>
+                    <th>Nom de chantier</th>
+                    <th>Date de facturation</th>
                     <th>Date d'échéance</th>
+                    <th>Montant</th>
+
                 </tr>
 
                 <tr *ngFor="let factures of facture">
-                    <td>{{factures.nom}}</td>
-                    <td>{{factures.prenom}}</td>
+                    <td>{{factures.nfactclient}}</td>
+                    <td>{{factures.n_situation}}</td>
+                    <td>{{factures.nom}} {{factures.prenom}}</td>
+                    <td>{{factures.nom_chantier}}</td>
                     <td>{{factures.date_fact  | date:'dd-MM-yyyy'}}</td>
-                    <td>{{factures.montant_ht}} €</td>
                     <td>{{factures.date_echeance  | date:'dd-MM-yyyy'}}</td>
+                    <td>{{factures.montant_ht}} €</td>
+
 
                     <td><button [routerLink]="!factures.libre ? ['/facture_fini' , factures.id_facture,factures.n_situation] :['/factlibre' , factures.id_facture,factures.n_situation]">Ouvrir</button></td>
                 </tr>

@@ -1104,7 +1104,7 @@ function getByIdFacclient(_id_contact) {
         "FROM facture, contact\n" +
         "LEFT JOIN devis ON devis.id_contact = contact.id_contact\n" +
         "WHERE contact.id_contact =165\n" +
-        "AND facture.id_devis = devis.id_devis ";
+        "AND facture.id_devis = devis.id_devis ORDER BY facture.id_facture DESC";
     var inserts = [_id_contact];
     sql = mysql.format(sql, inserts);
     //console.log(sql);

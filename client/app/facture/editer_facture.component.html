@@ -183,7 +183,7 @@
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr grass"><td style="text-align: left;padding-left: 10px;">Total TVA :</td><td>{{countTVA() | number:'1.0-2'}}</td></tr>
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr grass"><td class="gauche" style="text-align: left;">Sous Total :</td><td>{{countSTotal() | number:'1.0-2'}}</td></tr>
 
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">Retenue de garantie<i style="padding-left: 20px;">{{ret.pourcentage}} %</i></td><td>{{countRetenu() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" *ngIf="version.taux"><td class="gauche" style="text-align: left;">Retenue de garantie<i style="padding-left: 20px;">{{version.taux}} %</i></td><td>{{countRetenu() | number:'1.0-2'}}</td></tr>
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr"><td class="gauche" style="text-align: left;">Total TTC :</td><td>{{countTTC() | number:'1.0-2'}}</td></tr>
 
                     <tr ><td class="gauche"> </td><td> </td></tr>

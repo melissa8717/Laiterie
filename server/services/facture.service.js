@@ -1415,8 +1415,8 @@ function Flibre(facture_param) {
     console.log(facture_param);
 
 
-    db.query("INSERT INTO facture (n_situation, montant_ht,date_fact,date_echeance,nfactclient,id_contact,libre,remise) VALUES (? , ?, ?,?,?,?,? ,?)",
-        [facture_param.n_situataion ? facture_param.n_situation : 1,  facture_param.devis.montant_ht ? facture_param.devis.montant_ht : facture_param.devis.montant, facture_param.devis.date_fact , facture_param.devis.date_echeance, facture_param.nfact.nfact,facture_param.devis.nomclient.id_contact,1,facture_param.devis.remise],
+    db.query("INSERT INTO facture (n_situation, montant_ht,date_fact,date_echeance,nfactclient,id_contact,libre,remise,id_version) VALUES (? , ?, ?,?,?,?,? ,?,?)",
+        [facture_param.n_situataion ? facture_param.n_situation : 1,  facture_param.devis.montant_ht ? facture_param.devis.montant_ht : facture_param.devis.montant, facture_param.devis.date_fact , facture_param.devis.date_echeance, facture_param.nfact.nfact,facture_param.devis.nomclient.id_contact,1,facture_param.devis.remise,facture_param.devis.retenuedegarantie],
         function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
