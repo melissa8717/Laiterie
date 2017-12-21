@@ -144,7 +144,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detail = data;
-                    //console.log(data);
+                    console.log(data);
                 }
             )
         });
@@ -471,7 +471,7 @@ export class FactlibreimprimComponent {
 
         for (let detaili of this.detailimprim) {
 
-            if (detaili.tva == 5.5) {
+            if (detaili.tva == 2.1) {
                 total += detaili.totaltvad;
 
             }
@@ -484,7 +484,7 @@ export class FactlibreimprimComponent {
 
         for (let basei of this.baseimprim) {
 
-            if (basei.tva == 5.5) {
+            if (basei.tva == 2.1) {
                 total += basei.totaltvab;
 
             }

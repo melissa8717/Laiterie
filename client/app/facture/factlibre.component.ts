@@ -125,6 +125,7 @@ export class FactlibreComponent {
             this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
+                    console.log(data);
                 }
             )
         });
@@ -138,6 +139,7 @@ export class FactlibreComponent {
             this.factureService.getByIdLibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detail = data;
+                    console.log(data);
                 }
             )
         });
@@ -192,6 +194,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
             total += bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         }
+
         return total;
     }
 
@@ -201,6 +204,7 @@ export class FactlibreComponent {
         for (let details of this.detail) {
             total += details.qteprod * details.prix_prod * (details.pourcentf / 100);
         }
+
         return total;
     }
 
@@ -212,7 +216,7 @@ export class FactlibreComponent {
     }
 
     countTotals() {
-        return (this.counttotalbase() + this.counttotaldetail()) * (1 - (this.model.remise ? (this.model.remise / 100) : 1));
+        return  this.totalreal() * (1 - (this.model.remise ? (this.model.remise / 100) : 1));
     }
 
     countRemise() {
