@@ -288,7 +288,7 @@
             <div class="col-sm-12">
 
                 <div class="col-sm-3">
-                    <h4  >Alarmes formations !</h4>
+                    <h4  >Alarmes formations / CACES !</h4>
                     <table class="table table-bordered " >
                         <tr *ngFor="let forms of form">
                             <td>{{forms.nom}} {{forms.prenom}}</td>
@@ -300,13 +300,9 @@
                 </div>
 
                 <div class="col-sm-3">
-                    <h4  >Alarmes CACES !</h4>
+                    <h4  >Alarmes reteune de garantie !</h4>
                     <table class="table table-bordered " >
-                        <tr *ngFor="let forms of caces">
-                            <td>{{forms.nom}} {{forms.prenom}}</td>
-                            <td>{{forms.caces}}</td>
-                            <td>{{forms.date | date: 'dd/MM/yyyy'}}</td>
-                        </tr>
+
                     </table>
 
                 </div>

@@ -534,10 +534,13 @@ export class FactlibreimprimComponent {
     }
 
     retnue(){
-        this.montant = this.countTotalttc();
-        console.log(this.countTotalttc());
-        return  this.montant;
+        return   this.countTotalttc() * (this.model.id_version ? (this.model.id_version/100): 0);
     }
+
+    countTotalttcretenue(){
+        return this. countTotalttc() - this.retnue();
+    }
+
 
     imprimer() {
         this.alertService.clear();
