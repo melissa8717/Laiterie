@@ -1562,8 +1562,8 @@ function createSituationlibre(id_facture, facture_param) {
             var n_situation = results[0].count + 1;
 
 
-            db.query("INSERT INTO facture (id_facture,n_situation, remise,montant_ht,date_fact,date_echeance,nfactclient,libre,id_contact) VALUES (? , ?, ?,?,?,?,?,?,? )",
-                [id_facture, n_situation,  facture_param.model.remise, facture_param.model.situation, facture_param.model.date_fact, facture_param.model.date_echeance, facture_param.nfact.nfact,1,facture_param.model.id_contact],
+            db.query("INSERT INTO facture (id_facture,n_situation, remise,montant_ht,date_fact,date_echeance,nfactclient,libre,id_contact,id_version) VALUES (? , ?, ?,?,?,?,?,?,?,? )",
+                [id_facture, n_situation,  facture_param.model.remise, facture_param.model.situation, facture_param.model.date_fact, facture_param.model.date_echeance, facture_param.nfact.nfact,1,facture_param.model.id_contact,facture_param.model.id_version],
                 function (error, results, fields) {
                     if (error) {
                         deferred.reject(error.name + ': ' + error.message);
