@@ -58,7 +58,7 @@
 
                 <img [src]="config.logoPath" style="height: 80px; width: 180px; float: left;" alt="logo du logiciel">
 
-                <!--bouton déconnexion-->
+
 
 
                 <span style="height: 80px; color: white;" class="col-sm-offset-4 col-sm-2"><i style="font-weight: bold;font-style: normal;;">Bonjour, </i>{{currentUser.firstName}} {{currentUser.lastName}}</span>
@@ -302,7 +302,12 @@
                 <div class="col-sm-3">
                     <h4  >Alarmes reteune de garantie !</h4>
                     <table class="table table-bordered " >
-
+                        <tr *ngFor="let cacess of caces">
+                            <td>{{cacess.nom}} {{cacess.prenom}}</td>
+                            <td>{{cacess.date_fact | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{cacess.montant_ht | number: '1.0-2'}}</td>
+                            <td><button [routerLink]="cacess.libre  ? ['/factlibreimprim/'+cacess.id_facture+'/'+cacess.n_situation] : ['/facture_fini/'+cacess.id_facture+'/'+cacess.n_situation]">Ouvrir</button></td>
+                        </tr>
                     </table>
 
                 </div>
