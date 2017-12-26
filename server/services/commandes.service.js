@@ -295,6 +295,26 @@ function create(bdc_param) {
 
             }
 
+            for (var p in bdc_param.listing) {
+                (function (product) {
+                    console.log(bdc_param.listing[product]);
+                    db.query("INSERT INTO bdc_libre (id_bdc, nom_prod,reference, unite, qte, prix_prevu) VALUES (? , ? , ? , ? , ?, ?)",
+                        [id_bdc,
+                            bdc_param.listing[product].produit,
+                            bdc_param.listing[product].referencef,
+                            bdc_param.listing[product].unitef,
+                            bdc_param.listing[product].qtef ? bdc_param.listing[product].qtef : 1,
+                            bdc_param.listing[product].prixf ],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            deferred.resolve();
+                        });
+                })(p);
+
+            }
+
         });
 
     return deferred.promise;

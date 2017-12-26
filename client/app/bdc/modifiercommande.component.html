@@ -101,10 +101,11 @@
                         </td>
                         <td><input style="border:none;"  type="number" name="quantité" placeholder="" value="" formControlName="quantite">
                         </td>
-                        <td><label *ngIf="!print">Prix enregistré: {{prix | currency:'EUR':true:'1.2-2'}}</label></td>
+                        <td><label *ngIf="!print">Prix enregistré: {{prix | currency:'EUR':true:'1.2-2'}}</label><br>
+                            <input *ngIf="!print" style="border:none;"  type="number" step="0.01" name="prix_ht" formControlName="ht" placeholder=""
+                                    value="">
+                        </td>
 
-                        <td *ngIf="!print" ><input *ngIf="!print" style="border:none;"  type="number" step="0.01" name="prix_ht" formControlName="ht" placeholder=""
-                                                   value="">
 
                         <td *ngIf="!print"><input style="border:none;"  *ngIf="!this.model && !print" type="number" name="total" placeholder="">
                             <div *ngIf="this.model && !print"> {{total | currency:'EUR':true:'1.2-2'}}</div>

@@ -42,9 +42,16 @@ export class BdcComponent {
     List: any[] = [];
     print: boolean = false;
 
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};               //
+    droitsuser:any={};
+    _id:any;
+    data:any={};
+
+    listing: any[] = [];
+    new:any={};
+    objf:any={};
+    produitf: any = {};
+    listingoption: any[] = [];
+    bdc:any={};
 
 
     public myForm: FormGroup;
@@ -237,6 +244,7 @@ export class BdcComponent {
             bdc_param.id_user = this.currentUser._id;
             bdc_param.id_chantier = value.chantier.id_chantier;
             bdc_param.products = this.List;
+            bdc_param.listing = this.listing;
 
 
             this.commandeService.add(bdc_param).subscribe(data => {
@@ -247,6 +255,81 @@ export class BdcComponent {
                     this.alertService.error(" Erreur lors de la création du bdc, Réessayez ou contactez un administrateur : " + err)
                 });
         }
+
+    }
+
+    ajouter() {
+        let tmps: any = {};
+        tmps.produit = this.produitf.objf;
+        tmps.qtef = this.produitf.qtef;
+        tmps.prixf = this.produitf.prixf;
+        tmps.unitef = this.produitf.unitef;
+        tmps.referencef = this.produitf.referencef;
+
+        tmps.optionf = this.produitf.optionf;
+
+        var check = this.listing.filter(objf => objf.refi == this.produitf.objf);
+
+        if (check.length < 1) {
+            if(tmps.optionf){
+                this.listingoption.push(tmps);
+            }
+            else{
+                this.listing.push(tmps);
+                for(var i = 0 ; i <  this.listing.length; i++){
+                    //console.log('TEST TS AJOUTER : '+this.produitDevis[i].prix);
+                    let qtef = this.listing[i].qtef;
+                    let prixf = this.listing[i].prixf;
+                    let unitef = this.listing[i].unitef;
+
+                    this.listing[i].qtef = qtef;
+                    this.listing[i].prixf = prixf;
+                    this.listing[i].unitef = unitef;
+
+
+                }
+            }
+        }
+        else {
+            this.alertService.error("Le produit " + tmps.objf + " n'a pas pu être ajouté.");
+        }
+        this.produitf.qtef = null;
+        this.produitf.prixf = null;
+        this.produitf.unitef = null;
+
+        this.produitf = {};
+
+    }
+
+
+    testfact() {
+
+        console.log(this.produitf.libelle);
+        this.produitf.qtef = 1;
+        this.produitf.prixf = this.produitf.objf.prixf;
+        this.produitf.unitef = this.produitf.objf.unitef;
+
+    }
+
+    supprimerfact(produit: any) {
+        this.listing = this.listing.filter(obj => obj !== produit);
+    }
+
+    totalibre(){
+        let total = 0;
+        for (let prode of this.listing) {
+            total += prode.prixf * prode.qtef;
+        }
+        return total;
+
+    }
+
+    totaprod(){
+        let total = 0;
+        for (let prod of this.List) {
+            total += prod.prix_prevu * prod.quantite;
+        }
+        return total;
 
     }
 
