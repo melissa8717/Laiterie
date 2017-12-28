@@ -11,6 +11,7 @@ service.getAll = getAll;
 service.getAllDate = getAllDate;
 service.getById = getById;
 service.getAllProducts = getAllProducts;
+service.getAllibre = getAllibre;
 service.getAllImprevuProducts = getAllImprevuProducts;
 service.create = create;
 service.delete = _delete;
@@ -118,7 +119,7 @@ function validate(_id, bdcParam) {
 
 function update(_id, bdcParam) {
     var deferred = Q.defer();
-
+    console.log(bdcParam);
     // validation
     db.query("SELECT * FROM bon_de_commande WHERE id_bdc=?", [_id], function (error, results, fields) {
         if (error) deferred.reject('MySql ERROR trying to update user informations (1) | ' + error.message);
@@ -160,6 +161,28 @@ function update(_id, bdcParam) {
                     }
                 });
 
+                db.query("DELETE FROM bdc_libre WHERE id_bdc = ?", [_id], function (error, results, fields) {
+                    if (error) deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                    for (var p in bdcParam.libre) {
+
+                        (function (product) {
+
+
+                            db.query("INSERT INTO bdc_libre (id_bdc, nom_prod, reference,unite, qte, prix_prevu) VALUES (? ,? , ? , ? , ? , ?)",
+                                [_id, bdcParam.libre[product].nom_prod ? bdcParam.libre[product].nom_prod : bdcParam.libre[product].produit, bdcParam.libre[product].reference ? bdcParam.libre[product].reference : bdcParam.libre[product].ref,bdcParam.libre[product].unite ? bdcParam.libre[product].unite : bdcParam.libre[product].unit, bdcParam.libre[product].qte ? bdcParam.libre[product].qte : bdcParam.libre[product].qtep,
+                                    bdcParam.libre[product].prix_prevu ? bdcParam.libre[product].prix_prevu : bdcParam.libre[product].prix_p],
+                                function (error, result, fields) {
+                                    if (error) {
+                                        deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        return;
+                                    }
+
+                                });
+                        })(p);
+
+                    }
+                });
+
 
                 deferred.resolve();
             });
@@ -182,7 +205,24 @@ function getAllProducts(_id) {
             deferred.reject(error.name + ': ' + error.message);
         }
 
-        console.log(prods);
+        //console.log(prods);
+        deferred.resolve(prods);
+    });
+    return deferred.promise;
+}
+
+function getAllibre(_id) {
+    var deferred = Q.defer();
+    //console.log("test");
+    db.query('SELECT * FROM bdc_libre ' +
+        'where id_bdc = ?', [_id], function (error, prods, fields) {
+
+        if (error) {
+            console.log(error.name + ': ' + error.message)
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        //console.log(prods);
         deferred.resolve(prods);
     });
     return deferred.promise;
@@ -215,7 +255,7 @@ function getAllDate() {
             }
 
 
-            console.log(chantiers);
+            //console.log(chantiers);
             deferred.resolve(chantiers);
         });
     return deferred.promise;
@@ -261,7 +301,7 @@ function getById(_id) {
 
 function create(bdc_param) {
     var deferred = Q.defer();
-    console.log(bdc_param);
+    //console.log(bdc_param);
 
     db.query("INSERT INTO bon_de_commande (adresselivraison, id_fournisseur, date_livraison, date_commande, livre, tarifpourlivraison, id_user, id_chantier)" +
         " VALUES (? , ? , ? , ?, ?, ?, ?, ?)",
@@ -285,6 +325,26 @@ function create(bdc_param) {
                             bdc_param.products[product].num_version,
                             bdc_param.products[product].quantite ? bdc_param.products[product].quantite : 1,
                             bdc_param.products[product].prix_prevu ? bdc_param.products[product].prix_prevu : bdc_param.products[product].ht],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            deferred.resolve();
+                        });
+                })(p);
+
+            }
+
+            for (var p in bdc_param.listing) {
+                (function (product) {
+                    console.log(bdc_param.listing[product]);
+                    db.query("INSERT INTO bdc_libre (id_bdc, nom_prod,reference, unite, qte, prix_prevu) VALUES (? , ? , ? , ? , ?, ?)",
+                        [id_bdc,
+                            bdc_param.listing[product].produit,
+                            bdc_param.listing[product].referencef,
+                            bdc_param.listing[product].unitef,
+                            bdc_param.listing[product].qtef ? bdc_param.listing[product].qtef : 1,
+                            bdc_param.listing[product].prixf ],
                         function (error, result, fields) {
                             if (error) {
                                 deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);

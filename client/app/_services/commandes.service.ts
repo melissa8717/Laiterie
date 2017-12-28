@@ -20,6 +20,9 @@ export class CommandeService {
     getAllProducts(_id: number) {
         return this.http.get(this.config.apiUrl + '/commandes/products/' + _id, this.jwt()).map((response: Response) => response.json());
     }
+    getAllibre(_id: number) {
+        return this.http.get(this.config.apiUrl + '/commandes/libre/' + _id, this.jwt()).map((response: Response) => response.json());
+    }
 
     getAllImprevuProducts(_id: number) {
         return this.http.get(this.config.apiUrl + '/commandes/imprevu/' + _id, this.jwt()).map((response: Response) => response.json());

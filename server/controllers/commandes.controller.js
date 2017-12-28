@@ -10,6 +10,7 @@ router.post('/add', add);
 router.get('/listing', getAllListing);
 router.get('/details/:id_demande', getByIdDetail);
 router.get('/products/:_id', getAllProducts);
+router.get('/libre/:_id', getAllibre);
 router.get('/', getAllDate);
 router.get('/imprevu/:_id', getAllImprevuProducts);
 router.get('/:month/:year', getAll);
@@ -76,6 +77,16 @@ function getAllImprevuProducts(req, res) {
 
 function getAllProducts(req, res) {
     commandeService.getAllProducts(req.params._id)
+        .then(function (products) {
+            res.send(products);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getAllibre(req, res) {
+    commandeService.getAllibre(req.params._id)
         .then(function (products) {
             res.send(products);
         })
