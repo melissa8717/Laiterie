@@ -76,6 +76,8 @@ export class ValidationCommandeComponent implements OnInit {
     all: number = 0;
 
     products: {}[] = [];
+    libre: {qtep: number, prix_p: number, ref: string, libelle: string
+        unit: string,refi:any,qte:number,prix_prevu:number,Qte_livre:number,Prixreel:number}[] = [];
 
    // public myForm: FormGroup;
 
@@ -104,7 +106,7 @@ export class ValidationCommandeComponent implements OnInit {
     }
 
     addProduct(){
-        console.log(this.model);
+        //console.log(this.model);
         let tmp: any = {};
         tmp.reference = this.model.reference;
         tmp.libelle = this.model.produit;
@@ -116,7 +118,7 @@ export class ValidationCommandeComponent implements OnInit {
         var check2 = this.imprevuList.filter(obj => obj.reference == this.model.reference);
         if (check.length < 1 && check2.length < 1) {
             this.imprevuList.push(tmp);
-            console.log(this.imprevuList)
+           // console.log(this.imprevuList)
             this.model = {};
         }
         else{
@@ -148,15 +150,13 @@ export class ValidationCommandeComponent implements OnInit {
 
                 this.bdc = data[0];
                 this.livraison = this.bdc.tarifpourlivraison;
-
-
-                console.log(this.bdc)
+                //console.log(this.bdc)
 
                 this.commandeService.getAllProducts(this.id).subscribe(
                     data => {
                         this.List = data;
-                        console.log("getall prods");
-                        console.log(data);
+                        //console.log("getall prods");
+                        //console.log(data);
 
                         let total = 0;
 
@@ -179,7 +179,8 @@ export class ValidationCommandeComponent implements OnInit {
                             })(produit);
                         }
                         this.all = total + this.livraison;
-                        console.log(this.List);
+
+                       // console.log(this.List);
 
                     }
                 );
@@ -188,7 +189,7 @@ export class ValidationCommandeComponent implements OnInit {
                 this.commandeService.getAllImprevuProducts(this.id).subscribe(
                     data => {
                         this.imprevuList = data;
-                        console.log(this.imprevuList);
+                       // console.log(this.imprevuList);
                     },
                     err=>{
                         console.log("error in get all imprevu");
@@ -197,16 +198,30 @@ export class ValidationCommandeComponent implements OnInit {
 
 
             });
+            this.commandeService.getAllibre(this.id).subscribe(
+                libre => {
+                    this.libre = libre;
+                   // console.log(libre);
+
+                    if(! this.bdc.Recu){
+                        for (let prode of this.libre) {
+                            //console.log(total)
+                            (function (prode) {
+                                prode.Qte_livre = prode.qte;
+                                prode.Prixreel = prode.prix_prevu;
+                            })(prode);
+                        }
+                    }
+
+                });
         });
     }
 
-    loaddroituser() {                                 //
+    loaddroituser() {
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
 
         });
     }
@@ -214,7 +229,7 @@ export class ValidationCommandeComponent implements OnInit {
     private loadAllProducts() {
         this.productService.getAll().subscribe(products => {
             this.products = products;
-            console.log(this.products);
+            //console.log(this.products);
         });
     }
 
@@ -237,13 +252,14 @@ export class ValidationCommandeComponent implements OnInit {
     submit(){
 
         //date != null
-       var req : {id: number, livraison: number, date_livraison: string, list: any, listimprevu: any} = {id: 0, livraison: 0, date_livraison: null, list:{}, listimprevu:{}};
+       var req : {id: number, livraison: number, date_livraison: string, list: any, listimprevu: any,libre:any} = {id: 0, livraison: 0, date_livraison: null, list:{}, listimprevu:{},libre:{}};
         req.id = this.id;
         req.livraison = this.livraison;
         req.date_livraison = this.bdc.date_livraison_reel;
         req.list = this.List;
         req.listimprevu = this.imprevuList;
-        console.log(req);
+        req.libre = this.libre;
+        //console.log(req);
        this.commandeService.validate(req).subscribe(
             data=>{
                 this.router.navigate(['/suivi_commande']);
@@ -251,6 +267,32 @@ export class ValidationCommandeComponent implements OnInit {
             }
         );
     }
+
+    totallibre(){
+        let total=0;
+        for(let prode of this.libre){
+            total += prode.prix_prevu * prode.qte;
+        }
+        return total;
+    }
+
+    totalprod(){
+        let total=0;
+        for(let prod of this.List){
+            total += prod.prix_prevu * prod.qte;
+        }
+        return total;
+    }
+
+    totallibrelivre(){
+        let total=0;
+        for(let prode of this.libre){
+            total += prode.Prixreel * prode.Qte_livre;
+        }
+        return total;
+    }
+
+
     imprimer(){
         this.alertService.clear();
         this.print = true;

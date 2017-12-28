@@ -43,6 +43,7 @@ service.getByIdAnalyse = getByIdAnalyse;
 service.getByIdAnalyseoption = getByIdAnalyseoption;
 
 service.getByIdReel = getByIdReel;
+service.getByIdReelibre = getByIdReelibre;
 
 service.getByIdAcco = getByIdAcco;
 service.getByIdTotalDevis = getByIdTotalDevis;
@@ -741,6 +742,28 @@ function getByIdReel(_id_chantier) {
         "WHERE id_chantier = ? " +
         "AND bon_de_commande.recu IS TRUE " +
         "GROUP BY bdc_detaille.id_bdc";
+    var inserts = [_id_chantier];
+    sql = mysql.format(sql, inserts);//console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            //console.log(error.name + ': ' + error.message)
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdReelibre(_id_chantier) {
+    //console.log('test');
+    var deferred = Q.defer();
+    var sql = "SELECT bon_de_commande. * , bdc_libre.id_bdc, SUM( Qte_livre * Prixreel ) AS total, contact.nom " +
+        "FROM bon_de_commande " +
+        "LEFT JOIN bdc_libre ON bon_de_commande.id_bdc = bdc_libre.id_bdc " +
+        "LEFT JOIN contact ON bon_de_commande.id_fournisseur = contact.id_contact " +
+        "WHERE id_chantier = ? " +
+        "AND bon_de_commande.recu IS TRUE " +
+        "GROUP BY bdc_libre.id_bdc";
     var inserts = [_id_chantier];
     sql = mysql.format(sql, inserts);//console.log(sql);
     db.query(sql, function (error, results, fields) {

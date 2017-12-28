@@ -81,7 +81,7 @@ function validate(_id, bdcParam) {
 
                 }
 
-                console.log(bdcParam.listimprevu);
+                //console.log(bdcParam.listimprevu);
                 for (var p in bdcParam.listimprevu) {
 
                     (function (product) {
@@ -104,6 +104,28 @@ function validate(_id, bdcParam) {
 
                                 deferred.resolve();
 
+                            });
+                    })(p);
+
+                }
+
+                for (var p in bdcParam.libre) {
+
+                    (function (product) {
+
+
+                        db.query("UPDATE bdc_libre SET Prixreel = ?, Qte_livre = ? WHERE id_bdc = ? AND id_prod = ? ",
+                            [bdcParam.libre[product].Prixreel, bdcParam.libre[product].Qte_livre, _id, bdcParam.libre[product].id_prod],
+                            function (error, result, fields) {
+                                if (error) {
+                                    console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                    deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                    return;
+                                }
+
+                                deferred.resolve();
+                                //console.log(result.insertId);
+                                //console.log(result.insertId);
                             });
                     })(p);
 
@@ -267,7 +289,7 @@ function getAllDate() {
  */
 function getAll(month, year) {
     var deferred = Q.defer();
-    db.query('SELECT * FROM bondecommandelist where MONTH(date_livraison) = ? AND YEAR(date_livraison) = ?', [month, year],
+    db.query('SELECT * FROM bonDeCommandeList where MONTH(date_livraison) = ? AND YEAR(date_livraison) = ? ORDER BY  `bonDeCommandeList`.`id_bdc` DESC', [month, year],
         function (error, chantiers, fields) {
 
             if (error) {
@@ -283,7 +305,7 @@ function getAll(month, year) {
 
 function getById(_id) {
     var deferred = Q.defer();
-    var sql = "SELECT * FROM bondecommandelist WHERE id_bdc = ? ";
+    var sql = "SELECT * FROM bonDeCommandeList WHERE id_bdc = ? ";
     var inserts = [_id];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, bdc, fields) {

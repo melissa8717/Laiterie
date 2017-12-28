@@ -108,6 +108,40 @@
                         </td>
                     </tr>
 
+                    <tr *ngFor="let prode of libre; let i = index">
+
+                        <td class="borderleft"><span>{{prode.reference}}</span></td>
+                        <td><span>{{prode.nom_prod}}</span></td>
+
+                        <td><span>{{prode.unite}}</span></td>
+                        <td><span>{{prode.prix_prevu | currency:'EUR':true:'1.2-2'}}</span></td>
+                        <td><span>{{prode.qte}}</span></td>
+                        <td class="border"><span>{{prode.prix_prevu * prode.qte | currency:'EUR':true:'1.2-2' }}</span></td>
+
+                        <td>
+                            {{libre[i].reference}}
+                        </td>
+                        <td>
+                            <span >{{libre[i].nom_prod}}</span>
+                        </td>
+                        <td>
+                            {{prode.unite}}
+                        </td>
+                        <td>
+                            <input *ngIf="!bdc.Recu" type="number" step="0.01" name="Prixreel{{i}}" [(ngModel)]="libre[i].Prixreel" >
+                            <span *ngIf="bdc.Recu" >{{libre[i].Prixreel | currency:'EUR':true:'1.2-2' }}</span>
+                        </td>
+                        <td>
+                            <input *ngIf="!bdc.Recu" type="number" name="Qte_livre{{i}}" [(ngModel)]="libre[i].Qte_livre" >
+                            <span *ngIf="bdc.Recu" >{{libre[i].Qte_livre | currency:'EUR':true:'1.2-2' }}</span>
+                        </td>
+
+
+                        <td class="borderright">
+                            {{libre[i].Qte_livre* libre[i].Prixreel | currency:'EUR':true:'1.2-2'}}
+                        </td>
+                    </tr>
+
 
 
                     <tr *ngFor="let produit of imprevuList; let i = index">
@@ -164,10 +198,10 @@
 
                     <tr>
                         <td colspan="5" class="borderbot borderleft">Total prévu:</td>
-                        <td colspan="1" class="borderbot border">{{all | currency:'EUR':true:'1.2-2'}}</td>
+                        <td colspan="1" class="borderbot border">{{(totalprod() + totallibre() + bdc.tarifpourlivraison) | currency:'EUR':true:'1.2-2'}}</td>
                         <td colspan="5" class="borderbot">Total effectif: </td>
                         <td class="borderbot borderright">
-                            <span >{{totalfacture() | currency:'EUR':true:'1.2-2' }}</span>
+                            <span >{{(totalfacture() + totallibrelivre()) | currency:'EUR':true:'1.2-2' }}</span>
                         </td>
                     </tr>
 

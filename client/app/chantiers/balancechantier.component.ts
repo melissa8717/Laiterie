@@ -44,6 +44,8 @@ export class BalancechantierComponent {
     balance: any = {};
     testing: any = {};
 
+    modellibre:any[] = [];
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -66,6 +68,7 @@ export class BalancechantierComponent {
         this.loadPrev();
         this.loadPrevopt();
         this.loadReel();
+        this.loadReelibre();
         this.loadNom();
         this.loadLibre();
         this.loadFacture();
@@ -77,6 +80,7 @@ export class BalancechantierComponent {
         this.loadTotalDevis();
         this.loadBalance();
         this.loadReelfrais();
+
 
     }
 
@@ -289,6 +293,19 @@ export class BalancechantierComponent {
         });
     }
 
+    loadReelibre(){
+        this.route.params.subscribe(Params => {
+            this.id_chantier=Params['id_chantier']
+            console.log(this.id_chantier);
+            this.chantierService.getByIdReelibre(this.id_chantier).subscribe(
+                data=>{
+                    this.modellibre=data;
+                   // console.log(data)
+                }
+            )
+        });
+    }
+
     countReeldevis(prod:any) {
 
         let totaldevis = 0;
@@ -297,6 +314,20 @@ export class BalancechantierComponent {
             totaldevis += prod.tarifpourlivraisonreel? prod.tarifpourlivraisonreel  + prod.total :  prod.total;
         }
         return totaldevis;
+    }
+
+    countReellibre(prod:any) {
+
+        let totaldevis = 0;
+
+        for (let prod of this.modellibre) {
+            totaldevis += prod.tarifpourlivraisonreel? prod.tarifpourlivraisonreel  + prod.total :  prod.total;
+        }
+        return totaldevis;
+    }
+
+    countprod(prod:any) {
+        return this.countReeldevis(prod) + this.countReellibre(prod);
     }
 
     /*----------------------------facture situation------------------------*/
@@ -392,7 +423,7 @@ export class BalancechantierComponent {
     loadReelfrais(){
         this.factureService. getAllFraispour().subscribe(data=>{
             this.testing=data[0];
-            console.log(data)
+           // console.log(data)
 
         });
     }
@@ -404,7 +435,7 @@ export class BalancechantierComponent {
             this.chantierService.getByIdfraisreel(this.id_chantier).subscribe(
                 data=>{
                     this.gene=data;
-                    console.log(data)
+                    //console.log(data)
                 }
             )
         });
@@ -568,11 +599,11 @@ export class BalancechantierComponent {
     }
 
     countMargereel(prod:any,mains:any,prevs:any,prods:any,opti:any,opts:any,pours:any){
-        return this.countFact(prod)-(this.countTotaloeuvre(mains) + this.countReel(prevs,prods,opti,prod,opts,pours) +this.countReeldevis(prod));
+        return this.countFact(prod)-(this.countTotaloeuvre(mains) + this.countReel(prevs,prods,opti,prod,opts,pours) +this.countprod(prod));
     }
 
     countpourcentage(prod:any,mains:any,prevs:any,prods:any,opti:any,opts:any,pours:any,acco:any){
-        return (100-((((this.countTotaloeuvre(mains) + this.countReel(prevs,prods,opti,prod,opts,pours) +this.countReeldevis(prod))/(this.countFact(prod)+this.acco.accompte_value) ))*100));
+        return (100-((((this.countTotaloeuvre(mains) + this.countReel(prevs,prods,opti,prod,opts,pours) +this.countprod(prod))/(this.countFact(prod)+this.acco.accompte_value) ))*100));
     }
 
     /**********************************************************************            Si pas en cours                  *****************************************************************************/

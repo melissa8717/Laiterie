@@ -46,36 +46,21 @@
 
         <form method="" action="" [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)"
               (keyup.enter)="addProduct();">
-            <!--
-                        <div class="col-sm-12">
-
-
-                            <div class="form-group col-sm-4">
-                                <span>Pour : {{bdc.livre}}</span><!--variable à mettre suivant le choix
-                            </div>
-                            <div style="float :right;" class="form-group col-sm-4" *ngIf="bdc.id_chantier">
-                                <span>N° chantier: {{bdc.id_chantier}}</span>-->
-            <!--variable pour le chantier et permetttre une recherche par indexation du chantier
-        </div>
-        <br>
-
-       <!--variable-->
-
-
-
 
 
 
             <div >
                 <table class="col-sm-12" style="margin-left: -30px;border:none;">
                     <thead>
-                    <th style="width: 50px; ">Référence:</th>
-                    <th style="width: 50px;">Libellé produit:</th>
-                    <th style="width: 50px;">Unité:</th>
-                    <th style="width: 50px;">Quantité:</th>
-                    <th *ngIf="!print" style="width: 50px;">Prix H.T.</th>
-                    <th *ngIf="!print" style="width: 50px;">Total H.T.</th>
-                    <th *ngIf="!print" class="col-xs-1">Action</th>
+                        <tr>
+                            <th style="width: 50px; ">Référence:</th>
+                            <th style="width: 50px;">Libellé produit:</th>
+                            <th style="width: 50px;">Unité:</th>
+                            <th style="width: 50px;">Quantité:</th>
+                            <th *ngIf="!print" style="width: 50px;">Prix H.T.</th>
+                            <th *ngIf="!print" style="width: 50px;">Total H.T.</th>
+                            <th *ngIf="!print" class="col-xs-1">Action</th>
+                        </tr>
                     </thead>
                     <tbody>
 
@@ -190,7 +175,7 @@
                     <tr *ngIf="!print">
                         <td colspan="5" class="total">Total :</td>
                         <td class="total">{{all | currency:'EUR':true:'1.2-2' }} </td>
-                        <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+
                         <td class="total"></td>
 
                     </tr>
@@ -200,7 +185,7 @@
                         <td colspan="7">
                             <button *ngIf="droitsuser.ajoutcom && !print" type="submit" class="btn btn-default input-sm col-sm-4 col-sm-offset-5">
                                 Enregistrer
-                            </button><!-- a integrer dans la bdd-->
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -212,12 +197,14 @@
         </form>
 
         <div >
-            <table class="col-sm-12" style="margin-left: -30px;margin-top:20px;margin-bottom: 10px;">
+            <table class="col-sm-12" style="margin-left: -30px;margin-top:20px;margin-bottom: 10px;width: 100%;">
+
+
                 <tbody>
 
-                <tr>
-                    <!--variable dans value pour la ref-->
-                    <td>
+                <tr *ngIf="!print">
+
+                    <td >
                         <input style="border:none;"  type="text" name="ref" [(ngModel)]="produit.ref" placeholder="Référence">
 
                     </td>
@@ -253,10 +240,9 @@
                 </tr>
 
                 <tr *ngFor="let prode of libre">
-                    <td><span>{{prode.reference ? prode.reference : prode.ref}}</span></td>
-                    <td><span>{{prode.nom_prod ? prode.nom_prod : prode.produit}}</span></td>
-                    <!-- modif a faire en dessous et basta pronto) -->
-                    <td><span>{{prode.unite ? prode.unite : prode.unit}}</span></td>
+                    <td ><span>{{prode.reference ? prode.reference : prode.ref}}</span></td>
+                    <td ><span>{{prode.nom_prod ? prode.nom_prod : prode.produit}}</span></td>
+                    <td ><span>{{prode.unite ? prode.unite : prode.unit}}</span></td>
                     <td><span>{{prode.qte ? prode.qte : prode.qtep}}</span></td>
                     <td  *ngIf="!print" ><span>{{(prode.prix_prevu ? prode.prix_prevu : prode.prix_p) | currency:'EUR':true:'1.2-2'}}</span></td>
 

@@ -142,6 +142,10 @@ export class ChantierService {
         return this.http.get(this.config.apiUrl + '/chantier/reel/' + id_chantier, this.jwt()).map((response: Response) => response.json());
     }
 
+    getByIdReelibre(id_chantier:number) {
+        return this.http.get(this.config.apiUrl + '/chantier/getByIdReelibre/' + id_chantier, this.jwt()).map((response: Response) => response.json());
+    }
+
     getByIdDevislibre(id_chantier:number) {
         return this.http.get(this.config.apiUrl + '/chantier/libre/' + id_chantier, this.jwt()).map((response: Response) => response.json());
     }
