@@ -323,6 +323,19 @@ export class FactureService {
         return this.http.get(this.config.apiUrl + '/facture/ByIdTotlafactimprim/' + id_facture + "/" + n_situation, this.jwt()).map((response: Response) => response.json());
     }
 
+    getAllDiffFournisseur(month:number,year:number) {
+        console.log("rappro"+this.config.apiUrl + '/facture');
+        return this.http.get(this.config.apiUrl + '/facture/difffournisseur/'+month+'/'+year, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getAllDiffBDC(month:number,year:number,id_fournisseur:number) {
+        console.log("get"+this.config.apiUrl + '/facture/iffs/' +month+'/'+ year+'/'+id_fournisseur);
+        return this.http.get(this.config.apiUrl + '/facture/iffs/'+month+'/'+ year+'/'+id_fournisseur, this.jwt()).map((response: Response) => response.json());
+    }
+    getAllDiffFournisseurImp(month:number,year:number,id_fournisseur:number) {
+        //console.log(this.config.apiUrl + '/facture')
+        return this.http.get(this.config.apiUrl + '/facture/impfournisseur/'+month+'/'+year+'/'+id_fournisseur, this.jwt()).map((response: Response) => response.json());
+    }
 
     /***************************************************GED*********************************************************************************/
     getGed() {

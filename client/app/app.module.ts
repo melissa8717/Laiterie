@@ -167,6 +167,8 @@ import {GedComponent} from "./utils/ged.component";
 import {ImguploaderComponent} from "./utils/imguploader.component";
 import {FiligraneComponent} from "./parametre/filigrane.component";
 import {FactclientComponent} from "./contact/factclient.component";
+import {RapproComponent} from "./facture/rappro.component";
+import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
 
 @NgModule({
     imports: [
@@ -322,7 +324,9 @@ import {FactclientComponent} from "./contact/factclient.component";
         GedComponent,
         ImguploaderComponent,
         FiligraneComponent,
-        FactclientComponent
+        FactclientComponent,
+        RapproComponent,
+        Diff_fournisseurComponent
     ],
     providers: [
         AppConfig,

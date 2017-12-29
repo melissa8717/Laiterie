@@ -101,6 +101,10 @@ service.getByIdTotlaTVAimp = getByIdTotlaTVAimp;
 service.getByIdTotlafactimprim = getByIdTotlafactimprim;
 service.getByIdSitlibredetail = getByIdSitlibredetail;
 
+service.getAllDiffFournisseur = getAllDiffFournisseur;
+service.getAllDiffBDC = getAllDiffBDC;
+service.getAllDiffFournisseurImp = getAllDiffFournisseurImp;
+
 module.exports = service;
 
 function getAllFacture() {
@@ -265,13 +269,13 @@ function getbyIdTotalfact(_id_devis, _num_version) {
 }
 
 function getbyIdTotalopt(_id_devis, _num_version) {
-    //console.log('facture');
+
     var deferred = Q.defer();
     var sql = "SELECT ROUND(SUM( qte_devis * prix_devis ),2) as totaloption FROM devis_option WHERE id_devis =? AND num_version =? AND devis_option.accepted is true";
     var inserts = [_id_devis, _num_version];
 
     sql = mysql.format(sql, inserts);
-    //console.log(sql);
+
     db.query(sql, function (error, results, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
@@ -384,7 +388,6 @@ function create(facture_param) {
 /*---------------------------------------Modifier facture------------------------------------------------*/
 
 function getByIdModif(_id_facture, _n_situation) {
-    //console.log('facture');
     var deferred = Q.defer();
     var sql = "SELECT facture.*,devis.*,chantier.nom_chantier, contact.nom,contact.prenom,contact.raison_sociale,contact.adresse AS cadresse,contact.ville AS cville,contact.code_postal AS ccp " +
         "FROM facture, devis, contact,  chantierdevis, chantier WHERE id_facture =? AND n_situation = ? AND facture.id_devis = devis.id_devis AND devis.id_devis = chantierdevis.id_devis AND chantier.id_chantier = chantierdevis.id_chantier AND contact.id_contact = devis.id_contact  ";
@@ -403,7 +406,6 @@ function getByIdModif(_id_facture, _n_situation) {
 }
 
 function getByIdSituation(_id_facture, _n_situation) {
-    //console.log('facture');
     var deferred = Q.defer();
     var sql = "SELECT situation_facture.*,produit_vente.libelle,produit_vente.unite FROM situation_facture, produit_vente WHERE situation_facture.id_facture =? AND situation_facture.n_situation =? AND situation_facture.id_produit = produit_vente.id_prc AND produit_vente.num_version = situation_facture.num_version";
     var inserts = [_id_facture, _n_situation];
@@ -421,13 +423,11 @@ function getByIdSituation(_id_facture, _n_situation) {
 }
 
 function getByIdSitoption(_id_facture, _n_situation) {
-    //console.log('facture');
     var deferred = Q.defer();
     var sql = "SELECT situation_option.*,produit_vente.libelle,produit_vente.unite FROM situation_option, produit_vente WHERE situation_option.id_facture =? AND situation_option.n_situation =? AND situation_option.id_produit = produit_vente.id_prc AND produit_vente.num_version = situation_option.num_version";
     var inserts = [_id_facture, _n_situation];
 
     sql = mysql.format(sql, inserts);
-    //console.log(sql);
     db.query(sql, function (error, results, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
@@ -440,7 +440,6 @@ function getByIdSitoption(_id_facture, _n_situation) {
 }
 
 function getByIdSitlibredetail(_id_facture, _n_situation) {
-    //console.log('facture');
     var deferred = Q.defer();
     var sql = "SELECT facture_libredetail.* FROM facture_libredetail WHERE facture_libredetail.id_fact =? AND facture_libredetail.n_situation =? ";
     var inserts = [_id_facture, _n_situation];
@@ -748,7 +747,7 @@ function createfacturefournisseur(facture_param) {
 
 function getAllMois(month, year) {
     var deferred = Q.defer();
-    console.log('test6');
+
     db.query('SELECT facture_fournisseur.*,contact.nom ' +
         'FROM facture_fournisseur,contact ' +
         'WHERE (MONTH( facture_fournisseur.datefourn ) =? AND YEAR( facture_fournisseur.datefourn ) =?) ' +
@@ -1909,6 +1908,97 @@ function getByIdTotlafactimprim(_id_fact, _n_situation) {
         }
 
         deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getAllDiffFournisseur(month,year) {
+    var deferred = Q.defer();
+    console.log('ttest');
+    db.query('SELECT contact.nom, contact.id_contact FROM contact, bdc_detaille '+
+        'LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_detaille.id_bdc '+
+        'LEFT JOIN produit ON bdc_detaille.id_produit = produit.id_produit '+
+        'WHERE qte != Qtelivre AND MONTH( date_livraison_reel ) =? AND YEAR( date_livraison_reel ) =? '+
+        'AND contact.id_contact = bon_de_commande.id_fournisseur '+
+        'GROUP BY bdc_detaille.id_bdc, bdc_detaille.id_produit '+
+        'UNION '+
+        'SELECT contact.nom, contact.id_contact FROM contact, bdc_libre '+
+        'LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_libre.id_bdc '+
+        'WHERE qte != Qte_livre AND MONTH( date_livraison_reel ) =? AND YEAR( date_livraison_reel ) =? '+
+        'AND contact.id_contact = bon_de_commande.id_fournisseur '+
+        'GROUP BY bdc_libre.id_bdc, bdc_libre.id_prod '+
+        'UNION '+
+        'SELECT contact.nom, contact.id_contact FROM contact, bdc_detaille '+
+        'LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_detaille.id_bdc '+
+        'LEFT JOIN produit ON bdc_detaille.id_produit = produit.id_produit '+
+        'WHERE prix_prevu != Prixreel AND MONTH( date_livraison_reel ) =? AND YEAR( date_livraison_reel ) =? '+
+        'AND contact.id_contact = bon_de_commande.id_fournisseur '+
+        'GROUP BY bdc_detaille.id_bdc, bdc_detaille.id_produit '+
+        'UNION '+
+        'SELECT contact.nom, contact.id_contact FROM contact, bdc_libre '+
+        'LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_libre.id_bdc '+
+        'WHERE prix_prevu != Prixreel AND MONTH( date_livraison_reel ) =? AND YEAR( date_livraison_reel ) =? '+
+        'AND contact.id_contact = bon_de_commande.id_fournisseur '+
+        'GROUP BY bdc_libre.id_bdc, bdc_libre.id_prod ' ,  [month,year,month,year,month,year,month,year], function (error, results, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+            console.log(error.name + ': ' + error.message);
+        }
+        console.log(results);
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getAllDiffFournisseurImp(month,year,id_fournisseur) {
+    var deferred = Q.defer();
+    console.log(month,year,id_fournisseur);
+    db.query('SELECT *  ' +
+        'FROM bdc_imprevu ' +
+        'LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_imprevu.id_bdc AND bon_de_commande.id_fournisseur =? ' +
+        'WHERE  MONTH( date_livraison_reel ) = ? AND YEAR( date_livraison_reel ) = ? ' +
+        'GROUP BY bon_de_commande.id_fournisseur', [id_fournisseur, month, year], function (error, results, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+            console.log(error.name + ': ' + error.message);
+        }
+        console.log(results);
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getAllDiffBDC(month,year,id_fournisseur) {
+    var deferred = Q.defer();
+    console.log("server"+month,year);
+    db.query("SELECT bdc_detaille.id_bdc ,bdc_detaille.id_produit ,produit.libelle as nom, bdc_detaille.qte ,bdc_detaille.Qtelivre,bdc_detaille.prix_prevu,bdc_detaille.Prixreel,  MONTH( date_livraison_reel ) , YEAR( date_livraison_reel )  FROM bdc_detaille "+
+    "LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_detaille.id_bdc AND bon_de_commande.id_fournisseur =? "+
+    "LEFT JOIN produit ON bdc_detaille.id_produit = produit.id_produit "+
+    "WHERE qte != Qtelivre AND MONTH( date_livraison_reel ) =?  AND YEAR( date_livraison_reel ) =? "+
+    "GROUP BY id_bdc, id_produit "+
+    "UNION "+
+    "SELECT bdc_libre.id_bdc, bdc_libre.id_prod as id_produit ,bdc_libre.nom_prod as nom, bdc_libre.qte ,bdc_libre.Qte_livre AS Qtelivre,bdc_libre.prix_prevu,bdc_libre.Prixreel,  MONTH( date_livraison_reel ) , YEAR( date_livraison_reel )  FROM bdc_libre "+
+    "LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_libre.id_bdc AND bon_de_commande.id_fournisseur =? "+
+    "WHERE qte != Qte_livre AND MONTH( date_livraison_reel ) =?  AND YEAR( date_livraison_reel ) =? "+
+    "GROUP BY id_bdc, id_produit "+
+    "UNION "+
+    "SELECT bdc_detaille.id_bdc ,bdc_detaille.id_produit ,produit.libelle as nom, bdc_detaille.qte ,bdc_detaille.Qtelivre,bdc_detaille.prix_prevu,bdc_detaille.Prixreel,  MONTH( date_livraison_reel ) , YEAR( date_livraison_reel ) FROM bdc_detaille "+
+    "LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_detaille.id_bdc AND bon_de_commande.id_fournisseur =? "+
+    "LEFT JOIN produit ON bdc_detaille.id_produit = produit.id_produit "+
+    "WHERE prix_prevu != Prixreel  AND MONTH( date_livraison_reel ) =? AND YEAR( date_livraison_reel ) =? "+
+    "GROUP BY id_bdc, id_produit "+
+    "UNION "+
+    "SELECT bdc_libre.id_bdc, bdc_libre.id_prod as id_produit ,bdc_libre.nom_prod as nom, bdc_libre.qte ,bdc_libre.Qte_livre AS Qtelivre,bdc_libre.prix_prevu,bdc_libre.Prixreel,  MONTH( date_livraison_reel ) , YEAR( date_livraison_reel )  FROM bdc_libre "+
+    "LEFT JOIN bon_de_commande ON bon_de_commande.id_bdc = bdc_libre.id_bdc AND bon_de_commande.id_fournisseur =? "+
+    "WHERE prix_prevu != Prixreel AND MONTH( date_livraison_reel ) =?  AND YEAR( date_livraison_reel ) =? "+
+    "GROUP BY id_bdc, id_produit", [id_fournisseur,month,year,id_fournisseur,month,year,id_fournisseur,month,year,id_fournisseur,month,year], function (error, chantier, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        console.log(chantier);
+        deferred.resolve(chantier);
     });
     return deferred.promise;
 }
