@@ -39,7 +39,7 @@ function changeState(_id, bdcParam) {
 
 function validate(_id, bdcParam) {
     var deferred = Q.defer();
-
+console.log(bdcParam.list);
     db.query("SELECT * FROM bon_de_commande WHERE id_bdc= ?", [_id], function (error, results, fields) {
         if (error) deferred.reject('MySql ERROR trying to update user informations (1) | ' + error.message);
 
@@ -66,6 +66,28 @@ function validate(_id, bdcParam) {
 
                         db.query("UPDATE bdc_detaille SET Prixreel = ?, Qtelivre = ? WHERE id_bdc = ? AND id_produit = ? AND num_version= ?",
                             [bdcParam.list[product].Prixreel, bdcParam.list[product].Qtelivre, _id, bdcParam.list[product].id_produit, bdcParam.list[product].num_version],
+                            function (error, result, fields) {
+                                if (error) {
+                                    console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                    deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                    return;
+                                }
+
+                                deferred.resolve();
+                                //console.log(result.insertId);
+                                //console.log(result.insertId);
+                            });
+                    })(p);
+
+                }
+
+                for (var p in bdcParam.list) {
+
+                    (function (product) {
+
+
+                        db.query("UPDATE stock SET stock = (stock + ?) WHERE id_produit = ? ",
+                            [bdcParam.list[product].Qtelivre, bdcParam.list[product].id_produit],
                             function (error, result, fields) {
                                 if (error) {
                                     console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
@@ -335,12 +357,12 @@ function create(bdc_param) {
             for (var p in bdc_param.products) {
                 (function (product) {
                     console.log(bdc_param.products[product]);
-                    console.log("INSERT INTO bdc_detaille (id_bdc, id_produit, num_version, qte, prix_prevu) VALUES (? , ? , ? , ? , ?)",
+                    /*console.log("INSERT INTO bdc_detaille (id_bdc, id_produit, num_version, qte, prix_prevu) VALUES (? , ? , ? , ? , ?)",
                         [id_bdc,
                             bdc_param.products[product].id_produit,
                             bdc_param.products[product].num_version,
                             bdc_param.products[product].quantite ? bdc_param.products[product].quantite : 1,
-                            bdc_param.products[product].prix_prevu ? bdc_param.products[product].prix_prevu : bdc_param.products[product].ht]);
+                            bdc_param.products[product].prix_prevu ? bdc_param.products[product].prix_prevu : bdc_param.products[product].ht]);*/
                     db.query("INSERT INTO bdc_detaille (id_bdc, id_produit, num_version, qte, prix_prevu) VALUES (? , ? , ? , ? , ?)",
                         [id_bdc,
                             bdc_param.products[product].id_produit,

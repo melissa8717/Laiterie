@@ -148,14 +148,14 @@ export class BdcComponent {
         // console.log("on envoie la requette");
         this.contactService.getAllFournisseurs().subscribe(fournisseurs => {
             this.fournisseurs = fournisseurs;
-            console.log(this.fournisseurs);
+            //console.log(this.fournisseurs);
         });
     }
 
     private loadAllProducts() {
         this.productService.getAll().subscribe(products => {
             this.products = products;
-            console.log(this.products);
+           // console.log(this.products);
         });
     }
 

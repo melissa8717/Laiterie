@@ -118,7 +118,10 @@ import {AvoirlibreComponent} from "./facture/avoirlibre.component";
 import {FiligraneComponent} from "./parametre/filigrane.component";
 import {FactclientComponent} from "./contact/factclient.component";
 import {RapproComponent} from "./facture/rappro.component";
-import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component"; ///////////////////////////////////////////////////
+import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
+import {OtestockComponent} from "./bdc/otestock.component";
+
+
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -250,7 +253,7 @@ const appRoutes: Routes = [
     {path: 'factclient/:id_contact', component: FactclientComponent, canActivate: [AuthGuard]},
     {path: 'rappro', component: RapproComponent, canActivate: [AuthGuard]},
     {path: 'diff_fournisseur/:id_contact', component: Diff_fournisseurComponent, canActivate: [AuthGuard]},
-
+    {path: 'otestock', component: OtestockComponent,canActivate:[AuthGuard]},
 
 
     // otherwise redirect to home

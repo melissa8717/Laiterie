@@ -169,6 +169,8 @@ import {FiligraneComponent} from "./parametre/filigrane.component";
 import {FactclientComponent} from "./contact/factclient.component";
 import {RapproComponent} from "./facture/rappro.component";
 import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
+import {OtestockComponent} from "./bdc/otestock.component";
+
 
 @NgModule({
     imports: [
@@ -326,7 +328,9 @@ import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
         FiligraneComponent,
         FactclientComponent,
         RapproComponent,
-        Diff_fournisseurComponent
+        Diff_fournisseurComponent,
+        OtestockComponent
+
     ],
     providers: [
         AppConfig,

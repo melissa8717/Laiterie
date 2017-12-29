@@ -1,0 +1,117 @@
+<div id="achat">
+
+    <my-header *ngIf="!print" [title]='"Bon de commande"' [img]="'image/menu/commandes_grand_gris.png'"></my-header>
+
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-9" style=" font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+        <h3 *ngIf="!print">Retirer des stocks</h3>
+        <div class="table table-responsive">
+            <table class="table">
+                <thead>
+                <th style="width: 50px; ">N° interne</th>
+                <th style="width: 50px; ">Référence:</th>
+                <th style="width: 50px;">Libellé :</th>
+                <th style="width: 50px;">Unité:</th>
+                <th style="width: 50px;">Quantité:</th>
+                <th *ngIf="!print" class="col-xs-1">Action</th>
+                </thead>
+                <tbody>
+
+                <tr>
+                    <td>{{situas.id_produit}}</td>
+                    <td>{{situas.reference}}</td>
+                    <td><input style="border:1px solid white;"
+                               ng2-auto-complete
+                               #prod
+                               [source]="products"
+                               [list-formatter]="autocompleListFormatterProducts"
+                               value-property-name="id_produit"
+                               display-property-name="libelle"
+                               name="produit"
+                               [(ngModel)]="situas.obj"
+                               (ngModelChange)="test()"
+                               placeholder="Produit"
+                               class="col-sm-12"></td>
+                    <td>{{situas.unite}}</td>
+                    <td>
+                        <input name="qtefact" type="number" [(ngModel)]="situas.qtefact">
+                    </td>
+                    <td>
+                        <button (click)="ajouter()" [disabled]="!situas.qtefact">Ajouter</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+
+
+            <div class="table-responsive">
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th style="width: 50px; ">N° interne</th>
+                            <th style="width: 50px; ">Référence:</th>
+                            <th style="width: 50px;">Libellé :</th>
+                            <th style="width: 50px;">Unité:</th>
+                            <th style="width: 50px;">Quantité:</th>
+                            <th *ngIf="!print" class="col-xs-1">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr *ngFor="let situas of produitDevis, let i = index; trackBy:customTrackBy">
+
+                        <td>
+                            <div class="form-group">
+                                <span>{{situas.obj.id_produit}} </span>
+                            </div>
+                        </td><td>
+                            <div class="form-group">
+                                <span>{{situas.obj.reference}} </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <span>{{situas.obj.libelle}}</span>
+                            </div>
+                        </td><td>
+                            <div class="form-group">
+                                <span>{{situas.obj.unite}}</span>
+                            </div>
+                        </td>
+
+
+
+                        <td>
+                            <div class="form-group">
+                                <span>{{produitDevis[i].qtefact}}</span>
+
+                            </div>
+                        </td>
+
+                        <td>
+                            <a class=" col-sm-offset-1"
+                               (click)="supprimer(produitDevis[i])">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"
+                                                      style="color: #0f0f0f"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button *ngIf="droitsuser.ajoutcom"  class="btn btn-default input-sm col-sm-1 col-sm-offset-5" (click)="submit()">
+                Enregistrer
+            </button>
+
+        </div>
+    </div>
+</div>

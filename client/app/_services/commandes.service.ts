@@ -67,6 +67,10 @@ export class CommandeService {
         return this.http.get(this.config.apiUrl + '/commandes/details/' + id_demande, this.jwt()).map((response: Response) => response.json());
     }
 
+    otestock(stockparams:any) {
+        return this.http.put(this.config.apiUrl + '/commandes/otestock' , stockparams, this.jwt());
+    }
+
     // private helper methods
 
     private jwt() {
