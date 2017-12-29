@@ -187,6 +187,10 @@ export class FactureService {
         return this.http.get(this.config.apiUrl + '/facture/bdcreel/' + year, this.jwt()).map((response: Response) => response.json());
     }
 
+    getAllBdcreelibre(year: number) {
+        return this.http.get(this.config.apiUrl + '/facture/getAllBdcreelibre/' + year, this.jwt()).map((response: Response) => response.json());
+    }
+
     getAllAnnefrais(year: number) {
         return this.http.get(this.config.apiUrl + '/facture/annnefrais/' + year, this.jwt()).map((response: Response) => response.json());
     }

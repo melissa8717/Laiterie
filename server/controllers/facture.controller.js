@@ -55,6 +55,7 @@ router.get('/optionachat/:year', getAllOptionachat);
 router.get('/frainan/:year', getAllFraisan);
 router.get('/moan/:year', getAllMoan);
 router.get('/bdcreel/:year', getAllBdcreel);
+router.get('/getAllBdcreelibre/:year',getAllBdcreelibre);
 router.get('/annnefrais/:year', getAllAnnefrais);
 
 router.get('/fraispour', getAllFraispour);
@@ -602,6 +603,16 @@ function getAllMoan(req, res) {
 
 function getAllBdcreel(req, res) {
     factureService.getAllBdcreel(req.params.year)
+        .then(function (Chantier) {
+            res.send(Chantier);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getAllBdcreelibre(req, res) {
+    factureService.getAllBdcreelibre(req.params.year)
         .then(function (Chantier) {
             res.send(Chantier);
         })

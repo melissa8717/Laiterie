@@ -58,6 +58,7 @@ service.getAllOptionachat = getAllOptionachat;
 service.getAllFraisan = getAllFraisan;
 service.getAllMoan = getAllMoan;
 service.getAllBdcreel = getAllBdcreel;
+service.getAllBdcreelibre = getAllBdcreelibre;
 service.getAllAnnefrais = getAllAnnefrais;
 service.getAllFraispour = getAllFraispour;
 
@@ -295,7 +296,7 @@ function create(facture_param) {
                 console.log(error.name + ': ' + error.message);
             }
 
-            for (let p in facture_param.detail) {
+            for (var p in facture_param.detail) {
                 (function (facture) {
                     db.query("INSERT INTO situation_facture (id_facture, n_situation, id_produit,num_version,pourcentage,qtefact,prixfact,tvas) VALUES (? ,? , ? , ? , ?, ? , ? , ? )",
                         [results.insertId, 1, facture_param.detail[facture].id_produit, facture_param.detail[facture].num_version, facture_param.detail[facture].pourcentage, facture_param.detail[facture].qte_devis, facture_param.detail[facture].prix_devis, facture_param.detail[facture].taux],
@@ -311,7 +312,7 @@ function create(facture_param) {
                 })(p);
             }
 
-            for (let p in facture_param.option) {
+            for (var p in facture_param.option) {
                 (function (facture) {
                     db.query("INSERT INTO situation_option (id_facture, n_situation, id_produit,num_version,pourcentage,qtefact,prixfact,tvao) VALUES (? , ? , ? , ? , ?, ? , ? , ?)",
                         [results.insertId, 1, facture_param.option[facture].id_produit, facture_param.option[facture].num_version, facture_param.option[facture].pourcentage, facture_param.option[facture].qte_devis, facture_param.option[facture].prix_devis,facture_param.option[facture].taux],
@@ -327,7 +328,7 @@ function create(facture_param) {
                 })(p);
             }
 
-            for (let p in facture_param.libre) {
+            for (var p in facture_param.libre) {
 
                 (function (facture) {
                     console.log(facture);
@@ -345,7 +346,7 @@ function create(facture_param) {
                 })(p);
             }
 
-            for (let p in facture_param.libreoption) {
+            for (var p in facture_param.libreoption) {
 
                 (function (facture) {
 
@@ -1080,6 +1081,22 @@ function getAllBdcreel(year) {
     db.query('SELECT * ' +
         'FROM listbdc ' +
         'WHERE annee = ? ', [year], function (error, chantier, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        deferred.resolve(chantier);
+    });
+    return deferred.promise;
+}
+
+function getAllBdcreelibre(year) {
+    var deferred = Q.defer();
+    //console.log('test6');
+    db.query('SELECT  bdc_libre.id_bdc AS  id_bdc , YEAR(bon_de_commande.date_livraison_reel) AS  annee , SUM((bdc_libre.Qte_livre *  bdc_libre.Prixreel)) AS  somme ' +
+        'FROM (bon_de_commande JOIN  bdc_libre) ' +
+       'WHERE ((bon_de_commande.Recu IS TRUE) AND (bon_de_commande.id_bdc =  bdc_libre.id_bdc)) AND YEAR(bon_de_commande.date_livraison_reel) = ?'+
+        'GROUP BY YEAR(bon_de_commande.date_livraison_reel) ,  bdc_libre.id_bdc  ', [year], function (error, chantier, fields) {
         if (error) {
             console.log(error.name + ': ' + error.message);
             deferred.reject(error.name + ': ' + error.message);
