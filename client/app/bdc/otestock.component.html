@@ -9,6 +9,21 @@
         </div>
 
         <h3 *ngIf="!print">Retirer des stocks</h3>
+
+        <div class="form-group" class="col-sm-7">
+            <label class="col-sm-2">Nom du chantier: </label>
+            <input class="col-sm-5" style="border:1px solid white;margin-left: 0px;" ng2-auto-complete
+                   #prod
+                   [source]="chantiers"
+                   [list-formatter]="autocompleListFormatterchantier"
+                   placeholder="Chantier"
+                   [(ngModel)]="chantier.nom"
+                   value-property-name="id_chantier"
+                   display-property-name="nom_chantier"
+                   >
+            <!--variable pour le chantier et permetttre une recherche par indexation du chantier-->
+        </div>
+
         <div class="table table-responsive">
             <table class="table">
                 <thead>
@@ -53,7 +68,7 @@
             <div class="table-responsive">
                 <table class="table">
 
-                    <thead>
+                    <thead *ngIf="produitDevis.length >0">
                         <tr>
                             <th style="width: 50px; ">N° interne</th>
                             <th style="width: 50px; ">Référence:</th>
@@ -108,7 +123,7 @@
                 </table>
             </div>
 
-            <button *ngIf="droitsuser.ajoutcom"  class="btn btn-default input-sm col-sm-1 col-sm-offset-5" (click)="submit()">
+            <button *ngIf="droitsuser.ajoutcom"  class="btn btn-default input-sm col-sm-1 col-sm-offset-5" (click)="submite()">
                 Enregistrer
             </button>
 

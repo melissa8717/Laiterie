@@ -28,9 +28,12 @@ export class OtestockComponent {
 
     situa: any[] = [];
     situas: any = {};
+
     produitDevis: any[] = [];
 
     products: {}[] = [];
+
+    chantiers: {}[] = [];
 
     currentUser: User;
 
@@ -39,6 +42,9 @@ export class OtestockComponent {
     droitsuser:any={};
     _id:any;
     data:any={};
+
+    chantier: any = {};
+    nom:string;
 
 
 
@@ -62,6 +68,7 @@ export class OtestockComponent {
 
         this.loaddroituser();
         this.loadAllProducts();
+        this.loadAllChantiers();
 
         let body = document.getElementsByTagName('body')[0];
         body.className = "";
@@ -77,6 +84,18 @@ export class OtestockComponent {
 
         });
     }
+
+    private loadAllChantiers() {
+        this.chantierService.getAll().subscribe((chantiers: any) => {
+            this.chantiers = chantiers;
+            console.log(this.chantiers)
+        });
+    }
+
+    autocompleListFormatterchantier = (data: any): SafeHtml => {
+        let html = `<span>${data.nom_chantier} </span>`;
+        return this._sanitizer.bypassSecurityTrustHtml(html);
+    };
 
     private loadAllProducts() {
         this.productService.getAll().subscribe(products => {
@@ -94,6 +113,7 @@ export class OtestockComponent {
         let tmp: any = {};
         tmp.obj = this.situas.obj;
         tmp.qtefact = this.situas.qtefact;
+        tmp.prix_achat = this.situas.prix_achat;
         tmp.num_version = this.situas.num_version;
         tmp.id_produit = this.situas.id_produit;
         tmp.reference = this.situas.reference;
@@ -135,6 +155,8 @@ export class OtestockComponent {
         this.situas.id_produit = this.situas.obj.id_produit;
         this.situas.reference = this.situas.obj.reference;
         this.situas.unite = this.situas.obj.unite;
+        this.situas.prix_achat = this.situas.obj.prix_achat;
+        this.situas.num_version = this.situas.obj.num_version;
 
     }
 
@@ -142,13 +164,15 @@ export class OtestockComponent {
         this.produitDevis = this.produitDevis.filter(obj => obj !== situas);
     }
 
-    submit() {
+    submite() {
 
         let stockparams: any = {};
 
-        stockparams.produitDevis = this.produitDevis;
-        stockparams.id_user = this.currentUser._id;
 
+        stockparams.produitDevis = this.produitDevis;
+        stockparams.chantier = this.chantier;
+        stockparams.id_user = this.currentUser._id;
+        console.log(stockparams);
 
         this.commandeService.otestock(stockparams).subscribe(
             data => {

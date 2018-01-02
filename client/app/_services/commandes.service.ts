@@ -68,7 +68,7 @@ export class CommandeService {
     }
 
     otestock(stockparams:any) {
-        return this.http.put(this.config.apiUrl + '/commandes/otestock' , stockparams, this.jwt());
+        return this.http.post(this.config.apiUrl + '/commandes/otestock' , stockparams, this.jwt());
     }
 
     // private helper methods

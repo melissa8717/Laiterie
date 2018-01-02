@@ -20,6 +20,7 @@ router.put('/validate/:_id', validate);
 router.put('/:_id', update);
 router.delete('/:_id', _delete);
 router.post('/demande', demandes);
+router.post('/otestock',otestock);
 
 module.exports = router;
 
@@ -164,7 +165,6 @@ function getAllListing(req, res) {
 }
 
 function getByIdDetail(req, res) {
-    console.log("test");
     commandeService.getByIdDetail(req.params.id_demande)
         .then(function (bdc) {
             if (bdc) {
@@ -172,6 +172,17 @@ function getByIdDetail(req, res) {
             } else {
                 res.sendStatus(404);
             }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function otestock(req, res) {
+    console.log("test");
+    commandeService.otestock(req.body)
+        .then(function () {
+            res.sendStatus(200);
         })
         .catch(function (err) {
             res.status(400).send(err);

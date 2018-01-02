@@ -21,6 +21,7 @@ service.changeState = changeState;
 service.demandes = demandes;
 service.getAllListing = getAllListing;
 service.getByIdDetail = getByIdDetail;
+service.otestock = otestock;
 
 module.exports = service;
 
@@ -85,6 +86,7 @@ console.log(bdcParam.list);
 
                     (function (product) {
 
+                        if (bdcParam.list[product].stock === 1) {
 
                         db.query("UPDATE stock SET stock = (stock + ?) WHERE id_produit = ? ",
                             [bdcParam.list[product].Qtelivre, bdcParam.list[product].id_produit],
@@ -99,6 +101,7 @@ console.log(bdcParam.list);
                                 //console.log(result.insertId);
                                 //console.log(result.insertId);
                             });
+                    }
                     })(p);
 
                 }
@@ -311,7 +314,7 @@ function getAllDate() {
  */
 function getAll(month, year) {
     var deferred = Q.defer();
-    db.query('SELECT * FROM bonDeCommandeList where MONTH(date_livraison) = ? AND YEAR(date_livraison) = ? ORDER BY  `bonDeCommandeList`.`id_bdc` DESC', [month, year],
+    db.query('SELECT * FROM bondecommandelist where MONTH(date_livraison) = ? AND YEAR(date_livraison) = ? ORDER BY  `bondecommandelist`.`id_bdc` DESC', [month, year],
         function (error, chantiers, fields) {
 
             if (error) {
@@ -327,7 +330,7 @@ function getAll(month, year) {
 
 function getById(_id) {
     var deferred = Q.defer();
-    var sql = "SELECT * FROM bonDeCommandeList WHERE id_bdc = ? ";
+    var sql = "SELECT * FROM bondecommandelist WHERE id_bdc = ? ";
     var inserts = [_id];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, bdc, fields) {
@@ -475,5 +478,62 @@ function getByIdDetail(id_demande) {
             deferred.resolve(bdc);
         }
     });
+    return deferred.promise;
+}
+
+function otestock(bdcParam) {
+    console.log(bdcParam.produitDevis);
+    var deferred = Q.defer();
+    //console.log("state change" + bdcParam.state, _id);
+    db.query("INSERT INTO bon_de_commande (id_chantier, livre, tarifpourlivraisonreel, id_user, nbdc, autre) VALUES (? ,? ,? ,? ,? ,? )",
+        [bdcParam.chantier.nom.id_chantier, 'chantier', 0, bdcParam.id_user, 0, 'OUI'],
+        function (error, results, fields) {
+            if (error) {
+                deferred.reject(error.name + ': ' + error.message);
+                console.log(error.name + ': ' + error.message);
+            }
+            console.log(results);
+
+            for (var p in bdcParam.produitDevis) {
+                (function (facture) {
+                    db.query("INSERT INTO bdc_detaille (id_bdc, id_produit,num_version,qte,prix_prevu) VALUES (? ,? , ? , ? , ? )",
+                        [results.insertId, bdcParam.produitDevis[facture].id_produit, bdcParam.produitDevis[facture].num_version, bdcParam.produitDevis[facture].qtefact, bdcParam.produitDevis[facture].prix_achat],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            if (facture = bdcParam.produitDevis.length) {
+                                deferred.resolve()
+                            }
+                        });
+                })(p);
+            }
+
+
+            for (var p in bdcParam.libre) {
+
+                        (function (product) {
+
+
+                            db.query("UPDATE stock SET stock =(stock - ?) WHERE id_produit = ? ",
+                                [bdcParam.produitDevis[product].qtefact, bdcParam.libre[product].id_produit],
+                                function (error, result, fields) {
+                                    if (error) {
+                                        console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        return;
+                                    }
+
+                                    deferred.resolve();
+                                    //console.log(result.insertId);
+                                    //console.log(result.insertId);
+                                });
+                        })(p);
+
+                    }
+
+        });
+
     return deferred.promise;
 }
