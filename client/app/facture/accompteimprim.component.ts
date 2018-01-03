@@ -103,7 +103,7 @@ export class AccompteimprimComponent {
             this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-                    console.log(this.model)
+                   // console.log(this.model)
                 }
             )
         });

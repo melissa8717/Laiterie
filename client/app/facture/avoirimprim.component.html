@@ -90,7 +90,8 @@
                         <td>{{prod.libelle}}</td>
                         <td>{{prod.prixfact}}</td>
                         <td>{{prod.qtefact}}</td>
-                        <td>{{valeur.tva}}</td>
+                        <td *ngIf="valeur.tva">{{valeur.tva}}</td>
+                        <td *ngIf="prod.tva>0">{{prod.tva}}</td>
                         <td>{{ prod.prixfact * prod.qtefact | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
@@ -99,14 +100,15 @@
                         <td>{{prod.nom}}</td>
                         <td>{{prod.prix}}</td>
                         <td>{{prod.qte}}</td>
-                        <td>{{prod.tva}}</td>
+                        <td *ngIf="valeur.tva">{{valeur.tva}}</td>
+                        <td *ngIf="prod.tva>0">{{prod.tva}}</td>
                         <td>{{ prod.prix * prod.qte | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr class="gras">
                         <td colspan="4"></td>
                         <td>Total H.T en € :</td>
-                        <td>- {{countTotalProduit()+ countTotallibre() | currency:'EUR':true:'1.2-2'}}</td>
+                        <td>- {{countTotals() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr class="gras" *ngIf="valeur.remise">
