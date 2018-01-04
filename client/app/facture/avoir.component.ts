@@ -383,12 +383,17 @@ export class AvoirComponent {
         return (this.countTotalOpt() + this.countTotalSit() +this.countTotalLibre()) * (-1);
     }
 
+    countTotalremis(){
+        this.model.totalavoir = (this.countTotal()) *(1-(this.model.remise ? this.model.remise/100 : 1));
+        return  this.model.totalavoir;
+    }
+
     countTva() {
         return (this.countTotal()) * (this.valeur.tva / 100);
     }
 
-    countTtc() {
-        return this.countTotal() + this.countTva();
+    countTtc(situas: any, valeur: any, options: any,lbsituas:any) {
+        return this.countTotalremis() +  (this.TotauxTVA(situas, valeur, options,lbsituas)*(-1));
     }
 
 
@@ -402,11 +407,16 @@ export class AvoirComponent {
         avoirparams.produitDevisopt = this.produitDevisopt;
         avoirparams.produitDevislibre = this.produitDevislibre;
 
+        var test = +confirm('Avez vous mis la date? \n' +
+            'Et êtes vous sûr de vouloir enregistrer votre facture :');
+        if (test) {
+
         this.factureService.addavoir(avoirparams).subscribe(
             data => {
                 this.router.navigate(['/listeavoir']);
                 this.alertService.success('L\'avoir a été créé avec succès.');
             });
+    }
     }
 
 

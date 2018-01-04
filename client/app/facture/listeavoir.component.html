@@ -33,7 +33,7 @@
                         <td>{{avoirs.nfactclient}}</td>
                         <td>{{avoirs.n_situation}}</td>
                         <td>{{avoirs.date_avoir | date: 'dd/MM/yyyy'}}</td>
-                        <td>- {{(avoirs.somme?avoirs.somme:avoirs.montant_ht) | number:'1.0-2'}}</td>
+                        <td>{{(avoirs.somme?avoirs.somme:avoirs.montant_ht) | number:'1.0-2'}}</td>
                         <td><div class="input-group">
                             <div  class="input-group-btn">
                                 <button type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>

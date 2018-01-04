@@ -894,13 +894,12 @@ function getByIdNom(id_contact) {
 
 function addForm(Eparams) {
     var deferred = Q.defer();
-    //console.log("test1");
-    console.log(Eparams);
+    //console.log(Eparams);
 
     db.query("INSERT INTO formationcontact (id_contact, nom_formation, datefor,id_formation) VALUES (? , ? , ? ,?)", [Eparams.nom.id_contact, Eparams.test.nom_formation.designation, Eparams.test.datefor, Eparams.test.nom_formation.id_formation], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
-            console.log("(2)" + error.name + ': ' + error.message);
+            console.log(error.name + ': ' + error.message);
         }
     });
     return deferred.promise;
@@ -1044,6 +1043,7 @@ function upFormation(eParam) {
         if (error) {
             //console.log(+ error.message)
             deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
+            console.log(error.name + ': ' + error.message);
         }
         //console.log(results)
 
@@ -1055,9 +1055,7 @@ function upFormation(eParam) {
 
 function equipement(equipement, id_contact) {
     var deferred = Q.defer();
-    console.log(equipement);
-    console.log(id_contact);
-
+    //console.log(equipement);
 
     db.query("INSERT INTO equipement(id_contact,designation,nbre,taille,commentaire,date) VALUES (? , ?,?,?,?,?)", [id_contact, equipement.designation, equipement.nbre, equipement.taille, equipement.commentaire, equipement.date], function (error, results, fields) {
         if (error) {

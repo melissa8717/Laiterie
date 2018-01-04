@@ -103,7 +103,7 @@ export class AvoirimprimComponent {
             this.factureService.getByIdPeodavoir(this.id_avoir).subscribe(
                 data => {
                     this.produit = data;
-                    //console.log(data)
+                    console.log(data)
                 }
             )
         });
@@ -115,7 +115,7 @@ export class AvoirimprimComponent {
             this.factureService.getByIdPeodavlibre(this.id_avoir).subscribe(
                 data => {
                     this.libre = data;
-                    console.log(data)
+                   // console.log(data)
                 }
             )
         });

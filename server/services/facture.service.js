@@ -1214,8 +1214,8 @@ function addavoir(avoirparams) {
     var deferred = Q.defer();
 
 
-    db.query("INSERT INTO avoir (id_avoir,id_facture,n_situation,date_avoir,id_contact,tva) VALUES (? ,? , ? , ? , ?, ?)",
-        [avoirparams.navoir.navoir, avoirparams.model.id_facture, avoirparams.model.n_situation, avoirparams.model.date_avoir, avoirparams.model.id_contact, avoirparams.valeur.tva], function (error, results, fields) {
+    db.query("INSERT INTO avoir (id_avoir,id_facture,n_situation,date_avoir,id_contact,tva,montant_ht) VALUES (? ,? , ? , ? , ?, ?, ?)",
+        [avoirparams.navoir.navoir, avoirparams.model.id_facture, avoirparams.model.n_situation, avoirparams.model.date_avoir, avoirparams.model.id_contact, avoirparams.valeur.tva, avoirparams.model.totalavoir], function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);
                 console.log("(2)" + error.name + ': ' + error.message);
@@ -1285,7 +1285,7 @@ function addavoir(avoirparams) {
                         });
                 })(p);
             }
-
+            deferred.resolve()
 
         });
     return deferred.promise;
@@ -1293,7 +1293,6 @@ function addavoir(avoirparams) {
 
 function getAllListavoir() {
     var deferred = Q.defer();
-    console.log('avoir');
     db.query('SELECT avoir.id_avoir, avoir.id_facture, avoir.n_situation,avoir.date_avoir, contact.nom, contact.prenom, contact.raison_sociale, SUM( qtefact * prixfact ) AS somme, facture.nfactclient,avoir.montant_ht ' +
         'FROM avoir ' +
         'LEFT JOIN avoir_detail ON avoir_detail.id_avoir = avoir.id_avoir ' +
