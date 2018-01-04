@@ -81,7 +81,20 @@
 
 
             <div class="table table-responsive">
+                <table class="table" style="margin-top: 10px;">
+                    <tr>
+                        <td *ngIf="!print"colspan="7">
+                            <button *ngIf="droitsuser.ajoutcom" type="submit" class="btn  input-sm col-sm-3">
+                                Enregistrement du bon de commande
+                            </button>
+                            <button class="col-sm-offset-8 col-sm-1 btn"type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>                        </td>
+                    </tr>
+                </table>
+
+
                 <table class="table">
+
+
                     <thead>
                     <th style="width: 50px; ">Référence:</th>
                     <th style="width: 50px;">Libellé produit:</th>
@@ -154,18 +167,13 @@
                         <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         <td class="total"></td>
                     </tr>
-                    <tr>
-                        <td *ngIf="!print"colspan="7">
-                            <button *ngIf="droitsuser.ajoutcom" type="submit" class="btn btn-default input-sm col-sm-1 col-sm-offset-5">
-                                Enregistrer
-                            </button><!-- a integrer dans la bdd-->
-                            <button class="col-sm-offset-9 col-sm-1 btn" style="margin-top: 10px;" type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>                        </td>
-                    </tr>
+
 
 
                     </tbody>
 
                 </table>
+
             </div>
 
 
@@ -244,6 +252,7 @@
                 </tr>
                 </tbody>
             </table>
+
         </div>
 
     </div><!--fin container fluid-->
