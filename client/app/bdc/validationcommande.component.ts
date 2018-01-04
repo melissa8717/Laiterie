@@ -259,7 +259,7 @@ export class ValidationCommandeComponent implements OnInit {
         req.list = this.List;
         req.listimprevu = this.imprevuList;
         req.libre = this.libre;
-        //console.log(req);
+        console.log(this.List);
        this.commandeService.validate(req).subscribe(
             data=>{
                 this.router.navigate(['/suivi_commande']);

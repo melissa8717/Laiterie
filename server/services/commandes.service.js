@@ -82,28 +82,29 @@ console.log(bdcParam.list);
 
                 }
 
+
                 for (var p in bdcParam.list) {
+                    if (p.stocks === true) {
+                        (function (product) {
 
-                    (function (product) {
 
-                        if (bdcParam.list[product].stock === 1) {
+                            db.query("UPDATE stock SET stock = (stock + ?) WHERE id_produit = ? ",
+                                [bdcParam.list[product].Qtelivre, bdcParam.list[product].id_produit],
+                                function (error, result, fields) {
+                                    if (error) {
+                                        console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        return;
+                                    }
 
-                        db.query("UPDATE stock SET stock = (stock + ?) WHERE id_produit = ? ",
-                            [bdcParam.list[product].Qtelivre, bdcParam.list[product].id_produit],
-                            function (error, result, fields) {
-                                if (error) {
-                                    console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
-                                    deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
-                                    return;
-                                }
+                                    deferred.resolve();
+                                    //console.log(result.insertId);
+                                    //console.log(result.insertId);
+                                });
 
-                                deferred.resolve();
-                                //console.log(result.insertId);
-                                //console.log(result.insertId);
-                            });
+                        })(p);
+
                     }
-                    })(p);
-
                 }
 
                 //console.log(bdcParam.listimprevu);
@@ -314,7 +315,7 @@ function getAllDate() {
  */
 function getAll(month, year) {
     var deferred = Q.defer();
-    db.query('SELECT * FROM bondecommandelist where MONTH(date_livraison) = ? AND YEAR(date_livraison) = ? ORDER BY  `bondecommandelist`.`id_bdc` DESC', [month, year],
+    db.query('SELECT * FROM bonDeCommandeList where MONTH(date_livraison) = ? AND YEAR(date_livraison) = ? ORDER BY  `bonDeCommandeList`.`id_bdc` DESC', [month, year],
         function (error, chantiers, fields) {
 
             if (error) {
@@ -330,7 +331,7 @@ function getAll(month, year) {
 
 function getById(_id) {
     var deferred = Q.defer();
-    var sql = "SELECT * FROM bondecommandelist WHERE id_bdc = ? ";
+    var sql = "SELECT * FROM bonDeCommandeList WHERE id_bdc = ? ";
     var inserts = [_id];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, bdc, fields) {

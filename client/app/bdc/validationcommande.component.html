@@ -104,8 +104,8 @@
                             <span *ngIf="bdc.Recu" >{{List[i].Qtelivre  }}</span>
                         </td>
                         <td>
-                            <input *ngIf="!bdc.Recu" type="checkbox" name="stock{{i}}" [(ngModel)]="List[i].stock" >
-                            <input *ngIf="bdc.Recu" type="checkbox" name="stock{{i}}" [(ngModel)]="List[i].stock" disable="bdc.Recu">
+                            <input *ngIf="!bdc.Recu" type="checkbox" name="stocks{{i}}" [(ngModel)]="List[i].stocks" >
+                            <input *ngIf="bdc.Recu" type="checkbox" name="stocks{{i}}" [(ngModel)]="List[i].stocks" disable="bdc.Recu">
                         </td>
 
                         <td class="borderright">
@@ -141,8 +141,7 @@
                             <span *ngIf="bdc.Recu" >{{libre[i].Qte_livre | currency:'EUR':true:'1.2-2' }}</span>
                         </td>
                         <td>
-                            <input *ngIf="!bdc.Recu" type="checkbox" name="stock{{i}}" [(ngModel)]="libre[i].stock" >
-                            <input *ngIf="bdc.Recu" type="checkbox" name="stock{{i}}" [(ngModel)]="libre[i].stock" disable="bdc.Recu">
+
                         </td>
 
 
