@@ -22,8 +22,7 @@ router.put('/:_id', update);
 router.delete('/:_id', _delete);
 router.post('/demande', demandes);
 router.post('/otestock',otestock);
-router.get('/idretrait/:id_bdc',getByIdRetrait);
-router.get('/remov/:id_bdc',getByIdOter);
+
 
 
 module.exports = router;
@@ -203,30 +202,3 @@ function retrait(req, res) {console.log("test");
         });
 }
 
-function getByIdRetrait(req, res) {
-    commandeService.getByIdRetrait(req.params.id_bdc)
-        .then(function (bdc) {
-            if (bdc) {
-                res.send(bdc);
-            } else {
-                res.sendStatus(404);
-            }
-        })
-        .catch(function (err) {
-            res.status(400).send(err);
-        });
-}
-
-function getByIdOter(req, res) {
-    commandeService.getByIdOter(req.params.id_bdc)
-        .then(function (bdc) {
-            if (bdc) {
-                res.send(bdc);
-            } else {
-                res.sendStatus(404);
-            }
-        })
-        .catch(function (err) {
-            res.status(400).send(err);
-        });
-}

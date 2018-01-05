@@ -98,7 +98,7 @@ export class OtestockComponent {
     };
 
     private loadAllProducts() {
-        this.productService.getAll().subscribe(products => {
+        this.productService.getAllEnStock().subscribe(products => {
             this.products = products;
             console.log(this.products);
         });
@@ -118,6 +118,7 @@ export class OtestockComponent {
         tmp.id_produit = this.situas.id_produit;
         tmp.reference = this.situas.reference;
         tmp.unite = this.situas.unite;
+        tmp.enstock = this.situas.enstock;
 
 
         var check = this.produitDevis.filter(obj => obj.ref == this.situas.obj.id_produit);
@@ -155,6 +156,7 @@ export class OtestockComponent {
         this.situas.id_produit = this.situas.obj.id_produit;
         this.situas.reference = this.situas.obj.reference;
         this.situas.unite = this.situas.obj.unite;
+        this.situas.enstock = this.situas.obj.enstock;
         this.situas.prix_achat = this.situas.obj.prix_achat;
         this.situas.num_version = this.situas.obj.num_version;
 
@@ -176,7 +178,7 @@ export class OtestockComponent {
 
         this.commandeService.otestock(stockparams).subscribe(
             data => {
-                this.router.navigate(['/suivi_commande']);
+                this.router.navigate(['/retraitstock']);
                 this.alertService.success('Les produits ont été retirés des stocks avec succès.');
             });
     }

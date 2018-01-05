@@ -127,6 +127,10 @@ export class AchatsService {
         return this.http.delete(this.config.apiUrl + '/products/entre/' + id_entretien, this.jwt());
     }
 
+    getAllEnStock() {
+        return this.http.get(this.config.apiUrl + '/products/enstock', this.jwt()).map((response: Response) => response.json());
+    }
+
 
     /***************************************************GED*********************************************************************************/
     getGed(id: number) {

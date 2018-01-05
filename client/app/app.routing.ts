@@ -121,7 +121,7 @@ import {RapproComponent} from "./facture/rappro.component";
 import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
 import {OtestockComponent} from "./bdc/otestock.component";
 import {RetraitstockComponent} from "./bdc/retraitstock.component";
-import {StockretireComponent} from "./bdc/stockretire.component";
+
 
 
 
@@ -257,7 +257,7 @@ const appRoutes: Routes = [
     {path: 'diff_fournisseur/:id_contact', component: Diff_fournisseurComponent, canActivate: [AuthGuard]},
     {path: 'otestock', component: OtestockComponent,canActivate:[AuthGuard]},
     {path: 'retraitstock', component: RetraitstockComponent,canActivate:[AuthGuard]},
-    {path: 'stockretire/:id_bdc', component: StockretireComponent,canActivate:[AuthGuard]},
+
 
 
     // otherwise redirect to home

@@ -171,7 +171,7 @@ import {RapproComponent} from "./facture/rappro.component";
 import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
 import {OtestockComponent} from "./bdc/otestock.component";
 import {RetraitstockComponent} from "./bdc/retraitstock.component";
-import {StockretireComponent} from "./bdc/stockretire.component";
+
 
 
 @NgModule({
@@ -332,8 +332,7 @@ import {StockretireComponent} from "./bdc/stockretire.component";
         RapproComponent,
         Diff_fournisseurComponent,
         OtestockComponent,
-        RetraitstockComponent,
-        StockretireComponent
+        RetraitstockComponent
 
     ],
     providers: [

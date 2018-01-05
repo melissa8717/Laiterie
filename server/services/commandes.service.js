@@ -23,8 +23,7 @@ service.getAllListing = getAllListing;
 service.getByIdDetail = getByIdDetail;
 service.otestock = otestock;
 service.retrait = retrait;
-service.getByIdRetrait = getByIdRetrait;
-service.getByIdOter = getByIdOter;
+
 
 module.exports = service;
 
@@ -515,13 +514,13 @@ function otestock(bdcParam) {
             }
 
 
-            for (var p in bdcParam.libre) {
+            for (var p in bdcParam.produitDevis) {
 
                         (function (product) {
 
 
                             db.query("UPDATE stock SET stock =(stock - ?) WHERE id_produit = ? ",
-                                [bdcParam.produitDevis[product].qtefact, bdcParam.libre[product].id_produit],
+                                [bdcParam.produitDevis[product].qtefact, bdcParam.produitDevis[product].id_produit],
                                 function (error, result, fields) {
                                     if (error) {
                                         console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
@@ -562,39 +561,3 @@ function retrait(month, year) {
     return deferred.promise;
 }
 
-function getByIdRetrait(id_bdc) {
-    var deferred = Q.defer();
-    var sql = "SELECT * FROM bon_de_commande WHERE id_bdc = ? ";
-    var inserts = [id_bdc];
-    sql = mysql.format(sql, inserts);
-    db.query(sql, function (error, bdc, fields) {
-        if (error) {
-            console.log(error.name + ': ' + error.message);
-            deferred.reject(error.name + ': ' + error.message);
-        }
-        else {
-            deferred.resolve(bdc);
-        }
-    });
-    return deferred.promise;
-}
-
-
-function getByIdOter(id_bdc) {
-    var deferred = Q.defer();
-    var sql = "SELECT bdc_detaille. * , produit.libelle FROM bdc_detaille " +
-        "LEFT JOIN produit ON produit.id_produit = bdc_detaille.id_produit " +
-        "WHERE id_bdc =? GROUP BY produit.id_produit ";
-    var inserts = [id_bdc];
-    sql = mysql.format(sql, inserts);console.log(sql);
-    db.query(sql, function (error, bdc, fields) {
-        if (error) {
-            console.log(error.name + ': ' + error.message);
-            deferred.reject(error.name + ': ' + error.message);
-        }
-        else {
-            deferred.resolve(bdc);
-        }
-    });
-    return deferred.promise;
-}

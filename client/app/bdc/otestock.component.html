@@ -31,6 +31,7 @@
                 <th style="width: 50px; ">Référence:</th>
                 <th style="width: 50px;">Libellé :</th>
                 <th style="width: 50px;">Unité:</th>
+                <th style="width: 50px;">En stock:</th>
                 <th style="width: 50px;">Quantité:</th>
                 <th *ngIf="!print" class="col-xs-1">Action</th>
                 </thead>
@@ -52,6 +53,7 @@
                                placeholder="Produit"
                                class="col-sm-12"></td>
                     <td>{{situas.unite}}</td>
+                    <td>{{situas.enstock}}</td>
                     <td>
                         <input name="qtefact" type="number" [(ngModel)]="situas.qtefact">
                     </td>
@@ -74,6 +76,7 @@
                             <th style="width: 50px; ">Référence:</th>
                             <th style="width: 50px;">Libellé :</th>
                             <th style="width: 50px;">Unité:</th>
+                            <th style="width: 50px;">En stock:</th>
                             <th style="width: 50px;">Quantité:</th>
                             <th *ngIf="!print" class="col-xs-1">Action</th>
                         </tr>
@@ -96,12 +99,17 @@
                             <div class="form-group">
                                 <span>{{situas.obj.libelle}}</span>
                             </div>
-                        </td><td>
+                        </td>
+                        <td>
                             <div class="form-group">
                                 <span>{{situas.obj.unite}}</span>
                             </div>
                         </td>
-
+                        <td>
+                            <div class="form-group">
+                                <span>{{situas.obj.enstock}}</span>
+                            </div>
+                        </td>
 
 
                         <td>
