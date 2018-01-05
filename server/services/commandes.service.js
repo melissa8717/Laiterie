@@ -23,6 +23,8 @@ service.getAllListing = getAllListing;
 service.getByIdDetail = getByIdDetail;
 service.otestock = otestock;
 service.retrait = retrait;
+service.getByIdRemove = getByIdRemove;
+service.getByIdRemlist = getByIdRemlist;
 
 
 module.exports = service;
@@ -561,3 +563,37 @@ function retrait(month, year) {
     return deferred.promise;
 }
 
+function getByIdRemove(id_bdc) {
+    var deferred = Q.defer();
+    var sql = "SELECT bon_de_commande . * , users.firstname, users.lastname FROM bon_de_commande " +
+        "LEFT JOIN users ON users.id = bon_de_commande.id_user WHERE id_bdc = ? ";
+    var inserts = [id_bdc];
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, bdc, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        else {
+            deferred.resolve(bdc);
+        }
+    });
+    return deferred.promise;
+}
+
+function getByIdRemlist(id_bdc) {
+    var deferred = Q.defer();
+    var sql = "SELECT bdc_detaille . * FROM bdc_detaille WHERE id_bdc = ? ";
+    var inserts = [id_bdc];
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, bdc, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        else {
+            deferred.resolve(bdc);
+        }
+    });
+    return deferred.promise;
+}

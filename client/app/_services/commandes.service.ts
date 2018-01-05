@@ -73,15 +73,15 @@ export class CommandeService {
         return this.http.get(this.config.apiUrl + '/commandes/retrait/' + month + "/" + year, this.jwt()).map((response: Response) => response.json());
     }
 
-    getByIdtrait(id_bdc: number) {
-        console.log(this.config.apiUrl + '/commandes/test/' + id_bdc);
-        return this.http.get(this.config.apiUrl + '/commandes/test/' + id_bdc, this.jwt()).map((response: Response) => response.json());
+    getByIdRemove(id_bdc: number) {
+        return this.http.get(this.config.apiUrl + '/commandes/getByIdRemove/' + id_bdc, this.jwt()).map((response: Response) => response.json());
     }
 
-    getByOter(id_bdc: number) {
-        console.log(this.config.apiUrl + '/commandes/remov/' + id_bdc);
-        return this.http.get(this.config.apiUrl + '/commandes/remov/' + id_bdc, this.jwt()).map((response: Response) => response.json());
+    getByIdRemlist(id_bdc: number) {
+        console.log(this.config.apiUrl + '/commandes/getByIdRemlist/' + id_bdc);
+        return this.http.get(this.config.apiUrl + '/commandes/getByIdRemlist/' + id_bdc, this.jwt()).map((response: Response) => response.json());
     }
+
 
     // private helper methods
 
