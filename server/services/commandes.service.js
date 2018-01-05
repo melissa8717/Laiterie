@@ -22,6 +22,9 @@ service.demandes = demandes;
 service.getAllListing = getAllListing;
 service.getByIdDetail = getByIdDetail;
 service.otestock = otestock;
+service.retrait = retrait;
+service.getByIdRetrait = getByIdRetrait;
+service.getByIdOter = getByIdOter;
 
 module.exports = service;
 
@@ -536,5 +539,62 @@ function otestock(bdcParam) {
 
         });
 
+    return deferred.promise;
+}
+
+function retrait(month, year) {
+    var deferred = Q.defer();
+    db.query('SELECT date_livraison_reel, id_bdc,chantier.id_chantier, nom_chantier, lastname, firstname FROM  `bon_de_commande` ' +
+        'LEFT JOIN chantier ON chantier.id_chantier = bon_de_commande.id_chantier ' +
+        'LEFT JOIN users ON users.id = bon_de_commande.id_user ' +
+        'WHERE bon_de_commande.autre =  "oui" ' +
+        'AND MONTH( date_livraison_reel ) =? AND YEAR( date_livraison_reel ) =? ' +
+        'ORDER BY  `bon_de_commande`.`id_bdc` DESC ', [month, year],
+        function (error, chantiers, fields) {
+
+            if (error) {
+                console.log(error.name + ': ' + error.message)
+                deferred.reject(error.name + ': ' + error.message);
+            }
+
+            deferred.resolve(chantiers);
+        });
+    return deferred.promise;
+}
+
+function getByIdRetrait(id_bdc) {
+    var deferred = Q.defer();
+    var sql = "SELECT * FROM bon_de_commande WHERE id_bdc = ? ";
+    var inserts = [id_bdc];
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, bdc, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        else {
+            deferred.resolve(bdc);
+        }
+    });
+    return deferred.promise;
+}
+
+
+function getByIdOter(id_bdc) {
+    var deferred = Q.defer();
+    var sql = "SELECT bdc_detaille. * , produit.libelle FROM bdc_detaille " +
+        "LEFT JOIN produit ON produit.id_produit = bdc_detaille.id_produit " +
+        "WHERE id_bdc =? GROUP BY produit.id_produit ";
+    var inserts = [id_bdc];
+    sql = mysql.format(sql, inserts);console.log(sql);
+    db.query(sql, function (error, bdc, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        else {
+            deferred.resolve(bdc);
+        }
+    });
     return deferred.promise;
 }

@@ -15,12 +15,16 @@ router.get('/', getAllDate);
 router.get('/imprevu/:_id', getAllImprevuProducts);
 router.get('/:month/:year', getAll);
 router.get('/:_id', getById);
+router.get('/retrait/:month/:year',retrait);
 router.put('/state/:_id', changeState);
 router.put('/validate/:_id', validate);
 router.put('/:_id', update);
 router.delete('/:_id', _delete);
 router.post('/demande', demandes);
 router.post('/otestock',otestock);
+router.get('/idretrait/:id_bdc',getByIdRetrait);
+router.get('/remov/:id_bdc',getByIdOter);
+
 
 module.exports = router;
 
@@ -179,10 +183,48 @@ function getByIdDetail(req, res) {
 }
 
 function otestock(req, res) {
-    console.log("test");
     commandeService.otestock(req.body)
         .then(function () {
             res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function retrait(req, res) {console.log("test");
+
+    commandeService.retrait(req.params.month, req.params.year)
+        .then(function (chantiers) {
+            res.send(chantiers);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdRetrait(req, res) {
+    commandeService.getByIdRetrait(req.params.id_bdc)
+        .then(function (bdc) {
+            if (bdc) {
+                res.send(bdc);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByIdOter(req, res) {
+    commandeService.getByIdOter(req.params.id_bdc)
+        .then(function (bdc) {
+            if (bdc) {
+                res.send(bdc);
+            } else {
+                res.sendStatus(404);
+            }
         })
         .catch(function (err) {
             res.status(400).send(err);

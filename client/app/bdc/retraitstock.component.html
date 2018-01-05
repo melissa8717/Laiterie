@@ -1,10 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div id="chantier">
 
-</body>
-</html>
+    <my-header *ngIf="!print" [title]='"Bon de commande"' [img]="'image/menu/commandes_grand_gris.png'"></my-header>
+
+
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+
+
+
+            <div class="col-sm-12">
+
+
+                <h3 class="col-sm-12">Liste des retraits du stock</h3>
+
+                <ng-container *ngIf="!date">
+                    <a *ngIf="!print" (click)="back()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> </a>
+                    <a *ngIf="!print" (click)="up()"> <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a>
+
+                    {{monthArray[my.getMonth()]}} {{my.getFullYear()}}
+                    <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                </ng-container>
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+
+                        <thead>
+
+                        <tr>
+                            <th>N° de bon</th>
+                            <th>Nom du chantier</th>
+                            <th>N° chantier</th>
+                            <th>Date</th>
+                            <th>Auteur</th>
+                            <th>Action</th>
+                        </tr>
+
+
+                        </thead>
+
+                        <tbody>
+                        <tr *ngFor="let ret of retrait">
+                            <td>{{ret.id_bdc}}</td>
+                            <td>{{ret.nom_chantier}}</td>
+                            <td>{{ret.id_chantier}}</td>
+                            <td>{{ret.date_livraison_reel | date : 'dd-MM-yyyy  HH:mm'}}</td>
+                            <td>{{ret.lastname}} {{ret.firstname}}</td>
+                            <td><button type="button" [routerLink]="['/stockretire',ret.id_bdc]">Ouvrir</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+    </div>
+</div>
