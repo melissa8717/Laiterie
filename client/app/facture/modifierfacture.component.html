@@ -72,7 +72,7 @@
 
             </fieldset>
 
-            <fieldset class="marge1">
+            <fieldset class="marge1" >
                 <!--boucle pour éditer les lignes du tableau de facturation et calcul posiible ou déjà en bdd-->
 
 
@@ -106,7 +106,7 @@
                         <td style=" border-right: 1px solid black;" *ngIf="!valeur.tva">{{situa[i].tvas}}</td>
                     </tr>
 
-                    <tr  *ngFor="let lsituas of libsitua, let i =index; trackBy:customTrackBy">
+                    <tr  *ngFor="let lbsituas of libsitua, let i =index; trackBy:customTrackBy">
 
                         <td style="border-left: 1px solid black; border-right: 1px solid black;">{{libsitua[i].id_prod}}</td>
                         <td style=" border-right: 1px solid black;">{{libsitua[i].nom_produit}}</td>
@@ -115,10 +115,10 @@
                         <td style=" border-right: 1px solid black;">{{libsitua[i].prix_prod}}</td>
                         <td style=" border-right: 1px solid black;">{{libsitua[i].qteprod * libsitua[i].prix_prod | number:'1.0-2'}}</td>
                         <td style=" border-right: 1px solid black;">{{totalignesitua(libsitua[i]) | number:'1.0-2'}}</td>
-                        <td style=" border-right: 1px solid black;"><input style="width: 70px;" type="number" name="pourcent{{i}}" [(ngModel)]="libsitua[i].pourcent"  class="col-sm-12" min="0" max="100" *ngIf="libsitua[i].pourcent<=100"></td>
+                        <td style=" border-right: 1px solid black;"><input style="width: 70px;" type="number" name="pourcents{{i}}" [(ngModel)]="libsitua[i].pourcents"  class="col-sm-12" min="0" max="100" *ngIf="libsitua[i].pourcents<=100"></td>
                         <td style=" border-right: 1px solid black;" *ngIf="!valeur.tva">{{libsitua[i].tva}}</td>
                     </tr>
-                    <tr *ngIf="(option.length>0) || (libsituaop.length>0)"><td colspan="8" >Options acceptées</td></tr>
+                    <tr *ngIf="(option.length>0) || (libsituaop.length>0)" ><td colspan="9" style="border: 1px solid black;">Options acceptées</td></tr>
                     <tr  style="border:1px solid black;" *ngFor="let options of option, let i =index; trackBy:customTrackBy">
 
                         <td style="border-left: 1px solid black; border-right: 1px solid black;">{{option[i].id_produit}}-{{option[i].num_version}}</td>
@@ -157,7 +157,7 @@
 
             </fieldset>
 
-            <fieldset style="margin-top: 30px;">
+            <fieldset style="margin-top: 30px;" >
                 <table  style="border:1px solid black;" class=" separe1 col-sm-3 table-striped ">
                     <tbody >
 
@@ -168,7 +168,6 @@
                     <tr *ngIf="valeur.remise>0" style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;"> Remise:  {{valeur.remise}} %</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countRemise() | number:'1.0-2'}}</td></tr>
                     <tr class="basr gras" style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;">Total H.T. net :</td><td style="text-align:right;border-top:1px solid black;border-right:1px solid black;">{{countTotalRemise() | number:'1.0-2'}}</td></tr>
 
-                    <tr style="border-top:1px solid black;height: 50px;"><td class="gauche"> </td><td > </td></tr>
                     <tr style=";border-top:1px solid black;height: 50px;"><td class="gauche" style="text-align: left;">Plus-Value :</td ><td style="text-align:right;border-top:1px solid black;">0.00</td></tr>
                     <tr style="border-top:1px solid black;height: 50px;" ><td class="gauche" style="text-align: left;">Moins-Value :</td><td style="text-align:right;border-top:1px solid black;"> 0.00</td></tr>
                     <tr style="border-top:1px solid black;height: 50px;" class="basr"><td class="gauche"> </td><td style="text-align:center;border-top:1px solid black;"> </td></tr>
@@ -178,7 +177,7 @@
                     </tbody>
                 </table>
 
-                <table class=" separe1 col-sm-offset-9 table-striped" style=" float: right; text-align:center; margin-top :-500px">
+                <table class=" separe1 col-sm-offset-9 table-striped" style=" float: right; text-align:center; margin-top :-400px">
                     <tbody style="text-align: center;">
                     <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-top:1px solid black;border-left:1px solid black;" class="gauche" style="text-align: left;">Total Net :</td><td >{{countTotalNet() | number:'1.0-2'}}</td></tr>
                     <tr  style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right; border-left: 1px solid;;border-top:1px solid black;" class="gauche" style="text-align: left;">Acompte /situations antérieures :</td><td style="text-align:right;">{{totalsituation() | number:'1.0-2'}}</td></tr>
@@ -186,14 +185,16 @@
 
 
 
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="valeur.tva"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à {{valeur.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td style="text-align: right;">{{countTVA() | number:'1.0-2'}}</td></tr>
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à 20 % </td><td style="text-align: right;">{{SumTvaV() | number:'1.0-2'}}</td></tr>
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaD()"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à 10 % </td><td style="text-align: right;">{{SumTvaD() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="valeur.tva"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à {{valeur.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td style="text-align: right;">{{countTVA() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()>0"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 20 % </td><td style="text-align: right;">{{SumTvaV() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaD()>0"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 10 % </td><td style="text-align: right;">{{SumTvaD() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaC()>0"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 5.5 % </td><td style="text-align: right;">{{SumTvaC() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaDX()>0"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 2.1 % </td><td style="text-align: right;">{{SumTvaDX() | number:'1.0-2'}}</td></tr>
 
-                    <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total TVA :</td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;"></td></tr>
+                    <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">Total TVA :</td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;">{{TotauxTVA() | number:'1.0-2'}}</td></tr>
                     <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" class="basr grass"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;" class="gauche" style="text-align: left;">Total TTC :</td><td style="text-align: right;">{{countSTotal() | number:'1.0-2'}}</td></tr>
 
-                    <tr *ngIf="model.retenue>0" style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" style="text-align: left;" >Retenue de garantie<i style="padding-left: 20px;">{{model.retenue}}%</i></td><td style="text-align:right;">{{countRetenu() | number:'1.0-2'}}</td></tr><p>&nbsp;</p>
+                    <tr *ngIf="valeur.taux>0" style="height: 50px;border:1px solid black"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" style="text-align: left;" >Retenue de garantie<i style="padding-left: 20px;">{{valeur.taux}}%</i></td><td style="text-align:right;">{{countRetenu() | number:'1.0-2'}}</td></tr><p>&nbsp;</p>
                     <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" class="basr"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;border-bottom: 1px solid black;" lass="gauche" style="text-align: left;">Reste TTC :</td><td style="text-align:right;">{{countTotalTTC() | number:'1.0-2'}}</td></tr>
 
 
@@ -230,7 +231,7 @@
                     <p>{{fact.pied_page6}}</p>
                 </article>
             </div>
-            <button *ngIf="!print && droitsuser.modiffact" class="btn btn-default input-sm col-sm-offset-11" type="submit" [disabled]="loading">Enregistrer</button>
+            <button *ngIf="!print && droitsuser.modiffact && (countTotal()<= countTTC())" class="btn btn-default input-sm col-sm-offset-11" type="submit" [disabled]="loading">Enregistrer</button>
 
         </form>
     </div>

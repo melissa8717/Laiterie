@@ -6,7 +6,7 @@ var paramsService = require('services/params.service');
 router.get('/footer', getFooter);
 router.post('/dagen', addagence);
 router.get('/agence', getAllAgence);
-router.get('/agence', getAllFili);
+router.get('/filig', getAllFili);
 
 router.put('/modifyagence', updateAgence);
 
@@ -85,8 +85,8 @@ function getAllAgence(req, res) {
 
 function getAllFili(req, res) {
     paramsService.getAllFili()
-        .then(function (agence) {
-            res.send(agence);
+        .then(function (filigrane) {
+            res.send(filigrane);
         })
         .catch(function (err) {
             res.status(400).send(err);

@@ -73,6 +73,8 @@ service.getByIdequipement = getByIdequipement;
 service.deleteEquipement = deleteEquipement;
 service.deleteCaces = deleteCaces;
 
+service.getByIdFacclient = getByIdFacclient;
+
 module.exports = service;
 
 /*******************************************************************************
@@ -892,13 +894,12 @@ function getByIdNom(id_contact) {
 
 function addForm(Eparams) {
     var deferred = Q.defer();
-    //console.log("test1");
-    console.log(Eparams);
+    //console.log(Eparams);
 
     db.query("INSERT INTO formationcontact (id_contact, nom_formation, datefor,id_formation) VALUES (? , ? , ? ,?)", [Eparams.nom.id_contact, Eparams.test.nom_formation.designation, Eparams.test.datefor, Eparams.test.nom_formation.id_formation], function (error, results, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
-            console.log("(2)" + error.name + ': ' + error.message);
+            console.log(error.name + ': ' + error.message);
         }
     });
     return deferred.promise;
@@ -1042,6 +1043,7 @@ function upFormation(eParam) {
         if (error) {
             //console.log(+ error.message)
             deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
+            console.log(error.name + ': ' + error.message);
         }
         //console.log(results)
 
@@ -1053,9 +1055,7 @@ function upFormation(eParam) {
 
 function equipement(equipement, id_contact) {
     var deferred = Q.defer();
-    console.log(equipement);
-    console.log(id_contact);
-
+    //console.log(equipement);
 
     db.query("INSERT INTO equipement(id_contact,designation,nbre,taille,commentaire,date) VALUES (? , ?,?,?,?,?)", [id_contact, equipement.designation, equipement.nbre, equipement.taille, equipement.commentaire, equipement.date], function (error, results, fields) {
         if (error) {
@@ -1091,5 +1091,28 @@ function deleteEquipement(id_equipement) {
         deferred.resolve();
     });
 
+    return deferred.promise;
+}
+
+
+function getByIdFacclient(_id_contact) {
+
+    var deferred = Q.defer();
+    var sql = "SELECT contact.nom, contact.prenom, devis.*, facture . * \n" +
+        "FROM facture, contact\n" +
+        "LEFT JOIN devis ON devis.id_contact = contact.id_contact\n" +
+        "WHERE contact.id_contact =165\n" +
+        "AND facture.id_devis = devis.id_devis ORDER BY facture.id_facture DESC";
+    var inserts = [_id_contact];
+    sql = mysql.format(sql, inserts);
+    //console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message)
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
     return deferred.promise;
 }

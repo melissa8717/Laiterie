@@ -197,7 +197,7 @@ export class AvoirlibreComponent {
     }
 
     countRemise() {
-        this.model.montant_ht = this.countTotalSit() * (this.model.remise ? (1 - (this.model.remise) / 100) : 1);
+        this.model.montant_ht = this.countTotalSit() * (this.model.remise ? (1 - (this.model.remise) / 100) : 1)*(-1);
         return this.model.montant_ht
     }
 
@@ -268,7 +268,7 @@ export class AvoirlibreComponent {
 
 
     countTotalTTC() {
-        return this.countTotalSit() * (this.model.remise ? (1 - (this.model.remise) / 100) : 1) + this.TVAV() + this.TVAD() + this.TVAC() + this.TVADU() + this.TVAZ();
+        return (this.countRemise()) - (+ this.TVAV() + this.TVAD() + this.TVAC() + this.TVADU() + this.TVAZ());
     }
 
 

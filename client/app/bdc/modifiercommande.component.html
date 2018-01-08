@@ -46,36 +46,21 @@
 
         <form method="" action="" [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)"
               (keyup.enter)="addProduct();">
-            <!--
-                        <div class="col-sm-12">
-
-
-                            <div class="form-group col-sm-4">
-                                <span>Pour : {{bdc.livre}}</span><!--variable à mettre suivant le choix
-                            </div>
-                            <div style="float :right;" class="form-group col-sm-4" *ngIf="bdc.id_chantier">
-                                <span>N° chantier: {{bdc.id_chantier}}</span>-->
-            <!--variable pour le chantier et permetttre une recherche par indexation du chantier
-        </div>
-        <br>
-
-       <!--variable-->
-
-
-
 
 
 
             <div >
-                <table class="col-sm-12" style="margin-left: -30px;">
+                <table class="col-sm-12" style="margin-left: -30px;border:none;">
                     <thead>
-                    <th style="width: 50px; ">Référence:</th>
-                    <th style="width: 50px;">Libellé produit:</th>
-                    <th style="width: 50px;">Unité:</th>
-                    <th *ngIf="!print" style="width: 50px;">Prix H.T.</th>
-                    <th style="width: 50px;">Quantité:</th>
-                    <th *ngIf="!print" style="width: 50px;">Total H.T.</th>
-                    <th *ngIf="!print" class="col-xs-1">Action</th>
+                        <tr>
+                            <th style="width: 50px; ">Référence:</th>
+                            <th style="width: 50px;">Libellé produit:</th>
+                            <th style="width: 50px;">Unité:</th>
+                            <th style="width: 50px;">Quantité:</th>
+                            <th *ngIf="!print" style="width: 50px;">Prix H.T.</th>
+                            <th *ngIf="!print" style="width: 50px;">Total H.T.</th>
+                            <th *ngIf="!print" class="col-xs-1">Action</th>
+                        </tr>
                     </thead>
                     <tbody>
 
@@ -103,7 +88,7 @@
                         </td>
                         <td><label *ngIf="!print">Prix enregistré: {{prix | currency:'EUR':true:'1.2-2'}}</label><br>
                             <input *ngIf="!print" style="border:none;"  type="number" step="0.01" name="prix_ht" formControlName="ht" placeholder=""
-                                    value="">
+                                   value="">
                         </td>
 
 
@@ -132,8 +117,14 @@
                         </td>
 
                     </tr>
+
+
+
                     </tbody>
                 </table>
+
+
+
                 <p>&nbsp;</p>
                 <div >
                         <span class="col-sm-4">Date de livraison :
@@ -184,7 +175,7 @@
                     <tr *ngIf="!print">
                         <td colspan="5" class="total">Total :</td>
                         <td class="total">{{all | currency:'EUR':true:'1.2-2' }} </td>
-                        <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+
                         <td class="total"></td>
 
                     </tr>
@@ -194,22 +185,90 @@
                         <td colspan="7">
                             <button *ngIf="droitsuser.ajoutcom && !print" type="submit" class="btn btn-default input-sm col-sm-4 col-sm-offset-5">
                                 Enregistrer
-                            </button><!-- a integrer dans la bdd-->
+                            </button>
                         </td>
                     </tr>
                     </tbody>
 
                 </table>
             </div>
-            <button class="col-sm-offset-10 col-sm-1 btn" style="margin-top: 10px;" type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>
-
-
-
-
-
 
 
         </form>
+
+        <div >
+            <table class="col-sm-12" style="margin-left: -30px;margin-top:20px;margin-bottom: 10px;width: 100%;">
+
+
+                <tbody>
+
+                <tr *ngIf="!print">
+
+                    <td >
+                        <input style="border:none;"  type="text" name="ref" [(ngModel)]="produit.ref" placeholder="Référence">
+
+                    </td>
+
+                    <td><input style="border:none;" class="form-control input-sm"
+                               placeholder="Ajouter un produit non référencé"
+                               name="produit"
+                               [(ngModel)]="produit.objf"
+                               (ngModelChange)="testfact()"
+                    >
+                        <!--variable pour le libellé et permetttre une recherche par indexation si produit inconnu : rajouté dans la liste des produits ou créer le produit  avec ses caractéristiques lors de la validation de commande par une demande à l'utilisateur-->
+                    </td>
+                    <td>
+                        <input style="border:none;"   type="text" name="unit" [(ngModel)]="produit.unit" placeholder="Unité">
+                    </td>
+                    <td>
+                        <input style="border:none;"  type="number" name="qtep"  [(ngModel)]="produit.qtep" placeholder="Quantité">
+                    </td>
+                    <td>
+                        <input  style="border:none;"  type="number"  name="prix_p" [(ngModel)]="produit.prix_p"
+                                placeholder="Prix">
+                    </td>
+
+
+                    <td >
+                        {{(produit.qtep && produit.prix_p) ? (produit.qtep * produit.prix_p) : 0 | currency:'EUR':true:'1.2-2'}}
+                    </td>
+                    <td>
+                        <button *ngIf="droitsuser.ajoutcom && !print" class="btn btn-default input-sm "  type="button" (click)="ajouterfact()"
+                                [disabled]="(!produit.prix_p && !produit.qtep)">Ajouter la ligne
+                        </button>
+                    </td>
+                </tr>
+
+                <tr *ngFor="let prode of libre">
+                    <td ><span>{{prode.reference ? prode.reference : prode.ref}}</span></td>
+                    <td ><span>{{prode.nom_prod ? prode.nom_prod : prode.produit}}</span></td>
+                    <td ><span>{{prode.unite ? prode.unite : prode.unit}}</span></td>
+                    <td><span>{{prode.qte ? prode.qte : prode.qtep}}</span></td>
+                    <td  *ngIf="!print" ><span>{{(prode.prix_prevu ? prode.prix_prevu : prode.prix_p) | currency:'EUR':true:'1.2-2'}}</span></td>
+
+                    <td  *ngIf="!print"><span>{{prode.prix_prevu ? (prode.prix_prevu * prode.qte) : ( prode.prix_p * prode.qtep) | currency:'EUR':true:'1.2-2' }}</span></td>
+                    <td>
+                        <button *ngIf="droitsuser.supcom && !print" class="btn btn-default input-sm"  type="button" (click)="supprimerfact(prode)">
+                            Supprimer
+                        </button>
+                    </td>
+
+                </tr>
+                <tr *ngIf="!print && totalibre()">
+                    <td  class="total">Total :</td>
+                    <td class="total">{{totalibre() | currency:'EUR':true:'1.2-2' }} </td>
+                </tr>
+
+                <tr *ngIf="!print && totalibre() && all">
+                    <td  class="total">Totaux :</td>
+                    <td class="total">{{totalcount() | currency:'EUR':true:'1.2-2' }} </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button class="col-sm-offset-10 col-sm-1 btn" style="margin-top: 10px;" type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>
+
+        </div>
         <h6 *ngIf="print">En vous remerciant par avance,<br>
             Cordialement.</h6>
 

@@ -37,8 +37,29 @@
                                 max="100"
                                 [(ngModel)]="devis.remise">
                     </div>
-
                     <div class="form-group">
+                        <label class="col-sm-5">Retenue de garantie :</label>
+                        <input
+                                type="checkbox"
+
+                                name="retenu"
+                                min="0"
+                                max="100"
+                                [(ngModel)]="devis.retenu">
+                    </div>
+
+                    <div class="form-group" *ngIf="devis.retenu">
+                        <label class="col-sm-4">Pourcentage :</label>
+                        <input
+                                type="number"
+                                step="0.01"
+                                name="remisee"
+                                min="0"
+                                max="100"
+                                [(ngModel)]="devis.retenuedegarantie">
+                    </div>
+
+                    <!--<div class="form-group">
                         <label class="col-sm-4">Accompte :</label>
                         <input
                                 type="checkbox"
@@ -66,7 +87,7 @@
                                 value="oui"
                                 [(ngModel)]="devis.accomptepercentage"
                         >
-                    </div>
+                    </div>-->
 
                     <div class="form-group">
                         <label class="col-sm-4">N° de facture : </label>{{nfact.nfact}}
@@ -400,7 +421,7 @@
 
                         <td>
                             <div class="form-group">
-                                <span *ngIf="produitf.produit ? produitf.produit : produitf.objf">{{produitf.produit}}{{produitf.objf}}{{produitFact[i].produit}}</span><br>
+                                <span *ngIf="produitf.produit ? produitf.produit : produitf.objf">{{produitf.objf}}{{produitFact[i].produit}}</span><br>
 
                             </div>
                         </td>
@@ -522,6 +543,15 @@
                     <tr >
                         <td colspan="6" class="total" style="text-align: right;">TTC :</td>
                         <td class="total">{{countTotalTVA()  | currency:'EUR':true:'1.2-2'}}</td>
+                    </tr>
+
+                    <tr >
+                        <td colspan="6" class="total" style="text-align: right;">Retenue de garantie de {{devis.retenuedegarantie}} %:</td>
+                        <td class="total">{{retenue()  | currency:'EUR':true:'1.2-2'}}</td>
+                    </tr>
+                    <tr >
+                        <td colspan="6" class="total" style="text-align: right;">Total TTC :</td>
+                        <td class="total">{{totalttc()  | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
 

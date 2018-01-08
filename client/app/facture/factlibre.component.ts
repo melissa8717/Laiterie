@@ -125,6 +125,7 @@ export class FactlibreComponent {
             this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
+
                 }
             )
         });
@@ -192,6 +193,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
             total += bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         }
+
         return total;
     }
 
@@ -201,15 +203,19 @@ export class FactlibreComponent {
         for (let details of this.detail) {
             total += details.qteprod * details.prix_prod * (details.pourcentf / 100);
         }
+
         return total;
     }
 
     totalfacture() {
-        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) * (1 - (this.model.remise ? (this.model.remise / 100 ) : 1) );
+        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 ));
+    }
+    totalreal(){
+        return this.counttotalbase() + this.counttotaldetail();
     }
 
     countTotals() {
-        return (this.counttotalbase() + this.counttotaldetail()) * (1 - (this.model.remise ? (this.model.remise / 100) : 1));
+        return  this.totalreal() * (1 - (this.model.remise ? (this.model.remise / 100) : 1));
     }
 
     countRemise() {
@@ -233,7 +239,7 @@ export class FactlibreComponent {
         for (let details of this.detail) {
 
             if (details.tva == 20) {
-                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf ? details.pourcentf / 100 : 0) * (details.tva / 100);
 
             }
         }
@@ -246,7 +252,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
 
             if (bases.tva == 20) {
-                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 0) * (bases.tva / 100);
             }
 
         }
@@ -287,7 +293,7 @@ export class FactlibreComponent {
         for (let details of this.detail) {
 
             if (details.tva == 10) {
-                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf ? details.pourcentf / 100 :0) * (details.tva / 100);
 
             }
         }
@@ -300,7 +306,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
 
             if (bases.tva == 10) {
-                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 0) * (bases.tva / 100);
             }
 
         }
@@ -396,7 +402,7 @@ export class FactlibreComponent {
         for (let details of this.detail) {
 
             if (details.tva == 2.1) {
-                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf / 100) * (details.tva / 100);
+                total += ( details.prix_prod * details.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (details.pourcentf ? details.pourcentf / 100 : 0) * (details.tva / 100);
             }
         }
         return total;
@@ -408,7 +414,7 @@ export class FactlibreComponent {
         for (let bases of this.base) {
 
             if (bases.tva == 2.1) {
-                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
+                total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 0) * (bases.tva / 100);
             }
         }
         return total;
@@ -476,6 +482,13 @@ export class FactlibreComponent {
         return this.TotalTva() + this.CountTotalsituation();
     }
 
+    retenuettc(){
+        return this.countTotalttc() * (this.model.id_version ? (this.model.id_version/100) : 0);
+    }
+
+    totalttcretenue(){
+        return this.countTotalttc() - this.retenuettc();
+    }
 
     submit() {
 
@@ -488,7 +501,7 @@ export class FactlibreComponent {
         var test = +confirm('Etes vous sûr de vouloir enregistrer votre facture :');
         //console.log(factureparams);
         if (test) {
-            console.log(factureparams);
+            //console.log(factureparams);
             this.factureService.createSituationlibre(factureparams, this.id_facture).subscribe(
                 data => {
                     this.router.navigate(['/listefacture']);
@@ -533,7 +546,7 @@ export class FactlibreComponent {
         this.paramsService.getAllAgence().subscribe(img => {
 
             this.img = img[0];
-            console.log(this.img);
+            //console.log(this.img);
             //console.log(this.currentUser);
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});

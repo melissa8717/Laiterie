@@ -200,6 +200,10 @@ export class ContactService {
         return this.http.delete(this.config.apiUrl + '/contacts/deleteCaces/' + id_cacon, this.jwt());
     }
 
+
+    getByIdFacclient(id_contact: number) {
+        return this.http.get(this.config.apiUrl + '/contacts/fact/' + id_contact, this.jwt()).map((response: Response) => response.json());
+    }
     // private helper methods
 
     private jwt() {

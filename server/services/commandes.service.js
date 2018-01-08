@@ -11,6 +11,7 @@ service.getAll = getAll;
 service.getAllDate = getAllDate;
 service.getById = getById;
 service.getAllProducts = getAllProducts;
+service.getAllibre = getAllibre;
 service.getAllImprevuProducts = getAllImprevuProducts;
 service.create = create;
 service.delete = _delete;
@@ -20,6 +21,11 @@ service.changeState = changeState;
 service.demandes = demandes;
 service.getAllListing = getAllListing;
 service.getByIdDetail = getByIdDetail;
+service.otestock = otestock;
+service.retrait = retrait;
+service.getByIdRemove = getByIdRemove;
+service.getByIdRemlist = getByIdRemlist;
+
 
 module.exports = service;
 
@@ -38,7 +44,7 @@ function changeState(_id, bdcParam) {
 
 function validate(_id, bdcParam) {
     var deferred = Q.defer();
-
+console.log(bdcParam.list);
     db.query("SELECT * FROM bon_de_commande WHERE id_bdc= ?", [_id], function (error, results, fields) {
         if (error) deferred.reject('MySql ERROR trying to update user informations (1) | ' + error.message);
 
@@ -80,7 +86,32 @@ function validate(_id, bdcParam) {
 
                 }
 
-                console.log(bdcParam.listimprevu);
+
+                for (var p in bdcParam.list) {
+                    if (p.stocks === true) {
+                        (function (product) {
+
+
+                            db.query("UPDATE stock SET stock = (stock + ?) WHERE id_produit = ? ",
+                                [bdcParam.list[product].Qtelivre, bdcParam.list[product].id_produit],
+                                function (error, result, fields) {
+                                    if (error) {
+                                        console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        return;
+                                    }
+
+                                    deferred.resolve();
+                                    //console.log(result.insertId);
+                                    //console.log(result.insertId);
+                                });
+
+                        })(p);
+
+                    }
+                }
+
+                //console.log(bdcParam.listimprevu);
                 for (var p in bdcParam.listimprevu) {
 
                     (function (product) {
@@ -108,6 +139,28 @@ function validate(_id, bdcParam) {
 
                 }
 
+                for (var p in bdcParam.libre) {
+
+                    (function (product) {
+
+
+                        db.query("UPDATE bdc_libre SET Prixreel = ?, Qte_livre = ? WHERE id_bdc = ? AND id_prod = ? ",
+                            [bdcParam.libre[product].Prixreel, bdcParam.libre[product].Qte_livre, _id, bdcParam.libre[product].id_prod],
+                            function (error, result, fields) {
+                                if (error) {
+                                    console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                    deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                    return;
+                                }
+
+                                deferred.resolve();
+                                //console.log(result.insertId);
+                                //console.log(result.insertId);
+                            });
+                    })(p);
+
+                }
+
 
             });
     }
@@ -118,7 +171,7 @@ function validate(_id, bdcParam) {
 
 function update(_id, bdcParam) {
     var deferred = Q.defer();
-
+    console.log(bdcParam);
     // validation
     db.query("SELECT * FROM bon_de_commande WHERE id_bdc=?", [_id], function (error, results, fields) {
         if (error) deferred.reject('MySql ERROR trying to update user informations (1) | ' + error.message);
@@ -160,6 +213,28 @@ function update(_id, bdcParam) {
                     }
                 });
 
+                db.query("DELETE FROM bdc_libre WHERE id_bdc = ?", [_id], function (error, results, fields) {
+                    if (error) deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                    for (var p in bdcParam.libre) {
+
+                        (function (product) {
+
+
+                            db.query("INSERT INTO bdc_libre (id_bdc, nom_prod, reference,unite, qte, prix_prevu) VALUES (? ,? , ? , ? , ? , ?)",
+                                [_id, bdcParam.libre[product].nom_prod ? bdcParam.libre[product].nom_prod : bdcParam.libre[product].produit, bdcParam.libre[product].reference ? bdcParam.libre[product].reference : bdcParam.libre[product].ref,bdcParam.libre[product].unite ? bdcParam.libre[product].unite : bdcParam.libre[product].unit, bdcParam.libre[product].qte ? bdcParam.libre[product].qte : bdcParam.libre[product].qtep,
+                                    bdcParam.libre[product].prix_prevu ? bdcParam.libre[product].prix_prevu : bdcParam.libre[product].prix_p],
+                                function (error, result, fields) {
+                                    if (error) {
+                                        deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        return;
+                                    }
+
+                                });
+                        })(p);
+
+                    }
+                });
+
 
                 deferred.resolve();
             });
@@ -182,7 +257,24 @@ function getAllProducts(_id) {
             deferred.reject(error.name + ': ' + error.message);
         }
 
-        console.log(prods);
+        //console.log(prods);
+        deferred.resolve(prods);
+    });
+    return deferred.promise;
+}
+
+function getAllibre(_id) {
+    var deferred = Q.defer();
+    //console.log("test");
+    db.query('SELECT * FROM bdc_libre ' +
+        'where id_bdc = ?', [_id], function (error, prods, fields) {
+
+        if (error) {
+            console.log(error.name + ': ' + error.message)
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        //console.log(prods);
         deferred.resolve(prods);
     });
     return deferred.promise;
@@ -215,7 +307,7 @@ function getAllDate() {
             }
 
 
-            console.log(chantiers);
+            //console.log(chantiers);
             deferred.resolve(chantiers);
         });
     return deferred.promise;
@@ -227,7 +319,7 @@ function getAllDate() {
  */
 function getAll(month, year) {
     var deferred = Q.defer();
-    db.query('SELECT * FROM bondecommandelist where MONTH(date_livraison) = ? AND YEAR(date_livraison) = ?', [month, year],
+    db.query('SELECT * FROM bonDeCommandeList where MONTH(date_livraison) = ? AND YEAR(date_livraison) = ? ORDER BY  `bonDeCommandeList`.`id_bdc` DESC', [month, year],
         function (error, chantiers, fields) {
 
             if (error) {
@@ -243,7 +335,7 @@ function getAll(month, year) {
 
 function getById(_id) {
     var deferred = Q.defer();
-    var sql = "SELECT * FROM bondecommandelist WHERE id_bdc = ? ";
+    var sql = "SELECT * FROM bonDeCommandeList WHERE id_bdc = ? ";
     var inserts = [_id];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, bdc, fields) {
@@ -261,7 +353,7 @@ function getById(_id) {
 
 function create(bdc_param) {
     var deferred = Q.defer();
-    console.log(bdc_param);
+    //console.log(bdc_param);
 
     db.query("INSERT INTO bon_de_commande (adresselivraison, id_fournisseur, date_livraison, date_commande, livre, tarifpourlivraison, id_user, id_chantier)" +
         " VALUES (? , ? , ? , ?, ?, ?, ?, ?)",
@@ -273,12 +365,12 @@ function create(bdc_param) {
             for (var p in bdc_param.products) {
                 (function (product) {
                     console.log(bdc_param.products[product]);
-                    console.log("INSERT INTO bdc_detaille (id_bdc, id_produit, num_version, qte, prix_prevu) VALUES (? , ? , ? , ? , ?)",
+                    /*console.log("INSERT INTO bdc_detaille (id_bdc, id_produit, num_version, qte, prix_prevu) VALUES (? , ? , ? , ? , ?)",
                         [id_bdc,
                             bdc_param.products[product].id_produit,
                             bdc_param.products[product].num_version,
                             bdc_param.products[product].quantite ? bdc_param.products[product].quantite : 1,
-                            bdc_param.products[product].prix_prevu ? bdc_param.products[product].prix_prevu : bdc_param.products[product].ht]);
+                            bdc_param.products[product].prix_prevu ? bdc_param.products[product].prix_prevu : bdc_param.products[product].ht]);*/
                     db.query("INSERT INTO bdc_detaille (id_bdc, id_produit, num_version, qte, prix_prevu) VALUES (? , ? , ? , ? , ?)",
                         [id_bdc,
                             bdc_param.products[product].id_produit,
@@ -381,6 +473,118 @@ function getByIdDetail(id_demande) {
     var deferred = Q.defer();
     var sql = "SELECT * FROM demande_detail WHERE id_demande = ? ";
     var inserts = [id_demande];
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, bdc, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        else {
+            deferred.resolve(bdc);
+        }
+    });
+    return deferred.promise;
+}
+
+function otestock(bdcParam) {
+    console.log(bdcParam.produitDevis);
+    var deferred = Q.defer();
+    //console.log("state change" + bdcParam.state, _id);
+    db.query("INSERT INTO bon_de_commande (id_chantier, livre, tarifpourlivraisonreel, id_user, nbdc, autre) VALUES (? ,? ,? ,? ,? ,? )",
+        [bdcParam.chantier.nom.id_chantier, 'chantier', 0, bdcParam.id_user, 0, 'OUI'],
+        function (error, results, fields) {
+            if (error) {
+                deferred.reject(error.name + ': ' + error.message);
+                console.log(error.name + ': ' + error.message);
+            }
+            console.log(results);
+
+            for (var p in bdcParam.produitDevis) {
+                (function (facture) {
+                    db.query("INSERT INTO bdc_detaille (id_bdc, id_produit,num_version,qte,prix_prevu) VALUES (? ,? , ? , ? , ? )",
+                        [results.insertId, bdcParam.produitDevis[facture].id_produit, bdcParam.produitDevis[facture].num_version, bdcParam.produitDevis[facture].qtefact, bdcParam.produitDevis[facture].prix_achat],
+                        function (error, result, fields) {
+                            if (error) {
+                                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+                            }
+                            if (facture = bdcParam.produitDevis.length) {
+                                deferred.resolve()
+                            }
+                        });
+                })(p);
+            }
+
+
+            for (var p in bdcParam.produitDevis) {
+
+                        (function (product) {
+
+
+                            db.query("UPDATE stock SET stock =(stock - ?) WHERE id_produit = ? ",
+                                [bdcParam.produitDevis[product].qtefact, bdcParam.produitDevis[product].id_produit],
+                                function (error, result, fields) {
+                                    if (error) {
+                                        console.log('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        deferred.reject('MySql ERROR trying to update user informations (2) | in adding products ' + error.message);
+                                        return;
+                                    }
+
+                                    deferred.resolve();
+                                    //console.log(result.insertId);
+                                    //console.log(result.insertId);
+                                });
+                        })(p);
+
+                    }
+
+        });
+
+    return deferred.promise;
+}
+
+function retrait(month, year) {
+    var deferred = Q.defer();
+    db.query('SELECT date_livraison_reel, id_bdc,chantier.id_chantier, nom_chantier, lastname, firstname FROM  `bon_de_commande` ' +
+        'LEFT JOIN chantier ON chantier.id_chantier = bon_de_commande.id_chantier ' +
+        'LEFT JOIN users ON users.id = bon_de_commande.id_user ' +
+        'WHERE bon_de_commande.autre =  "oui" ' +
+        'AND MONTH( date_livraison_reel ) =? AND YEAR( date_livraison_reel ) =? ' +
+        'ORDER BY  `bon_de_commande`.`id_bdc` DESC ', [month, year],
+        function (error, chantiers, fields) {
+
+            if (error) {
+                console.log(error.name + ': ' + error.message)
+                deferred.reject(error.name + ': ' + error.message);
+            }
+
+            deferred.resolve(chantiers);
+        });
+    return deferred.promise;
+}
+
+function getByIdRemove(id_bdc) {
+    var deferred = Q.defer();
+    var sql = "SELECT bon_de_commande . * , users.firstname, users.lastname FROM bon_de_commande " +
+        "LEFT JOIN users ON users.id = bon_de_commande.id_user WHERE id_bdc = ? ";
+    var inserts = [id_bdc];
+    sql = mysql.format(sql, inserts);
+    db.query(sql, function (error, bdc, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        else {
+            deferred.resolve(bdc);
+        }
+    });
+    return deferred.promise;
+}
+
+function getByIdRemlist(id_bdc) {
+    var deferred = Q.defer();
+    var sql = "SELECT bdc_detaille . * FROM bdc_detaille WHERE id_bdc = ? ";
+    var inserts = [id_bdc];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, bdc, fields) {
         if (error) {

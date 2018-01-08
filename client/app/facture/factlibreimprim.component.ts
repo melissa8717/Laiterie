@@ -55,6 +55,8 @@ export class FactlibreimprimComponent {
     id_agence: number;
     img: any = {};
 
+    montant: number;
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -117,7 +119,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibreModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-                    console.log(this.model)
+                    console.log(data);
                 }
             )
         });
@@ -130,6 +132,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
+
                 }
             )
         });
@@ -227,6 +230,7 @@ export class FactlibreimprimComponent {
         for (let bases of this.base) {
             total += bases.qte_fact * bases.prix_fact * (bases.pourcent / 100);
         }
+
         return total;
     }
 
@@ -240,7 +244,10 @@ export class FactlibreimprimComponent {
     }
 
     totalfacture() {
-        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) * (1 - (this.model.remise ? (this.model.remise / 100 ) : 1) );
+        return ((this.totalbase() ? this.totalbase() : 0) + (this.totaldetail() ? this.totaldetail() : 0 )) ;
+    }
+    countreali(){
+        return (this.counttotalbase() + this.counttotaldetail());
     }
 
     countTotals() {
@@ -248,7 +255,7 @@ export class FactlibreimprimComponent {
     }
 
     countRemise() {
-        return this.countTotals() * ((this.model.remise ? (this.model.remise / 100) : 1) );
+        return this.countreali() * ((this.model.remise ? (this.model.remise / 100) : 1) );
     }
 
     countTotalNet() {
@@ -283,7 +290,6 @@ export class FactlibreimprimComponent {
             if (bases.tva == 20) {
                 total += (bases.prix_fact * bases.qte_fact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (bases.pourcent ? bases.pourcent / 100 : 1) * (bases.tva / 100);
             }
-            console.log(total);
         }
         return total;
     }
@@ -307,7 +313,6 @@ export class FactlibreimprimComponent {
 
             if (basei.tva == 20) {
                 total += basei.totaltvab;
-                console.log(total);
 
             }
         }
@@ -467,7 +472,7 @@ export class FactlibreimprimComponent {
 
         for (let detaili of this.detailimprim) {
 
-            if (detaili.tva == 5.5) {
+            if (detaili.tva == 2.1) {
                 total += detaili.totaltvad;
 
             }
@@ -480,7 +485,7 @@ export class FactlibreimprimComponent {
 
         for (let basei of this.baseimprim) {
 
-            if (basei.tva == 5.5) {
+            if (basei.tva == 2.1) {
                 total += basei.totaltvab;
 
             }
@@ -524,8 +529,18 @@ export class FactlibreimprimComponent {
     }
 
     countTotalttc() {
-        return this.TotalTva() + this.CountTotalsituation();
+       return this.TotalTva() + this.CountTotalsituation();
+
     }
+
+    retnue(){
+        return   this.countTotalttc() * (this.model.id_version ? (this.model.id_version/100): 0);
+    }
+
+    countTotalttcretenue(){
+        return this. countTotalttc() - this.retnue();
+    }
+
 
     imprimer() {
         this.alertService.clear();

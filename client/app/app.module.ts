@@ -165,6 +165,15 @@ import {MenuparamComponent} from './parametre/menuparam.component';
 import {HeaderComponent} from './utils/header.component';
 import {GedComponent} from "./utils/ged.component";
 import {ImguploaderComponent} from "./utils/imguploader.component";
+import {FiligraneComponent} from "./parametre/filigrane.component";
+import {FactclientComponent} from "./contact/factclient.component";
+import {RapproComponent} from "./facture/rappro.component";
+import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
+import {OtestockComponent} from "./bdc/otestock.component";
+import {RetraitstockComponent} from "./bdc/retraitstock.component";
+import {StockretireComponent} from "./bdc/stockretire.component";
+
+
 
 @NgModule({
     imports: [
@@ -318,7 +327,15 @@ import {ImguploaderComponent} from "./utils/imguploader.component";
         AvoirlibreComponent,
         HeaderComponent,
         GedComponent,
-        ImguploaderComponent
+        ImguploaderComponent,
+        FiligraneComponent,
+        FactclientComponent,
+        RapproComponent,
+        Diff_fournisseurComponent,
+        OtestockComponent,
+        RetraitstockComponent,
+        StockretireComponent
+
     ],
     providers: [
         AppConfig,

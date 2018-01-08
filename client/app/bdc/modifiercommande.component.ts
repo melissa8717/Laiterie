@@ -47,6 +47,12 @@ export class ModifierBDCComponent implements OnInit {
     print: boolean = false;
     agence: any ={};
 
+    libre:{qtep: number, prix_p: number, ref: string, libelle: string
+        unit: string,refi:any,qte:number,prix_prevu:number}[] = [];
+    libreoption:{}[] = [];
+    produit:any={};
+
+
 
     List: {
         qte: number, prix_prevu: number, reference: string, libelle: string
@@ -112,7 +118,7 @@ export class ModifierBDCComponent implements OnInit {
                 this.prix = data.produit.prix_achat;
                 this.total = (data.ht ? data.ht : this.model.prix_achat) * (data.quantite ? data.quantite : 1);
                 this.livraison =  data.livraison ;
-                console.log(this.livraison);
+                //console.log(this.livraison);
                 let total = 0;
                 //if(list)
                 for (let prod of this.List) {
@@ -136,7 +142,7 @@ export class ModifierBDCComponent implements OnInit {
             this.commandeService.getAllProducts(this.id).subscribe(
                 data => {
                     this.List = data;
-                    console.log(data);
+                    // console.log(data);
 
                     let total = 0;
                     //if(list)
@@ -147,9 +153,17 @@ export class ModifierBDCComponent implements OnInit {
                     this.all = total + this.livraison;
 
 
-                }
-            )
+                });
             // In a real app: dispatch action to load the details here.
+
+            this.commandeService.getAllibre(this.id).subscribe(
+                libre => {
+                    this.libre = libre;
+                    console.log(libre);
+
+                });
+
+
         });
 
     }
@@ -174,8 +188,6 @@ export class ModifierBDCComponent implements OnInit {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
 
         });
     }
@@ -283,6 +295,7 @@ export class ModifierBDCComponent implements OnInit {
 
             value.id_bdc = this.id;
             value.products = this.List;
+            value.libre = this.libre;
 
             console.log(value);
 
@@ -312,7 +325,7 @@ export class ModifierBDCComponent implements OnInit {
         //console.log(this.recherche.seek)
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-            console.log(this.fact);
+            //console.log(this.fact);
 
         });
 
@@ -326,5 +339,88 @@ export class ModifierBDCComponent implements OnInit {
             //console.log(this.currentUser);
 
         });
+    }
+
+
+
+    ajouterfact() {
+        let tmps: any = {};
+        tmps.produit = this.produit.objf;
+        tmps.qtep = this.produit.qtep;
+        tmps.prix_p = this.produit.prix_p;
+        tmps.unit = this.produit.unit;
+        tmps.ref = this.produit.ref;
+
+        tmps.option = this.produit.option;
+
+        var check = this.libre.filter(objf => objf.qtep == this.produit.objf);
+
+        if (check.length < 1) {
+            if(tmps.option){
+                this.libreoption.push(tmps);
+            }
+            else{
+                this.libre.push(tmps);
+                for(var i = 0 ; i <  this.libre.length; i++){
+                    //console.log('TEST TS AJOUTER : '+this.produitDevis[i].prix);
+                    let qtep = this.libre[i].qtep;
+                    let prix_p = this.libre[i].prix_p;
+                    let unit = this.libre[i].unit;
+
+                    this.libre[i].qtep = qtep;
+                    this.libre[i].prix_p = prix_p;
+                    this.libre[i].unit = unit;
+
+
+                }
+            }
+        }
+        else {
+            this.alertService.error("Le produit " + tmps.objf + " n'a pas pu être ajouté.");
+        }
+        this.produit.qtep = null;
+        this.produit._prix_p = null;
+        this.produit.unit = null;
+        this.produit.ref = null;
+
+        this.produit = {};
+
+    }
+
+
+    testfact() {
+
+        console.log(this.produit);
+        this.produit.qtep = 1;
+        this.produit.prix_p = this.produit.objf.prix_p;
+        this.produit.unit = this.produit.objf.unit;
+        this.produit.ref = this.produit.objf.ref;
+
+    }
+
+    supprimerfact(produit: any) {
+        this.libre = this.libre.filter(obj => obj !== produit);
+    }
+
+    totalibre(){
+        let total = 0;
+        for (let prode of this.libre) {
+            total += (prode.prix_prevu ? prode.prix_prevu : prode.prix_p) * (prode.qte ? prode.qte : prode.qtep);
+        }
+        return total;
+
+    }
+
+    totalprod(){
+        let total = 0;
+        for (let prod of this.List) {
+            total += prod.prix_prevu * prod.qte;
+        }
+        return total;
+
+    }
+
+    totalcount(){
+        return this.totalibre() + this.totalprod();
     }
 }

@@ -148,14 +148,14 @@ export class BdcComponent {
         // console.log("on envoie la requette");
         this.contactService.getAllFournisseurs().subscribe(fournisseurs => {
             this.fournisseurs = fournisseurs;
-            console.log(this.fournisseurs);
+            //console.log(this.fournisseurs);
         });
     }
 
     private loadAllProducts() {
         this.productService.getAll().subscribe(products => {
             this.products = products;
-            console.log(this.products);
+           // console.log(this.products);
         });
     }
 
@@ -228,7 +228,7 @@ export class BdcComponent {
     onSubmit(value: any) {
 
 
-        if (this.List.length < 1) {
+        if ((this.List.length <0) ) {
             this.alertService.error("Veuillez entrer au moins un produit");
         } else {
 

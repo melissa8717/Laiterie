@@ -43,6 +43,7 @@ service.getByIdAnalyse = getByIdAnalyse;
 service.getByIdAnalyseoption = getByIdAnalyseoption;
 
 service.getByIdReel = getByIdReel;
+service.getByIdReelibre = getByIdReelibre;
 
 service.getByIdAcco = getByIdAcco;
 service.getByIdTotalDevis = getByIdTotalDevis;
@@ -566,9 +567,11 @@ function getAllCmois() {
 /*------------------------------------liste devis chantier-------------------------------------*/
 
 function getByIdDevischantier(_id_chantier) {
-    //console.log('test');
+
     var deferred = Q.defer();
-    var sql = "SELECT  * FROM chantierdevis WHERE id_chantier = ? ";
+    var sql = "SELECT chantierdevis. * , devis_version.taux FROM chantierdevis " +
+        "LEFT JOIN devis_version ON devis_version.id_devis = chantierdevis.id_devis AND devis_version.num_version = chantierdevis.num_version " +
+        "WHERE id_chantier =? ";
     var inserts = [_id_chantier];
     sql = mysql.format(sql, inserts);//console.log(sql);
     db.query(sql, function (error, results, fields) {
@@ -583,8 +586,19 @@ function getByIdDevischantier(_id_chantier) {
 
 
 function updateDevischantier(chantierParam) {
-    console.log("update chantier devis service server");
+
     var deferred = Q.defer();
+
+    db.query("UPDATE devis_version SET taux = ? WHERE id_devis=? AND num_version = ?",
+        [chantierParam.taux, chantierParam.id_devis,chantierParam.num_version],
+        function (error, result, fields) {
+            if (error) {
+                deferred.reject('MySql ERROR trying to update user informations (2) | ' + error.message);
+                console.log('MySql ERROR trying to update user informations (2) | ' + error.message);
+            }
+            deferred.resolve()
+
+        });
 
     var params = [
         chantierParam.date_demarrage,
@@ -598,7 +612,6 @@ function updateDevischantier(chantierParam) {
     ];
 
     var query = "UPDATE chantierdevis SET date_demarrage=?,reception_chantier=?,status=? WHERE id_chantier = ? AND id_devis = ? AND num_version =? ";
-    console.log(query, params)
     db.query(query, params, function (error, results, fields) {
         if (error) {
             //console.log(+ error.message)
@@ -607,7 +620,10 @@ function updateDevischantier(chantierParam) {
         //console.log(results)
 
         deferred.resolve();
+
     });
+
+
     return deferred.promise;
 }
 
@@ -726,6 +742,28 @@ function getByIdReel(_id_chantier) {
         "WHERE id_chantier = ? " +
         "AND bon_de_commande.recu IS TRUE " +
         "GROUP BY bdc_detaille.id_bdc";
+    var inserts = [_id_chantier];
+    sql = mysql.format(sql, inserts);//console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            //console.log(error.name + ': ' + error.message)
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function getByIdReelibre(_id_chantier) {
+    //console.log('test');
+    var deferred = Q.defer();
+    var sql = "SELECT bon_de_commande. * , bdc_libre.id_bdc, SUM( Qte_livre * Prixreel ) AS total, contact.nom " +
+        "FROM bon_de_commande " +
+        "LEFT JOIN bdc_libre ON bon_de_commande.id_bdc = bdc_libre.id_bdc " +
+        "LEFT JOIN contact ON bon_de_commande.id_fournisseur = contact.id_contact " +
+        "WHERE id_chantier = ? " +
+        "AND bon_de_commande.recu IS TRUE " +
+        "GROUP BY bdc_libre.id_bdc";
     var inserts = [_id_chantier];
     sql = mysql.format(sql, inserts);//console.log(sql);
     db.query(sql, function (error, results, fields) {

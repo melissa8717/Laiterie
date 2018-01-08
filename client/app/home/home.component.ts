@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
                 private messageService: MessageService,
                 private config: AppConfig) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        console.log(this.currentUser);
     }
 
     ngOnInit() {
@@ -143,13 +142,14 @@ export class HomeComponent implements OnInit {
     loadAlarmecaces() {
         this.paramsService.getAlarmecaces().subscribe(caces => {
             this.caces = caces;
+            console.log(this.caces);
         });
     }
 
     loadVisite() {
         this.paramsService.getVisitemedicale().subscribe(visite => {
             this.visite = visite;
-            console.log(this.visite);
+
         });
     }
 

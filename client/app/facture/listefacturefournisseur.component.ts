@@ -106,7 +106,6 @@ export class ListefacturefournisseurComponent {
                 this.fact = data;
                 this.filtre(this.recherche.seek);
                 this.loading = false;
-                console.log(this.fact)
             },
             err => {
                 this.alertService.error("Impossible de charger les factures fournisseurs, veuillez réessayer ultérieurement");

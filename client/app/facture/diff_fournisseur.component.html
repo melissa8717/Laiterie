@@ -1,0 +1,129 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/facturation_grand_gris.png">
+
+                    <span *ngIf="!print">Facturation</span>
+
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <h3>Différence entre le bon de commande et les factures fournisseur</h3>
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-6" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <ng-container *ngIf="!date"  class="col-sm-6">
+            <a  (click)="back()"><span   *ngIf="!print" class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> </a>
+            {{monthArray[my.getMonth()]}} {{my.getFullYear()}}
+            <a  (click)="up()"> <span *ngIf="!print" class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a>
+            <img  *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </ng-container>
+
+    </div>
+    <button class="col-sm-offset-10 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>
+
+    <div class=" container-fluid "
+         style="margin-top: 15px;">
+        <table class="table table-striped">
+            <thead>
+            <tr >
+                <td >N° bon de commande</td>
+                <td>Produit</td>
+                <td>Quantité prévue</td>
+                <td>Quantité livrée</td>
+                <td >Différence de quantité</td>
+                <td>Prix prévu HT en €</td>
+                <td >Prix réel HT en €</td>
+                <td >Différence HT en €</td>
+
+            </tr>
+
+            </thead>
+            <tbody>
+
+
+
+            <tr  *ngFor="let diffs of diff">
+
+                <td >
+                    {{diffs.id_bdc}}
+                </td>
+                <td >
+                    {{diffs.nom}}
+                </td>
+                <td >
+                    {{diffs.qte}}
+                </td>
+                <td >
+                    {{diffs.Qtelivre}}
+                </td>
+                <td >
+                    {{diffqte() | currency:'EUR':true:'1.2-2'}}
+                </td>
+                <td >
+                    {{diffs.prix_prevu}}
+                </td>
+                <td >
+                    {{diffs.Prixreel}}
+                </td>
+
+                <td >
+                    {{diffprix() | currency:'EUR':true:'1.2-2'}}
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 class="col-sm-12" *ngIf="imp.length>0"> Produits imprévus dans le bon de commande</h3>
+        <table class="table table-striped" *ngIf="imp.length>0">
+            <thead>
+            <tr >
+                <th>N° bon de commande</th>
+                <th>Produit Imprevu</th>
+                <th>Quantité livrée</th>
+                <th>Prix </th>
+
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr *ngFor="let imps of imp">
+                <td>{{imps.id_bdc}}</td>
+                <td>{{imps.libelle}}</td>
+                <td>{{imps.Qtelivre}}</td>
+                <td>€ {{imps.Prixreel}} </td>
+
+
+            </tr>
+
+
+            </tbody>
+        </table>
+
+        <table class="rappro">
+            <tr>
+                <td>TOTAL : </td>
+                <td>{{totaldiff()  | currency:'EUR':true:'1.2-2'}}</td>
+            </tr>
+        </table>
+
+
+
+
+
+
+    </div><!--fin container fluid-->
+</div>
+
+

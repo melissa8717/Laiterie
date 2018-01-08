@@ -641,7 +641,7 @@ function getAllFormation() {
 
 function getAlarmeformation() {
     let deferred = Q.defer();
-    db.query('SELECT * FROM  formationalert ', function (error, params, fields) {
+    db.query('SELECT * FROM formationalert UNION SELECT DATE AS DATE, caces AS designation, nom, prenom FROM cacesalert ORDER BY  `DATE` ASC', function (error, params, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }
@@ -652,7 +652,15 @@ function getAlarmeformation() {
 
 function getAlarmecaces() {
     let deferred = Q.defer();
-    db.query('SELECT * FROM  cacesalert ', function (error, params, fields) {
+    db.query('SELECT facture.* , facture.id_version AS taux, contact.nom, contact.prenom FROM facture '+
+    'LEFT JOIN contact ON contact.id_contact = facture.id_contact WHERE facture.id_devis IS NULL AND facture.id_version IS NOT NULL '+
+    'AND date_fact BETWEEN (NOW( ) - INTERVAL 14 MONTH) AND (NOW( ) - INTERVAL 10 MONTH) '+
+    'UNION '+
+    'SELECT facture. * , devis_version.taux, contact.nom, contact.prenom FROM contact, devis_version '+
+    'LEFT JOIN facture ON facture.id_devis = devis_version.id_devis AND facture.id_version = devis_version.num_version '+
+    'LEFT JOIN devis ON devis_version.id_devis = devis.id_devis WHERE devis_version.taux >0 '+
+    'AND date_fact BETWEEN (NOW( ) - INTERVAL 14 MONTH) AND (NOW( ) - INTERVAL 10 MONTH) '+
+    'AND contact.id_contact = devis.id_contact', function (error, params, fields) {
         if (error) {
             deferred.reject(error.name + ': ' + error.message);
         }

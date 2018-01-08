@@ -103,7 +103,7 @@ export class AvoirimprimComponent {
             this.factureService.getByIdPeodavoir(this.id_avoir).subscribe(
                 data => {
                     this.produit = data;
-                    //console.log(data)
+                    console.log(data)
                 }
             )
         });
@@ -115,7 +115,7 @@ export class AvoirimprimComponent {
             this.factureService.getByIdPeodavlibre(this.id_avoir).subscribe(
                 data => {
                     this.libre = data;
-                    console.log(data)
+                   // console.log(data)
                 }
             )
         });
@@ -137,16 +137,18 @@ export class AvoirimprimComponent {
         return total;
     }
 
+    countTotals(){
+        return this.countTotallibre() + this.countTotalProduit();
+    }
+
     countTotallibreremise() {
-        let total = 0;
-        for (let prod of this.libre) {
-            total += prod.prix * prod.qte * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1);
-        }
-        return total;
+
+             return  this.countTotals()* (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 0);
+
     }
 
     countTva() {
-        return this.countTotalProduit() * (this.valeur.tva / 100);
+        return (this.countTotallibreremise()>0 ? this.countTotallibreremise() : this.countTotals()) * (this.valeur.tva / 100);
     }
 
 
@@ -208,7 +210,7 @@ export class AvoirimprimComponent {
         for (let produit of this.libre) {
 
             if (produit.tva == 0) {
-                total += (produit.prix * produit.qte * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) );
+                total += 0 ;
             }
 
         }
@@ -216,7 +218,7 @@ export class AvoirimprimComponent {
     }
 
     countTotalavoir() {
-        return this.countTotalProduit() + this.countTotallibreremise() + this.countTva() + this.TVAV() + this.TVAD() + this.TVAC() + this.TVADU() + this.TVAZ();
+        return  (this.countTotallibreremise() >0 ? this.countTotallibreremise() :  this.countTotals()) + this.countTva() + this.TVAV() + this.TVAD() + this.TVAC() + this.TVADU() + this.TVAZ();
     }
 
     imprimer() {
@@ -255,7 +257,7 @@ export class AvoirimprimComponent {
         this.paramsService.getAllAgence().subscribe(img => {
 
             this.img = img[0];
-            console.log(this.img);
+            //console.log(this.img);
             //console.log(this.currentUser);
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});

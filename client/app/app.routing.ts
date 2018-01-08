@@ -114,7 +114,17 @@ import {GestionprojComponent} from "./chantiers/gestionproj.component";
 import {NewfactlibreComponent} from "./facture/newfactlibre.component";
 import {FactlibreComponent} from "./facture/factlibre.component";
 import {FactlibreimprimComponent} from "./facture/factlibreimprim.component";
-import {AvoirlibreComponent} from "./facture/avoirlibre.component"; ///////////////////////////////////////////////////
+import {AvoirlibreComponent} from "./facture/avoirlibre.component";
+import {FiligraneComponent} from "./parametre/filigrane.component";
+import {FactclientComponent} from "./contact/factclient.component";
+import {RapproComponent} from "./facture/rappro.component";
+import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
+import {OtestockComponent} from "./bdc/otestock.component";
+import {RetraitstockComponent} from "./bdc/retraitstock.component";
+import {StockretireComponent} from "./bdc/stockretire.component";
+
+
+
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -242,6 +252,15 @@ const appRoutes: Routes = [
     {path: 'factlibre/:id_facture/:n_situation', component: FactlibreComponent, canActivate: [AuthGuard]} ,
     {path: 'factlibreimprim/:id_facture/:n_situation', component: FactlibreimprimComponent, canActivate: [AuthGuard]} ,
     {path: 'avoirlibre/:id_facture/:n_situation', component: AvoirlibreComponent, canActivate: [AuthGuard]},
+    {path: 'filigrane/:id_agence', component: FiligraneComponent, canActivate: [AuthGuard]},
+    {path: 'factclient/:id_contact', component: FactclientComponent, canActivate: [AuthGuard]},
+    {path: 'rappro', component: RapproComponent, canActivate: [AuthGuard]},
+    {path: 'diff_fournisseur/:id_contact', component: Diff_fournisseurComponent, canActivate: [AuthGuard]},
+    {path: 'otestock', component: OtestockComponent,canActivate:[AuthGuard]},
+    {path: 'retraitstock', component: RetraitstockComponent,canActivate:[AuthGuard]},
+    {path: 'stockretire/:id_bdc', component: StockretireComponent,canActivate:[AuthGuard]},
+
+
 
     // otherwise redirect to home
     {path: '**', redirectTo: ''}

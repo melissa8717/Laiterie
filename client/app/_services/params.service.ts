@@ -64,8 +64,8 @@ export class ParamsService {
 
 
     getAllFili() {
-        //console.log(this.config.apiUrl + '/products/agence')
-        return this.http.get(this.config.apiUrl + '/params/agence', this.jwt()).map((response: Response) => response.json());
+        console.log(this.config.apiUrl + '/params/filig')
+        return this.http.get(this.config.apiUrl + '/params/filig', this.jwt()).map((response: Response) => response.json());
     }
 
     updateAgence(a_params: any) {

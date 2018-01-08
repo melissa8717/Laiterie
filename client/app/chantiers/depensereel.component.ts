@@ -16,6 +16,7 @@ import {User} from "../_models/user";                      //
 export class DepensereelComponent {
 
     model: any[] = [];
+    modellibre: any[] = [];
     id_chantier:number;
     nom : any = {};
     main:any[] = [];
@@ -42,15 +43,13 @@ export class DepensereelComponent {
         this.loadReel();
         this.loadNom();
         this.loadmain();
+        this.loadReelibre();
     }
 
     loaddroituser() {                                 //
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
 
             this.droitsuser = data[0];
-
-            console.log(this.data);
-            console.log(this.currentUser._id);
 
         });
     }
@@ -84,6 +83,19 @@ export class DepensereelComponent {
             this.chantierService.getByIdReel(this.id_chantier).subscribe(
                 data=>{
                     this.model=data;
+                    //console.log(data)
+                }
+            )
+        });
+    }
+
+    loadReelibre(){
+        this.route.params.subscribe(Params => {
+            this.id_chantier=Params['id_chantier']
+            console.log(this.id_chantier);
+            this.chantierService.getByIdReelibre(this.id_chantier).subscribe(
+                data=>{
+                    this.modellibre=data;
                     console.log(data)
                 }
             )
@@ -100,6 +112,19 @@ export class DepensereelComponent {
         return totaldevis;
     }
 
+    countReellibre(prod:any) {
+
+        let totaldevis = 0;
+
+        for (let prod of this.modellibre) {
+            totaldevis += prod.tarifpourlivraisonreel? prod.tarifpourlivraisonreel  + prod.total :  prod.total;
+        }
+        return totaldevis;
+    }
+
+    countprod(prod:any) {
+        return this.countReeldevis(prod) + this.countReellibre(prod);
+    }
     /*--------------------------------------------------------*/
 
     loadmain(){
@@ -159,7 +184,7 @@ export class DepensereelComponent {
 
 
     countSomme(mains:any,prod:any){
-        return this.countMain(mains)+ this.countMainI(mains)+ this.countReeldevis(prod);
+        return this.countMain(mains)+ this.countMainI(mains)+ this.countReeldevis(prod) + this.countReellibre(prod);
     }
 
 }

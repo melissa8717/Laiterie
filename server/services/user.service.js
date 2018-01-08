@@ -374,7 +374,7 @@ function modifdroit(userParam) {
                 deferred.reject(error.name + ': ' + error.message);
                 console.log(error.name + ': ' + error.message);
             }
-
+            deferred.resolve()
 
         });
     return deferred.promise;

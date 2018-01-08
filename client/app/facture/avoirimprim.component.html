@@ -13,10 +13,10 @@
 
             <fieldset class="separe">
                 <div class="row marge">
-                    <img *ngIf="!print" [src]="config.logoPath"  style="margin-left:100px;">
+                    <img *ngIf="!print" [src]="config.logoPath"  style="width: -1000px;height: 100px;">
                 </div>
                 <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
-                <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; top:30px; position: fixed;">
+                <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%;  heigh:auto; position: relative;">
                     <div *ngIf="print">
                         <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
                         <img *ngIf="!url && img.image" style="height: 150px; width: 300px;"
@@ -90,7 +90,8 @@
                         <td>{{prod.libelle}}</td>
                         <td>{{prod.prixfact}}</td>
                         <td>{{prod.qtefact}}</td>
-                        <td></td>
+                        <td *ngIf="valeur.tva">{{valeur.tva}}</td>
+                        <td *ngIf="prod.tva>0">{{prod.tva}}</td>
                         <td>{{ prod.prixfact * prod.qtefact | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
@@ -99,14 +100,15 @@
                         <td>{{prod.nom}}</td>
                         <td>{{prod.prix}}</td>
                         <td>{{prod.qte}}</td>
-                        <td>{{prod.tva}}</td>
+                        <td *ngIf="valeur.tva">{{valeur.tva}}</td>
+                        <td *ngIf="prod.tva>0">{{prod.tva}}</td>
                         <td>{{ prod.prix * prod.qte | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr class="gras">
                         <td colspan="4"></td>
                         <td>Total H.T en € :</td>
-                        <td>- {{countTotalProduit()+ countTotallibre() | currency:'EUR':true:'1.2-2'}}</td>
+                        <td>- {{countTotals() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 
                     <tr class="gras" *ngIf="valeur.remise">
@@ -117,7 +119,7 @@
 
                     <tr class="gras" *ngIf="valeur.tva">
                         <td colspan="4"></td>
-                        <td>TVA  {{valeur.tva}} % :</td>
+                        <td>TVA  {{valeur.tva}}  %:</td>
                         <td>- {{countTva() | currency:'EUR':true:'1.2-2'}}</td>
                     </tr>
 

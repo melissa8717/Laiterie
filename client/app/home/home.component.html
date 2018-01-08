@@ -58,7 +58,7 @@
 
                 <img [src]="config.logoPath" style="height: 80px; width: 180px; float: left;" alt="logo du logiciel">
 
-                <!--bouton déconnexion-->
+
 
 
                 <span style="height: 80px; color: white;" class="col-sm-offset-4 col-sm-2"><i style="font-weight: bold;font-style: normal;;">Bonjour, </i>{{currentUser.firstName}} {{currentUser.lastName}}</span>
@@ -144,6 +144,8 @@
                             <li *ngIf="droitsuser.ajoutcom"><a [routerLink]="['/new_bdc']" >Créer un bon de commande</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a [routerLink]="['/etatstock']" >État des stocks</a></li>
+                            <li><a [routerLink]="['/otestock']" >Enlever des stocks</a></li>
+                            <li><a [routerLink]="['/retraitstock']" >Suivi des retraits du stock</a></li>
                         </ul>
                     </li>
 
@@ -180,6 +182,7 @@
                             <li class="divider"></li>
                             <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/listefacturefournisseur']" >Liste factures fournisseurs</a></li>
                             <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/facture_fournisseur']" >Ajouter factures fournisseurs</a></li>
+                            <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/rappro']" >Différence bon de commande/Fournisseur</a></li>
                             <li class="divider"></li>
                             <li *ngIf="droitsuser.accesfour"><a [routerLink]="['/newfactlibre']" >Ajouter une facture libre</a></li>
                             <!--<li><a href="#">Analyse des ventes</a></li>-->
@@ -285,10 +288,10 @@
 
             </div>
 
-            <div class="col-sm-12">
+            <div class="col-sm-12" style="margin-bottom: 10px;">
 
                 <div class="col-sm-3">
-                    <h4  >Alarmes formations !</h4>
+                    <h4  >Alarmes formations / CACES !</h4>
                     <table class="table table-bordered " >
                         <tr *ngFor="let forms of form">
                             <td>{{forms.nom}} {{forms.prenom}}</td>
@@ -300,12 +303,13 @@
                 </div>
 
                 <div class="col-sm-3">
-                    <h4  >Alarmes CACES !</h4>
+                    <h4  >Alarmes retenue de garantie !</h4>
                     <table class="table table-bordered " >
-                        <tr *ngFor="let forms of caces">
-                            <td>{{forms.nom}} {{forms.prenom}}</td>
-                            <td>{{forms.caces}}</td>
-                            <td>{{forms.date | date: 'dd/MM/yyyy'}}</td>
+                        <tr *ngFor="let cacess of caces">
+                            <td>{{cacess.nom}} {{cacess.prenom}}</td>
+                            <td>{{cacess.date_fact | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{cacess.montant_ht | number: '1.0-2'}}</td>
+                            <td><button [routerLink]="cacess.libre  ? ['/factlibreimprim/'+cacess.id_facture+'/'+cacess.n_situation] : ['/facture_fini/'+cacess.id_facture+'/'+cacess.n_situation]">Ouvrir</button></td>
                         </tr>
                     </table>
 
@@ -352,7 +356,7 @@
     </div>
 
     <div id="copy">
-        <p style="color:white; text-align: center; background-color: #3F3F3F;height: 40px; width: 100%;position:fixed; bottom:-10px;">© Copyright-2018-WBAT-Tous droits réservés-Mentions légales</p>
+        <p style="color:white; text-align: center; background-color: #3F3F3F;height: 40px; width: 100%;position:fixed; bottom:-10px;margin-top:10px;">© Copyright-2018-WBAT-Tous droits réservés-Mentions légales</p>
     </div>
 </div>
 

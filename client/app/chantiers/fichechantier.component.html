@@ -9,7 +9,7 @@
         </div>
         <h3>Fiche chantier</h3>
 
-        <form method="POST" action="#" (ngSubmit)=" modify()">
+        <form  (ngSubmit)=" modify()">
 
             <div class="col-sm-7" style="margin: 0;">
 
@@ -157,6 +157,37 @@
                         <label class="col-sm-3 control-label">Tel </label>
                         <div>
                             <input type="text" name="telautre" class="col-sm-9 " [(ngModel)]="model.telautre"/>
+                            <!--variable pour value-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3  control-label">Nom de  la banque </label>
+                        <div>
+                            <input type="text" name="pourcentage" class="col-sm-7 col-sm-offset-1"
+                                   [(ngModel)]="model.banque"/><!--variable pour value-->
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Caution Bancaire </label>
+                        <div>
+                            <select name="energie" [(ngModel)]="model.caution" class="col-sm-9 input-sm">
+                                <option [selected]="model.caution ==''"></option>
+                                <option [selected]="model.caution =='Oui'">Oui</option>
+                                <option [selected]="model.caution =='Non'">Non</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Montant </label>
+                        <div>
+                            <input type="number" name="montant" class="col-sm-7 col-sm-offset-1" [(ngModel)]="model.montant"/>
                             <!--variable pour value-->
                         </div>
                     </div>

@@ -20,6 +20,9 @@ export class CommandeService {
     getAllProducts(_id: number) {
         return this.http.get(this.config.apiUrl + '/commandes/products/' + _id, this.jwt()).map((response: Response) => response.json());
     }
+    getAllibre(_id: number) {
+        return this.http.get(this.config.apiUrl + '/commandes/libre/' + _id, this.jwt()).map((response: Response) => response.json());
+    }
 
     getAllImprevuProducts(_id: number) {
         return this.http.get(this.config.apiUrl + '/commandes/imprevu/' + _id, this.jwt()).map((response: Response) => response.json());
@@ -55,14 +58,30 @@ export class CommandeService {
     }
 
     getAllListing() {
-        console.log(this.config.apiUrl + '/commandes/listing');
         return this.http.get(this.config.apiUrl + '/commandes/listing', this.jwt()).map((response: Response) => response.json());
     }
 
     getByIdDetail(id_demande: number) {
-        console.log(this.config.apiUrl + '/commandes/details/' + id_demande);
         return this.http.get(this.config.apiUrl + '/commandes/details/' + id_demande, this.jwt()).map((response: Response) => response.json());
     }
+
+    otestock(stockparams:any) {
+        return this.http.post(this.config.apiUrl + '/commandes/otestock' , stockparams, this.jwt());
+    }
+
+    retrait(month: number, year: number) {
+        return this.http.get(this.config.apiUrl + '/commandes/retrait/' + month + "/" + year, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdRemove(id_bdc: number) {
+        return this.http.get(this.config.apiUrl + '/commandes/getByIdRemove/' + id_bdc, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdRemlist(id_bdc: number) {
+        console.log(this.config.apiUrl + '/commandes/getByIdRemlist/' + id_bdc);
+        return this.http.get(this.config.apiUrl + '/commandes/getByIdRemlist/' + id_bdc, this.jwt()).map((response: Response) => response.json());
+    }
+
 
     // private helper methods
 

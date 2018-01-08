@@ -7,7 +7,7 @@ import {User} from "../_models/user";
 
 
 const URLimg = 'http://' + location.hostname + ':4000/image/';
-const URLFili = 'http://' + location.hostname + ':4000/filigrane/';
+const URLFili = 'http://' + location.hostname + ':4000/image/filig/';
 
 @Component({
     moduleId: module.id,
@@ -39,6 +39,7 @@ export class FicheDevisLibreComponent implements OnInit {
     private base64Files: any;
 
 
+
     constructor(private route: ActivatedRoute,
                 private devisService: DevisService,
                 private factureService: FactureService,
@@ -53,6 +54,7 @@ export class FicheDevisLibreComponent implements OnInit {
         this.loadAllFooter();
         this.loadCat();
         this.loadAllagence();
+        this.loadAllFili();
 
         this.route.params.subscribe(params => {
             this.id_devis = params['id_devis'];
@@ -366,15 +368,16 @@ export class FicheDevisLibreComponent implements OnInit {
     }
 
     loadAllFili() {
-        this.paramsService.getAllFili().subscribe(fili => {
-            this.fili = fili[0];
+        this.paramsService.getAllFili().subscribe(filigr => {
+            this.fili = filigr[0];
 
-            this.uploaderFili = new FileUploader({url: URLFili + "agence/" + this.fili.id_agence});
+            this.uploaderFili = new FileUploader({url: URLFili + "filig/" + this.fili.id_agence});
             this.uploaderFili.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
         });
     }
+
 
     public onChange(event: Event) {
         if (event.target['files']) {
@@ -392,6 +395,11 @@ export class FicheDevisLibreComponent implements OnInit {
         };
         this.fileReader.readAsDataURL(file);
     }
+
+
+
+
+
 }
 
 export class AppComponent {

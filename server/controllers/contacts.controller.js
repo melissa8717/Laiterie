@@ -62,6 +62,8 @@ router.post('/addcontrat/', addcontrat);
 router.post('/newcontrat/:id_contact', newcontrat);
 
 router.get('/devis/:id_contact', getByIdDevisclient);
+router.get('/fact/:id_contact', getByIdFacclient);
+
 
 
 router.post('/formation', addForm);
@@ -645,6 +647,22 @@ function deleteEquipement(req, res) {
     contactService.deleteEquipement(req.params.id_equipement)
         .then(function () {
             res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+
+function getByIdFacclient(req, res) {
+    console.log("controller fac client"+req.params.id_contact);
+    contactService.getByIdFacclient(req.params.id_contact)
+        .then(function (phase) {
+            if (phase) {
+                res.send(phase);
+            } else {
+                res.sendStatus(404);
+            }
         })
         .catch(function (err) {
             res.status(400).send(err);

@@ -2,10 +2,11 @@
  * Created by Wbat on 13/07/2017.
  */
 import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FileUploader} from "ng2-file-upload";
 
 import {AlertService, ParamsService, UtilsService} from '../_services/index';
+import {AuthenticationService} from "../_services";
 
 
 @Component({
@@ -18,9 +19,19 @@ export class Param_genComponent {
     // Image Uploader
     private url: any; // visualisation de l'image avant envoi
     private uploaderImg: FileUploader;
+
     private urlImg: string = 'http://' + location.hostname + ':4000/image/agence';
 
+
     private model: any = {};
+    fili: any= {};
+    id_agence : any={};
+    private uploaderFili: FileUploader;
+
+
+
+
+
 
 
     constructor(private router: Router,
@@ -52,10 +63,14 @@ export class Param_genComponent {
         });
     }
 
+
+
+
     setUploaderImg() {
         this.uploaderImg = new FileUploader({url: this.urlImg + "/" + this.model.id_agence});
         this.uploaderImg.onAfterAddingFile = (file) => {
             file.withCredentials = false;
+            console.log(this.model.id_agence);
         };
     }
 
@@ -75,7 +90,12 @@ export class Param_genComponent {
 
     modifyImg() {
         this.uploaderImg.queue[0].upload();
+
         this.alertService.success("Image modifiée");
     }
+
+
+
+
 
 }

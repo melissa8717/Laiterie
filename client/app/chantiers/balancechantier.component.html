@@ -63,7 +63,7 @@
                             <td></td>
                             <td class="glyphe1">Matériaux :</td>
                             <td class="glyphe1"></td>
-                            <td class="glyphe1">{{countReeldevis(prod) | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td class="glyphe1">{{countprod(prod) | number:'1.0-2'}}</td><!--variable à calculer-->
                         </tr>
                         <tr>
                             <td></td>
@@ -78,7 +78,7 @@
                             <td colspan="1" class="trait1" ></td>
                             <td class="glyphe1 trait1">TOTAL CONSOMMATION :</td>
                             <td class="glyphe1 trait1"></td>
-                            <td class="glyphe3 trait1">{{countReeldevis(prod) | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td class="glyphe3 trait1">{{countprod(prod) | number:'1.0-2'}}</td><!--variable à calculer-->
                         </tr>
                     </table>
 
@@ -100,7 +100,7 @@
                             <td class="glyphe1 trait"></td>
                             <td class="glyphe1 trait">Dépenses réelles :</td>
                             <td class="glyphe1 trait"></td>
-                            <td class="glyphe3 trait">{{countTotaloeuvre() + countReel() +countReeldevis() | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td class="glyphe3 trait">{{countTotaloeuvre() + countReel() + countprod() | number:'1.0-2'}}</td><!--variable à calculer-->
                         </tr>
                         <tr >
                             <td class="glyphe1" >Situations :</td>
@@ -261,7 +261,7 @@
                         <tbody>
                         <tr>
                             <td class="glyphe1 trait">Dépenses :</td>
-                            <td class="glyphe3 trait">{{countTotaloeuvre() + countReel() +countReeldevis() | number:'1.0-2'}}</td><!--variable à calculer-->
+                            <td class="glyphe3 trait">{{countTotaloeuvre() + countReel() +countprod() | number:'1.0-2'}}</td><!--variable à calculer-->
                         </tr>
                         </tbody>
                     </table>
@@ -291,7 +291,7 @@
                         <tr>
                             <td class="glyphe1 ">Recettes :</td>
                             <td class="glyphe3 " style="text-align: left">{{ ((acco.accompte_value > 0) ? (countFact()+ acco.accompte_value) : countFact()) | number:'1.0-2'}}</td><!--variable à calculer-->
-                            <td  style="text-align: left" [ngClass]="(countpourcentage() >= 0)?'positif':'negatif'">{{ (countpourcentage() > 0 ? countpourcentage() : 0 ) | number:'1.0-2'}}%</td><!--variable à calculer et si positif couleur vert si négatif rouge et noir à zéro-->
+                            <td  style="text-align: left" [ngClass]="(countpourcentage() >= 0)?'positif':'negatif'">{{ (countpourcentage()  ) | number:'1.0-2'}}%</td><!--variable à calculer et si positif couleur vert si négatif rouge et noir à zéro-->
                         </tr>
                         </tbody>
                     </table>

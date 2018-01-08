@@ -45,6 +45,8 @@ router.get('/composes/prdc', getAllProdComp);
 
 router.get('/:_id/:num_version', getById);
 
+router.get('/enstock',getAllEnStock);
+
 
 /******************GED***********************************/
 
@@ -451,6 +453,16 @@ function getAllImg(req, res) {
     achatsService.getAllImg()
         .then(function (mos) {
             res.send(mos);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getAllEnStock(req, res) {
+    achatsService.getAllEnStock()
+        .then(function (achats) {
+            res.send(achats);
         })
         .catch(function (err) {
             res.status(400).send(err);

@@ -103,7 +103,7 @@
                                 <td *ngIf="!version.tva">{{details.taux}} %</td>
                             </tr>
                             <tr *ngFor="let libres of libre">
-                                <td>{{libres.id_produit}}-{{libres.num_version}}</td>
+                                <td>{{libres.reference}}</td>
                                 <td>{{libres.produit}}</td>
                                 <td>{{libres.unite}}</td>
                                 <td>{{libres.qte_devis}}</td>
@@ -111,6 +111,7 @@
                                 <td>{{libres.qte_devis * libres.prix_devis | number:'1.0-2'}}</td>
                                 <td >{{totalignelibre(libres) | number:'1.0-2'}}</td>
                                 <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="libres.pourcentage" min="0" max="100"> </td>
+                                <td *ngIf="libres.tva">{{libres.tva}}</td>
                             </tr>
                             <tr *ngIf="(option.length>0) || (libreoption.length>0)"><td colspan="8">Options acceptées</td></tr>
                             <tr *ngFor="let options of option">
@@ -121,18 +122,19 @@
                                 <td>{{options.prix_devis}}</td>
                                 <td>{{options.qte_devis * options.prix_devis | number:'1.0-2'}}</td>
                                 <td >{{totaligneopt(options) | number:'1.0-2'}} </td>
-                                <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="options.pourcentage" class="col-sm-12" min="0" max="100"> </td>
+                                <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="options.pourcentage"  min="0" max="100"> </td>
                                 <td *ngIf="!version.tva">{{options.taux}} %</td>
                             </tr>
                             <tr *ngFor="let libreoptions of libreoption">
-                                <td>{{libreoptions.id_produit}}</td>
+                                <td>{{libreoptions.reference}}</td>
                                 <td>{{libreoptions.produit}}</td>
                                 <td>{{libreoptions.unite}}</td>
                                 <td>{{libreoptions.qte_devis}}</td>
                                 <td>{{libreoptions.prix_devis}}</td>
                                 <td>{{libreoptions.qte_devis * libreoptions.prix_devis | number:'1.0-2'}}</td>
                                 <td >{{totalignelibreoption(libreoptions) | number:'1.0-2'}}</td>
-                                <td><input style="width: 70px;border:1px solid white;" type="number" name="pourcentage" [(ngModel)]="libreoptions.pourcentage" class="col-sm-12" min="0" max="100"> </td>
+                                <td><input style="width: 70px;" type="number" name="pourcentage" [(ngModel)]="libreoptions.pourcentage"  min="0" max="100"> </td>
+                                <td *ngIf="libreoptions.tva">{{libreoptions.tva}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -171,7 +173,7 @@
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr gras"><td class="gauche" style="text-align: left;">Total situation H.T. :</td><td>{{countTotalsituation() | number:'1.0-2'}}</td></tr>
 
 
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" *ngIf="version.tva"><td class="gauche" style="text-align: left;">1-TVA à {{version.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td>{{countTVA() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" *ngIf="version.tva"><td class="gauche" style="text-align: left;">TVA à {{version.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td>{{countTVA() | number:'1.0-2'}}</td></tr>
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr" *ngIf="SumTvaV()"><td class="gauche">TVA 20 %</td><td>{{SumTvaV() | number:'1.0-2'}}</td></tr>
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr" *ngIf="SumTvaD()"><td class="gauche">TVA 10 %</td><td>{{SumTvaD() | number:'1.0-2'}}</td></tr>
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr" *ngIf="SumTvaC()"><td class="gauche">TVA 5.5 %</td><td>{{SumTvaC() | number:'1.0-2'}}</td></tr>
@@ -181,7 +183,7 @@
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr grass"><td style="text-align: left;padding-left: 10px;">Total TVA :</td><td>{{countTVA() | number:'1.0-2'}}</td></tr>
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr grass"><td class="gauche" style="text-align: left;">Sous Total :</td><td>{{countSTotal() | number:'1.0-2'}}</td></tr>
 
-                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><td class="gauche" style="text-align: left;">Retenue de garantie<i style="padding-left: 20px;">{{ret.pourcentage}} %</i></td><td>{{countRetenu() | number:'1.0-2'}}</td></tr>
+                    <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" *ngIf="version.taux"><td class="gauche" style="text-align: left;">Retenue de garantie<i style="padding-left: 20px;">{{version.taux}} %</i></td><td>{{countRetenu() | number:'1.0-2'}}</td></tr>
                     <tr style="height:30px;border-top:1px solid black;border-right: 1px solid black;border-left:1px solid black;border-bottom:1px solid black;" class="basr"><td class="gauche" style="text-align: left;">Total TTC :</td><td>{{countTTC() | number:'1.0-2'}}</td></tr>
 
                     <tr ><td class="gauche"> </td><td> </td></tr>

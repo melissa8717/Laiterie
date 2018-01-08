@@ -187,6 +187,10 @@ export class FactureService {
         return this.http.get(this.config.apiUrl + '/facture/bdcreel/' + year, this.jwt()).map((response: Response) => response.json());
     }
 
+    getAllBdcreelibre(year: number) {
+        return this.http.get(this.config.apiUrl + '/facture/getAllBdcreelibre/' + year, this.jwt()).map((response: Response) => response.json());
+    }
+
     getAllAnnefrais(year: number) {
         return this.http.get(this.config.apiUrl + '/facture/annnefrais/' + year, this.jwt()).map((response: Response) => response.json());
     }
@@ -307,6 +311,31 @@ export class FactureService {
         return this.http.get(this.config.apiUrl + '/facture/getByIdTotlaTVA/' + id_facture + "/" + n_situation, this.jwt()).map((response: Response) => response.json());
     }
 
+    getByIdSitlibredetail(id_facture: number, n_situation: number) {
+        return this.http.get(this.config.apiUrl + '/facture/getByIdSitlibredetail/' + id_facture + "/" + n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdTotlaTVAimp(id_facture: number, n_situation: number) {
+        return this.http.get(this.config.apiUrl + '/facture/TotlaTVAimp/' + id_facture + "/" + n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getByIdTotlafactimprim(id_facture: number, n_situation: number) {
+        return this.http.get(this.config.apiUrl + '/facture/ByIdTotlafactimprim/' + id_facture + "/" + n_situation, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getAllDiffFournisseur(month:number,year:number) {
+        console.log("rappro"+this.config.apiUrl + '/facture');
+        return this.http.get(this.config.apiUrl + '/facture/difffournisseur/'+month+'/'+year, this.jwt()).map((response: Response) => response.json());
+    }
+
+    getAllDiffBDC(month:number,year:number,id_fournisseur:number) {
+        console.log("get"+this.config.apiUrl + '/facture/iffs/' +month+'/'+ year+'/'+id_fournisseur);
+        return this.http.get(this.config.apiUrl + '/facture/iffs/'+month+'/'+ year+'/'+id_fournisseur, this.jwt()).map((response: Response) => response.json());
+    }
+    getAllDiffFournisseurImp(month:number,year:number,id_fournisseur:number) {
+        //console.log(this.config.apiUrl + '/facture')
+        return this.http.get(this.config.apiUrl + '/facture/impfournisseur/'+month+'/'+year+'/'+id_fournisseur, this.jwt()).map((response: Response) => response.json());
+    }
 
     /***************************************************GED*********************************************************************************/
     getGed() {

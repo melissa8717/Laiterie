@@ -52,6 +52,7 @@ router.get('/optanalyse/:id_chantier', getByIdAnalyseoption);
 
 /*-----------Reel--------------------*/
 router.get('/reel/:id_chantier', getByIdReel);
+router.get('/getByIdReelibre/:id_chantier',getByIdReelibre);
 
 router.put('/:_id', update);
 router.delete('/:_id', _delete);
@@ -160,7 +161,6 @@ function downloadGED(req, res) {
 
 /*************************************************************************************************************/
 function getAll(req, res) {
-    console.log('dieu');
     chantierService.getAll()
         .then(function (chantiers) {
             res.send(chantiers);
@@ -200,7 +200,6 @@ function getByIdChantier(req, res) {
 
 
 function add(req, res) {
-    console.log("test");
     chantierService.create(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -313,7 +312,6 @@ function deletePhase(req, res) {
 }
 
 function addPhase(req, res) {
-    console.log("test3");
     chantierService.addPhase(req.body, req.params.id_chantier)
         .then(function (phase) {
             res.send(phase);
@@ -339,7 +337,6 @@ function getByIdRapport(req, res) {
 }
 
 function addRapport(req, res) {
-    console.log("test3");
     chantierService.addRapport(req.body, req.params.id_chantier)
         .then(function (phase) {
             res.send(phase);
@@ -379,7 +376,6 @@ function getByIdCdevis(req, res) {
 }
 
 function createChantier(req, res) {
-    console.log('test')
     chantierService.createChantier(req.body)
         .then(function () {
             res.sendStatus(200);
@@ -433,7 +429,6 @@ function getAllMois(req, res) {
 }
 
 function getAllCmois(req, res) {
-    console.log("dieu");
     chantierService.getAllCmois()
         .then(function (Chantier) {
             res.send(Chantier);
@@ -549,10 +544,23 @@ function getByIdReel(req, res) {
         });
 }
 
+function getByIdReelibre(req, res) {
+    chantierService.getByIdReelibre(req.params.id_chantier, req.body)
+        .then(function (test) {
+            if (test) {
+                res.send(test);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
 /*--------------------balance chantier-----------------------------------*/
 
 function getByIdAcco(req, res) {
-    //console.log('test12');
     chantierService.getByIdAcco(req.params.id_chantier, req.body)
         .then(function (test) {
             if (test) {
@@ -567,7 +575,6 @@ function getByIdAcco(req, res) {
 }
 
 function getByIdTotalDevis(req, res) {
-    console.log('test12');
     chantierService.getByIdTotalDevis(req.params.id_chantier, req.body)
         .then(function (test) {
             if (test) {

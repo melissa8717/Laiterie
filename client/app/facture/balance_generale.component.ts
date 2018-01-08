@@ -27,6 +27,7 @@ export class Balance_generaleComponent implements OnInit{
     prev: any []=[];
     moreel: any []=[];
     bdc: any []=[];
+    bdclib: any []=[];
     frais: any []=[];
 
     currentUser: User;         //
@@ -59,6 +60,7 @@ export class Balance_generaleComponent implements OnInit{
         this.loadBdc();
         this.loadFraisreel();
         this.loaddroituser();
+        this.loadBdclibre();
 
     }
 
@@ -83,6 +85,7 @@ export class Balance_generaleComponent implements OnInit{
          this.loadMoreel();
          this.loadBdc();
          this.loadFraisreel();
+         this.loadBdclibre();
     }
 
     up() {
@@ -96,6 +99,7 @@ export class Balance_generaleComponent implements OnInit{
          this.loadMoreel();
          this.loadBdc();
          this.loadFraisreel();
+         this.loadBdclibre();
     }
 
     customTrackBy(index: number, obj: any): any {
@@ -405,7 +409,22 @@ export class Balance_generaleComponent implements OnInit{
             data => {
                 this.bdc = data;
                 this.loading= false;
-                console.log(this.bdc)
+            },
+            err =>{
+                this.alertService.error("Impossible de charger la balance générale, veuillez réessayer ultérieurement");
+                this.loading= false;
+            }
+        );
+    }
+
+    loadBdclibre() {
+
+        this.date = false;
+        this.factureService.getAllBdcreelibre( this.my.getFullYear()).subscribe(
+            data => {
+                this.bdclib = data;
+                this.loading= false;
+                console.log(this.bdclib)
             },
             err =>{
                 this.alertService.error("Impossible de charger la balance générale, veuillez réessayer ultérieurement");
@@ -424,6 +443,21 @@ export class Balance_generaleComponent implements OnInit{
 
         }
         return totalmo;
+    }
+
+    countTotalbdclib(bdcs:any) {
+
+        let totalmo:number = 0;
+
+        for (let bdcs of this.bdclib) {
+
+            totalmo += bdcs.somme;
+
+        }
+        return totalmo;
+    }
+    sommebdc(bdcs:any){
+        return this.countTotalbdc(bdcs) + this.countTotalbdclib(bdcs);
     }
 /*-------------------------------------------frais generaux réel------------------------------------------*/
     loadFraisreel() {
@@ -455,7 +489,7 @@ export class Balance_generaleComponent implements OnInit{
     }
 
     countTotalDepense(fraiss:any,moreels:any,bdcs:any){
-        return this.countTFrais(fraiss)+ this.countTotalbdc(bdcs)+this.countTotalmaindoeuvre(moreels);
+        return this.countTFrais(fraiss)+ this.sommebdc(bdcs)+this.countTotalmaindoeuvre(moreels);
     }
 
     Margedepense(fraiss:any,moreels:any,bdcs:any){
