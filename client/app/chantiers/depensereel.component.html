@@ -26,11 +26,23 @@
                 <tbody >
 
                 <tr *ngFor="let prod of model">
+                    <ng-container *ngIf="prod.id_bdc>0">
                     <td class="col-sm-2">{{prod.date_livraison_reel | date:'dd-MM-yyyy'}}</td>
                     <td class="col-sm-3">{{prod.nom}}</td>
-                    <td class="col-sm-5">BDC n° {{prod.id_bdc}} - {{prod.libelle}}</td>
+                    <td class="col-sm-5">{{prod.id_bdc ? "BDC n° " + prod.id_bdc :""}}  {{prod.libelle}}</td>
                     <td class="col-sm-2">{{(prod.tarifpourlivraisonreel ?(prod.tarifpourlivraisonreel  + prod.total) : prod.total) | number:'1.0-2'}}</td>
+                    </ng-container>
                 </tr>
+
+                <tr *ngFor="let prod of modellibre">
+                    <ng-container *ngIf="prod.id_bdc>0">
+                        <td class="col-sm-2">{{prod.date_livraison_reel | date:'dd-MM-yyyy'}}</td>
+                        <td class="col-sm-3">{{prod.nom}}</td>
+                        <td class="col-sm-5">{{prod.id_bdc ? "BDC n° " + prod.id_bdc +" produits non référencés" :""}}  {{prod.libelle}}</td>
+                        <td class="col-sm-2">{{(prod.tarifpourlivraisonreel ?(prod.tarifpourlivraisonreel  + prod.total) : prod.total) | number:'1.0-2'}}</td>
+                    </ng-container>
+                </tr>
+
 
                 <tr *ngFor="let mains of main">
                     <td class="col-sm-2">{{mains.date | date:'dd-MM-yyyy'}}</td>
@@ -56,8 +68,8 @@
                 <tbody>
                 <tr>
                     <td>fournisseur</td>
-                    <td> {{countReeldevis() | number:'1.0-2'}}</td>
-                    <td>{{countReeldevis() / countSomme() * 100 | number:'1.0-2'}}%</td>
+                    <td> {{countprod() | number:'1.0-2'}}</td>
+                    <td>{{countprod() / countSomme() * 100 | number:'1.0-2'}}%</td>
                 </tr>
                 <tr>
                     <td>MO Employés</td>

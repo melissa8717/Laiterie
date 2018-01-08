@@ -1,36 +1,38 @@
 /**
- * Created by cédric on 14/08/2017.
+ * Created by cédric on 15/08/2017.
  */
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService, AuthenticationService } from '../_services/index';
 import {FactureService} from "../_services/facture.service";
-import { RecherchefournisseurComponent} from "./rechercherfournisseur.component";
 import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+
+
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'listefacturefournisseur.component.html'
+    templateUrl: 'rappro.component.html'
 })
 
-export class ListefacturefournisseurComponent {
+export class RapproComponent {
 
+    model: any = {};
+    id_factfour:number;
+    bdc : any []=[];
+    print: boolean = false;
     currentUser: User;         //
     droitsuser:any={};         //
     _id:any;                   //
     data:any={};
-
-    fact: any = [];
-    date: boolean = false;
-
-    list: any = [];
-
-    loading = false;
     my: Date = new Date();
-    datefourn: string;
-    print: boolean = false;
+    date: boolean = false;
+    fact: any = [] = [];
+    loading = false;
+    id_fournisseur:number;
+    list : any = []=[];
 
 
     monthArray: string[] = [
@@ -50,14 +52,14 @@ export class ListefacturefournisseurComponent {
     ];
 
 
-    @ViewChild('recherche')
-    recherche: RecherchefournisseurComponent;
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private authenticationService: AuthenticationService,
                 private alertService: AlertService,
                 private factureService: FactureService,
+                private _sanitizer: DomSanitizer,
                 private paramsService:ParamsService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
@@ -69,10 +71,19 @@ export class ListefacturefournisseurComponent {
         body.className += "flatclair";
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-        this.my.setMonth(this.my.getMonth());
-        this.loadMois();
+        this.loadAllFournisseur();
         this.loaddroituser();
 
+    }
+
+    back() {
+        this.my.setMonth(this.my.getMonth() - 1);
+        this.loadAllFournisseur();
+    }
+
+    up() {
+        this.my.setMonth(this.my.getMonth() + 1);
+        this.loadAllFournisseur();
     }
 
     loaddroituser() {                                 //
@@ -86,61 +97,27 @@ export class ListefacturefournisseurComponent {
         });
     }
 
-    back() {
-        this.my.setMonth(this.my.getMonth() - 1);
-        this.loadMois();
-    }
+    loadAllFournisseur() {
 
-    up() {
-        this.my.setMonth(this.my.getMonth() + 1);
-        //console.log(this.my);
-        this.loadMois();
-    }
-
-
-    loadMois() {
-
+        console.log("load imp",this.my.getMonth() +1, this.my.getFullYear());
         this.date = false;
-        this.factureService.getAllMois(this.my.getMonth() + 1, this.my.getFullYear()).subscribe(
+
+        this.factureService.getAllDiffFournisseur(this.my.getMonth() +1, this.my.getFullYear()).subscribe(
             data => {
-                this.fact = data;
-                this.filtre(this.recherche.seek);
+                this.list = data;
+
                 this.loading = false;
+                console.log("TSS"+this.list);
             },
             err => {
-                this.alertService.error("Impossible de charger les factures fournisseurs, veuillez réessayer ultérieurement");
+                this.alertService.error("ssssImpossible de charger les factures fournisseurs, veuillez réessayer ultérieurement");
                 this.loading = false;
             }
         );
-    }
-
-    filtre(test: any) {
-        if (test.nom) {
-            this.fact =
-                this.fact.filter(function (el: any) {
-                    return ((el.nom ? el.nom : "").toLowerCase().indexOf(test.nom.toLowerCase()) !== -1 );
-                });
-        }
+    };
 
 
-        if (test.datefourn) {
-                this.fact =
-                    this.fact.filter(function (el:any) {
-                        console.log(new Date(el.datefourn).toDateString())
-                        console.log(new Date(test.datefourn).toDateString())
-                        return (new Date(el.datefourn).toDateString() === new Date(test.datefourn).toDateString() );
-                    });
-            }
 
-            if (test.n_facture) {
-                this.fact =
-                    this.fact.filter(function (el: any) {
-                        return ((el.n_facture ? el.n_facture : "").toLowerCase().indexOf(test.n_facture.toLowerCase()) !== -1 );
-                    });
-
-            }
-
-        }
 
     imprimer(){
         this.alertService.clear();
@@ -150,5 +127,8 @@ export class ListefacturefournisseurComponent {
             this.print = false;
         }, 1000);
     }
-}
 
+
+
+
+}

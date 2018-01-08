@@ -48,8 +48,7 @@ export class FactclientComponent implements OnInit {
 
             this.droitsuser = data[0];
 
-            console.log(this.data);
-            console.log(this.currentUser._id);
+
 
         });
     }
@@ -62,7 +61,7 @@ export class FactclientComponent implements OnInit {
                 data => {
                     this.facture = data;
 
-                    console.log("fact client"+data);
+
                 }
             )
         });

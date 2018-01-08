@@ -45,6 +45,8 @@ service.getAllProdComp = getAllProdComp;
 
 service.getAllImg = getAllImg;
 
+service.getAllEnStock = getAllEnStock;
+
 module.exports = service;
 
 
@@ -655,5 +657,19 @@ function getAllImg() {
             }
             deferred.resolve(produit);
         });
+    return deferred.promise;
+}
+
+function getAllEnStock() {
+    let deferred = Q.defer();
+    db.query('SELECT produit.libelle, produit.id_produit,produit.num_version,produit.prix_achat, produit.reference, produit.unite, stock.stock AS enstock FROM produit '+
+    'LEFT JOIN stock ON stock.id_produit = produit.id_produit '+
+    'WHERE produit.type !=1 && ( produit.num_version, produit.id_produit )IN (SELECT MAX( num_version ) , id_produit FROM produit '+
+    'GROUP BY id_produit) ORDER BY produit.libelle ', function (error, produits, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        deferred.resolve(produits);
+    });
     return deferred.promise;
 }

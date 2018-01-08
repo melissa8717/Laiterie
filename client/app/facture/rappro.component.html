@@ -1,0 +1,78 @@
+<div id="chantier">
+    <header>
+
+        <div class="toobar">
+            <div class="fill">
+                <div class="container-fluid">
+
+                    <img *ngIf="!print" src="image/menu/facturation_grand_gris.png">
+
+                    <span *ngIf="!print">Facturation</span>
+
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <h3>Différence BDC factures par fournisseur</h3>
+
+    <div class=" container-fluid ">
+        <div *ngIf="!print" class=" col-sm-offset-6" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+        <ng-container *ngIf="!date"  class="col-sm-6">
+            <a  (click)="back()"><span   *ngIf="!print" class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> </a>
+            {{monthArray[my.getMonth()]}} {{my.getFullYear()}}
+            <a  (click)="up()"> <span *ngIf="!print" class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> </a>
+            <img  *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </ng-container>
+    </div>
+
+    <div class=" container-fluid col-sm-8 col-sm-offset-2"
+         style="margin-top: 15px;">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nom fournisseur</th>
+                <th>Numéro fournisseur</th>
+                <th>Action</th>
+            </tr>
+
+            </thead>
+            <tbody>
+
+            <tr *ngFor="let facts of list">
+                <td>{{facts.nom}}</td>
+                <td>{{facts.id_contact}}</td>
+
+                <td><div class="input-group">
+                    <div *ngIf="!print" class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle input-sm"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action
+                            <span class="caret"></span></button>
+                        <ul  class="dropdown-menu dropdown-menu-right" >
+                            <li *ngIf="!print && droitsuser.accescom" >
+                                <a [routerLink]="['/diff_fournisseur',facts.id_contact]"  >Voir </a>
+                            </li>
+                        </ul>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+
+
+
+        <button class="col-sm-offset-8 col-sm-1 btn" type="button" *ngIf="!print && droitsuser.accesfour" (click)=" imprimer()">Imprimer </button>
+
+
+
+    </div><!--fin container fluid-->
+</div>
+
+

@@ -55,6 +55,8 @@ export class FactlibreimprimComponent {
     id_agence: number;
     img: any = {};
 
+    montant: number;
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -130,7 +132,7 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
-                    console.log(data);
+
                 }
             )
         });
@@ -144,7 +146,6 @@ export class FactlibreimprimComponent {
             this.factureService.getByIdLibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detail = data;
-                    console.log(data);
                 }
             )
         });
@@ -528,8 +529,18 @@ export class FactlibreimprimComponent {
     }
 
     countTotalttc() {
-        return this.TotalTva() + this.CountTotalsituation();
+       return this.TotalTva() + this.CountTotalsituation();
+
     }
+
+    retnue(){
+        return   this.countTotalttc() * (this.model.id_version ? (this.model.id_version/100): 0);
+    }
+
+    countTotalttcretenue(){
+        return this. countTotalttc() - this.retnue();
+    }
+
 
     imprimer() {
         this.alertService.clear();

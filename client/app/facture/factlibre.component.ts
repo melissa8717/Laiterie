@@ -125,7 +125,7 @@ export class FactlibreComponent {
             this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
-                    console.log(data);
+
                 }
             )
         });
@@ -139,7 +139,6 @@ export class FactlibreComponent {
             this.factureService.getByIdLibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.detail = data;
-                    console.log(data);
                 }
             )
         });
@@ -483,6 +482,13 @@ export class FactlibreComponent {
         return this.TotalTva() + this.CountTotalsituation();
     }
 
+    retenuettc(){
+        return this.countTotalttc() * (this.model.id_version ? (this.model.id_version/100) : 0);
+    }
+
+    totalttcretenue(){
+        return this.countTotalttc() - this.retenuettc();
+    }
 
     submit() {
 
@@ -495,7 +501,7 @@ export class FactlibreComponent {
         var test = +confirm('Etes vous sûr de vouloir enregistrer votre facture :');
         //console.log(factureparams);
         if (test) {
-            console.log(factureparams);
+            //console.log(factureparams);
             this.factureService.createSituationlibre(factureparams, this.id_facture).subscribe(
                 data => {
                     this.router.navigate(['/listefacture']);
@@ -540,7 +546,7 @@ export class FactlibreComponent {
         this.paramsService.getAllAgence().subscribe(img => {
 
             this.img = img[0];
-            console.log(this.img);
+            //console.log(this.img);
             //console.log(this.currentUser);
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});

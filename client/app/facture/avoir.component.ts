@@ -265,7 +265,7 @@ export class AvoirComponent {
 
         this.factureService.getAllNavoir().subscribe(avoir => {
             this.navoir = avoir[0];
-            console.log(this.navoir);
+            //console.log(this.navoir);
 
         });
     }
@@ -291,6 +291,7 @@ export class AvoirComponent {
             this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
+                    //console.log(this.model)
 
                 }
             )
@@ -333,7 +334,7 @@ export class AvoirComponent {
             this.factureService.getByIdSitlibredetail(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.libre = data;
-                    console.log(this.libre);
+                    //console.log(this.libre);
                 }
             )
         });
@@ -382,12 +383,17 @@ export class AvoirComponent {
         return (this.countTotalOpt() + this.countTotalSit() +this.countTotalLibre()) * (-1);
     }
 
+    countTotalremis(){
+        this.model.totalavoir = (this.countTotal()) *(1-(this.model.remise ? this.model.remise/100 : 1));
+        return  this.model.totalavoir;
+    }
+
     countTva() {
         return (this.countTotal()) * (this.valeur.tva / 100);
     }
 
-    countTtc() {
-        return this.countTotal() + this.countTva();
+    countTtc(situas: any, valeur: any, options: any,lbsituas:any) {
+        return this.countTotalremis() +  (this.TotauxTVA(situas, valeur, options,lbsituas)*(-1));
     }
 
 
@@ -401,11 +407,16 @@ export class AvoirComponent {
         avoirparams.produitDevisopt = this.produitDevisopt;
         avoirparams.produitDevislibre = this.produitDevislibre;
 
+        var test = +confirm('Avez vous mis la date? \n' +
+            'Et êtes vous sûr de vouloir enregistrer votre facture :');
+        if (test) {
+
         this.factureService.addavoir(avoirparams).subscribe(
             data => {
                 this.router.navigate(['/listeavoir']);
                 this.alertService.success('L\'avoir a été créé avec succès.');
             });
+    }
     }
 
 
@@ -428,7 +439,7 @@ export class AvoirComponent {
         this.paramsService.getAllAgence().subscribe(img => {
 
             this.img = img[0];
-            console.log(this.img);
+            //console.log(this.img);
 
 
             this.uploaderImg = new FileUploader({url: URLimg + 'agence/' + this.img.id_agence});
@@ -627,7 +638,7 @@ export class AvoirComponent {
     }
 
     TotauxTVA(situas: any, valeur: any, options: any,lbsituas:any){
-        return  (this.SumTvaDX()>0 ? this.SumTvaDX() :0) + (this.SumTvaC() > 0 ? this.SumTvaC() : 0) + (this.SumTvaD()>0 ? this.SumTvaD() : 0) + (this.SumTvaV()> 0 ? this.SumTvaV() :0) + ( this.countTva()>0 ? this. countTva() : 0);
+        return  (this.SumTvaDX()>0 ? this.SumTvaDX() :0) + (this.SumTvaC() > 0 ? this.SumTvaC() : 0) + (this.SumTvaD()>0 ? this.SumTvaD() : 0) + (this.SumTvaV()> 0 ? this.SumTvaV() :0) + ( this.countTva()>0 ? this. countTva() : 0) ;
     }
 
 }

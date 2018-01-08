@@ -164,7 +164,7 @@
 
                 <div class="col-sm-12">
                     <div class="form-group col-sm-6">
-                        <label class="col-sm-3  control-label">Nom de  la bannque </label>
+                        <label class="col-sm-3  control-label">Nom de  la banque </label>
                         <div>
                             <input type="text" name="pourcentage" class="col-sm-7 col-sm-offset-1"
                                    [(ngModel)]="model.banque"/><!--variable pour value-->
@@ -174,8 +174,12 @@
                     <div class="form-group col-sm-6">
                         <label class="col-sm-3 control-label">Caution Bancaire </label>
                         <div>
-                            <input type="number" name="montant" class="col-sm-9 " [(ngModel)]="model.montant"/>
-                            <!--variable pour value-->
+                            <select name="energie" [(ngModel)]="model.caution" class="col-sm-9 input-sm">
+                                <option [selected]="model.caution ==''"></option>
+                                <option [selected]="model.caution =='Oui'">Oui</option>
+                                <option [selected]="model.caution =='Non'">Non</option>
+                            </select>
+
                         </div>
                     </div>
                 </div>

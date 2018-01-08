@@ -119,12 +119,15 @@ export class DevislibreComponent  implements OnInit{
         //console.log('TEST SUBMIT PRIX 0 : '+this.produitDevis[0].prix);
         //console.log('TEST TS CHANTIER : '+this.devis.chantier);
 
-
-        this.devisService.addLibre(devisparams).subscribe(
-            data=>{
-                this.router.navigate(["/listedevis"]);
-                //this.alertService.success("Le devis a été créé avec succès.");
-            });
+        var test = +confirm('Avez vous bien attribué le taux ou les taux de TVA sur vos produits ?');
+        //console.log(factureparams);
+        if (test) {
+            this.devisService.addLibre(devisparams).subscribe(
+                data => {
+                    this.router.navigate(["/listedevis"]);
+                    //this.alertService.success("Le devis a été créé avec succès.");
+                });
+        }
     }
 
     supprimer(produit: any) {

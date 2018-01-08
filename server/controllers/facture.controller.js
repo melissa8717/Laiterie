@@ -5,6 +5,8 @@ var express = require('express');
 var router = express.Router();
 var factureService = require('services/facture.service');
 
+router.get('/iffs/:month/:year/:id_fournisseur', getAllDiffBDC);
+
 router.get('/listefacture', getAllFacture);
 router.get('/modifierfacture', getAllFooter);
 router.get('/nfact/', getAllnfact);
@@ -55,6 +57,7 @@ router.get('/optionachat/:year', getAllOptionachat);
 router.get('/frainan/:year', getAllFraisan);
 router.get('/moan/:year', getAllMoan);
 router.get('/bdcreel/:year', getAllBdcreel);
+router.get('/getAllBdcreelibre/:year',getAllBdcreelibre);
 router.get('/annnefrais/:year', getAllAnnefrais);
 
 router.get('/fraispour', getAllFraispour);
@@ -96,6 +99,10 @@ router.get('/getByIdTotlaTVA/:id_facture/:n_situation',getByIdTotlaTVA);
 router.get('/TotlaTVAimp/:id_facture/:n_situation',getByIdTotlaTVAimp);
 router.get('/ByIdTotlafactimprim/:id_facture/:n_situation',getByIdTotlafactimprim);
 router.get('/getByIdSitlibredetail/:id_facture/:n_situation',getByIdSitlibredetail);
+
+router.get('/difffournisseur/:month/:year',getAllDiffFournisseur);
+router.get('/impfournisseur/:month/:year/:id_fournisseur',getAllDiffFournisseurImp);
+
 
 module.exports = router;
 
@@ -610,6 +617,16 @@ function getAllBdcreel(req, res) {
         });
 }
 
+function getAllBdcreelibre(req, res) {
+    factureService.getAllBdcreelibre(req.params.year)
+        .then(function (Chantier) {
+            res.send(Chantier);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
 function getAllAnnefrais(req, res) {
     factureService.getAllAnnefrais(req.params.year)
         .then(function (Chantier) {
@@ -1035,6 +1052,40 @@ function getByIdTotlafactimprim(req, res) {
             } else {
                 res.sendStatus(404);
             }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getAllDiffFournisseur(req, res) {
+    console.log('controller');
+
+    factureService.getAllDiffFournisseur(req.params.month,req.params.year,req.params.id_fournisseur,req.body)
+        .then(function (results) {
+            res.send(results);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function getAllDiffFournisseurImp(req, res) {
+    console.log('test');
+    factureService.getAllDiffFournisseurImp(req.params.month,req.params.year,req.params.id_fournisseur,req.body)
+        .then(function (Chantier) {
+            res.send(Chantier);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function  getAllDiffBDC(req, res) {
+    console.log("deesse");
+    factureService. getAllDiffBDC(req.params.month,req.params.year,req.params.id_fournisseur,req.body)
+        .then(function (Chantier) {
+            res.send(Chantier);
         })
         .catch(function (err) {
             res.status(400).send(err);

@@ -66,7 +66,7 @@
 
                 <div class="col-sm-12" style="margin-top: 25px;">
                     <span style="font-weight: bold;">Infomations additionnelles :</span><br>
-                    <span>Facture d'avoir, en remboursemant de la facture N° {{model.nfactclient}} </span>
+                    <span>Facture d'avoir, en remboursement de la facture N° {{model.nfactclient}} </span>
                 </div>
             </fieldset>
 
@@ -188,31 +188,31 @@
                 </tr>
                 <tr>
                     <td class="col-sm-6" *ngIf="model.remise >0">Après remise de {{model.remise}} % :</td>
-                    <td class="col-sm-6 ">- {{ countRemise() | number:'1.0-2'}}</td>
+                    <td class="col-sm-6 "> {{ countRemise() | number:'1.0-2'}}</td>
                 </tr>
                 <tr *ngIf="TVAV()">
-                    <td class="col-sm-6" >TVA 20 % :</td>
+                    <td class="col-sm-6" >TVA 20 % : </td>
                     <td class="col-sm-6 ">- {{TVAV() | number:'1.0-2'}}</td>
                 </tr>
                 <tr *ngIf="TVAD()">
-                    <td class="col-sm-6" >TVA 10 % :</td>
+                    <td class="col-sm-6" >TVA 10 % : </td>
                     <td class="col-sm-6 "> -{{TVAD() | number:'1.0-2'}}</td>
                 </tr>
                 <tr *ngIf="TVAC()">
-                    <td class="col-sm-6" >TVA 5.5 % :</td>
+                    <td class="col-sm-6" >TVA 5.5 % : </td>
                     <td class="col-sm-6 ">- {{TVAC() | number:'1.0-2'}}</td>
                 </tr>
                 <tr *ngIf="TVADU()">
-                    <td class="col-sm-6" >TVA 2.1 % :</td>
+                    <td class="col-sm-6" >TVA 2.1 % : </td>
                     <td class="col-sm-6 ">- {{TVADU() | number:'1.0-2'}}</td>
                 </tr>
                 <tr *ngIf="TVAZ()">
-                    <td class="col-sm-6" >TVA 0 % :</td>
+                    <td class="col-sm-6" >TVA 0 % : </td>
                     <td class="col-sm-6 ">{{TVAZ() | number:'1.0-2'}}</td>
                 </tr>
                 <tr >
-                    <td class="col-sm-6">Total TTC en € :</td>
-                    <td class="col-sm-6 ">- {{countTotalTTC() | number:'1.0-2'}}</td>
+                    <td class="col-sm-6">Total TTC en € : </td>
+                    <td class="col-sm-6 ">{{countTotalTTC() | number:'1.0-2'}}</td>
                 </tr>
             </table>
 

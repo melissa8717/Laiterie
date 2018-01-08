@@ -400,6 +400,14 @@ export class NewfactlibreComponent {
         return this.devis.montant_ht;
     }
 
+    retenue(){
+        return this.countTotalTVA()* (this.devis.retenuedegarantie ? this.devis.retenuedegarantie/100 : 0);
+    }
+
+    totalttc(){
+        return this.countTotalTVA() -  this.retenue();
+    }
+
     TVAVO()
     {
         let total = 0;

@@ -126,7 +126,7 @@ export class Editer_factureComponent {
             this.factureService.getByIdFacture(this.id_devis).subscribe(
                 data => {
                     this.model = data[0];
-                   // console.log(data)
+                    //console.log(data)
                 }
             )
         });
@@ -162,7 +162,7 @@ export class Editer_factureComponent {
             this.factureService.getByIdVersion(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.version = data[0];
-                    //console.log(data)
+
                 }
             )
         });
@@ -206,7 +206,6 @@ export class Editer_factureComponent {
             this.factureService.getByIdDevislibre(this.id_devis, this.num_version).subscribe(
                 data => {
                     this.libre = data;
-                    console.log(data)
                    parseFloat(data.tva);
 
 
@@ -383,7 +382,7 @@ export class Editer_factureComponent {
 
     countRetenu(version: any, details: any, options: any,libres:any,libreoptions: any) {
 
-        return this.countSTotal(version, details, options,libres,libreoptions) * (this.ret.pourcentage ? this.ret.pourcentage : 0) / 100;
+        return this.countSTotal(version, details, options,libres,libreoptions) * (this.version.taux ? this.version.taux : 0) / 100;
     }
 
     countTTC(version: any, details: any, options: any,libres:any,libreoptions: any) {

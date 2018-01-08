@@ -81,7 +81,20 @@
 
 
             <div class="table table-responsive">
+                <table class="table" style="margin-top: 10px;">
+                    <tr>
+                        <td *ngIf="!print"colspan="7">
+                            <button *ngIf="droitsuser.ajoutcom" type="submit" class="btn  input-sm col-sm-3">
+                                Enregistrement du bon de commande
+                            </button>
+                            <button class="col-sm-offset-8 col-sm-1 btn"type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>                        </td>
+                    </tr>
+                </table>
+
+
                 <table class="table">
+
+
                     <thead>
                     <th style="width: 50px; ">Référence:</th>
                     <th style="width: 50px;">Libellé produit:</th>
@@ -154,22 +167,93 @@
                         <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                         <td class="total"></td>
                     </tr>
-                    <tr>
-                        <td *ngIf="!print"colspan="7">
-                            <button *ngIf="droitsuser.ajoutcom" type="submit" class="btn btn-default input-sm col-sm-1 col-sm-offset-5">
-                                Enregistrer
-                            </button><!-- a integrer dans la bdd-->
-                            <button class="col-sm-offset-9 col-sm-1 btn" style="margin-top: 10px;" type="button" *ngIf="!print && droitsuser.accescom"  (click)=" imprimer()">Imprimer</button>                        </td>
-                    </tr>
+
 
 
                     </tbody>
 
                 </table>
+
             </div>
 
 
         </form>
+
+        <div class="table table-responsive">
+            <table class="table">
+                <thead>
+                <th style="width: 50px; ">Référence:</th>
+                <th style="width: 50px;">Libellé produit:</th>
+                <th style="width: 50px;">Unité:</th>
+                <th style="width: 50px;">Prix H.T.</th>
+                <th style="width: 50px;">Quantité:</th>
+                <th style="width: 50px;">Total H.T.</th>
+                <th *ngIf="!print" class="col-xs-1">Action</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <input *ngIf=" !print" type="text" name="referencef" placeholder="" value="" [(ngModel)]="produitf.referencef">
+                    </td>
+                    <td>
+                        <input
+
+                                class="form-control input-sm"
+                                placeholder="Ajouter un produit non référencé"
+                                name="produit"
+                                [(ngModel)]="produitf.objf"
+                                (ngModelChange)="testfact()"
+                        >
+                    </td>
+                    <td>
+                        <input  type="text" name="unitef" placeholder="" value="" [(ngModel)]="produitf.unitef">
+                    </td>
+                    <td *ngIf="!print" >
+                        <input type="number" name="prixf" placeholder="" value="" [(ngModel)]="produitf.prixf">
+                    </td>
+                    <td>
+                        <input  type="number"  name="qtef" placeholder="" [(ngModel)]="produitf.qtef">
+                    </td>
+                    <td>
+                        <div > {{((produitf.qtef && produitf.prixf) ? (produitf.qtef * produitf.prixf) :0) | currency:'EUR':true:'1.2-2'}}</div>
+                    </td>
+                    <td >
+                        <button class="btn btn-default input-sm " (click)="ajouter()" type="button"
+                                [disabled]="!produitf.objf">Ajouter la ligne
+                        </button>
+                    </td>
+                </tr>
+
+                <tr *ngFor="let prode of listing">
+                    <td><span>{{prode.referencef}}</span></td>
+                    <td><span>{{prode.produit}}</span></td>
+                    <td><span>{{prode.unitef}}</span></td>
+                    <td><span>{{prode.prixf | currency:'EUR':true:'1.2-2'}}</span></td>
+                    <td><span>{{prode.qtef}}</span></td>
+                    <td><span>{{(prode.qtef * prode.prixf) | currency:'EUR':true:'1.2-2'}}</span></td>
+                    <td *ngIf="!print">
+                        <button class="btn btn-default input-sm"  type="button" (click)="supprimerfact(listing[i])">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="1" class="total">Total :</td>
+                    <td class="total">{{totalibre() | currency:'EUR':true:'1.2-2'}}</td>
+                    <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                    <td class="total"></td>
+                </tr>
+                <tr *ngIf="totalibre() && all">
+                    <td colspan="1" class="total" >Totaux :</td>
+                    <td class="total">{{totalibre() + totaprod() | currency:'EUR':true:'1.2-2'}}</td>
+                    <!--calcul la somme de toutes quantités ajouté au bon de commande-->
+                    <td class="total"></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
 
     </div><!--fin container fluid-->
     <div class="form-group col-sm-12" *ngIf="print">
