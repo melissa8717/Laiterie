@@ -28,47 +28,47 @@
                     </div>
                 </div>
                 <p>&nbsp;</p>
-<ng-container *ngIf="model">
-                <div  style="margin-left: 50%;margin-top: 70px;">
-                   <!-- <div class="form-group" >
-                        <span *ngIf="model.raison_sociale">{{model.raison_sociale}}</span>
-                    </div>-->
-                    <div class="form-group" >
-                        <span>{{model.nom}} {{model.prenom}}<!--variable--></span>
-                    </div>
-                    <div class="form-group">
-                        <span >{{model.cadresse}}<!--variable--></span>
-                    </div>
-                    <div class="form-group">
-                        <span >{{model.ccp}} </span>
 
-                        <span > {{model.cville}}<!--variable--></span>
+                <div  style="margin-left: 50%;margin-top: 70px;">
+                   <div class="form-group" >
+                        <span >{{model.raison_sociale ? model.raison_sociale : models.raison_sociale}}</span>
+                    </div>
+                    <div class="form-group" >
+                        <span>{{model.nom ? model.nom : models.nom}} {{model.prenom ? model.prenom : models.prenom}}</span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.cadresse ? model.cadresse : models.adresse }}</span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.ccp ? model.ccp : models.code_postal}} </span>
+
+                        <span > {{model.cville ? model.cville : models.ville}}</span>
                     </div>
                     <p>&nbsp;</p>
                     <p>&nbsp;</p>
 
                     <div class="form-group"  >
-                        <span  style="margin-top: 40px;">{{fact.villefact}}* , le <input style="border:1px solid white;" type="date" name="date_fact" [ngModel]="model.date_fact | date:'yyyy-MM-dd'" (ngModelChange)="model.date_fact = $event" [value]="model.date_fact | date:'yyyy-MM-dd'" required><!--variable--></span>
+                        <span  style="margin-top: 40px;"> le {{model.date_fact ? model.date_fact : models.date_fact}}</span>
                     </div>
 
                 </div>
 
                 <div class="col-sm-5">
                     <div class="form-group">
-                        <span class="col-sm-5" style="text-decoration: underline;">N° de facturation: </span>{{model.nfactclient}}<span ><!--variable--></span>
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de facturation: </span>{{model.nfactclient ? model.nfactclient : models.nfactclient}}<span ><!--variable--></span>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-5" style="text-decoration: underline;">N° de situation: </span><span >{{model.n_situation}}<!--variable--></span>
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de situation: </span><span >{{model.n_situation ? model.n_situation : models.n_situation}}<!--variable--></span>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-5"style="text-decoration: underline;" >N° du devis: </span><span >{{model.id_devis}} </span><span class="col-sm-offset-1"> version: {{model.id_version}}<!--variable--></span>
+                        <span class="col-sm-5"style="text-decoration: underline;" >N° du devis: </span><span >{{model.id_devis ? model.id_devis : models.id_devis}} </span><span class="col-sm-offset-1"> version: {{model.id_version ? model.id_version : models.id_version}}</span>
                     </div>
-                    <div class="form-group">
-                        <span class="col-sm-5" >Nom du chantier: </span><span style="font-weight: bold;" >{{model.nom_chantier}}<!--variable--></span>
-                    </div>
+                    <!--<div class="form-group">
+                        <span class="col-sm-5" >Nom du chantier: </span><span style="font-weight: bold;" >{{model.nom_chantier}}</span>
+                    </div>-->
 
                 </div>
-</ng-container>
+
 
             </fieldset>
 

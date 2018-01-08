@@ -27,6 +27,7 @@ export class RetenuegComponent {
     data: any = {};
 
     model: any = {};
+    models: any = {};
     valeur: any = {};
     fact: any = {};
     pourcentage: number;
@@ -57,6 +58,7 @@ export class RetenuegComponent {
 
         this.loaddroituser();
         this.loadModif();
+        this.loadModifl();
         this.loadValeur();
         this.loadSituation();
         this.loadOption();
@@ -75,6 +77,19 @@ export class RetenuegComponent {
         });
     }
 
+    loadModifl() {
+        this.route.params.subscribe(params => {
+            this.id_facture = params['id_facture'];
+            this.n_situation = params['n_situation'];
+            this.factureService.getByIdLibreModif(this.id_facture, this.n_situation).subscribe(
+                data => {
+                    this.models = data[0];
+                    console.log(this.models);
+                }
+            )
+        });
+    }
+
     loadModif() {
         this.route.params.subscribe(params => {
             this.id_facture = params['id_facture']
@@ -83,7 +98,7 @@ export class RetenuegComponent {
             this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
-                   // console.log(data);
+                    console.log(data);
 
 
                 }
