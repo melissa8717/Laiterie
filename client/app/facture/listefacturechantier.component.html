@@ -18,7 +18,7 @@
                     <tbody >
 
                     <tr *ngFor="let prod of fact">
-                        <td>{{prod.nfactclient}}</td><td>{{prod.n_situation}}</td><td>{{prod.id_devis}}-{{prod.id_version}}</td><td>{{prod.date_fact | date: 'dd/MM/yyyy'}}</td><td>{{prod.date_echeance | date: 'dd/MM/yyyy'}}</td><td>{{prod.date_demarrage | date: 'dd/MM/yyyy'}}</td><td>{{prod.status}}</td><td>{{prod.montant_ht}}</td><td>3</td>
+                        <td>{{prod.nfactclient}}</td><td>{{prod.n_situation}}</td><td>{{prod.id_devis}}-{{prod.id_version}}</td><td>{{prod.date_fact | date: 'dd/MM/yyyy'}}</td><td>{{prod.date_echeance | date: 'dd/MM/yyyy'}}</td><td>{{prod.date_demarrage | date: 'dd/MM/yyyy'}}</td><td>{{prod.status}}</td><td>{{prod.montant_ht | number:'1.0-2'}}</td><td>3</td>
                         <td *ngIf="!print">
                             <div class="input-group">
                                 <input type="hidden" class="form-control"  name="identifiant de la facture"><!--variable pour l'identifiant-->

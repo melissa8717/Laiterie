@@ -232,7 +232,7 @@
                     <td><span>{{prode.qtef}}</span></td>
                     <td><span>{{(prode.qtef * prode.prixf) | currency:'EUR':true:'1.2-2'}}</span></td>
                     <td *ngIf="!print">
-                        <button class="btn btn-default input-sm"  type="button" (click)="supprimerfact(listing[i])">
+                        <button class="btn btn-default input-sm"  type="button" (click)="supprimerfact(prode)">
                             Supprimer
                         </button>
                     </td>

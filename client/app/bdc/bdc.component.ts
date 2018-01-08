@@ -311,8 +311,8 @@ export class BdcComponent {
 
     }
 
-    supprimerfact(produit: any) {
-        this.listing = this.listing.filter(obj => obj !== produit);
+    supprimerfact(prode: any) {
+        this.listing = this.listing.filter(objf => objf !== prode);
     }
 
     totalibre(){

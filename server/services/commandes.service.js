@@ -565,7 +565,8 @@ function retrait(month, year) {
 
 function getByIdRemove(id_bdc) {
     var deferred = Q.defer();
-    var sql = "SELECT bon_de_commande . * , users.firstname, users.lastname FROM bon_de_commande " +
+    var sql = "SELECT bon_de_commande . * , users.firstname, users.lastname, chantier.nom_chantier FROM bon_de_commande " +
+        "LEFT JOIN chantier ON chantier.id_chantier = bon_de_commande.id_chantier " +
         "LEFT JOIN users ON users.id = bon_de_commande.id_user WHERE id_bdc = ? ";
     var inserts = [id_bdc];
     sql = mysql.format(sql, inserts);
@@ -583,7 +584,9 @@ function getByIdRemove(id_bdc) {
 
 function getByIdRemlist(id_bdc) {
     var deferred = Q.defer();
-    var sql = "SELECT bdc_detaille . * FROM bdc_detaille WHERE id_bdc = ? ";
+    var sql = "SELECT bdc_detaille. * , produit.libelle, produit.reference FROM bdc_detaille " +
+        "LEFT JOIN produit ON produit.id_produit = bdc_detaille.id_produit AND produit.num_version = bdc_detaille.num_version " +
+        "WHERE id_bdc =? ";
     var inserts = [id_bdc];
     sql = mysql.format(sql, inserts);
     db.query(sql, function (error, bdc, fields) {
