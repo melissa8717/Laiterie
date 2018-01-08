@@ -220,7 +220,6 @@ function getByIdRemove(req, res) {
 }
 
 function getByIdRemlist(req, res) {
-    console.log('dieu');
     commandeService.getByIdRemlist(req.params.id_bdc)
         .then(function (bdc) {
             if (bdc) {

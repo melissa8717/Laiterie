@@ -17,6 +17,50 @@
 
             <h3 class="col-sm-12">Retrait du stock</h3>
 
+            <div class="col-sm-3 "><span class="glyphe">Auteur : </span><span> {{model.lastname}} {{model.firstname}}</span></div>
+            <div  class="col-sm-offset-6"><span class="glyphe">Date de retrait :</span><span> {{model.date_livraison_reel | date :  'dd-MM-yyyy HH:mm'}}</span></div><br><br>
+            <div class="col-sm-6 "><span class="glyphe">Nom du chantier : </span><span> {{model.nom_chantier}}</span></div><br><br>
+
+            <h5 class="col-sm-12">Liste des produits</h5>
+
+
+
+        </div>
+
+        <div class="table-responsive col-sm-12">
+            <table class="table">
+
+                <thead>
+
+                <tr>
+                    <th>Référence</th>
+                    <th>Libellé</th>
+                    <th>Quantité retirée des stocks</th>
+                    <th>Prix unitaire H.T.</th>
+                    <th>Total H.T. en €</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr  *ngFor="let prod of listes">
+                    <td>{{prod.reference}}</td>
+                    <td>{{prod.libelle}}</td>
+                    <td>{{prod.qte}}</td>
+                    <td>{{prod.prix_prevu}}</td>
+                    <td>{{prod.qte * prod.prix_prevu | number:'1.0-2'}}</td>
+                </tr>
+                <tr class="bdc">
+                    <td colspan="3"></td>
+                    <td>Total H.T en € : </td>
+                    <td>{{totalcount() | number:'1.0-2'}}</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
         </div>
     </div>
 </div>

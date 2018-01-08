@@ -23,7 +23,7 @@ export class StockretireComponent {
     data:any={};
     id_bdc:number;
     model:any={};
-    listes:any=[]=[];
+    listes:any[]=[];
 
     constructor(private route: ActivatedRoute,
     private router: Router,
@@ -52,7 +52,7 @@ export class StockretireComponent {
             this.commandeService.getByIdRemove(this.id_bdc).subscribe(
                 data => {
                     this.model = data[0];
-                    console.log(data);
+
 
 
                 }
@@ -67,12 +67,21 @@ export class StockretireComponent {
             this.commandeService.getByIdRemlist(this.id_bdc).subscribe(
                 data => {
                     this.listes = data;
-                    console.log(data);
-
 
                 }
             )
         });
+    }
+
+    totalcount(){
+       let total =0;
+
+        for (let prod of this.listes) {
+            total+= prod.qte * prod.prix_prevu;
+        }
+
+        return total;
+
     }
 
 }
