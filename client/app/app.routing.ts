@@ -122,6 +122,7 @@ import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
 import {OtestockComponent} from "./bdc/otestock.component";
 import {RetraitstockComponent} from "./bdc/retraitstock.component";
 import {StockretireComponent} from "./bdc/stockretire.component";
+import {RetenuegComponent} from "./facture/retenueg.component";
 
 
 
@@ -259,6 +260,7 @@ const appRoutes: Routes = [
     {path: 'otestock', component: OtestockComponent,canActivate:[AuthGuard]},
     {path: 'retraitstock', component: RetraitstockComponent,canActivate:[AuthGuard]},
     {path: 'stockretire/:id_bdc', component: StockretireComponent,canActivate:[AuthGuard]},
+    {path: 'retenueg/:id_facture/:n_situation', component: RetenuegComponent,canActivate:[AuthGuard]},
 
 
 

@@ -172,6 +172,7 @@ import {Diff_fournisseurComponent} from "./facture/diff_fournisseur.component";
 import {OtestockComponent} from "./bdc/otestock.component";
 import {RetraitstockComponent} from "./bdc/retraitstock.component";
 import {StockretireComponent} from "./bdc/stockretire.component";
+import {RetenuegComponent} from "./facture/retenueg.component";
 
 
 
@@ -334,7 +335,8 @@ import {StockretireComponent} from "./bdc/stockretire.component";
         Diff_fournisseurComponent,
         OtestockComponent,
         RetraitstockComponent,
-        StockretireComponent
+        StockretireComponent,
+        RetenuegComponent
 
     ],
     providers: [

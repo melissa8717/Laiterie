@@ -1,0 +1,174 @@
+<div id="devis">
+
+    <my-header *ngIf="!print" [title]='"Facturation"' [img]="'image/menu/facturation_grand_gris.png'"></my-header>
+
+</div>
+<div id="dev">
+    <div class=" container "  id="pageContent" style="background-color: white;">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+        <h3 *ngIf="!print" >Retenue de garantie</h3>
+
+        <form >
+
+            <fieldset class="separe">
+                <div class="row marge">
+                    <img *ngIf="!print" [src]="config.logoPath"  style="width: -1000px;height: 100px;">
+                </div>
+                <!-- ajouter une boucle pour récupérer les différentes variables du devis-->
+                <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%;  heigh:auto; position: relative;">
+                    <div *ngIf="print">
+                        <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
+                        <img *ngIf="!url && img.image" style="height: 150px; width: 300px;"
+                             src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="..."
+                             class="img-responsive col-sm-12"/>
+
+                        <!--<input type="file" ng2FileSelect [uploader]="uploaderImg" (change)="readUrl($event)"/>-->
+                    </div>
+                </div>
+                <p>&nbsp;</p>
+<ng-container *ngIf="model">
+                <div  style="margin-left: 50%;margin-top: 70px;">
+                   <!-- <div class="form-group" >
+                        <span *ngIf="model.raison_sociale">{{model.raison_sociale}}</span>
+                    </div>-->
+                    <div class="form-group" >
+                        <span>{{model.nom}} {{model.prenom}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.cadresse}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span >{{model.ccp}} </span>
+
+                        <span > {{model.cville}}<!--variable--></span>
+                    </div>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+
+                    <div class="form-group"  >
+                        <span  style="margin-top: 40px;">{{fact.villefact}}* , le <input style="border:1px solid white;" type="date" name="date_fact" [ngModel]="model.date_fact | date:'yyyy-MM-dd'" (ngModelChange)="model.date_fact = $event" [value]="model.date_fact | date:'yyyy-MM-dd'" required><!--variable--></span>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de facturation: </span>{{model.nfactclient}}<span ><!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de situation: </span><span >{{model.n_situation}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-5"style="text-decoration: underline;" >N° du devis: </span><span >{{model.id_devis}} </span><span class="col-sm-offset-1"> version: {{model.id_version}}<!--variable--></span>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-5" >Nom du chantier: </span><span style="font-weight: bold;" >{{model.nom_chantier}}<!--variable--></span>
+                    </div>
+
+                </div>
+</ng-container>
+
+            </fieldset>
+
+            <fieldset class="marge1" >
+                <!--boucle pour éditer les lignes du tableau de facturation et calcul posiible ou déjà en bdd-->
+
+
+                <table class="table table-striped">
+                    <thead style="background-color: #9d9d9d;">
+                    <tr >
+                        <th style="border-left: 1px solid black;  border-top:1px solid black;" class="col-sm-1">Référence</th>
+                        <th  style=" border-top:1px solid black;" class="col-sm-4">Article</th>
+                        <th style=" border-top:1px solid black;" class="col-sm-1">Unité</th>
+                        <th style="border-top:1px solid black;" class="col-sm-1">TVA en %</th>
+                        <th style="border-top:1px solid black;" class="col-sm-1">Qte</th>
+                        <th style=" border-top:1px solid black;" class="col-sm-1">PU H.T. en €</th>
+                        <th style=" border-top:1px solid black;" class="col-sm-1">Total H.T. en €</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <ng-container *ngIf="situa.length >0">
+                    <tr *ngFor="let situas of situa">
+                        <td>{{situas.id_produit}}</td>
+                        <td>{{situas.libelle}}</td>
+                        <td>{{situas.unite}}</td>
+                        <td>{{situas.tvas}}</td>
+                        <td>{{situas.qtefact}}</td>
+                        <td>{{situas.prixfact}}</td>
+                        <td>{{situas.qtefact * situas.prixfact | number:"1.0-2"}}</td>
+                    </tr>
+                    </ng-container>
+
+                    <ng-container *ngIf="option.length>0">
+                    <tr *ngFor="let options of option">
+                        <td>{{options.id_produit}}</td>
+                        <td>{{options.libelle}}</td>
+                        <td>{{options.unite}}</td>
+                        <td>{{options.tvao}}</td>
+                        <td>{{options.qtefact}}</td>
+                        <td>{{options.prixfact}}</td>
+                        <td>{{options.qtefact * options.prixfact | number:"1.0-2"}}</td>
+                    </tr>
+                    </ng-container>
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    </tbody>
+
+
+
+                </table>
+
+                <table  class=" separe1 col-sm-offset-8 col-sm-4 table-striped" >
+                <tbody >
+
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" ><td class="gauche" style="text-align: left;">Montant H.T. : </td><td style="text-align:right;border-top:1px solid black; border-right:1px solid black;"> {{countTTC() | number:'1.0-2'}} </td>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="valeur.remise>0"><td class="gauche" style="text-align: left;">Montant H.T après remise de {{valeur.remise}}% : </td><td style="text-align:right;border-top:1px solid black; border-right:1px solid black;"> {{countTTCremise() | number:'1.0-2'}} </td>
+
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()>0"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >TVA à 20 % </td><td style="text-align: right;">{{SumTvaV() | number:'1.0-2'}}</td></tr>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaD()>0"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >TVA à 10 % </td><td style="text-align: right;">{{SumTvaD() | number:'1.0-2'}}</td></tr>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaC()>0"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >TVA à 5.5 % </td><td style="text-align: right;">{{SumTvaC() | number:'1.0-2'}}</td></tr>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaDX()>0"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >TVA à 2.1 % </td><td style="text-align: right;">{{SumTvaDX() | number:'1.0-2'}}</td></tr>
+                <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >Total TVA :</td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;">{{TotauxTVA() | number:'1.0-2'}}</td></tr>
+                <tr  style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >TTC : </td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;">{{countTotalTTC() | number:'1.0-2'}}</td></tr>
+                <tr  style="height: 50px;border:1px solid black;" class="gras"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >Retenue de garantie de {{valeur.taux}}% : </td  ><td style=" border-right:1px solid black; border-bottom:1px solid black;">{{countretenue() | number:'1.0-2'}}</td></tr>
+
+
+                </tbody>
+                </table>
+
+            </fieldset>
+        </form>
+
+        <div style="padding-top: 10px;margin-right:20px;">
+            <div  style=" float: right;margin-right: 100px;margin-bottom: 10px;">{{countretenue() | number:'1.0-2'}} €</div>
+            <div class="gauche"  style="border:1px solid white; float: right;margin-right:125px;">Retenue de garantie à payer :</div>
+        </div>
+
+
+
+
+    </div>
+
+
+</div>
