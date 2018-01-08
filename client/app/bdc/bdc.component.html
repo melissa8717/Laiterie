@@ -244,6 +244,7 @@
                     <!--calcul la somme de toutes quantités ajouté au bon de commande-->
                     <td class="total"></td>
                 </tr>
+
                 <tr *ngIf="totalibre() && all">
                     <td colspan="1" class="total" >Totaux :</td>
                     <td class="total">{{totalibre() + totaprod() | currency:'EUR':true:'1.2-2'}}</td>
@@ -252,7 +253,6 @@
                 </tr>
                 </tbody>
             </table>
-
         </div>
 
     </div><!--fin container fluid-->
