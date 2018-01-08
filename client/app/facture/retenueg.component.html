@@ -48,7 +48,7 @@
                     <p>&nbsp;</p>
 
                     <div class="form-group"  >
-                        <span  style="margin-top: 40px;"> le {{model.date_fact ? model.date_fact : models.date_fact}}</span>
+                        <span  style="margin-top: 40px;"> le {{(model.date_fact ? model.date_fact : models.date_fact) | date:'dd-MM-yyyy'}}</span>
                     </div>
 
                 </div>
