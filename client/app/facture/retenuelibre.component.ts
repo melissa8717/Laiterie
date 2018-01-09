@@ -15,10 +15,10 @@ const URLimg = 'http://' + location.hostname + ':4000/image/';
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'retenueg.component.html'
+    templateUrl: 'retenuelibre.component.html'
 })
 
-export class RetenuegComponent {
+export class RetenuelibreComponent {
 
 
     currentUser: User;
@@ -57,7 +57,6 @@ export class RetenuegComponent {
 
         this.loaddroituser();
         this.loadModif();
-        this.loadValeur();
         this.loadSituation();
         this.loadOption();
         this.loadlibreSituation();
@@ -79,32 +78,18 @@ export class RetenuegComponent {
 
     loadModif() {
         this.route.params.subscribe(params => {
-            this.id_facture = params['id_facture']
-            this.n_situation = params['n_situation']
-            console.log(this.id_facture);
-            this.factureService.getByIdModif(this.id_facture, this.n_situation).subscribe(
+            this.id_facture = params['id_facture'];
+            this.n_situation = params['n_situation'];
+            this.factureService.getByIdLibreModif(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.model = data[0];
                     console.log(data);
-
-
                 }
             )
         });
     }
 
-    loadValeur() {
-        this.route.params.subscribe(params => {
-            this.id_facture = params['id_facture'];
-            console.log(this.id_facture);
-            this.factureService.getByIdValeur(this.id_facture).subscribe(
-                valeur => {
-                    this.valeur = valeur[0];
-                    console.log(this.valeur)
-                }
-            )
-        });
-    }
+
 
     loadAllFooter() {
 
@@ -122,7 +107,7 @@ export class RetenuegComponent {
             this.factureService.getByIdSituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.situa = data;
-                   // console.log(data);
+                    // console.log(data);
                 }
             )
         });
@@ -136,7 +121,7 @@ export class RetenuegComponent {
             this.factureService.getByIdSitoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.option = data;
-                   // console.log(data);
+                    // console.log(data);
                 }
             )
         });
@@ -150,7 +135,7 @@ export class RetenuegComponent {
             this.factureService. getByIdlibresituation(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.libsitua = data;
-                    console.log(data);
+                    //console.log(data);
                 }
             )
         });
@@ -164,7 +149,7 @@ export class RetenuegComponent {
             this.factureService. getByIdlibresituationoption(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.libsituaop = data;
-                    console.log(data);
+                    //console.log(data);
                 }
             )
         });
@@ -177,7 +162,7 @@ export class RetenuegComponent {
             this.factureService.getByIdLibrebase(this.id_facture, this.n_situation).subscribe(
                 data => {
                     this.base = data;
-                    //console.log(data);
+                    console.log(data);
                 }
             )
         });
@@ -225,13 +210,9 @@ export class RetenuegComponent {
 
     countTTCremise(situas: any, options: any, situaop :any, lsituas: any) {
 
-        return this.countTTC(situas, options, situaop, lsituas) * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ;
+        return this.countTTC(situas, options, situaop, lsituas) * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ;
     }
 
-    countTvaremise(situas: any, options: any, situaop :any, lsituas: any) {
-
-        return this.countTTCremise(situas, options, situaop, lsituas) * (this.valeur.tva ? ((this.valeur.tva / 100)) : 0) ;
-    }
 
 
     TVAVO() {
@@ -240,7 +221,7 @@ export class RetenuegComponent {
         for (let situas of this.situa) {
 
             if (situas.tvas == 20) {
-                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )* (situas.tvas / 100);
+                total += ( situas.prixfact * situas.qtefact * (this.model.remise? (1 - (this.model.remise / 100)) : 1) )* (situas.tvas / 100);
 
             }
         }
@@ -253,7 +234,7 @@ export class RetenuegComponent {
         for (let lsituas of this.libsitua) {
 
             if (lsituas.tva == 20) {
-                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (lsituas.tva / 100);
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) )  * (lsituas.tva / 100);
             }
 
         }
@@ -266,7 +247,7 @@ export class RetenuegComponent {
         for (let options of this.option) {
 
             if (options.tvao == 20) {
-                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (options.tvao / 100);
+                total += (options.prixfact * options.qtefact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) )  * (options.tvao / 100);
             }
 
         }
@@ -279,7 +260,7 @@ export class RetenuegComponent {
         for (let situaop of this.libsituaop) {
 
             if (situaop.tva == 20) {
-                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) )  * (situaop.tva / 100);
+                total += (situaop.prix_prod * situaop.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) )  * (situaop.tva / 100);
             }
 
         }
@@ -299,7 +280,7 @@ export class RetenuegComponent {
         for (let situas of this.situa) {
 
             if (situas.tvas == 10) {
-                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.tvas / 100);
+                total += ( situas.prixfact * situas.qtefact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (situas.tvas / 100);
 
             }
         }
@@ -312,7 +293,7 @@ export class RetenuegComponent {
         for (let lsituas of this.libsitua) {
 
             if (lsituas.tva == 10) {
-                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.tva / 100);
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (lsituas.tva / 100);
             }
 
         }
@@ -325,7 +306,7 @@ export class RetenuegComponent {
         for (let options of this.option) {
 
             if (options.tvao == 10) {
-                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (options.tvao / 100);
+                total += (options.prixfact * options.qtefact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (options.tvao / 100);
             }
 
         }
@@ -338,7 +319,7 @@ export class RetenuegComponent {
         for (let situaop of this.libsituaop) {
 
             if (situaop.tva == 10) {
-                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.tva / 100);
+                total += (situaop.prix_prod * situaop.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (situaop.tva / 100);
             }
 
         }
@@ -358,7 +339,7 @@ export class RetenuegComponent {
         for (let situas of this.situa) {
 
             if (situas.tvas == 5.5) {
-                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.tvas / 100);
+                total += ( situas.prixfact * situas.qtefact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (situas.tvas / 100);
 
             }
         }
@@ -371,7 +352,7 @@ export class RetenuegComponent {
         for (let lsituas of this.libsitua) {
 
             if (lsituas.tva == 5.5) {
-                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.tva / 100);
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (lsituas.tva / 100);
             }
 
         }
@@ -384,7 +365,7 @@ export class RetenuegComponent {
         for (let options of this.option) {
 
             if (options.tvao == 5.5) {
-                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (options.tvao / 100);
+                total += (options.prixfact * options.qtefact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (options.tvao / 100);
             }
 
         }
@@ -397,7 +378,7 @@ export class RetenuegComponent {
         for (let situaop of this.libsituaop) {
 
             if (situaop.tva == 5.5) {
-                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.tva / 100);
+                total += (situaop.prix_prod * situaop.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (situaop.tva / 100);
             }
 
         }
@@ -416,7 +397,7 @@ export class RetenuegComponent {
         for (let situas of this.situa) {
 
             if (situas.tvas == 2.1) {
-                total += ( situas.prixfact * situas.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situas.tvas / 100);
+                total += ( situas.prixfact * situas.qtefact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (situas.tvas / 100);
 
             }
         }
@@ -429,7 +410,7 @@ export class RetenuegComponent {
         for (let lsituas of this.libsitua) {
 
             if (lsituas.tva == 2.1) {
-                total += (lsituas.prix_prod * lsituas.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (lsituas.tva / 100);
+                total += (lsituas.prix_prod * lsituas.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (lsituas.tva / 100);
             }
 
         }
@@ -442,7 +423,7 @@ export class RetenuegComponent {
         for (let options of this.option) {
 
             if (options.tvao == 2.1) {
-                total += (options.prixfact * options.qtefact * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (options.tvao / 100);
+                total += (options.prixfact * options.qtefact * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (options.tvao / 100);
             }
 
         }
@@ -455,7 +436,7 @@ export class RetenuegComponent {
         for (let situaop of this.libsituaop) {
 
             if (situaop.tva == 2.1) {
-                total += (situaop.prix_prod * situaop.qteprod * (this.valeur.remise ? (1 - (this.valeur.remise / 100)) : 1) ) * (situaop.tva / 100);
+                total += (situaop.prix_prod * situaop.qteprod * (this.model.remise ? (1 - (this.model.remise / 100)) : 1) ) * (situaop.tva / 100);
             }
 
         }
@@ -470,7 +451,7 @@ export class RetenuegComponent {
     }
 
     TotauxTVA(situas: any, valeur: any, options: any,lbsituas:any,situaop: any){
-        return (this.SumTvaDX()>0 ? this.SumTvaDX() :0) + (this.SumTvaC() > 0 ? this.SumTvaC() : 0) + (this.SumTvaD()>0 ? this.SumTvaD() : 0) + (this.SumTvaV()> 0 ? this.SumTvaV() :0) + (this.countTvaremise(situas, options, situaop, lbsituas));
+        return (this.SumTvaDX()>0 ? this.SumTvaDX() :0) + (this.SumTvaC() > 0 ? this.SumTvaC() : 0) + (this.SumTvaD()>0 ? this.SumTvaD() : 0) + (this.SumTvaV()> 0 ? this.SumTvaV() :0);
     }
 
     countTotalTTC(situas: any, valeur: any, options: any,lbsituas:any,situaop: any){
@@ -478,7 +459,7 @@ export class RetenuegComponent {
     }
 
     countretenue(situas: any, valeur: any, options: any,lbsituas:any,situaop: any){
-        return this.countTotalTTC(situas, valeur, options,lbsituas,situaop) * (this.valeur.taux ? this.valeur.taux : 0) / 100;
+        return this.countTotalTTC(situas, valeur, options,lbsituas,situaop) * (this.model.id_version ? this.model.id_version : 0) / 100;
     }
 
 }

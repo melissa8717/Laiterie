@@ -309,7 +309,7 @@
                             <td>{{cacess.nom}} {{cacess.prenom}}</td>
                             <td>{{cacess.date_fact | date: 'dd/MM/yyyy'}}</td>
                             <td>{{cacess.montant_ht | number: '1.0-2'}}</td>
-                            <td><button [routerLink]=" ['/retenueg/'+cacess.id_facture+'/'+cacess.n_situation]">Ouvrir</button></td>
+                            <td><button [routerLink]=" [cacess.libre ? '/retenuelibre/'+cacess.id_facture+'/'+cacess.n_situation : '/retenueg/'+cacess.id_facture+'/'+cacess.n_situation]">Ouvrir</button></td>
                         </tr>
                     </table>
 

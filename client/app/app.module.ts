@@ -173,6 +173,7 @@ import {OtestockComponent} from "./bdc/otestock.component";
 import {RetraitstockComponent} from "./bdc/retraitstock.component";
 import {StockretireComponent} from "./bdc/stockretire.component";
 import {RetenuegComponent} from "./facture/retenueg.component";
+import {RetenuelibreComponent} from "./facture/retenuelibre.component";
 
 
 
@@ -336,7 +337,8 @@ import {RetenuegComponent} from "./facture/retenueg.component";
         OtestockComponent,
         RetraitstockComponent,
         StockretireComponent,
-        RetenuegComponent
+        RetenuegComponent,
+        RetenuelibreComponent
 
     ],
     providers: [

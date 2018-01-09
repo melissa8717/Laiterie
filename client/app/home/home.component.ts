@@ -142,6 +142,7 @@ export class HomeComponent implements OnInit {
     loadAlarmecaces() {
         this.paramsService.getAlarmecaces().subscribe(caces => {
             this.caces = caces;
+            console.log(this.caces);
         });
     }
 

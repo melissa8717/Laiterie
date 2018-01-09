@@ -123,6 +123,7 @@ import {OtestockComponent} from "./bdc/otestock.component";
 import {RetraitstockComponent} from "./bdc/retraitstock.component";
 import {StockretireComponent} from "./bdc/stockretire.component";
 import {RetenuegComponent} from "./facture/retenueg.component";
+import {RetenuelibreComponent} from "./facture/retenuelibre.component";
 
 
 
@@ -261,6 +262,7 @@ const appRoutes: Routes = [
     {path: 'retraitstock', component: RetraitstockComponent,canActivate:[AuthGuard]},
     {path: 'stockretire/:id_bdc', component: StockretireComponent,canActivate:[AuthGuard]},
     {path: 'retenueg/:id_facture/:n_situation', component: RetenuegComponent,canActivate:[AuthGuard]},
+    {path: 'retenuelibre/:id_facture/:n_situation', component: RetenuelibreComponent,canActivate:[AuthGuard]},
 
 
 
