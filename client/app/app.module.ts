@@ -174,6 +174,7 @@ import {RetraitstockComponent} from "./bdc/retraitstock.component";
 import {StockretireComponent} from "./bdc/stockretire.component";
 import {RetenuegComponent} from "./facture/retenueg.component";
 import {RetenuelibreComponent} from "./facture/retenuelibre.component";
+import {AdressfactComponent} from "./contact/adressfact.component";
 
 
 
@@ -338,7 +339,8 @@ import {RetenuelibreComponent} from "./facture/retenuelibre.component";
         RetraitstockComponent,
         StockretireComponent,
         RetenuegComponent,
-        RetenuelibreComponent
+        RetenuelibreComponent,
+        AdressfactComponent
 
     ],
     providers: [
