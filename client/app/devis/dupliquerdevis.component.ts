@@ -4,7 +4,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, AuthenticationService} from '../_services/index';
+import {AchatsService, AlertService, AuthenticationService} from '../_services/index';
 import {FormBuilder} from "@angular/forms";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {DevisService} from "../_services/devis.service";
@@ -53,6 +53,7 @@ export class DupliquerDevisComponent implements OnInit {
                 private factureService: FactureService,
                 private devisService: DevisService,
                 private venteService: VentesService,
+                private achatsService: AchatsService,
                 private paramsService: ParamsService,
                 private builder: FormBuilder, private _sanitizer: DomSanitizer) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -71,8 +72,16 @@ export class DupliquerDevisComponent implements OnInit {
             this.num_version = params['num_version'];
             this.devisService.getById(this.id, this.num_version).subscribe((data: any) => {
                 this.devis = data.devis[0];
-                this.produitDevis = data.detaille;
                 this.produitDevisOptions = data.options;
+
+                this.achatsService.getAllUnite().subscribe((unites: any[]) => {
+                    this.produitDevis = data.detaille;
+
+                    this.produitDevis.forEach(produit => {
+                        produit.id_unite = parseInt(produit.unite);
+                        produit.unite = unites.find(u => u.id_unite == produit.id_unite).libelle;
+                    });
+                });
             })
         });
     }
@@ -154,10 +163,16 @@ export class DupliquerDevisComponent implements OnInit {
     }
 
     loadAllProduits() {
-        this.venteService.getAll().subscribe(data => {
-            this.produits = data;
+        this.venteService.getAll().subscribe(produits => {
+            this.produits = produits;
 
-        });
+            this.achatsService.getAllUnite().subscribe((unites: any[]) => {
+                this.produits.forEach((produit: any) => {
+                    produit.id_unite = parseInt(produit.unite);
+                    produit.unite = unites.find(u => u.id_unite == produit.id_unite).libelle;
+                })
+            })
+        })
     }
 
     countTotal() {
@@ -327,7 +342,7 @@ export class DupliquerDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -343,7 +358,7 @@ export class DupliquerDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -359,7 +374,7 @@ export class DupliquerDevisComponent implements OnInit {
 
 
             if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
 
             }
@@ -375,7 +390,7 @@ export class DupliquerDevisComponent implements OnInit {
 
 
             if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
             }
         }
         return total;
@@ -403,7 +418,7 @@ export class DupliquerDevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -417,7 +432,7 @@ export class DupliquerDevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -432,7 +447,7 @@ export class DupliquerDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
 
             }
@@ -447,7 +462,7 @@ export class DupliquerDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
             }
         }
