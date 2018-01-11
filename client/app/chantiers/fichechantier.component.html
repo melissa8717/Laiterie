@@ -7,23 +7,23 @@
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
             <a [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
-        <h3>Fiche module</h3>
+        <h3>Fiche chantier</h3>
 
         <form  (ngSubmit)=" modify()">
 
             <div class="col-sm-7" style="margin: 0;">
 
-                <h5>Informations générales module</h5>
+                <h5>Informations générales chantier</h5>
 
 
-                <span class="col-sm-3 control-label" style="font-weight: bold;">Nom du module : </span><!--variable-->
+                <span class="col-sm-3 control-label" style="font-weight: bold;">Nom du chantier : </span><!--variable-->
 
                 <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.nom_chantier}}</span>
 
 
-                <span class="col-sm-3  control-label" style="font-weight: bold;">N° module : </span>
+                <span class="col-sm-3  control-label" style="font-weight: bold;">N° chantier : </span>
 
-                <input type="text" name="type_m" class="col-sm-3" [(ngModel)]="model.num_module"/>
+                <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.id_chantier}}</span>
 
                 <span class="col-sm-3  control-label" style="font-weight: bold;">Nom du client :</span>
                 <span class="col-sm-3" style="font-weight: bold;text-align: center;">{{model.nom}}</span>
@@ -34,14 +34,6 @@
                 <p>&nbsp;</p>
                 <p>&nbsp;</p><!--variable pour value-->
                 <div class="col-sm-12">
-                    <div class="form-group col-sm-12">
-
-                        <label class="col-sm-2  control-label"> Type de module : </label>
-                        <div>
-                            <input type="text" name="type_m" class="col-sm-10" [(ngModel)]="model.type_m"/>
-                            <!--variable pour value-->
-                        </div>
-                    </div>
                     <div class="form-group col-sm-12">
 
                         <label class="col-sm-2  control-label"> Adresse </label>
@@ -71,71 +63,33 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group col-sm-12">
-                        <label class="col-sm-2 control-label">Agence : </label>
+                        <label class="col-sm-2 control-label">Responsable </label>
                         <div>
-                            <input type="text" name="agence" class="col-sm-10  " [(ngModel)]="model.agence_m"/>
+                            <input type="text" name="responsable" class="col-sm-10  " [(ngModel)]="model.responsable"/>
                             <!--variable pour value-->
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group col-sm-6">
-                        <label class="col-sm-4  control-label">Achat : </label>
+                        <label class="col-sm-4  control-label">Tel </label>
                         <div>
-                            <input type="text" name="tel" class="col-sm-8" [(ngModel)]="model.achat_m"/>
-                            <!--variable pour value-->
-                        </div>
-                    </div>
-
-                    <div class="form-group col-sm-6">
-                        <label class="col-sm-4  control-label">Date d'achat : </label>
-                        <div>
-                            <input type="date" name="date_location" class="col-sm-8"
-                                   [ngModel]="model.date_achat_m  | date:'yyyy-MM-dd'"
-                                   (ngModelChange)="model.date_achat_m = $event"
-                                   [value]="model.date_achat_m | date:'yyyy-MM-dd'"/>
+                            <input type="text" name="tel" class="col-sm-8" [(ngModel)]="model.telresponsable"/>
                             <!--variable pour value-->
                         </div>
                     </div>
 
                     <div class="form-group  col-sm-6 ">
-                        <label class="col-sm-4 control-label">Location : </label>
+                        <label class="col-sm-3 control-label">Mobile </label>
                         <div>
-                            <input type="text" name="location" class="col-sm-8"
-                                   [(ngModel)]="model.location_m"/><!--variable pour value-->
-                        </div>
-                    </div>
-                    <div class="form-group  col-sm-6 ">
-                        <label class="col-sm-4 control-label">Date location : </label>
-                        <div>
-                            <input type="date" name="date_location" class="col-sm-8"
-                                   [ngModel]="model.date_loc_m  | date:'yyyy-MM-dd'"
-                                   (ngModelChange)="model.date_loc_m = $event"
-                                   [value]="model.date_loc_m | date:'yyyy-MM-dd'"/><!--variable pour value-->
-                        </div>
-                    </div>
-
-
-                    <div class="form-group col-sm-6">
-                        <label class="col-sm-4  control-label">Revente : </label>
-                        <div>
-                            <input type="text" name="revente" class="col-sm-8" [(ngModel)]="model.revente_m"/>
-                            <!--variable pour value-->
-                        </div>
-                    </div>
-                    <div class="form-group  col-sm-6 ">
-                        <label class="col-sm-4 control-label">Date revente : </label>
-                        <div>
-                            <input type="date" name="date_revente" class="col-sm-8"
-                                   [ngModel]="model.date_revente_m  | date:'yyyy-MM-dd'"
-                                   (ngModelChange)="model.date_revente_m = $event"
-                                   [value]="model.date_revente_m | date:'yyyy-MM-dd'"/><!--variable pour value-->
+                            <input type="text" name="telresponsablemob" class="col-sm-9"
+                                   [(ngModel)]="model.telresponsablemob"/><!--variable pour value-->
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group col-sm-12">
-                        <label class="col-sm-2  control-label">Date de départ :</label>
+                        <label class="col-sm-2  control-label">Début de projet </label>
                         <div>
                             <input type="date" name="date_demarrage" class="col-sm-10"
                                    [ngModel]="model.date_demarrage  | date:'yyyy-MM-dd'"
@@ -146,7 +100,7 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group col-sm-12">
-                        <label class="col-sm-2 control-label">Date de fin : </label>
+                        <label class="col-sm-2 control-label">Réception travaux </label>
                         <div>
                             <input type="date" name="reception_chantier" class="col-sm-10"
                                    [ngModel]="model.reception_chantier  | date:'yyyy-MM-dd'"
@@ -157,56 +111,94 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-
-                    <div class="col-sm-12">
-                        <div class="form-group col-sm-12">
-                            <label class="col-sm-2 control-label" style="padding-left: -100px;margint-left:100px;">Intervenants :</label>
-                            <div>
-                                <div><textarea rows="6" class="col-sm-10"  name="autrecontact" [(ngModel)]="model.autrecontact"></textarea></div>
-                                <!--variable pour value-->
-                            </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3  control-label">Maitre d'oeuvre </label>
+                        <div>
+                            <input type="text" name="maitreoeuvre" class="col-sm-7 col-sm-offset-1"
+                                   [(ngModel)]="model.maitreoeuvre"/><!--variable pour value-->
                         </div>
+                    </div>
 
 
-
-                        <div class="col-sm-12">
-                            <div class="form-group col-sm-6">
-                                <label class="col-sm-3  control-label">Nom de  la banque </label>
-                                <div>
-                                    <input type="text" name="pourcentage" class="col-sm-7 col-sm-offset-1"
-                                           [(ngModel)]="model.banque"/><!--variable pour value-->
-                                </div>
-                            </div>
-
-                            <div class="form-group col-sm-6">
-                                <label class="col-sm-3 control-label">Caution Bancaire </label>
-                                <div>
-                                    <select name="energie" [(ngModel)]="model.caution" class="col-sm-9 input-sm">
-                                        <option [selected]="model.caution ==''"></option>
-                                        <option [selected]="model.caution =='Oui'">Oui</option>
-                                        <option [selected]="model.caution =='Non'">Non</option>
-                                    </select>
-
-                                </div>
-                            </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Tel </label>
+                        <div>
+                            <input type="text" name="telmaitre" class="col-sm-9" [(ngModel)]="model.telmaitre"/>
+                            <!--variable pour value-->
                         </div>
-                        <div class="col-sm-12">
-                            <div class="form-group col-sm-6">
-                                <label class="col-sm-3 control-label">Montant </label>
-                                <div>
-                                    <input type="number" name="montant" class="col-sm-7 col-sm-offset-1" [(ngModel)]="model.montant"/>
-                                    <!--variable pour value-->
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3  control-label">Architecte </label>
+                        <div>
+                            <input type="text" name="architecte" class="col-sm-7 col-sm-offset-1"
+                                   [(ngModel)]="model.architecte"/><!--variable pour value-->
                         </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Tel </label>
+                        <div>
+                            <input type="text" name="telarchi" class="col-sm-9 " [(ngModel)]="model.telarchi"/>
+                            <!--variable pour value-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3  control-label">Autre contact </label>
+                        <div>
+                            <input type="text" name="autrecontact" class="col-sm-7 col-sm-offset-1"
+                                   [(ngModel)]="model.autrecontact"/><!--variable pour value-->
+                        </div>
+                    </div>
 
-                        <div *ngIf="!print" class="form-group">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Tel </label>
+                        <div>
+                            <input type="text" name="telautre" class="col-sm-9 " [(ngModel)]="model.telautre"/>
+                            <!--variable pour value-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3  control-label">Nom de  la banque </label>
+                        <div>
+                            <input type="text" name="pourcentage" class="col-sm-7 col-sm-offset-1"
+                                   [(ngModel)]="model.banque"/><!--variable pour value-->
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Caution Bancaire </label>
+                        <div>
+                            <select name="energie" [(ngModel)]="model.caution" class="col-sm-9 input-sm">
+                                <option [selected]="model.caution ==''"></option>
+                                <option [selected]="model.caution =='Oui'">Oui</option>
+                                <option [selected]="model.caution =='Non'">Non</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">Montant </label>
+                        <div>
+                            <input type="number" name="montant" class="col-sm-7 col-sm-offset-1" [(ngModel)]="model.montant"/>
+                            <!--variable pour value-->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div *ngIf="!print" class="form-group">
                     <button class="col-sm-offset-7 col-sm-4 btn" [disabled]="loading">Modifier les informations</button>
 
                 </div>
                 <p>&nbsp;</p>
-            </div>
-                </div>
             </div><!--fin col sm 6-->
         </form>
 

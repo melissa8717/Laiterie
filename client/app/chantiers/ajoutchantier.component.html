@@ -1,19 +1,19 @@
 <div id="chantier">
 
-    <my-header [title]='"Ajouter module"' [img]="'image/menu/chantiers_grand_gris.png'"></my-header>
+    <my-header [title]='"Ajouter chantier"' [img]="'image/menu/chantiers_grand_gris.png'"></my-header>
 
 
     <div class=" container-fluid ">
         <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
             <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
-        <h3>Ajout module</h3>
+        <h3>Ajout chantier</h3>
 
         <form  class="col-sm-12" (ngSubmit)=" createChantier()">
 
             <div class="col-sm-12">
 
-                <h5>Informations générales module</h5>
+                <h5>Informations générales chantier</h5>
 
                 <div class="form-group">
                     <span class="col-sm-1 col-sm-offset-1  control-label">Nom du client : </span><!--variable-->
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-1 col-sm-offset-3  control-label" >* Nom du module: </label><!--variable-->
+                    <label class="col-sm-1 col-sm-offset-3  control-label" >* Nom du chantier : </label><!--variable-->
                     <div  >
                          <input type="text" style="border: 2px solid red" name="nom_chantier"  class="col-sm-3" [(ngModel)]="model.nom_chantier" required /> <!--variable pour value-->
                     </div>
@@ -67,30 +67,56 @@
                 </div>
 
 
-
-                    <div class="form-group">
-                        <label class="col-sm-1 col-sm-offset-3 control-label" >Date de debut : </label>
-                        <div >
-                            <input type="date" name="debutprojet"  class="col-sm-3" [(ngModel)]="model.date_demarrage" /><!--variable pour value-->
-                        </div>
-                    </div>
-
                 <div class="form-group">
-                    <label class="col-sm-1 col-sm-offset-1 control-label" >Date de fin</label>
+                    <label class="col-sm-1 col-sm-offset-1 control-label" >Début de projet : </label>
+                    <div >
+                        <input type="date" name="debutprojet"  class="col-sm-3" [(ngModel)]="model.date_demarrage" /><!--variable pour value-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 col-sm-offset-3 control-label" >Réception travaux : </label>
                     <div >
                         <input type="date" name="receptionchantier"  class="col-sm-3" [(ngModel)]="model.reception_chantier" /><!--variable pour value et création d'une alarme quand 1 année c'est passé
 								-->
                     </div>
                 </div>
-                <br />
+
                 <div class="form-group">
-                    <label class="col-sm-1 col-sm-offset-3 control-label" >Autre contact : </label>
-                    <div class="col-sm-3">
-                        <textarea rows="6"  name="autrecontact" [(ngModel)]="model.autrecontact"></textarea>
-                        <!--variable pour value-->
+                    <label class="col-sm-1 col-sm-offset-1 control-label" >Maitre d'oeuvre : </label>
+                    <div >
+                        <input type="text" name="maitreoeuvre"  class="col-sm-3" [(ngModel)]="model.maitreoeuvre" /><!--variable pour value-->
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label class="col-sm-1 col-sm-offset-3 control-label" >Tel M. O. : </label>
+                    <div >
+                        <input type="text" name="telmo"  class="col-sm-3" [(ngModel)]="model.telmaitre" /><!--variable pour value-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 col-sm-offset-1 control-label" >Architecte : </label>
+                    <div >
+                        <input type="text" name="architecte"  class="col-sm-3" [(ngModel)]="model.architecte" /><!--variable pour value-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 col-sm-offset-3 control-label" >Tel architecte : </label>
+                    <div >
+                        <input type="text" name="telarchi"  class="col-sm-3" [(ngModel)]="model.telarchi" /><!--variable pour value-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 col-sm-offset-1 control-label" >Autre contact : </label>
+                    <div >
+                        <input type="text" name="autrecontact"  class="col-sm-3" [(ngModel)]="model.autrecontact" /><!--variable pour value-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 col-sm-offset-3 control-label" >Tel  autre conatact: </label>
+                    <div >
+                        <input type="text" name="telpers"  class="col-sm-3" [(ngModel)]="model.telautre" /><!--variable pour value-->
+                    </div>
+                </div>
                 <div>
                     <button *ngIf="droitsuser.ajoutcha" type="submit" class="btn btn-default input-sm col-sm-offset-11" [disabled]="loading">Créer</button>
 
