@@ -8,7 +8,6 @@ import {
     VentesService
 } from '../_services/index';
 import {User} from '../_models/user';
-import {Product} from "../_models";
 
 
 const URLimg = 'http://' + location.hostname + ':4000/image/';
@@ -46,8 +45,6 @@ export class DevisComponent implements OnInit {
     private fileReader = new FileReader();
     private base64Files: any;
 
-    private unites: any[] = [];
-
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -79,17 +76,15 @@ export class DevisComponent implements OnInit {
             this.num_version = params['num_version'];
 
             this.devisService.getById(this.id, this.num_version).subscribe((data: any) => {
-                console.log(data);
                 this.devis = data.devis[0];
                 this.produitDevisOptions = data.options;
 
-                this.achatsService.getAllUnite().subscribe(unites => {
-                    this.unites = unites;
+                this.achatsService.getAllUnite().subscribe((unites: any[]) => {
                     this.produitsDevis = data.detaille;
 
                     this.produitsDevis.forEach(produit => {
                         produit.id_unite = parseInt(produit.unite);
-                        produit.unite = this.unites.find(u => u.id_unite == produit.id_unite).libelle;
+                        produit.unite = unites.find(u => u.id_unite == produit.id_unite).libelle;
                     });
                 });
             })
@@ -373,7 +368,6 @@ export class DevisComponent implements OnInit {
             this.uploaderFili.onAfterAddingFile = (file) => {
                 file.withCredentials = false;
             };
-            console.log(this.fili+URLFili);
         });
     }
 
