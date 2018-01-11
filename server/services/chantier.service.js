@@ -100,9 +100,18 @@ function create(chantierParam) {
         chantierParam.telresponsable,
         chantierParam.telresponsablemob,
         chantierParam.responsable,
-        chantierParam.statut
+        chantierParam.statut,
+        chantierParam.num_module,
+        chantierParam.agence_m,
+        chantierParam.achat_m,
+        chantierParam.location_m,
+        chantierParam.revente_m,
+        chantierParam.date_achat_m,
+        chantierParam.date_loc_m,
+        chantierParam.date_revente_m,
+        chantierParam.type_m
     ];
-    var query = "INSERT INTO chantier (nom_chantier, id_contact, id_chantier, date_demarrage, reception_chantier, id_responsable,retenuegarantie,pourcentage,caution,banque,montant,maitreoeuvre,telmaitre,architecte,telarchi,autrecontact,telautre,telresponsable,telresponsablemob,responsable,statut) VALUES (? , ? , ? , ?, ?,? , ? , ? , ?, ?,? , ? , ? , ?, ?,? , ? , ? , ?,?)";
+    var query = "INSERT INTO chantier (nom_chantier, id_contact, id_chantier, date_demarrage, reception_chantier, id_responsable,retenuegarantie,pourcentage,caution,banque,montant,maitreoeuvre,telmaitre,architecte,telarchi,autrecontact,telautre,telresponsable,telresponsablemob,responsable,statut,num_module,agence_m,achat_m,location_m,revente_m,date_loc_m,date_revente_m,type_m) VALUES (? , ? , ? , ?, ?,? , ? , ? , ?, ?,? , ? , ? , ?, ?,? , ? , ? , ?,?,?,?,?,?,?,?,?,?,?)";
 
     db.query(query, Params, function (error, results, fields) {
         if (error) {
@@ -342,11 +351,12 @@ function deleteRapport(_id_rapport) {
 
 function updateFiche(chantier_param) {
     var deferred = Q.defer();
-    //console.log(chantier_param.model);
+    console.log(chantier_param.model);
 
 
-    db.query("UPDATE chantier SET date_demarrage=?, reception_chantier=?, id_responsable=?,retenuegarantie=?,pourcentage=?,caution=?,banque=?,montant=?,maitreoeuvre=?,telmaitre=?,architecte=?,telarchi=?,autrecontact=?,telautre=?,telresponsable=?,telresponsablemob=?,responsable=?, status =? WHERE id_chantier = ?",
-        [chantier_param.model.date_demarrage, chantier_param.model.reception_chantier, chantier_param.model.id_responsable, chantier_param.model.retenuegarantie, chantier_param.model.pourcentage, chantier_param.model.caution, chantier_param.model.banque, chantier_param.model.montant, chantier_param.model.maitreoeuvre, chantier_param.model.telmaitre, chantier_param.model.architecte, chantier_param.model.telarchi, chantier_param.model.autrecontact, chantier_param.model.telautre, chantier_param.model.telresponsable, chantier_param.model.telresponsablemob, chantier_param.model.responsable, chantier_param.model.status, chantier_param.model.id_chantier],
+
+    db.query("UPDATE chantier SET date_demarrage=?, reception_chantier=?, id_responsable=?,retenuegarantie=?,pourcentage=?,caution=?,banque=?,montant=?,maitreoeuvre=?,telmaitre=?,architecte=?,telarchi=?,autrecontact=?,telautre=?,telresponsable=?,telresponsablemob=?,responsable=?, status =?, num_module =?, agence_m=?,achat_m=?,location_m=?,revente_m=?,date_achat_m=?,date_loc_m=?,date_revente_m=?,type_m=? WHERE id_chantier = ?",
+        [chantier_param.model.date_demarrage, chantier_param.model.reception_chantier, chantier_param.model.id_responsable, chantier_param.model.retenuegarantie, chantier_param.model.pourcentage, chantier_param.model.caution, chantier_param.model.banque, chantier_param.model.montant, chantier_param.model.maitreoeuvre, chantier_param.model.telmaitre, chantier_param.model.architecte, chantier_param.model.telarchi, chantier_param.model.autrecontact, chantier_param.model.telautre, chantier_param.model.telresponsable, chantier_param.model.telresponsablemob, chantier_param.model.responsable, chantier_param.model.status, chantier_param.model.num_module, chantier_param.model.agence_m, chantier_param.model.achat_m,chantier_param.model.location_m,chantier_param.model.revente_m,chantier_param.model.date_achat_m,chantier_param.model.date_loc_m,chantier_param.model.date_revente_m,chantier_param.model.type_m, chantier_param.model.id_chantier],
 
         function (error, results, fields) {
             if (error) {
@@ -411,8 +421,8 @@ function createChantier(chantier_param) {
     //console.log(chantier_param.model);
 
 
-    db.query("INSERT INTO chantier (nom_chantier, id_contact,date_demarrage, reception_chantier,id_responsable,retenuegarantie,pourcentage,caution,banque,montant,maitreoeuvre,telmaitre,architecte,telarchi,autrecontact,telautre,telresponsable,telresponsablemob,responsable,status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )",
-        [chantier_param.model.nom_chantier, chantier_param.model.id_contact, chantier_param.model.date_demarrage, chantier_param.model.reception_chantier, chantier_param.model.id_responsable, chantier_param.model.retenuegarantie, chantier_param.model.pourcentage, chantier_param.model.caution, chantier_param.model.banque, chantier_param.model.montant, chantier_param.model.maitreoeuvre, chantier_param.model.telmaitre, chantier_param.model.architecte, chantier_param.model.telarchi, chantier_param.model.autrecontact, chantier_param.model.telautre, chantier_param.model.telresponsable, chantier_param.model.telresponsablemob, chantier_param.model.responsable, chantier_param.model.status],
+    db.query("INSERT INTO chantier (nom_chantier, id_contact,date_demarrage, reception_chantier,id_responsable,retenuegarantie,pourcentage,caution,banque,montant,maitreoeuvre,telmaitre,architecte,telarchi,autrecontact,telautre,telresponsable,telresponsablemob,responsable,status,num_module,agence_m,achat_m,location_m,revente_m,date_achat_m,date_location_m,date_revente_m,type_m) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?,?,?,?,?,?,?,?,?)",
+        [chantier_param.model.nom_chantier, chantier_param.model.id_contact, chantier_param.model.date_demarrage, chantier_param.model.reception_chantier, chantier_param.model.id_responsable, chantier_param.model.retenuegarantie, chantier_param.model.pourcentage, chantier_param.model.caution, chantier_param.model.banque, chantier_param.model.montant, chantier_param.model.maitreoeuvre, chantier_param.model.telmaitre, chantier_param.model.architecte, chantier_param.model.telarchi, chantier_param.model.autrecontact, chantier_param.model.telautre, chantier_param.model.telresponsable, chantier_param.model.telresponsablemob, chantier_param.model.responsable, chantier_param.model.status, chantier_param.model.num_module, chantier_param.model.agence_m,chantier_param.model.achat_m,chantier_param.model.location_m,chantier_param.model.revente_m,chantier_param.model.date_achat_m,chantier_param.model.date_loc_m,chantier_param.model.date_revente_m,chantier_param.model.type_m],
         function (error, results, fields) {
             if (error) {
                 deferred.reject(error.name + ': ' + error.message);

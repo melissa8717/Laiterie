@@ -7,7 +7,7 @@
             <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
         </div>
         <ng-container *ngIf="!balance">
-            <h3>Pas de chantier en cours</h3>
+            <h3>Pas de module en cours</h3>
         </ng-container>
 
         <ng-container *ngIf="balance && balance.status == 'en cours'">
