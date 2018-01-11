@@ -31,37 +31,37 @@
 
                 <div  style="margin-left: 50%;margin-top: 70px;">
                    <div class="form-group" >
-                        <span >{{model.raison_sociale ? model.raison_sociale : models.raison_sociale}}</span>
+                        <span >{{model.raison_sociale }}</span>
                     </div>
                     <div class="form-group" >
-                        <span>{{model.nom ? model.nom : models.nom}} {{model.prenom ? model.prenom : models.prenom}}</span>
+                        <span>{{model.nom }} {{model.prenom }}</span>
                     </div>
                     <div class="form-group">
-                        <span >{{model.cadresse ? model.cadresse : models.adresse }}</span>
+                        <span >{{model.cadresse }}</span>
                     </div>
                     <div class="form-group">
-                        <span >{{model.ccp ? model.ccp : models.code_postal}} </span>
+                        <span >{{model.ccp }} </span>
 
-                        <span > {{model.cville ? model.cville : models.ville}}</span>
+                        <span > {{model.cville }}</span>
                     </div>
                     <p>&nbsp;</p>
                     <p>&nbsp;</p>
 
                     <div class="form-group"  >
-                        <span  style="margin-top: 40px;"> le {{(model.date_fact ? model.date_fact : models.date_fact) | date:'dd-MM-yyyy'}}</span>
+                        <span  style="margin-top: 40px;"> le {{(model.date_fact ) | date:'dd-MM-yyyy'}}</span>
                     </div>
 
                 </div>
 
                 <div class="col-sm-5">
                     <div class="form-group">
-                        <span class="col-sm-5" style="text-decoration: underline;">N° de facturation: </span>{{model.nfactclient ? model.nfactclient : models.nfactclient}}<span ><!--variable--></span>
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de facturation: </span>{{model.nfactclient }}<span ><!--variable--></span>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-5" style="text-decoration: underline;">N° de situation: </span><span >{{model.n_situation ? model.n_situation : models.n_situation}}<!--variable--></span>
+                        <span class="col-sm-5" style="text-decoration: underline;">N° de situation: </span><span >{{model.n_situation }}<!--variable--></span>
                     </div>
                     <div class="form-group">
-                        <span class="col-sm-5"style="text-decoration: underline;" >N° du devis: </span><span >{{model.id_devis ? model.id_devis : models.id_devis}} </span><span class="col-sm-offset-1"> version: {{model.id_version ? model.id_version : models.id_version}}</span>
+                        <span class="col-sm-5"style="text-decoration: underline;" >N° du devis: </span><span >{{model.id_devis }} </span><span class="col-sm-offset-1"> version: {{model.id_version }}</span>
                     </div>
                     <!--<div class="form-group">
                         <span class="col-sm-5" >Nom du chantier: </span><span style="font-weight: bold;" >{{model.nom_chantier}}</span>
@@ -115,23 +115,29 @@
                     </tr>
                     </ng-container>
 
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                    <ng-container *ngIf="libsitua.length>0">
+                    <tr *ngFor="let prod of libsitua">
+                        <td>{{prod.id_prod}}</td>
+                        <td>{{prod.nom_produit}}</td>
+                        <td>{{prod.unite}}</td>
+                        <td>{{valeur.tva>0 ? valeur.tva : prod.tva }}</td>
+                        <td>{{prod.qteprod}}</td>
+                        <td>{{prod.prix_prod}}</td>
+                        <td>{{prod.qteprod * prod.prix_prod | number:"1.0-2"}}</td>
                     </tr>
+                    </ng-container>
 
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                    <ng-container *ngIf="libsituaop.length>0">
+                    <tr *ngFor="let prode of libsituaop">
+                        <td>{{prode.id_prod}}</td>
+                        <td>{{prode.nom_produit}}</td>
+                        <td>{{prode.unite}}</td>
+                        <td>{{valeur.tva>0 ? valeur.tva : prode.tva }}</td>
+                        <td>{{prode.qteprod}}</td>
+                        <td>{{prode.prix_prod}}</td>
+                        <td>{{prode.qteprod * prode.prix_prod | number:"1.0-2"}}</td>
                     </tr>
+                    </ng-container>
 
                     </tbody>
 
@@ -144,6 +150,7 @@
 
                 <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" ><td class="gauche" style="text-align: left;">Montant H.T. : </td><td style="text-align:right;border-top:1px solid black; border-right:1px solid black;"> {{countTTC() | number:'1.0-2'}} </td>
                 <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="valeur.remise>0"><td class="gauche" style="text-align: left;">Montant H.T après remise de {{valeur.remise}}% : </td><td style="text-align:right;border-top:1px solid black; border-right:1px solid black;"> {{countTTCremise() | number:'1.0-2'}} </td>
+                <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="valeur.tva>0"><td class="gauche" style="text-align: left;">TVA {{valeur.tva}}% : </td><td style="text-align:right;border-top:1px solid black; border-right:1px solid black;"> {{countTvaremise() | number:'1.0-2'}} </td>
 
                 <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()>0"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >TVA à 20 % </td><td style="text-align: right;">{{SumTvaV() | number:'1.0-2'}}</td></tr>
                 <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaD()>0"><td style="text-align:left;border-left: 1px solid;border-top:1px solid black;" class="gauche" >TVA à 10 % </td><td style="text-align: right;">{{SumTvaD() | number:'1.0-2'}}</td></tr>

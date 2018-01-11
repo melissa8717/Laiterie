@@ -117,6 +117,7 @@
                         <td style=" border-right: 1px solid black;">{{totalignesitua(libsitua[i]) | number:'1.0-2'}}</td>
                         <td style=" border-right: 1px solid black;"><input style="width: 70px;" type="number" name="pourcents{{i}}" [(ngModel)]="libsitua[i].pourcents"  class="col-sm-12" min="0" max="100" *ngIf="libsitua[i].pourcents<=100"></td>
                         <td style=" border-right: 1px solid black;" *ngIf="!valeur.tva">{{libsitua[i].tva}}</td>
+                        <td style=" border-right: 1px solid black;" *ngIf="valeur.tva">{{valeur.tva}}</td>
                     </tr>
                     <tr ><td colspan="9" *ngIf="(option.length >0) || (libsituaop.length>0)" style="border: 1px solid black;">Options acceptées</td></tr>
                     <tr  style="border:1px solid black;" *ngFor="let options of option, let i =index; trackBy:customTrackBy">
@@ -143,6 +144,7 @@
                         <td style=" border-right: 1px solid black;">{{totalignesituaop(libsituaop[i]) | number:'1.0-2'}}</td>
                         <td style=" border-right: 1px solid black;"><input style="width: 70px;" type="number" name="pourcent{{i}}" [(ngModel)]="libsituaop[i].pourcent"  class="col-sm-12" min="0" max="100" *ngIf="libsituaop[i].pourcent<=100"></td>
                         <td style=" border-right: 1px solid black;" *ngIf="!valeur.tva">{{libsituaop[i].tva}}</td>
+                        <td style=" border-right: 1px solid black;" *ngIf="valeur.tva">{{valeur.tva}}</td>
                     </tr>
 
                     </tbody>
@@ -177,7 +179,7 @@
                     </tbody>
                 </table>
 
-                <table class=" separe1 col-sm-offset-9 table-striped" style=" float: right; text-align:center; margin-top :-450px">
+                <table class=" separe1 col-sm-offset-9 table-striped" style=" float: right; text-align:center; margin-top :-430px">
                     <tbody style="text-align: center;">
                     <tr style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" class="gras"><td style="text-align:right;border-top:1px solid black;border-left:1px solid black;" class="gauche" style="text-align: left;">Total Net :</td><td >{{countTotalNet() | number:'1.0-2'}}</td></tr>
                     <tr  style="height: 50px;text-align:right;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;"><td style="text-align:right; border-left: 1px solid;;border-top:1px solid black;" class="gauche" style="text-align: left;">Acompte /situations antérieures :</td><td style="text-align:right;">{{totalsituation() | number:'1.0-2'}}</td></tr>
@@ -185,7 +187,7 @@
 
 
 
-                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="valeur.tva"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">1-TVA à {{valeur.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td style="text-align: right;">{{countTVA() | number:'1.0-2'}}</td></tr>
+                    <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="valeur.tva"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à {{valeur.tva}} % ({{countTotalsituation() | number:'1.0-2'}})</td><td style="text-align: right;">{{countTVA() | number:'1.0-2'}}</td></tr>
                     <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaV()>0"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 20 % </td><td style="text-align: right;">{{SumTvaV() | number:'1.0-2'}}</td></tr>
                     <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaD()>0"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 10 % </td><td style="text-align: right;">{{SumTvaD() | number:'1.0-2'}}</td></tr>
                     <tr style="height: 50px;border-top:1px solid black;border-right:1px solid black;border-left: 1px solid;" *ngIf="SumTvaC()>0"><td style="text-align:right;border-left: 1px solid;border-top:1px solid black;" class="gauche" style="text-align: left;">TVA à 5.5 % </td><td style="text-align: right;">{{SumTvaC() | number:'1.0-2'}}</td></tr>

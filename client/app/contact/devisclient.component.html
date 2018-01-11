@@ -23,7 +23,7 @@
                         <li *ngIf="droitsuser.accescontact"><a [routerLink]="['/ficheclient' , id_contact]">Fiche client</a></li>
                         <li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
                         <li *ngIf="droitsuser.accescontact" role="presentation" ><a [routerLink]="['/factclient' , id_contact]">Factures du client</a></li>
-
+                        <li *ngIf="droitsuser.accescontact" role="presentation" ><a [routerLink]="['/adressfact' , id_contact]">Adresse de facturation</a></li>
                     </ul>
 
                 </div>

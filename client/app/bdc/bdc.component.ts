@@ -166,7 +166,7 @@ export class BdcComponent {
     };
 
     autocompleListFormatterContact = (data: any): SafeHtml => {
-        let html = `<span>${data.nom}</span>`;
+        let html = `<span>${data.raison_sociale} : ${data.titre} ${data.nom}</span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 

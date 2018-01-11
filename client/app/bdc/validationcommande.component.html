@@ -104,8 +104,8 @@
                             <span *ngIf="bdc.Recu" >{{List[i].Qtelivre  }}</span>
                         </td>
                         <td>
-                            <input *ngIf="!bdc.Recu" type="checkbox" name="stocks{{i}}" [(ngModel)]="List[i].stocks" >
-                            <input *ngIf="bdc.Recu" type="checkbox" name="stocks{{i}}" [(ngModel)]="List[i].stocks" disable="bdc.Recu">
+                            <input *ngIf="!bdc.Recu" type="checkbox" name="stocks" [(ngModel)]="List[i].stocks" >
+
                         </td>
 
                         <td class="borderright">
@@ -306,7 +306,7 @@
             <p *ngIf="print">{{fact.pied_page6}}</p>
         </article>
     </div>
-    <button *ngIf="!print && droitsuser.ajoutcom" class="btn btn-default input-sm col-sm-offset-11" type="submit" [disabled]="loading">Enregistrer</button>
+
 
 </div>
     <button class="col-sm-offset-10 col-sm-2 btn" type="button" *ngIf="!print && droitsuser.accescom" [disabled]  (click)=" imprimer()">Imprimer
