@@ -48,6 +48,7 @@ export class ValidationCommandeComponent implements OnInit {
         id_produit: number,
         Prixreel:number,
         Qtelivre:number,
+        stocks:any;
     }[] = [];
 
     imprevuList: {

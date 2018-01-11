@@ -1,0 +1,100 @@
+
+<div id="contact">
+
+    <my-header *ngIf="!print" [title]='"Contacts"' [img]="'image/menu/contacts_grand_gris.png'"></my-header>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <!--garder l'id du chantier en passant d'un onglet à l'autre possibilité peut-être d'un session ou d'un cookie qui disppait à la fermeture de la page-->
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li *ngIf="droitsuser.accescontact"><a [routerLink]="['/ficheclient' , id_contact]">Fiche client</a></li>
+                    <li *ngIf="droitsuser.accescontact" role="presentation" ><a [routerLink]="['/devisclient' , id_contact]">Devis du client</a></li>
+                    <li *ngIf="droitsuser.accescontact" role="presentation" ><a [routerLink]="['/factclient' , id_contact]">Factures du client</a></li>
+                    <li *ngIf="droitsuser.accescontact" role="presentation" class="active"><a [routerLink]="['/adressfact' , id_contact]">Adresse de facturation</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div class=" container-fluid">
+        <div *ngIf="!print" class=" col-sm-offset-10" style="margin-top: 5px; margin-bottom:5px; font-size: 16px;">
+            <a  [routerLink]="['/home']" class="glyphicon glyphicon-plus-sign fleche1"></a><span class="blan1">Retour accueil</span>
+        </div>
+
+        <form method="POST" action="#">
+
+            <h3>Adresse de facturation</h3>
+
+            <div class="table-responsive">
+                <table class="table">
+
+                    <thead>
+
+                    <tr>
+                        <th class="col-sm-3">Adresse</th>
+                        <th class="col-sm-3">Complément d'adresse</th>
+                        <th class="col-sm-1">Code postale</th>
+                        <th class="col-sm-2">Ville</th>
+                        <th class="col-sm-2">Pays</th>
+                        <th class="col-sm-1">Action</th>
+                    </tr>
+
+                    </thead>
+
+                </table>
+            </div>
+
+
+            <h5>Ajouter une adresse</h5>
+
+            <div class="table-responsive">
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+                        <th class="col-sm-3"></th>
+                        <th class="col-sm-3"></th>
+                        <th class="col-sm-1"></th>
+                        <th class="col-sm-2"></th>
+                        <th class="col-sm-2"></th>
+                        <th class="col-sm-1"></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr >
+                        <td><input type="text" name="adresse" placeholder="Adresse" class="col-sm-12"></td>
+                        <td><input type="text" name="complement_adr" placeholder="Complément d'adresse" class="col-sm-12"></td>
+                        <td><input type="text" name="code_postale" placeholder="Code postale" class="col-sm-12"></td>
+                        <td><input type="text" name="ville" placeholder="Ville" class="col-sm-12"> </td>
+                        <td><input type="text" name="pays" placeholder="Pays" class="col-sm-12"></td>
+                        <td><button class="col-sm-12">Ajouter</button></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+            </div>
+
+        </form>
+
+
+    </div>
+</div>

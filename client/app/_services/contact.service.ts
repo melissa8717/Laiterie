@@ -204,6 +204,13 @@ export class ContactService {
     getByIdFacclient(id_contact: number) {
         return this.http.get(this.config.apiUrl + '/contacts/fact/' + id_contact, this.jwt()).map((response: Response) => response.json());
     }
+
+
+    addAdressfact(id_contact:number,addresses: any) {
+        //console.log(contrat);
+        return this.http.post(this.config.apiUrl + '/contacts/addAdressfact/'+id_contact, addresses, this.jwt());
+    }
+
     // private helper methods
 
     private jwt() {
