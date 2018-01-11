@@ -32,41 +32,45 @@
                 <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
                 <img *ngIf="!url && fili.fiigrane" style="height: 150px; width: 300px;"
                      src="http://{{loc}}:4000/image/filig/{{fili.id_agence}}/{{fili.filigrane}}" alt="..."
-                     class="img-responsive col-sm-12"/>
+                     class="img-responsive col-sm-12"/><br>
+                <span>Tel : {{fact.tel_a}}</span><br>
+                <span>Fax : {{fact.fax_a}}</span><br>
+                <span>Mail : {{fact.mail_a}}</span>
 
             </div>
         </div>
 
 
-        <div  style="margin-left: 50%;border:1px solid black;width: 350px;text-align: center;margin-top:150px;">
-            <div class="form-group " style="font-weight: bold;padding-left:20px;padding-top:10px;">
-                <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
-            </div>
-
-
-            <div class="form-group" *ngIf="address" >
-                <span class=" glyphicon glyphicon-alert red"></span><span class="col-sm-9">Aucune adresse pré-enregistrée pour ce client</span>
-            </div>
-            <div  class="form-group ">
-
-
-                <div   class="form-group" >
-                    <span style="padding-left:20px;">{{devis.adresse}}</span>
+        <div  style="margin-left: 50%;width: 350px;text-align: center;margin-top:150px;">
+            <div style="border:1px solid black;">
+                <div class="form-group " style="font-weight: bold;padding-left:20px;padding-top:10px;">
+                    <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
                 </div>
-                <div style="padding-left:20px;" class="form-group" >
-                    <span style="text-align: center;">{{devis.code_postal}} - {{devis.ville}}</span>
+
+
+                <div class="form-group" *ngIf="address" >
+                    <span class=" glyphicon glyphicon-alert red"></span><span class="col-sm-9">Aucune adresse pré-enregistrée pour ce client</span>
                 </div>
+                <div  class="form-group ">
+
+
+                    <div   class="form-group" >
+                        <span style="padding-left:20px;">{{devis.adresse}}</span>
+                    </div>
+                    <div style="padding-left:20px;" class="form-group" >
+                        <span style="text-align: center;">{{devis.code_postal}} - {{devis.ville}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group" style="text-align: center;margin-top: 10px;">
+                <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
             </div>
 
-
-
-
         </div>
 
 
-        <div class="form-group" style="margin-top: 20px; margin-left:45%;">
-            <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
-        </div>
+
 
         <div class="col-sm-5" style="margin:0px;font-size:18px; width: 450px; ">
             <div class="form-group" >

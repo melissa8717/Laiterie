@@ -64,7 +64,18 @@
                             <td>{{fact.code_postal}}</td>
                             <td>{{fact.ville}}</td>
                             <td>{{fact.pays}}</td>
-                            <td><button >Supprimer</button></td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button *ngIf="!print" type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li *ngIf="droitsuser.modifcontact"><a >Modifier</a></li>
+                                            <li *ngIf="droitsuser.supcontact" role="separator" class="divider"></li>
+                                            <li *ngIf="droitsuser.supcontact"><a >Supprimer</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
 
                     </tbody>

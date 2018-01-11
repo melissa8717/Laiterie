@@ -315,7 +315,7 @@ export class DevisComponent implements OnInit {
     loadAllFooter() {
         this.factureService.getAllFooter().subscribe(data => {
             this.fact = data[0];
-
+            console.log(this.fact);
 
         });
     }
