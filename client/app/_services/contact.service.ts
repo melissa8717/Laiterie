@@ -207,8 +207,12 @@ export class ContactService {
 
 
     addAdressfact(id_contact:number,addresses: any) {
-        //console.log(contrat);
-        return this.http.post(this.config.apiUrl + '/contacts/addAdressfact/'+id_contact, addresses, this.jwt());
+        console.log(this.config.apiUrl + '/contacts/factadress/'+id_contact);
+        return this.http.post(this.config.apiUrl + '/contacts/factadress/'+id_contact, addresses, this.jwt());
+    }
+
+    getByIdFacAddress(id_contact: number) {
+        return this.http.get(this.config.apiUrl + '/contacts/getAddress/' + id_contact, this.jwt()).map((response: Response) => response.json());
     }
 
     // private helper methods

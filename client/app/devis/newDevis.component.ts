@@ -1,20 +1,19 @@
 /**
  * Created by Wbat on 06/07/2017.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, AuthenticationService} from '../_services/index';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {AchatsService, AlertService, AuthenticationService} from '../_services/index';
+import {FormBuilder} from "@angular/forms";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {DevisService} from "../_services/devis.service";
 import {VentesService} from "../_services/ventes.service";
 import {ContactService} from "../_services/contact.service";
 import {ChantierService} from "../_services/chantier.service";
-import {Observable} from "rxjs/Observable";
-import {isUndefined} from "util";
 import {ParamsService} from "../_services/params.service"; //
 import {User} from "../_models/user";
+import {Product} from "../_models";
 
 @Component({
     moduleId: module.id,
@@ -30,7 +29,7 @@ export class NewDevisComponent implements OnInit {
 
     produit: any = {};
 
-    produits: {}[] = [];
+    produits: Product[] = [];
     chantiers: {}[] = [];
     clients: {}[] = [];
 
@@ -46,8 +45,10 @@ export class NewDevisComponent implements OnInit {
     data: any = {};
     ntva: number;
     fact: any[] = [];
-    i:any;
-    taux:number;
+    i: any;
+    taux: number;
+
+    private unites: any[] = [];
 
 
     constructor(private route: ActivatedRoute,
@@ -58,6 +59,7 @@ export class NewDevisComponent implements OnInit {
                 private chantierService: ChantierService,
                 private devisService: DevisService,
                 private venteService: VentesService,
+                private achatsService: AchatsService,
                 private builder: FormBuilder,
                 private _sanitizer: DomSanitizer,
                 private paramsService: ParamsService) {
@@ -68,7 +70,7 @@ export class NewDevisComponent implements OnInit {
         //let timer = Observable.timer(2000,5000);
         this.loadAllChantiers();
         this.loadAllClients();
-        this.loadAllProduits();
+        this.loadAllUnits();
         this.loadAllTVA();
         this.loaddroituser();
         this.loadTva();
@@ -174,11 +176,21 @@ export class NewDevisComponent implements OnInit {
         });
     }
 
-    loadAllProduits() {
-        this.venteService.getAll().subscribe(
-            data => {
-                this.produits = data;
-                console.log(this.produits);
+    private loadAllUnits() {
+        this.achatsService.getAllUnite().subscribe(unites => {
+            this.unites = unites;
+            this.loadAllProduits();
+        });
+    }
+
+    private loadAllProduits() {
+        this.venteService.getAll().subscribe(produits => {
+                this.produits = produits;
+
+                this.produits.forEach(produit => {
+                    produit.id_unite = parseInt(produit.unite);
+                    produit.unite = this.unites.find(u => u.id_unite == produit.id_unite).libelle;
+                });
             }
         )
     }
@@ -251,8 +263,8 @@ export class NewDevisComponent implements OnInit {
         return this.totalTVAoption() + this.countTVA();
     }
 
-    totaltotal(){
-        return (this.totalTVA() ? this.totalTVA() : this.total()) + this.countAllTVAO()  + this.countAllTVA();
+    totaltotal() {
+        return (this.totalTVA() ? this.totalTVA() : this.total()) + this.countAllTVAO() + this.countAllTVA();
     }
 
     loadAllTVA() {
@@ -265,16 +277,16 @@ export class NewDevisComponent implements OnInit {
     }
 
 
-    getAddress(id:any){
-        if(id!=null){
-            this.contactService.getById(id).subscribe(contact=>{
-                    if(contact){
+    getAddress(id: any) {
+        if (id != null) {
+            this.contactService.getById(id).subscribe(contact => {
+                    if (contact) {
                         this.devis.address = contact.adresse;
                         this.devis.cp = contact.code_postal;
                         this.devis.ville = contact.ville;
                         this.address = false
                     }
-                    else{
+                    else {
                         this.devis.address = "";
                         this.devis.cp = "";
                         this.devis.ville = "";
@@ -283,7 +295,7 @@ export class NewDevisComponent implements OnInit {
                 }
             )
         }
-        else{
+        else {
             this.address = false;
         }
     }
@@ -303,7 +315,7 @@ export class NewDevisComponent implements OnInit {
         devisparams.produitDevis = this.produitDevis;
         devisparams.produitDevisOptions = this.produitDevisOptions;
 
-        console.log("submit"+devisparams);
+        console.log("submit" + devisparams);
         this.devisService.add(devisparams).subscribe(
             data => {
                 this.router.navigate(["/listedevis"]);
@@ -317,12 +329,12 @@ export class NewDevisComponent implements OnInit {
     };
 
     autocompleListFormatterContactValue = (data: any): SafeHtml => {
-        let html = `${data.raison_sociale ? data.raison_sociale : data.nom +" " +data.prenom}`;
+        let html = `${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}`;
         return html;
     };
 
     autocompleListFormatterContact = (data: any): SafeHtml => {
-        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom +" " +data.prenom}</span>`;
+        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}</span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
 
@@ -343,7 +355,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 0) {
-                total +=  0;
+                total += 0;
 
 
             }
@@ -351,6 +363,7 @@ export class NewDevisComponent implements OnInit {
         return total;
 
     }
+
     countNTVA() {
         let total = 0;
 
@@ -358,7 +371,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 2.1) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+                total += (produit.taux / 100) * produit.prix * produit.qte * (this.devis.remise ? (1 - (this.devis.remise / 100)) : 1);
 
 
             }
@@ -374,7 +387,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 5.5) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+                total += (produit.taux / 100) * produit.prix * produit.qte * (this.devis.remise ? (1 - (this.devis.remise / 100)) : 1);
 
 
             }
@@ -389,7 +402,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if (produit.taux == 10) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+                total += (produit.taux / 100) * produit.prix * produit.qte * (this.devis.remise ? (1 - (this.devis.remise / 100)) : 1);
 
 
             }
@@ -404,7 +417,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if (produit.taux == 20) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+                total += (produit.taux / 100) * produit.prix * produit.qte * (this.devis.remise ? (1 - (this.devis.remise / 100)) : 1);
 
 
             }
@@ -421,7 +434,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 0) {
-                total +=  0 ;
+                total += 0;
 
 
             }
@@ -429,6 +442,7 @@ export class NewDevisComponent implements OnInit {
         return total;
 
     }
+
     countNTVAO() {
         let total = 0;
 
@@ -436,7 +450,7 @@ export class NewDevisComponent implements OnInit {
             console.log(produit.prix);
             console.log(parseInt(produit.taux));
             if (produit.taux == 2.1) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+                total += (produit.taux / 100) * produit.prix * produit.qte * (this.devis.remise ? (1 - (this.devis.remise / 100)) : 1);
 
 
             }
@@ -451,7 +465,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if (produit.taux == 5.5) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+                total += (produit.taux / 100) * produit.prix * produit.qte * (this.devis.remise ? (1 - (this.devis.remise / 100)) : 1);
 
 
             }
@@ -466,7 +480,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if (produit.taux == 10) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+                total += (produit.taux / 100) * produit.prix * produit.qte * (this.devis.remise ? (1 - (this.devis.remise / 100)) : 1);
 
 
             }
@@ -481,7 +495,7 @@ export class NewDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if (produit.taux == 20) {
-                total += (produit.taux /100 ) * produit.prix * produit.qte *(this.devis.remise ? (1-(this.devis.remise / 100)) :1);
+                total += (produit.taux / 100) * produit.prix * produit.qte * (this.devis.remise ? (1 - (this.devis.remise / 100)) : 1);
 
 
             }
@@ -491,21 +505,20 @@ export class NewDevisComponent implements OnInit {
     }
 
 
-    countAllTVA(){
-        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 )  + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
+    countAllTVA() {
+        return ((this.countNTVA() ? this.countNTVA() : 0) + (this.countNTVAC() ? this.countNTVAC() : 0) + (this.countNTVAD() ? this.countNTVAD() : 0)) + (this.countNTVAs() ? this.countNTVAs() : 0);
 
 
     }
 
-    countAllTVAO(){
-        return ((this.countNTVAO() ? this.countNTVAO() : 0 ) + (this.countNTVACO() ? this.countNTVACO() : 0 ) + (this.countNTVADO() ? this.countNTVADO() : 0 )) + (this.countNTVAsO() ? this.countNTVAsO() : 0 );
+    countAllTVAO() {
+        return ((this.countNTVAO() ? this.countNTVAO() : 0) + (this.countNTVACO() ? this.countNTVACO() : 0) + (this.countNTVADO() ? this.countNTVADO() : 0)) + (this.countNTVAsO() ? this.countNTVAsO() : 0);
 
 
     }
 
 
-
-    loadTva(){
+    loadTva() {
         // console.log(this.fact)
 
         this.paramsService.getAllTVA().subscribe(fact => {

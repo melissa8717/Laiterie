@@ -45,27 +45,57 @@
 
                     <thead>
 
-                    <tr>
-                        <th class="col-sm-3">Adresse</th>
-                        <th class="col-sm-3">Complément d'adresse</th>
-                        <th class="col-sm-1">Code postale</th>
-                        <th class="col-sm-2">Ville</th>
-                        <th class="col-sm-2">Pays</th>
-                        <th class="col-sm-1">Action</th>
-                    </tr>
+                        <tr>
+                            <th class="col-sm-3">Adresse</th>
+                            <th class="col-sm-3">Complément d'adresse</th>
+                            <th class="col-sm-1">Code postale</th>
+                            <th class="col-sm-2">Ville</th>
+                            <th class="col-sm-2">Pays</th>
+                            <th class="col-sm-1">Action</th>
+                        </tr>
 
                     </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let fact of adrefact">
+                            <td>{{fact.adresse}}</td>
+                            <td>{{fact.complement_adr}}</td>
+                            <td>{{fact.code_postal}}</td>
+                            <td>{{fact.ville}}</td>
+                            <td>{{fact.pays}}</td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button *ngIf="!print" type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li *ngIf="droitsuser.modifcontact"><a >Modifier</a></li>
+                                            <li *ngIf="droitsuser.supcontact" role="separator" class="divider"></li>
+                                            <li *ngIf="droitsuser.supcontact"><a >Supprimer</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
 
                 </table>
             </div>
 
 
-            <h5>Ajouter une adresse</h5>
 
+
+
+        </form>
+
+    <h5>Ajouter une adresse</h5>
+
+        <form (ngSubmit)=" addAddress()">
             <div class="table-responsive">
-            <table class="table">
+                <table class="table">
 
-                <thead>
+                    <thead>
 
                     <tr>
                         <th class="col-sm-3"></th>
@@ -76,23 +106,22 @@
                         <th class="col-sm-1"></th>
                     </tr>
 
-                </thead>
+                    </thead>
 
-                <tbody>
+                    <tbody>
                     <tr >
-                        <td><input type="text" name="adresse" placeholder="Adresse" class="col-sm-12"></td>
-                        <td><input type="text" name="complement_adr" placeholder="Complément d'adresse" class="col-sm-12"></td>
-                        <td><input type="text" name="code_postale" placeholder="Code postale" class="col-sm-12"></td>
-                        <td><input type="text" name="ville" placeholder="Ville" class="col-sm-12"> </td>
-                        <td><input type="text" name="pays" placeholder="Pays" class="col-sm-12"></td>
-                        <td><button class="col-sm-12">Ajouter</button></td>
+                        <td><input type="text" name="adresse" placeholder="Adresse" class="col-sm-12" [(ngModel)]="addresses.adresse"></td>
+                        <td><input type="text" name="complement_adr" placeholder="Complément d'adresse" class="col-sm-12" [(ngModel)]="addresses.complement_adr"></td>
+                        <td><input type="text" name="code_postale" placeholder="Code postale" class="col-sm-12" [(ngModel)]="addresses.code_postale"></td>
+                        <td><input type="text" name="ville" placeholder="Ville" class="col-sm-12" [(ngModel)]="addresses.ville"> </td>
+                        <td><input type="text" name="pays" placeholder="Pays" class="col-sm-12" [(ngModel)]="addresses.pays"></td>
+                        <td><button class="col-sm-12" type="submit" [disabled]="loading">Ajouter</button></td>
                     </tr>
 
-                </tbody>
+                    </tbody>
 
-            </table>
+                </table>
             </div>
-
         </form>
 
 

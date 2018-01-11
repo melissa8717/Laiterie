@@ -2,18 +2,16 @@
  * Created by Wbat on 09/08/2017.
  */
 
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, AuthenticationService} from '../_services/index';
+import {AchatsService, AlertService, AuthenticationService} from '../_services/index';
 import {FormBuilder} from "@angular/forms";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {DevisService} from "../_services/devis.service";
 import {VentesService} from "../_services/ventes.service";
 import {ContactService} from "../_services/contact.service";
 import {ChantierService} from "../_services/chantier.service";
-import {Observable} from "rxjs/Observable";
-import {isUndefined} from "util";
 import {ParamsService} from "../_services/params.service";
 import {User} from "../_models/user";
 
@@ -26,9 +24,9 @@ export class ModifierDevisComponent implements OnInit {
     devis: any = {};
 
     currentUser: User;         //
-    droitsuser:any={};         //
-    _id:any;                   //
-    data:any={};
+    droitsuser: any = {};         //
+    _id: any;                   //
+    data: any = {};
 
     produit: any = {};
 
@@ -38,8 +36,8 @@ export class ModifierDevisComponent implements OnInit {
 
     address = false;
 
-    id:number;
-    num_version:number;
+    id: number;
+    num_version: number;
     footer: string;
 
     produitDevis: any[] = [];
@@ -50,15 +48,15 @@ export class ModifierDevisComponent implements OnInit {
     fact: any[] = [];
 
 
-
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private authenticationService: AuthenticationService,
                 private alertService: AlertService,
-                private contactService:ContactService,
-                private chantierService:ChantierService,
+                private contactService: ContactService,
+                private chantierService: ChantierService,
                 private devisService: DevisService,
                 private venteService: VentesService,
+                private achatsService: AchatsService,
                 private paramsService: ParamsService,
                 private builder: FormBuilder,
                 private _sanitizer: DomSanitizer) {
@@ -76,33 +74,27 @@ export class ModifierDevisComponent implements OnInit {
         this.sub = this.route.params.subscribe(params => {
             this.id = params['id'];
             this.num_version = params['num_version'];
-            //console.log(this.num_version)
-            this.devisService.getById(this.id, this.num_version).subscribe(
-                (data : any) =>{
-                    this.devis  = data.devis[0];
+
+            this.devisService.getById(this.id, this.num_version).subscribe((data: any) => {
+                this.devis = data.devis[0];
+                this.produitDevis = data.detaille;
+                this.produitDevisOptions = data.options;
+
+                this.achatsService.getAllUnite().subscribe((unites: any[]) => {
                     this.produitDevis = data.detaille;
-                    this.produitDevisOptions = data.options;
-                    console.log(this.produitDevis);
-                }
-            )
+
+                    this.produitDevis.forEach(produit => {
+                        produit.id_unite = parseInt(produit.unite);
+                        produit.unite = unites.find(u => u.id_unite == produit.id_unite).libelle;
+                    });
+                });
+            })
         });
-
-
-
-        //getdevis
-
-        //getalldevisoptions
-
     }
 
     loaddroituser() {                                 //
         this.paramsService.getByIdDroit(this.currentUser._id).subscribe(data => {
-
             this.droitsuser = data[0];
-
-            console.log(this.data);
-            console.log(this.currentUser._id);
-
         });
     }
 
@@ -123,30 +115,27 @@ export class ModifierDevisComponent implements OnInit {
 
         if (check.length < 1) {
             if (tmp.id_prc) {
-                if(tmp.option){
+                if (tmp.option) {
                     this.produitDevisOptions.push(tmp);
                 }
-                else{
+                else {
                     this.produitDevis.push(tmp);
                 }
 
             }
-            else{
+            else {
                 this.alertService.error("Veuillez ajouter un produit existant.");
             }
         }
         else {
-            this.alertService.error("Le produit " + tmp.libelle+ " n'a pas pu être ajouté.");
+            this.alertService.error("Le produit " + tmp.libelle + " n'a pas pu être ajouté.");
         }
-
-
 
 
         this.produit.qte = null;
         this.produit.prix = null;
         this.produit = {};
         this.accomptepercent();
-        console.log(this.produitDevis);
     }
 
     supprimer(produit: any) {
@@ -157,16 +146,15 @@ export class ModifierDevisComponent implements OnInit {
         this.produitDevisOptions = this.produitDevisOptions.filter(obj => obj !== produit);
     }
 
-    accompteeuro(){
-        this.devis.accompte_percent = (+this.devis.accompte_value / this.totalTVA() *100).toFixed(2);
+    accompteeuro() {
+        this.devis.accompte_percent = (+this.devis.accompte_value / this.totalTVA() * 100).toFixed(2);
     }
-    accomptepercent(){
-        this.devis.accompte_value = (+this.devis.accompte_percent * this.totalTVA() /100).toFixed(2);
+
+    accomptepercent() {
+        this.devis.accompte_value = (+this.devis.accompte_percent * this.totalTVA() / 100).toFixed(2);
     }
 
     test() {
-        console.log(this.devis)
-        console.log(this.produit)
         this.produit.qte = 1;
         this.produit.prix = this.produit.obj.prix_vente;
         this.produit.unite = this.produit.obj.unite;
@@ -176,25 +164,26 @@ export class ModifierDevisComponent implements OnInit {
     private loadAllChantiers() {
         this.chantierService.getAll().subscribe(chantiers => {
             this.chantiers = chantiers;
-            // console.log(this.chantiers)
         });
     }
 
     private loadAllClients() {
-        // console.log("on envoie la requette");
         this.contactService.getAllClients().subscribe(clients => {
             this.clients = clients;
-            // console.log(this.clients);
         });
     }
 
     loadAllProduits() {
-        this.venteService.getAll().subscribe(
-            data => {
-                this.produits = data;
-                //  console.log(this.produits);
-            }
-        )
+        this.venteService.getAll().subscribe(produits => {
+            this.produits = produits;
+
+            this.achatsService.getAllUnite().subscribe((unites: any[]) => {
+                this.produits.forEach((produit:any) => {
+                    produit.id_unite = parseInt(produit.unite);
+                    produit.unite = unites.find(u => u.id_unite == produit.id_unite).libelle;
+                })
+            })
+        })
     }
 
     countTotal() {
@@ -206,19 +195,17 @@ export class ModifierDevisComponent implements OnInit {
     }
 
 
-
     countTotalRemise() {
         return this.countTotal() - (this.countTotal() * this.devis.remise / 100);
     }
+
     countTotalTVA() {
-        return this.countTotalRemise()>0 ? this.countTotalRemise()* ((this.devis.tva ? this.devis.tva : 0) /100) :this.countTotal() * ((this.devis.tva ? this.devis.tva : 0) /100);
+        return this.countTotalRemise() > 0 ? this.countTotalRemise() * ((this.devis.tva ? this.devis.tva : 0) / 100) : this.countTotal() * ((this.devis.tva ? this.devis.tva : 0) / 100);
     }
+
     countTotalprodTVA() {
-        return this.countTotalRemise()>0 ? this.countTotalRemise()* (1+((this.devis.tva ? this.devis.tva : 0) /100)) : this.countTotal() * (1+((this.devis.tva ? this.devis.tva : 0) /100));
+        return this.countTotalRemise() > 0 ? this.countTotalRemise() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100)) : this.countTotal() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100));
     }
-
-
-
 
 
     countTotalOptions() {
@@ -232,42 +219,44 @@ export class ModifierDevisComponent implements OnInit {
     countTotalOptionRemise() {
         return this.countTotalOptions() - (this.countTotalOptions() * this.devis.remise / 100);
     }
+
     countTotalTVAoption() {
-        return this.countTotalOptionRemise()>0 ? this.countTotalOptionRemise()* ((this.devis.tva ? this.devis.tva : 0) /100) :this.countTotalOptions() * ((this.devis.tva ? this.devis.tva : 0) /100);
+        return this.countTotalOptionRemise() > 0 ? this.countTotalOptionRemise() * ((this.devis.tva ? this.devis.tva : 0) / 100) : this.countTotalOptions() * ((this.devis.tva ? this.devis.tva : 0) / 100);
     }
 
     countTotalOptionsTVA() {
-        return this.countTotalOptionRemise()>0 ? this.countTotalOptionRemise()* (1+((this.devis.tva ? this.devis.tva : 0) /100)) :this.countTotalOptions() * (1+((this.devis.tva ? this.devis.tva : 0) /100));
+        return this.countTotalOptionRemise() > 0 ? this.countTotalOptionRemise() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100)) : this.countTotalOptions() * (1 + ((this.devis.tva ? this.devis.tva : 0) / 100));
     }
-
 
 
     total() {
-        return this.countTotal() + this.countTotalOptions() ;
+        return this.countTotal() + this.countTotalOptions();
     }
+
     totalRemiseTVA() {
-        return this. countTotalRemise() + this.countTotalOptionRemise();
+        return this.countTotalRemise() + this.countTotalOptionRemise();
     }
 
     totalTVA() {
-        return this.countTotalTVA()+this.countTotalTVAoption() ;
+        return this.countTotalTVA() + this.countTotalTVAoption();
     }
-    totalfinal(){
-        return this.countTotalOptionsTVA()+this.countTotalprodTVA();
+
+    totalfinal() {
+        return this.countTotalOptionsTVA() + this.countTotalprodTVA();
     }
 
 
-    getAddress(id:any){
-        if(id!=null){
+    getAddress(id: any) {
+        if (id != null) {
             this.contactService.getAddress(id).subscribe(
-                data=>{
-                    if(data[0]){
+                data => {
+                    if (data[0]) {
                         this.devis.address = data[0].adresse;
                         this.devis.cp = data[0].code_postal;
                         this.devis.ville = data[0].ville;
                         this.address = false
                     }
-                    else{
+                    else {
                         this.devis.address = "";
                         this.devis.cp = "";
                         this.devis.ville = "";
@@ -276,23 +265,21 @@ export class ModifierDevisComponent implements OnInit {
                 }
             )
         }
-        else{
+        else {
             this.address = false;
         }
     }
 
     submit() {
 
-        let devisparams : any = {};
+        let devisparams: any = {};
         devisparams.devis = this.devis;
         devisparams.produitDevis = this.produitDevis;
         devisparams.produitDevisOptions = this.produitDevisOptions;
 
-        console.log(devisparams);
         //modify here
         this.devisService.modify(devisparams, this.id, this.num_version).subscribe(
-            data=>{
-                console.log(data);
+            data => {
                 this.router.navigate(["/listedevis"]);
                 this.alertService.success("Le devis a été modifié avec succès.");
             }
@@ -315,15 +302,14 @@ export class ModifierDevisComponent implements OnInit {
     };
 
     autocompleListFormatterContactValue = (data: any): SafeHtml => {
-        let html = `${data.raison_sociale ? data.raison_sociale : data.nom +" " +data.prenom}`;
+        let html = `${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}`;
         return html;
     };
 
     autocompleListFormatterContact = (data: any): SafeHtml => {
-        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom +" " +data.prenom}</span>`;
+        let html = `<span>${data.raison_sociale ? data.raison_sociale : data.nom + " " + data.prenom}</span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     };
-
 
 
     autocompleListFormatterchantier = (data: any): SafeHtml => {
@@ -332,7 +318,7 @@ export class ModifierDevisComponent implements OnInit {
     };
 
 
-    imprimer(){
+    imprimer() {
         this.alertService.clear();
         this.print = true;
         setTimeout(() => {
@@ -362,7 +348,7 @@ export class ModifierDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -378,7 +364,7 @@ export class ModifierDevisComponent implements OnInit {
         for (let produit of this.produitDevis) {
 
             if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -394,7 +380,7 @@ export class ModifierDevisComponent implements OnInit {
 
 
             if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
 
             }
@@ -410,7 +396,7 @@ export class ModifierDevisComponent implements OnInit {
 
 
             if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
             }
         }
         return total;
@@ -438,7 +424,7 @@ export class ModifierDevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if ((produit.taux == 2.1) || (parseFloat(produit.tva) == 2.1)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -452,7 +438,7 @@ export class ModifierDevisComponent implements OnInit {
 
         for (let produit of this.produitDevisOptions) {
             if ((produit.taux == 5.5) || (parseFloat(produit.tva) == 5.5)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseFloat(produit.taux) / 100) :(parseFloat(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseFloat(produit.taux) / 100) : (parseFloat(produit.tva) / 100));
 
 
             }
@@ -467,7 +453,7 @@ export class ModifierDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if ((produit.taux == 10) || (parseInt(produit.tva) == 10)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
 
             }
@@ -482,7 +468,7 @@ export class ModifierDevisComponent implements OnInit {
         for (let produit of this.produitDevisOptions) {
 
             if ((produit.taux == 20) || (parseInt(produit.tva) == 20)) {
-                total += produit.qte_devis * produit.prix_devis * (produit.taux ?(parseInt(produit.taux) / 100) :(parseInt(produit.tva) / 100)) ;
+                total += produit.qte_devis * produit.prix_devis * (produit.taux ? (parseInt(produit.taux) / 100) : (parseInt(produit.tva) / 100));
 
             }
         }
@@ -492,26 +478,21 @@ export class ModifierDevisComponent implements OnInit {
 
 
     countAllTVA() {
-        return ((this.countNTVA() ? this.countNTVA() : 0 ) + (this.countNTVAC() ? this.countNTVAC() : 0 ) + (this.countNTVAD() ? this.countNTVAD() : 0 )) + (this.countNTVAs() ? this.countNTVAs() : 0 );
+        return ((this.countNTVA() ? this.countNTVA() : 0) + (this.countNTVAC() ? this.countNTVAC() : 0) + (this.countNTVAD() ? this.countNTVAD() : 0)) + (this.countNTVAs() ? this.countNTVAs() : 0);
 
 
     }
 
     countAllTVAO() {
-        return ((this.countNTVAO() ? this.countNTVAO() : 0 ) + (this.countNTVACO() ? this.countNTVACO() : 0 ) + (this.countNTVADO() ? this.countNTVADO() : 0 )) + (this.countNTVAsO() ? this.countNTVAsO() : 0 );
+        return ((this.countNTVAO() ? this.countNTVAO() : 0) + (this.countNTVACO() ? this.countNTVACO() : 0) + (this.countNTVADO() ? this.countNTVADO() : 0)) + (this.countNTVAsO() ? this.countNTVAsO() : 0);
 
 
     }
 
 
-    loadTva(){
-        // console.log(this.fact)
-
+    loadTva() {
         this.paramsService.getAllTVA().subscribe(fact => {
-
             this.fact = fact;
-            // console.log(this.fact);
-
         });
     }
 

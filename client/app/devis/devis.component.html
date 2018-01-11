@@ -28,45 +28,49 @@
         </div>
 
         <div *ngIf="uploaderFili"  style="text-align: center; top:00px; position: fixed;">
-            <div *ngIf="print">
+            <figure *ngIf="print">
                 <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
                 <img *ngIf="!url && fili.fiigrane" style="height: 150px; width: 300px;"
                      src="http://{{loc}}:4000/image/filig/{{fili.id_agence}}/{{fili.filigrane}}" alt="..."
-                     class="img-responsive col-sm-12"/>
+                     class="img-responsive col-sm-12"/><br>
+                <figcaption><span>Tel : {{fact.tel_a}}</span><br>
+                    <span>Fax : {{fact.fax_a}}</span><br>
+                    <span>Mail : {{fact.mail_a}}</span></figcaption>
+            </figure>
 
-            </div>
         </div>
 
 
-        <div  style="margin-left: 50%;border:1px solid black;width: 350px;text-align: center;margin-top:150px;">
-            <div class="form-group " style="font-weight: bold;padding-left:20px;padding-top:10px;">
-                <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
-            </div>
-
-
-            <div class="form-group" *ngIf="address" >
-                <span class=" glyphicon glyphicon-alert red"></span><span class="col-sm-9">Aucune adresse pré-enregistrée pour ce client</span>
-            </div>
-            <div  class="form-group ">
-
-
-                <div   class="form-group" >
-                    <span style="padding-left:20px;">{{devis.adresse}}</span>
+        <div  style="margin-left: 50%;width: 350px;text-align: center;margin-top:150px;">
+            <div style="border:1px solid black;">
+                <div class="form-group " style="font-weight: bold;padding-left:20px;padding-top:10px;">
+                    <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
                 </div>
-                <div style="padding-left:20px;" class="form-group" >
-                    <span style="text-align: center;">{{devis.code_postal}} - {{devis.ville}}</span>
+
+
+                <div class="form-group" *ngIf="address" >
+                    <span class=" glyphicon glyphicon-alert red"></span><span class="col-sm-9">Aucune adresse pré-enregistrée pour ce client</span>
                 </div>
+                <div  class="form-group ">
+
+
+                    <div   class="form-group" >
+                        <span style="padding-left:20px;">{{devis.adresse}}</span>
+                    </div>
+                    <div style="padding-left:20px;" class="form-group" >
+                        <span style="text-align: center;">{{devis.code_postal}} - {{devis.ville}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group" style="text-align: center;margin-top: 10px;">
+                <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
             </div>
 
-
-
-
         </div>
 
 
-        <div class="form-group" style="margin-top: 20px; margin-left:45%;">
-            <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
-        </div>
+
 
         <div class="col-sm-5" style="margin:0px;font-size:18px; width: 450px; ">
             <div class="form-group" >
@@ -108,7 +112,7 @@
             </thead>
             <tbody >
 
-            <ng-container *ngFor="let produit of produitDevis; let i = index" style="height: 10px;">
+            <ng-container *ngFor="let produit of produitsDevis; let i = index" style="height: 10px;">
                 <tr  [ngClass]="(produit.commentaire)?'commentes':'comments'">
 
 
@@ -132,21 +136,21 @@
                     </td>
                     <td style="text-align: center;width: 150px;border-right: 1px solid black;">
                         <div class="form-group">
-                            {{produitDevis[i].qte_devis}}
+                            {{produitsDevis[i].qte_devis}}
                         </div>
                     </td>
                     <td style="text-align: center;width: 150px;border-right: 1px solid black;">
                         <div class="form-group">
-                        {{produitDevis[i].taux ? produitDevis[i].taux : produitDevis[i].tva }}
+                        {{produitsDevis[i].taux ? produitsDevis[i].taux : produitsDevis[i].tva }}
                         </div>
                     </td>
                     <td style="text-align: center;width: 150px;border-right: 1px solid black;">
                         <div class="form-group">
-                            {{produitDevis[i].prix_devis| currency:'EUR':true:'1.2-2'}}
+                            {{produitsDevis[i].prix_devis| currency:'EUR':true:'1.2-2'}}
                         </div>
                     </td>
                     <td  style="width: 280px;text-align: center;border-right:1px solid black;">
-                        <div class="form-group">{{produitDevis[i].qte_devis * produitDevis[i].prix_devis| currency:'EUR':true:'1.2-2' }}</div>
+                        <div class="form-group">{{produitsDevis[i].qte_devis * produitsDevis[i].prix_devis| currency:'EUR':true:'1.2-2' }}</div>
                     </td>
 
                 </tr>
@@ -193,7 +197,7 @@
                 <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;"  >{{countTotal() | currency:'EUR':true:'1.2-2'}}</td>
             </tr>
 
-            <tr *ngIf="produitDevis.length > 0  && devis.remise"  style="height: 30px;margin-left:90%;">
+            <tr *ngIf="produitsDevis.length > 0  && devis.remise"  style="height: 30px;margin-left:90%;">
                 <td style="width: 1200px;"></td>
                 <td style="width:450px;text-align: left;border-top:1px solid black;border-left: 1px solid black;border-bottom:1px solid black;">Remise {{devis.remise}} %:</td>
                 <td style="width:180px;border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">{{totalRemiseprod() | currency:'EUR':true:'1.2-2'}}</td>
@@ -448,7 +452,7 @@
             <p>&nbsp;</p>
 
 
-            <tr *ngIf="produitDevis.length> 0 && produitDevisOptions.length> 0"  style="height: 10px;margin-left:90%;">
+            <tr *ngIf="produitsDevis.length> 0 && produitDevisOptions.length> 0"  style="height: 10px;margin-left:90%;">
 
 
                 <td style="width: 1200px;"></td>
@@ -456,14 +460,14 @@
                 <td style="border-top:1px solid black;border-right: 1px solid black;text-align: right;">{{total() | currency:'EUR':true:'1.2-2'}}</td>
                 <!--calcul la somme de toutes quantités ajouté au bon de commande-->
             </tr>
-            <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise"  style="height: 30px;margin-left:90%;">
+            <tr *ngIf="produitsDevis.length > 0 && produitDevisOptions.length> 0 && devis.remise"  style="height: 30px;margin-left:90%;">
                 <td style="width: 1200px;"></td>
                 <td    style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;width:450px;" >Remise {{devis.remise}} %:</td>
                 <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;text-align: right;">{{ countTotalRemise() | currency:'EUR':true:'1.2-2'}}</td>
                 <!--calcul la somme de toutes quantités ajouté au bon de commande-->
             </tr>
 
-            <tr *ngIf="produitDevis.length > 0 && produitDevisOptions.length> 0"  style="height: 30px;margin-left:90%;">
+            <tr *ngIf="produitsDevis.length > 0 && produitDevisOptions.length> 0"  style="height: 30px;margin-left:90%;">
                 <td style="width: 1200px;"></td>
                 <td    style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-bottom:1px solid black;width:450px;" >TTC Total :</td>
                 <td style="border-top:1px solid black;border-right: 1px solid black;border-bottom:1px solid black;text-align: right;">{{totalTVA() + countTotalTVA()  | currency:'EUR':true:'1.2-2'}}</td>

@@ -78,6 +78,8 @@ router.post('/eequipements/:id_contact', equipement);
 router.get('/allequipe/:id_contact', getByIdequipement);
 router.delete('/entre/:id_equipement', deleteEquipement);
 
+router.post('/factadress/:id_contact',addAdressfact);
+router.get('/getAddress/:id_contact',getByIdFacAddress);
 
 module.exports = router;
 
@@ -655,11 +657,36 @@ function deleteEquipement(req, res) {
 
 
 function getByIdFacclient(req, res) {
-    console.log("controller fac client"+req.params.id_contact);
     contactService.getByIdFacclient(req.params.id_contact)
         .then(function (phase) {
             if (phase) {
                 res.send(phase);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function addAdressfact(req, res) {
+    contactService.addAdressfact(req.body, req.params.id_contact)
+        .then(function (results) {
+            res.send(results);
+        })
+        .catch(function (err) {
+                res.status(400).send(err);
+            }
+        );
+}
+
+function getByIdFacAddress(req, res) {
+    //console.log("controller fac client"+req.params.id_contact);
+    contactService.getByIdFacAddress(req.params.id_contact)
+        .then(function (results) {
+            if (results) {
+                res.send(results);
             } else {
                 res.sendStatus(404);
             }

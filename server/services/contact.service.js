@@ -75,6 +75,9 @@ service.deleteCaces = deleteCaces;
 
 service.getByIdFacclient = getByIdFacclient;
 
+service.addAdressfact = addAdressfact;
+service.getByIdFacAddress = getByIdFacAddress;
+
 module.exports = service;
 
 /*******************************************************************************
@@ -155,7 +158,7 @@ function getAll() {
 
 function getList() {
     var deferred = Q.defer();
-    db.query('SELECT * FROM ListeContacts', function (error, contacts, fields) {
+    db.query('SELECT * FROM ListeContacts group by id_contact', function (error, contacts, fields) {
         if (error) deferred.reject(error.name + ': ' + error.message);
 
         deferred.resolve(contacts);
@@ -1104,6 +1107,51 @@ function getByIdFacclient(_id_contact) {
         "WHERE contact.id_contact =165\n" +
         "AND facture.id_devis = devis.id_devis ORDER BY facture.id_facture DESC";
     var inserts = [_id_contact];
+    sql = mysql.format(sql, inserts);
+    //console.log(sql);
+    db.query(sql, function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message)
+            deferred.reject(error.name + ': ' + error.message);
+        }
+
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+
+function addAdressfact(EParams, id_contact) {
+    console.log(EParams, id_contact);
+    let deferred = Q.defer();
+
+    let params = [
+        id_contact,
+        EParams.adresse,
+        EParams.complement_adr,
+        EParams.code_postale,
+        EParams.ville,
+        EParams.pays
+    ];
+
+    let query = "INSERT INTO adresse (id_contact,adresse, complement_adr, code_postal,ville, pays,  type_adr) VALUES (? , ? , ?, ?, ? ,? ,'Facturation' )";
+
+    db.query(query, params, function (error, results, fields) {
+        if (error) {
+            deferred.reject(error.name + ': ' + error.message);
+        }
+        deferred.resolve(results);
+    });
+
+    return deferred.promise;
+}
+
+
+function getByIdFacAddress(_id_contact) {
+
+    let deferred = Q.defer();
+    let sql = "SELECT * FROM  `adresse` WHERE id_contact =? AND type_adr =  'Facturation' ";
+    let inserts = [_id_contact];
     sql = mysql.format(sql, inserts);
     //console.log(sql);
     db.query(sql, function (error, results, fields) {
