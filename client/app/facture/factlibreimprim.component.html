@@ -155,6 +155,27 @@
                     </tbody>
                 </table>
 
+                <table class=" separe1 col-sm-offset-6 col-sm-3 table-striped" *ngIf="print" style="float:right;margin-top:-350px;" >
+                    <tbody style="text-align: center;">
+
+                    <tr style="height: 50px;border:1px solid black;" class="gras"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >Total Net :</td><td style="text-align: right;">{{countTotalNet() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr style="height: 50px;border:1px solid black;"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >Situations antérieures :</td><td style="text-align: right;">{{summe.somme | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr style="height: 50px;border:1px solid black;" class="basr gras"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >Total situation H.T. :</td><td style="text-align: right;" >{{CountTotalsituation() | currency:'EUR':true:'1.2-2'}}</td></tr>
+
+
+                    <tr style="height: 50px;border:1px solid black;" *ngIf="SumTvaV()"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >TVA à 20 % </td><td style="text-align: right;" >{{SumTvaV() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr style="height: 50px;border:1px solid black;" *ngIf="SummTvaD()"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche"  >TVA à 10 % </td><td style="text-align: right;" >{{SummTvaD() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr style="height: 50px;border:1px solid black;" *ngIf="SummTvaC()"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >TVA à 5.5 % </td><td style="text-align: right;" >{{SummTvaC() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr style="height: 50px;border:1px solid black;" *ngIf="SummTvaDU()"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >TVA à 2.1 % </td><td style="text-align: right;" >{{SummTvaDU() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr style="height: 50px;border:1px solid black;" *ngIf="SummTvaZ()"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >TVA à 0 % </td><td style="text-align: right;" >{{SummTvaZ() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr  style="height: 50px;border:1px solid black;" class="gras"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >Total TVA :</td  ><td style="text-align: right;">{{TotalTva() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    <tr  style="height: 50px;border:1px solid black;" class="basr grass"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >Total TTC :</td><td style="text-align: right;">{{countTotalttc() | currency:'EUR':true:'1.2-2'}}</td></tr>
+
+                    <tr *ngIf="model.id_version>0" style="height: 50px;border:1px solid black;"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >Retenue de garantie {{model.id_version}}%</td><td style="text-align:right;">{{ retnue() | currency:'EUR':true:'1.2-2'}}</td></tr><p>&nbsp;</p>
+                    <tr *ngIf="model.id_version>0"  style="height: 50px;border:1px solid black;" class="basr"><td style="text-align: left;border-left: 1px solid;border-top:1px solid black;border-left: 1px solid;" class="gauche" >Reste TTC :</td><td style="text-align: right;">{{countTotalttcretenue() | currency:'EUR':true:'1.2-2'}}</td></tr>
+                    </tbody>
+                </table>
+
 
 
             </fieldset>
