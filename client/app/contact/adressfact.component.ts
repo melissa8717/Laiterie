@@ -25,7 +25,8 @@ export class AdressfactComponent implements OnInit {
     _id: any;
     data: any = {};
 
-    private addresses: any = {};
+    addresses: any = {};
+    adrefact: any[] = [];
 
 
     constructor(private route: ActivatedRoute,
@@ -43,7 +44,7 @@ export class AdressfactComponent implements OnInit {
 
         this.route.params.subscribe(params => {
             this.id_contact = params['id_contact'];
-
+            this.loadfactadr();
         });
 
 
@@ -59,13 +60,22 @@ export class AdressfactComponent implements OnInit {
         });
     }
 
-    private addAddress() {
+    addAddress() {
         this.contactService.addAdressfact(this.id_contact, this.addresses).subscribe(data => {
-            this.data = data;
+            this.addresses = data;
 
-            //this.adrefact.push(this.addresses);
             this.addresses = {};
+            this.router.navigate(["/ficheclient/"+this.id_contact]);
+            this.alertService.success("L'adresse de facturation a été enregistrée.");
         });
+    }
+
+    private loadfactadr() {
+        this.contactService.getByIdFacAddress(this.id_contact).subscribe(data => {
+            this.adrefact = data;
+
+            console.log(this.adrefact);
+        })
     }
 
 }
