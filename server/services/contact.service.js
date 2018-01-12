@@ -78,6 +78,7 @@ service.getByIdFacclient = getByIdFacclient;
 service.addAdressfact = addAdressfact;
 service.getByIdFacAddress = getByIdFacAddress;
 service.deleteFact = deleteFact;
+service.updateFactAdresse = updateFactAdresse;
 
 module.exports = service;
 
@@ -1177,5 +1178,33 @@ function deleteFact(id_adresse) {
         deferred.resolve();
     });
 
+    return deferred.promise;
+}
+
+function updateFactAdresse(adresseparams) {
+
+    let deferred = Q.defer();
+
+    let params = [
+        adresseparams.adresse,
+        adresseparams.complement_adr,
+        adresseparams.code_postal,
+        adresseparams.ville,
+        adresseparams.pays,
+        adresseparams.id_adresse
+
+    ];
+
+    let query = "UPDATE adresse SET adresse=? , complement_adr=? , code_postal=? , ville=? , pays=? WHERE id_adresse = ?  ";
+    //console.log(query, params)
+    db.query(query, params, function (error, results, fields) {
+        if (error) {
+            //console.log(+ error.message)
+            deferred.reject('MySql ERROR trying to update user informations (3) | ' + error.message);
+        }
+        //console.log(results)
+
+        deferred.resolve();
+    });
     return deferred.promise;
 }
