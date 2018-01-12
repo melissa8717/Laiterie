@@ -156,7 +156,7 @@
                                 <div class="form-group">
                                     <input class="form-control input-sm" *ngIf="!produit.obj" type="text" name="unite"
                                            placeholder="Unité" value="">
-                                    <div *ngIf="produit.obj"> {{produit.unite}}</div>
+                                    <div *ngIf="produit.obj"> {{produit.uni ? produit.uni : produit.unite}}</div>
                                 </div>
                             </td>
 
@@ -217,7 +217,7 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <span>{{produit.unite}}</span>
+                                    <span>{{produit.uni? produit.uni : produit.unite}}</span>
                                 </div>
                             </td>
                             <td>
