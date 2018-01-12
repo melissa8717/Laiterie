@@ -40,26 +40,39 @@
             </div>
         </div>
 
-        <div  style="margin-left: 50%;margin-top: 50px;border:1px solid black;width: 350px;text-align: center;">
-            <div class="form-group " style="font-weight: bold;">
-                <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
+        <div *ngIf="print">
+            <p style="width: 200px;left:50px;font-size:11px;margin-top:130px; ">
+                Tel : {{fact.tel_a}}<br>
+                Fax : {{fact.fax_a}}<br>
+                Mail : {{fact.mail_a}}
+
+            </p>
+        </div>
+
+        <div  style="margin-left: 50%;width: 350px;text-align: center;margin-top:35px;">
+            <div style="border:1px solid black;">
+                <div class="form-group " style="font-weight: bold;">
+                    <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
+                </div>
+
+                <div class="form-group">
+                    <div *ngIf="devis.adr" class="form-group">
+                        <span style="text-align: center;">{{devis.adr}}</span>
+                    </div>
+                    <div *ngIf="!devis.adr" class="form-group">
+                        <span style="text-align: center;">{{devis.adresse}}</span>
+                    </div>
+                    <div class="form-group" >
+                        <span style="text-align: center;">{{devis.code_postal ? devis.code_postal :devis.cp}} - {{devis.vil ? devis.vil :devis.ville}}</span>
+                    </div>
+
+
+                </div>
             </div>
 
-            <div class="form-group">
-                <div *ngIf="devis.adr" class="form-group">
-                    <span style="text-align: center;">{{devis.adr}}</span>
-                </div>
-                <div *ngIf="!devis.adr" class="form-group">
-                    <span style="text-align: center;">{{devis.adresse}}</span>
-                </div>
-                <div class="form-group" >
-                    <span style="text-align: center;">{{devis.code_postal ? devis.code_postal :devis.cp}} - {{devis.vil ? devis.vil :devis.ville}}</span>
-                </div>
-
-
+            <div class="form-group" style="text-align: center;margin-top: 10px;">
+                <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
             </div>
-
-
         </div>
 
 
@@ -84,9 +97,7 @@
             </div>
         </div>
 
-        <div class="form-group" style="margin-left: 50%; margin-top: 50px;">
-            <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
-        </div>
+
 
     </div>
 

@@ -20,6 +20,7 @@
         <div *ngIf="uploaderImg"  style="text-align: center;margin-left:10%; heigh:auto; position: relative;">
             <div *ngIf="print">
                 <img *ngIf="url" [src]="url" alt="..." class="col-sm-4"/>
+
                 <img *ngIf="!url && img.image" style="height: auto; width: 200px;top:10px;position:fixed;left:50px;"
                      src="http://{{loc}}:4000/image/agence/{{img.id_agence}}/{{img.image}}" alt="..."
                      class="img-responsive col-sm-12"/>
@@ -28,21 +29,28 @@
         </div>
 
         <div *ngIf="uploaderFili"  style="text-align: center; top:00px; position: fixed;">
-            <figure *ngIf="print">
+            <div *ngIf="print">
                 <img *ngIf="url" [src]="url" alt="..." class="img-responsive col-sm-12"/>
+
                 <img *ngIf="!url && fili.fiigrane" style="height: 150px; width: 300px;"
                      src="http://{{loc}}:4000/image/filig/{{fili.id_agence}}/{{fili.filigrane}}" alt="..."
                      class="img-responsive col-sm-12"/><br>
-                <figcaption><span>Tel : {{fact.tel_a}}</span><br>
-                    <span>Fax : {{fact.fax_a}}</span><br>
-                    <span>Mail : {{fact.mail_a}}</span></figcaption>
-            </figure>
 
+            </div>
+
+        </div>
+        <div *ngIf="print">
+            <p style="width: 200px;left:50px;font-size:11px;margin-top:130px; ">
+                Tel : {{fact.tel_a}}<br>
+                Fax : {{fact.fax_a}}<br>
+                Mail : {{fact.mail_a}}
+
+            </p>
         </div>
 
 
-        <div  style="margin-left: 50%;width: 350px;text-align: center;margin-top:150px;">
-            <div style="border:1px solid black;">
+        <div style="margin-left: 50%;width: 350px;text-align: center;margin-top:40px;">
+            <div style="border:1px solid black;" >
                 <div class="form-group " style="font-weight: bold;padding-left:20px;padding-top:10px;">
                     <span>{{devis.raison_sociale ? devis.raison_sociale : devis.nom +" " +devis.prenom}}</span>
                 </div>
@@ -62,11 +70,15 @@
                     </div>
                 </div>
 
+
+
+
             </div>
+
+
             <div class="form-group" style="text-align: center;margin-top: 10px;">
                 <span>A {{fact.ville_a}},</span><span> le {{devis.date_version | date:'dd-MM-yyyy'}}</span>
             </div>
-
         </div>
 
 

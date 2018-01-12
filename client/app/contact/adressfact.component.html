@@ -58,12 +58,12 @@
 
                     <tbody>
 
-                        <tr *ngFor="let fact of adrefact">
-                            <td>{{fact.adresse}}</td>
-                            <td>{{fact.complement_adr}}</td>
-                            <td>{{fact.code_postal}}</td>
-                            <td>{{fact.ville}}</td>
-                            <td>{{fact.pays}}</td>
+                        <tr *ngFor="let fact of adrefact, let i =index">
+                            <td><input type="text" name="adresse{{i}}"  class="col-sm-12" [(ngModel)]="adrefact[i].adresse"></td>
+                            <td><input type="text" name="complement_adr{{i}}"  class="col-sm-12" [(ngModel)]="adrefact[i].complement_adr"></td>
+                            <td><input type="text" name="code_postale{{i}}"  class="col-sm-12" [(ngModel)]="adrefact[i].code_postal"></td>
+                            <td><input type="text" name="ville{{i}}" class="col-sm-12" [(ngModel)]="adrefact[i].ville"> </td>
+                            <td><input type="text" name="pays{{i}}" class="col-sm-12" [(ngModel)]="adrefact[i].pays"></td>
                             <td>
                                 <div class="input-group">
                                     <div class="input-group-btn">
@@ -71,7 +71,7 @@
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             <li *ngIf="droitsuser.modifcontact"><a >Modifier</a></li>
                                             <li *ngIf="droitsuser.supcontact" role="separator" class="divider"></li>
-                                            <li *ngIf="droitsuser.supcontact"><a >Supprimer</a></li>
+                                            <li *ngIf="droitsuser.supcontact"><a (click)="deleteFact(adrefact[i].id_adresse)">Supprimer</a></li>
                                         </ul>
                                     </div>
                                 </div>

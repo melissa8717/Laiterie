@@ -215,6 +215,14 @@ export class ContactService {
         return this.http.get(this.config.apiUrl + '/contacts/getAddress/' + id_contact, this.jwt()).map((response: Response) => response.json());
     }
 
+    deleteFact(id_adresse:number) {
+        return this.http.delete(this.config.apiUrl + '/contacts/deleteFact/' + id_adresse, this.jwt());
+    }
+
+    updateFactAdresse(adresseparams:any){
+        return this.http.put(this.config.apiUrl + '/contacts/updateFactAdresse' ,adresseparams, this.jwt());
+    }
+
     // private helper methods
 
     private jwt() {

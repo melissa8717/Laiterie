@@ -27,7 +27,7 @@ export class AdressfactComponent implements OnInit {
 
     addresses: any = {};
     adrefact: any[] = [];
-
+    id_adresse:number;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -76,6 +76,21 @@ export class AdressfactComponent implements OnInit {
 
             console.log(this.adrefact);
         })
+    }
+
+    private deleteFact(id_adresse: any) {
+        this.contactService.deleteFact(id_adresse)
+            .subscribe(() => {
+                this.adrefact = this.adrefact.filter(x => x.id_adresse != id_adresse);
+            }, error => {
+                this.alertService.error(error._body);
+            });
+    }
+
+    modify(adresseparams: any) {
+        this.contactService.updateFactAdresse(adresseparams).subscribe(() => {
+            this.alertService.success("Les données ont bien été modifiées.");
+        });
     }
 
 }

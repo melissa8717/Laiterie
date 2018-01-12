@@ -80,6 +80,8 @@ router.delete('/entre/:id_equipement', deleteEquipement);
 
 router.post('/factadress/:id_contact',addAdressfact);
 router.get('/getAddress/:id_contact',getByIdFacAddress);
+router.delete('/deleteFact/:id_adresse',deleteFact);
+router.put('/updateFactAdresse',updateFactAdresse);
 
 module.exports = router;
 
@@ -690,6 +692,27 @@ function getByIdFacAddress(req, res) {
             } else {
                 res.sendStatus(404);
             }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function deleteFact(req, res) {
+    contactService.deleteFact(req.params.id_adresse)
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
+
+function updateFactAdresse(req, res) {
+    console.log("test3");
+    contactService.updateFactAdresse(req.body)
+        .then(function () {
+            res.sendStatus(200);
         })
         .catch(function (err) {
             res.status(400).send(err);

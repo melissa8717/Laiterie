@@ -77,6 +77,7 @@ service.getByIdFacclient = getByIdFacclient;
 
 service.addAdressfact = addAdressfact;
 service.getByIdFacAddress = getByIdFacAddress;
+service.deleteFact = deleteFact;
 
 module.exports = service;
 
@@ -1162,5 +1163,19 @@ function getByIdFacAddress(_id_contact) {
 
         deferred.resolve(results);
     });
+    return deferred.promise;
+}
+
+function deleteFact(id_adresse) {
+    var deferred = Q.defer();
+    db.query("DELETE FROM adresse WHERE id_adresse = ? ", [id_adresse], function (error, results, fields) {
+        if (error) {
+            console.log(error.name + ': ' + error.message);
+            deferred.reject(error.name + ': ' + error.message);
+
+        }
+        deferred.resolve();
+    });
+
     return deferred.promise;
 }

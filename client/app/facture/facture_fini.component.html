@@ -30,25 +30,36 @@
                 </div>
                 <p>&nbsp;</p>
 
-                <div  style="margin-left: 50%;margin-top: 70px;">
-                    <div class="form-group" *ngIf="model.raison_sociale!=('' || 'null')">
-                        <span>{{model.raison_sociale}}<!--variable--></span>
-                    </div>
-                    <div class="form-group" >
-                        <span>{{model.nom}} {{model.prenom}}<!--variable--></span>
-                    </div>
-                    <div class="form-group">
-                        <span >{{model.cadresse}}<!--variable--></span>
-                    </div>
-                    <div class="form-group">
-                        <span >{{model.ccp}} </span>
+                <div *ngIf="print">
+                    <p style="width: 200px;left:50px;font-size:11px;margin-top:130px; ">
+                        Tel : {{fact.tel_a}}<br>
+                        Fax : {{fact.fax_a}}<br>
+                        Mail : {{fact.mail_a}}
 
-                        <span > {{model.cville}}<!--variable--></span>
-                    </div>
-                    <p>&nbsp;</p>
-                    <p>&nbsp;</p>
+                    </p>
+                </div>
 
-                    <div class="form-group"  >
+                <div  style="margin-left: 50%;width: 350px;text-align: center;margin-top:40px;">
+
+                    <div style="border:1px solid black;" >
+
+                        <div class="form-group" *ngIf="model.raison_sociale!=('' || 'null')">
+                            <span>{{model.raison_sociale}}<!--variable--></span>
+                        </div>
+                        <div class="form-group" >
+                            <span>{{model.nom}} {{model.prenom}}<!--variable--></span>
+                        </div>
+                        <div class="form-group">
+                            <span >{{model.cadresse}}<!--variable--></span>
+                        </div>
+                        <div class="form-group">
+                            <span >{{model.ccp}} </span>
+
+                            <span > {{model.cville}}<!--variable--></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group"  style="text-align: center;margin-top: 10px;">
                         <span  style="margin-top: 40px;">{{fact.villefact}}</span> , le <span>{{model.date_fact | date:'dd-MM-yyyy'}}</span>
                     </div>
 
