@@ -33,11 +33,9 @@
             'date-fns': 'npm:date-fns',
             '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap',
             'ng2-file-upload': 'npm:ng2-file-upload/',
-
             'dhtmlx-gantt': 'npm:dhtmlx-gantt/',
-
             'traceur':'npm:traceur/bin',
-
+            'jspdf':'npm:jspdf/dist/jspdf.min.js',
 
             'ng2-auto-complete': 'npm:ng2-auto-complete/dist/ng2-auto-complete.umd.js',
             'moment' : 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js',
