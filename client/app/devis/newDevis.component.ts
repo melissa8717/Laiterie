@@ -190,6 +190,7 @@ export class NewDevisComponent implements OnInit {
                 this.produits.forEach(produit => {
                     produit.id_unite = parseInt(produit.unite);
                     produit.unite = this.unites.find(u => u.id_unite == produit.id_unite).libelle;
+                    console.log(produit.unite);
                 });
             }
         )
