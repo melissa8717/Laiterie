@@ -53,3 +53,4 @@ docker/mysql_data/
 docker/files/
 docker/images/
 docker/script.sql
+.scannerwork

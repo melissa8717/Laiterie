@@ -40,3 +40,10 @@ services:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_DATABASE: 'wbat_alwaysdata'
     restart: always
+
+#  sonarqube:
+#    image: sonarqube:6.7
+#    container_name: sonarqube
+#    ports:
+#      - "9000:9000"
+#      - "9092:9092"
