@@ -87,6 +87,10 @@ export class ModifierDevisComponent implements OnInit {
                         produit.id_unite = parseInt(produit.unite);
                         produit.unite = unites.find(u => u.id_unite == produit.id_unite).libelle;
                     });
+                    this.produitDevisOptions.forEach(produit => {
+                        produit.id_unite = parseInt(produit.unite);
+                        produit.unite = unites.find(u => u.id_unite == produit.id_unite).libelle;
+                    });
                 });
             })
         });
@@ -106,6 +110,7 @@ export class ModifierDevisComponent implements OnInit {
         tmp.qte_devis = this.produit.qte;
         tmp.prix_devis = this.produit.prix;
         tmp.unite = this.produit.unite;
+        tmp.uni = this.produit.uni;
         tmp.taux = this.produit.taux;
         tmp.option = this.produit.option;
         tmp.commentaire = this.produit.commentaire;
@@ -158,6 +163,7 @@ export class ModifierDevisComponent implements OnInit {
         this.produit.qte = 1;
         this.produit.prix = this.produit.obj.prix_vente;
         this.produit.unite = this.produit.obj.unite;
+        this.produit.uni = this.produit.obj.uni;
         this.produit.ref = this.produit.obj.id_prc;
     }
 

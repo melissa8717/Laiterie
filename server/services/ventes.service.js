@@ -24,8 +24,9 @@ function getAll() {
     let deferred = Q.defer();
     db.query('\
     SELECT produit_vente.*, \
-           produit_categorie.libelle AS cat_libelle \
+           produit_categorie.libelle AS cat_libelle , cat_unite.libelle as uni \
     FROM produit_vente \
+    LEFT JOIN cat_unite ON cat_unite.id_unite = produit_vente.unite \
     LEFT OUTER JOIN produit_categorie ON produit_vente.categorie = produit_categorie.id_cat \
     WHERE (produit_vente.num_version , produit_vente.id_prc) IN (SELECT MAX(num_version), id_prc\
     FROM produit_vente group by id_prc)\

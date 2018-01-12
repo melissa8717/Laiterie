@@ -279,8 +279,10 @@ function getById(_id, num_version) {
             console.log("Error in first select : " + error.name + ': ' + error.message);
         }
         else {
-            var sql = "SELECT * from devis_detaille " +
-                "left join produit_vente on produit_vente.id_prc = devis_detaille.id_produit && produit_vente.num_version = devis_detaille.produit_version " +
+            var sql = "SELECT devis_detaille . * , produit_vente . * , cat_unite.libelle AS uni "+
+            "FROM produit_vente "+
+            "LEFT JOIN cat_unite ON produit_vente.unite = cat_unite.id_unite "+
+            "LEFT JOIN devis_detaille ON produit_vente.id_prc = devis_detaille.id_produit && produit_vente.num_version = devis_detaille.produit_version " +
                 "WHERE id_devis = ? and devis_detaille.num_version = ? ";
             var inserts = [_id, num_version];
             sql = mysql.format(sql, inserts);
@@ -289,9 +291,11 @@ function getById(_id, num_version) {
                     deferred.reject(error.name + ': ' + error.message);
                     console.log(error.name + ': ' + error.message);
                 }
-                var sql = "SELECT * , devis_option.num_version as num_version from devis_option " +
-                    "left join produit_vente on produit_vente.id_prc = devis_option.id_produit && produit_vente.num_version = devis_option.produit_version " +
-                    "WHERE id_devis = ? and devis_option.num_version = ?";
+                var sql = "SELECT devis_option . * , produit_vente . * , devis_option.num_version AS num_version, cat_unite.libelle AS uni "+
+                "FROM produit_vente "+
+                "LEFT JOIN cat_unite ON cat_unite.id_unite = produit_vente.unite "+
+                "LEFT JOIN devis_option ON produit_vente.id_prc = devis_option.id_produit && produit_vente.num_version = devis_option.produit_version "+
+                "WHERE id_devis = ? and devis_option.num_version = ?";
                 var inserts = [_id, num_version];
 
                 sql = mysql.format(sql, inserts);
