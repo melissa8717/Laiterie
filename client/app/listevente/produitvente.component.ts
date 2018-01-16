@@ -103,7 +103,8 @@ export class ProduitventeComponent implements OnInit {
         this.achatsService.getAll().subscribe(products => {
             this.allProducts = products;
             this.allProducts.forEach((product: any) => {
-                product.unite = this.unites.find(u => u.id_unite == product.unite).libelle;
+                let u = this.unites.find(u => u.id_unite == product.unite);
+                if (u) product.unite = u.libelle;
             });
         });
     }
@@ -113,7 +114,8 @@ export class ProduitventeComponent implements OnInit {
         this.ventesService.getAllProdComp(this.id_product, this.num_version).subscribe(produits => {
             this.products = produits.produits;
             this.products.forEach((product: any) => {
-                product.unite = this.unites.find(u => u.id_unite == product.unite).libelle;
+                let u = this.unites.find(u => u.id_unite == product.unite);
+                if (u) product.unite = u.libelle;
             });
             this.mainOeuvres = produits.mainOeuvre;
             this.loading = false;
